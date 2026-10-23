@@ -1,0 +1,254 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 QuadraJ and contributors.
+
+#include "core/Serializer.h"
+#include "core/Media.h"
+#include "json.hpp"
+#include <fstream>
+#include <sstream>
+#include <unordered_map>
+namespace reverie {
+using json = nlohmann::json;
+static json presetJson(const Preset& s) {
+    return {{"name", s.name},       {"kind", int(s.kind)},    {"wave", int(s.wave)},
+            {"attack", s.attack},   {"decay", s.decay},       {"sustain", s.sustain},
+            {"release", s.release}, {"cutoff", s.cutoff},     {"gain", s.gain},
+            {"color", s.color},     {"rootNote", s.rootNote}, {"sample", s.samplePath},
+            {"source", s.source},   {"license", s.license}};
+}
+static Preset readPreset(const json& j) {
+    Preset s;
+    s.name = j.at("name");
+    s.kind = InstrumentKind(j.at("kind").get<int>());
+    s.wave = Waveform(j.at("wave").get<int>());
+    s.attack = j.at("attack");
+    s.decay = j.at("decay");
+    s.sustain = j.at("sustain");
+    s.release = j.at("release");
+    s.cutoff = j.at("cutoff");
+    s.gain = j.at("gain");
+    s.color = j.at("color");
+    s.rootNote = j.value("rootNote", 60);
+    s.samplePath = j.value("sample", "");
+    s.source = j.value("source", "");
+    s.license = j.value("license", "");
+    Project test;
+    Track t;
+    t.preset = s;
+    test.tracks.push_back(t);
+    validate(test);
+    return s;
+}
+static void atomicJson(const json& j, const std::filesystem::path& path) {
+    auto temp = path;
+    temp += ".save-" + std::to_string(nextId()) + ".tmp";
+    try {
+        std::ofstream f(temp, std::ios::binary | std::ios::trunc);
+        f.exceptions(std::ios::badbit | std::ios::failbit);
+        f << j.dump(2) << '\n';
+        f.flush();
+        f.close();
+        std::filesystem::rename(temp, path);
+    } catch (...) {
+        std::error_code ec;
+        std::filesystem::remove(temp, ec);
+        throw;
+    }
+}
+Project ProjectSerializer::save(const Project& p, const std::filesystem::path& path) {
+    validate(p);
+    Project collected = p;
+    const auto folder = std::filesystem::absolute(path).parent_path();
+    std::filesystem::create_directories(folder);
+    auto media = folder / (path.stem().string() + ".media");
+    std::unordered_map<std::string, std::string> copied;
+    auto stash = [&](const std::string& source) -> std::string {
+        if (source.empty())
+            return "";
+        if (copied.contains(source))
+            return copied.at(source);
+        auto src = std::filesystem::absolute(source);
+        if (!std::filesystem::exists(src))
+            return source; // preserve missing references
+        std::filesystem::create_directories(media);
+        // Content hash prevents overwriting a media file still referenced by an earlier saved
+        // project.
+        std::ifstream input(src, std::ios::binary);
+        if (!input)
+            throw std::runtime_error("Cannot read media for collection: " + src.string());
+        input.exceptions(std::ios::badbit);
+        std::uint64_t hash = 14695981039346656037ULL;
+        char block[8192];
+        while (input) {
+            input.read(block, sizeof block);
+            for (std::streamsize i = 0; i < input.gcount(); ++i) {
+                hash ^= std::uint8_t(block[i]);
+                hash *= 1099511628211ULL;
+            }
+        }
+        std::ostringstream name;
+        name << std::hex << hash << ".wav";
+        auto dest = media / name.str();
+        if (!std::filesystem::exists(dest)) {
+            auto tmp = dest;
+            tmp += ".tmp";
+            std::filesystem::copy_file(src, tmp, std::filesystem::copy_options::overwrite_existing);
+            std::filesystem::rename(tmp, dest);
+        }
+        const auto rel = std::filesystem::relative(dest, folder).generic_string();
+        copied[source] = rel;
+        return rel;
+    };
+    json j = {{"format", "Reverie Ensemble"},
+              {"version", 1},
+              {"name", p.name},
+              {"bpm", p.bpm},
+              {"numerator", p.numerator},
+              {"denominator", p.denominator},
+              {"master", p.master},
+              {"tracks", json::array()}};
+    auto absoluteRef = [&](const std::string& ref) {
+        if (ref.empty())
+            return std::string{};
+        auto file = std::filesystem::path(ref);
+        return (file.is_absolute() ? file : folder / file).lexically_normal().string();
+    };
+    for (auto& t : collected.tracks) {
+        auto preset = presetJson(t.preset);
+        preset["sample"] = stash(!t.preset.samplePath.empty()
+                                     ? t.preset.samplePath
+                                     : (t.instrumentSample ? t.instrumentSample->path : ""));
+        t.preset.samplePath = absoluteRef(preset["sample"].get<std::string>());
+        json jt = {
+            {"id", t.id},       {"name", t.name},        {"kind", int(t.kind)}, {"color", t.color},
+            {"mute", t.mute},   {"solo", t.solo},        {"volume", t.volume},  {"pan", t.pan},
+            {"preset", preset}, {"clips", json::array()}};
+        for (auto& c : t.clips) {
+            json jc = {{"id", c.id},
+                       {"name", c.name},
+                       {"beat", c.beat},
+                       {"length", c.length},
+                       {"sourceOffset", c.sourceOffset},
+                       {"media", stash(!c.mediaPath.empty() ? c.mediaPath
+                                                            : (c.sample ? c.sample->path : ""))},
+                       {"notes", json::array()}};
+            c.mediaPath = absoluteRef(jc["media"].get<std::string>());
+            for (const auto& n : c.notes)
+                jc["notes"].push_back({{"id", n.id},
+                                       {"beat", n.beat},
+                                       {"duration", n.duration},
+                                       {"key", n.key},
+                                       {"velocity", n.velocity}});
+            jt["clips"].push_back(jc);
+        }
+        j["tracks"].push_back(jt);
+    }
+    atomicJson(j, path);
+    return collected;
+}
+LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
+    if (std::filesystem::file_size(path) > 64 * 1024 * 1024)
+        throw std::runtime_error("Project exceeds 64 MiB limit");
+    std::ifstream f(path);
+    json j;
+    f >> j;
+    if (j.at("format") != "Reverie Ensemble" || j.at("version") != 1)
+        throw std::runtime_error("Unsupported project format/version");
+    LoadResult result;
+    auto& p = result.project;
+    p.name = j.at("name");
+    p.bpm = j.at("bpm");
+    p.numerator = j.at("numerator");
+    p.denominator = j.at("denominator");
+    p.master = j.at("master");
+    std::unordered_map<std::string, std::shared_ptr<const Sample>> cache;
+    std::size_t sampleBytes = 0;
+    auto resolve = [&](std::string& ref) -> std::shared_ptr<const Sample> {
+        if (ref.empty())
+            return {};
+        auto file = std::filesystem::path(ref);
+        if (file.is_relative())
+            file = std::filesystem::absolute(path).parent_path() / file;
+        ref = file.lexically_normal().string();
+        if (cache.contains(ref))
+            return cache[ref];
+        try {
+            auto s = loadWav(file);
+            if (sampleBytes + s->stereo.size() * sizeof(float) > 512ULL * 1024 * 1024)
+                throw std::runtime_error("Project media exceeds 512 MiB decoded cache budget");
+            sampleBytes += s->stereo.size() * sizeof(float);
+            cache[ref] = s;
+            return s;
+        } catch (const std::exception& e) {
+            result.warnings.push_back(e.what());
+            cache[ref] = {};
+            return {};
+        }
+    };
+    if (j.at("tracks").size() > maxTracks)
+        throw std::runtime_error("Too many tracks");
+    for (const auto& jt : j.at("tracks")) {
+        Track t;
+        t.id = jt.at("id");
+        t.name = jt.at("name");
+        auto kind = jt.at("kind").get<int>();
+        if (kind < 0 || kind > 1)
+            throw std::runtime_error("Invalid track kind");
+        t.kind = TrackKind(kind);
+        t.color = jt.at("color");
+        t.mute = jt.at("mute");
+        t.solo = jt.at("solo");
+        t.volume = jt.at("volume");
+        t.pan = jt.at("pan");
+        t.preset = readPreset(jt.at("preset"));
+        t.instrumentSample = resolve(t.preset.samplePath);
+        for (const auto& jc : jt.at("clips")) {
+            Clip c;
+            c.id = jc.at("id");
+            c.name = jc.at("name");
+            c.beat = jc.at("beat");
+            c.length = jc.at("length");
+            c.sourceOffset = jc.at("sourceOffset");
+            c.mediaPath = jc.at("media");
+            c.sample = resolve(c.mediaPath);
+            for (const auto& jn : jc.at("notes")) {
+                Note n;
+                n.id = jn.at("id");
+                n.beat = jn.at("beat");
+                n.duration = jn.at("duration");
+                n.key = jn.at("key");
+                n.velocity = jn.at("velocity");
+                c.notes.push_back(n);
+            }
+            t.clips.push_back(std::move(c));
+        }
+        p.tracks.push_back(std::move(t));
+    }
+    validate(p);
+    for (const auto& t : p.tracks) {
+        reserveId(t.id);
+        for (const auto& c : t.clips) {
+            reserveId(c.id);
+            for (const auto& n : c.notes)
+                reserveId(n.id);
+        }
+    }
+    return result;
+}
+void ProjectSerializer::savePreset(const Preset& s, const std::filesystem::path& p) {
+    atomicJson({{"format", "Reverie Instrument"}, {"version", 1}, {"preset", presetJson(s)}}, p);
+}
+Preset ProjectSerializer::loadPreset(const std::filesystem::path& p) {
+    if (std::filesystem::file_size(p) > 1024 * 1024)
+        throw std::runtime_error("Preset too large");
+    std::ifstream f(p);
+    json j;
+    f >> j;
+    if (j.at("format") != "Reverie Instrument" || j.at("version") != 1)
+        throw std::runtime_error("Unknown preset format");
+    auto s = readPreset(j.at("preset"));
+    if (!s.samplePath.empty() && std::filesystem::path(s.samplePath).is_relative())
+        s.samplePath = (std::filesystem::absolute(p).parent_path() / s.samplePath).string();
+    return s;
+}
+} // namespace reverie

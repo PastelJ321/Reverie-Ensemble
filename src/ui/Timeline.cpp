@@ -1,0 +1,305 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 QuadraJ and contributors.
+
+#include "ui/Timeline.h"
+#include "ui/Editor.h"
+#include <QColorDialog>
+#include <QInputDialog>
+#include <QKeyEvent>
+#include <QLineEdit>
+#include <QMenu>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QPainter>
+namespace reverie {
+Timeline::Timeline(Editor& e) : e_(e) {
+    setFocusPolicy(Qt::StrongFocus);
+    setMouseTracking(true);
+    setObjectName("timeline");
+    updateExtent();
+}
+void Timeline::updateExtent() {
+    setMinimumSize(header + int(std::max(32., e_.project.endBeat() + 8) * e_.pixelsPerBeat),
+                   ruler + std::max(4, int(e_.project.tracks.size())) * row + 60);
+    resize(minimumSize());
+    update();
+}
+QRectF Timeline::clipRect(int t, const Clip& c) const {
+    return {header + c.beat * e_.pixelsPerBeat, double(ruler + t * row + 7),
+            c.length * e_.pixelsPerBeat, row - 14};
+}
+int Timeline::trackAt(double y) const {
+    int i = int((y - ruler) / row);
+    return y >= ruler && i >= 0 && i < int(e_.project.tracks.size()) ? i : -1;
+}
+Id Timeline::hit(QPointF p, int& track) const {
+    track = trackAt(p.y());
+    if (track < 0)
+        return 0;
+    for (auto it = e_.project.tracks[track].clips.rbegin();
+         it != e_.project.tracks[track].clips.rend(); ++it)
+        if (clipRect(track, *it).contains(p))
+            return it->id;
+    return 0;
+}
+void Timeline::paintEvent(QPaintEvent* event) {
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.fillRect(rect(), QColor("#171a24"));
+    const double ppb = e_.pixelsPerBeat;
+    double bar = e_.project.numerator * 4. / e_.project.denominator;
+    for (int i = 0; i < int(e_.project.tracks.size()); ++i) {
+        const auto& t = e_.project.tracks[i];
+        int y = ruler + i * row;
+        p.fillRect(QRect(0, y, width(), row),
+                   QColor(i == e_.selectedTrack ? "#252a3c" : (i % 2 ? "#1b1f2b" : "#1e222e")));
+        p.setPen(QColor("#303546"));
+        p.drawLine(0, y + row, width(), y + row);
+        p.fillRect(QRect(0, y, 4, row), QColor::fromRgba(t.color));
+        p.setPen(QColor("#e3e5f1"));
+        p.drawText(QRect(14, y + 10, header - 22, 25), Qt::AlignVCenter,
+                   QString::fromStdString(t.name));
+        p.setPen(QColor("#929bb3"));
+        p.drawText(14, y + 59, t.kind == TrackKind::Midi ? "MIDI" : "AUDIO");
+        for (int b = 0; b < 2; ++b) {
+            QRect r(header - 72 + b * 31, y + 42, 25, 23);
+            p.setBrush((b ? t.solo : t.mute) ? QColor(b ? "#bdab6b" : "#c17991")
+                                             : QColor("#343a4e"));
+            p.setPen(Qt::NoPen);
+            p.drawRoundedRect(r, 4, 4);
+            p.setPen(QColor("#f0f1f6"));
+            p.drawText(r, Qt::AlignCenter, b ? "S" : "M");
+        }
+        float meter = std::min(1.f, e_.engine.trackPeak(i));
+        p.fillRect(QRect(14, y + 69, int((header - 30) * meter), 3), QColor("#76cfb8"));
+    }
+    const auto visible = event->rect();
+    int first = std::max(0, int((visible.left() - header) / ppb));
+    int last = int((visible.right() - header) / ppb) + 1;
+    p.setRenderHint(QPainter::Antialiasing, false);
+    for (int beat = first; beat <= last; ++beat) {
+        int x = header + int(beat * ppb);
+        bool major = std::abs(std::remainder(double(beat), bar)) < .001;
+        p.setPen(QColor(major ? "#454b63" : "#2d3345"));
+        p.drawLine(x, ruler, x, height());
+    }
+    p.setRenderHint(QPainter::Antialiasing, true);
+    for (int i = 0; i < int(e_.project.tracks.size()); ++i)
+        for (const auto& c : e_.project.tracks[i].clips) {
+            auto r = clipRect(i, c);
+            if (!r.intersects(visible))
+                continue;
+            QColor color = QColor::fromRgba(e_.project.tracks[i].color);
+            color.setAlpha(e_.project.tracks[i].mute ? 70 : 200);
+            p.setPen(QPen(c.id == e_.selectedClip ? QColor("#ffffff") : color.lighter(125),
+                          c.id == e_.selectedClip ? 2 : 1));
+            p.setBrush(color.darker(150));
+            p.drawRoundedRect(r.adjusted(1, 0, -1, 0), 5, 5);
+            p.save();
+            p.setClipRect(r.adjusted(4, 3, -4, -3));
+            p.setPen(QColor("#f6f6fc"));
+            p.drawText(r.adjusted(9, 3, -6, 0), Qt::AlignTop | Qt::AlignLeft,
+                       QString::fromStdString(c.name));
+            if (c.sample) {
+                p.setPen(color.lighter(145));
+                int start = std::max(int(r.left() + 3), visible.left()),
+                    end = std::min(int(r.right() - 3), visible.right());
+                double framesPerPixel = 60. / e_.project.bpm / ppb * c.sample->sampleRate;
+                double offset = c.sourceOffset * c.sample->sampleRate;
+                for (int x = start; x < end; ++x) {
+                    double f = offset + (x - r.left()) * framesPerPixel;
+                    auto a = std::size_t(std::max(0., f) / 256),
+                         b = std::size_t(std::max(0., f + framesPerPixel) / 256);
+                    float lo = 0, hi = 0;
+                    for (auto j = a; j <= b && j < c.sample->peaks.size(); ++j) {
+                        lo = std::min(lo, c.sample->peaks[j].first);
+                        hi = std::max(hi, c.sample->peaks[j].second);
+                    }
+                    double center = r.center().y() + 8;
+                    p.drawLine(QPointF(x, center + lo * 20), QPointF(x, center + hi * 20));
+                }
+            } else if (!c.mediaPath.empty()) {
+                p.drawText(r.adjusted(8, 25, -6, 0), "Missing WAV — relink by importing source");
+            } else {
+                p.setPen(Qt::NoPen);
+                p.setBrush(color.lighter(140));
+                for (const auto& n : c.notes)
+                    if (n.beat < c.length) {
+                        double x = r.left() + n.beat * ppb,
+                               w = std::min(n.duration, c.length - n.beat) * ppb;
+                        double y = r.bottom() - 8 - (n.key - 36) * .55;
+                        p.drawRect(QRectF(x, y, std::max(2., w), 3));
+                    }
+            }
+            p.restore();
+        }
+    p.fillRect(QRect(0, 0, width(), ruler), QColor("#121620"));
+    p.setPen(QColor("#8d96af"));
+    p.drawText(14, 22, "ARRANGEMENT");
+    for (int b = std::max(0, int(first / bar)); b <= int(last / bar) + 1; ++b) {
+        int x = header + int(b * bar * ppb);
+        p.setPen(QColor("#9da7c0"));
+        p.drawLine(x, 20, x, ruler);
+        p.drawText(x + 6, 17, QString::number(b + 1));
+    }
+    double beat = TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(e_.engine.position());
+    int playX = header + int(beat * ppb);
+    p.setPen(QPen(QColor("#f0c779"), 1.5));
+    p.drawLine(playX, 0, playX, height());
+    if (e_.project.tracks.empty()) {
+        p.setPen(QColor("#a2aac2"));
+        p.drawText(QRect(header + 20, 65, 600, 40),
+                   "Add a MIDI track to begin. Double-click a track lane to create a clip.");
+    }
+}
+void Timeline::mousePressEvent(QMouseEvent* ev) {
+    setFocus();
+    if (ev->button() != Qt::LeftButton)
+        return;
+    auto pt = ev->position();
+    if (pt.y() < ruler && pt.x() >= header) {
+        e_.engine.seek(TempoMap{e_.project.bpm, e_.engine.sampleRate()}.sampleAt(
+            std::max(0., e_.snapped((pt.x() - header) / e_.pixelsPerBeat))));
+        update();
+        return;
+    }
+    int t;
+    auto clip = hit(pt, t);
+    if (t < 0)
+        return;
+    e_.select(t, clip);
+    if (pt.x() < header) {
+        if (pt.y() >= ruler + t * row + 42 && pt.y() < ruler + t * row + 65) {
+            if (pt.x() >= header - 72 && pt.x() < header - 47)
+                e_.edit([&] { e_.project.tracks[t].mute = !e_.project.tracks[t].mute; });
+            if (pt.x() >= header - 41 && pt.x() < header - 16)
+                e_.edit([&] { e_.project.tracks[t].solo = !e_.project.tracks[t].solo; });
+        }
+        return;
+    }
+    if (clip) {
+        drag_ = clip;
+        sourceTrack_ = t;
+        const auto* c = findClip(e_.project, clip);
+        startBeat_ = c->beat;
+        startLength_ = c->length;
+        press_ = pt;
+        resizing_ = pt.x() > clipRect(t, *c).right() - 10;
+        changed_ = false;
+    }
+}
+void Timeline::mouseMoveEvent(QMouseEvent* ev) {
+    if (!drag_)
+        return;
+    auto* c = findClip(e_.project, drag_);
+    if (!c)
+        return;
+    const auto pt = ev->position();
+    if (!changed_ && (pt - press_).manhattanLength() < 3)
+        return;
+    if (!changed_) {
+        e_.beginEdit();
+        changed_ = true;
+    }
+    double delta = (pt.x() - press_.x()) / e_.pixelsPerBeat;
+    if (resizing_)
+        c->length = std::max(e_.grid, e_.snapped(startLength_ + delta));
+    else {
+        c->beat = std::max(0., e_.snapped(startBeat_ + delta));
+        int dest = trackAt(pt.y());
+        if (dest >= 0 && dest != sourceTrack_ &&
+            e_.project.tracks[dest].kind == e_.project.tracks[sourceTrack_].kind) {
+            auto moving = *c;
+            auto& clips = e_.project.tracks[sourceTrack_].clips;
+            std::erase_if(clips, [&](const Clip& x) { return x.id == drag_; });
+            e_.project.tracks[dest].clips.push_back(std::move(moving));
+            sourceTrack_ = dest;
+            e_.selectedTrack = dest;
+        }
+    }
+    update();
+}
+void Timeline::mouseReleaseEvent(QMouseEvent*) {
+    if (changed_)
+        e_.endEdit();
+    drag_ = 0;
+    changed_ = false;
+}
+void Timeline::mouseDoubleClickEvent(QMouseEvent* ev) {
+    int t;
+    auto id = hit(ev->position(), t);
+    if (t < 0)
+        return;
+    if (ev->position().x() < header) {
+        bool ok = false;
+        auto name = QInputDialog::getText(this, "Track name", "Name", QLineEdit::Normal,
+                                          QString::fromStdString(e_.project.tracks[t].name), &ok);
+        if (ok && !name.isEmpty())
+            e_.edit([&] { e_.project.tracks[t].name = name.toStdString(); });
+        return;
+    }
+    if (id) {
+        if (e_.project.tracks[t].kind == TrackKind::Midi)
+            e_.openPiano(id);
+        return;
+    }
+    double beat = std::max(0., e_.snapped((ev->position().x() - header) / e_.pixelsPerBeat));
+    if (e_.project.tracks[t].kind == TrackKind::Audio) {
+        e_.importWav({}, beat);
+        return;
+    }
+    e_.edit([&] {
+        Clip c;
+        c.beat = beat;
+        e_.selectedClip = c.id;
+        e_.project.tracks[t].clips.push_back(c);
+    });
+    e_.openPiano(e_.selectedClip);
+}
+void Timeline::contextMenuEvent(QContextMenuEvent* ev) {
+    int t;
+    auto id = hit(ev->pos(), t);
+    if (t < 0)
+        return;
+    e_.select(t, id);
+    QMenu menu;
+    if (id) {
+        menu.addAction("Duplicate clip", [&] { e_.duplicateClip(); });
+        menu.addAction("Delete clip", [&] { e_.deleteSelection(); });
+        menu.addAction("Rename clip", [&] {
+            auto* c = findClip(e_.project, id);
+            if (!c)
+                return;
+            bool ok;
+            auto name = QInputDialog::getText(this, "Rename clip", "Name", QLineEdit::Normal,
+                                              QString::fromStdString(c->name), &ok);
+            if (ok)
+                e_.edit([&] { findClip(e_.project, id)->name = name.toStdString(); });
+        });
+        menu.addSeparator();
+    }
+    menu.addAction("Track color…", [&] {
+        auto color = QColorDialog::getColor(QColor::fromRgba(e_.project.tracks[t].color), this);
+        if (color.isValid())
+            e_.edit([&] { e_.project.tracks[t].color = color.rgba(); });
+    });
+    menu.addAction("Move track up", [&] { e_.moveTrack(-1); });
+    menu.addAction("Move track down", [&] { e_.moveTrack(1); });
+    menu.addAction("Delete track", [&] {
+        e_.selectedClip = 0;
+        e_.deleteSelection();
+    });
+    menu.exec(ev->globalPos());
+}
+void Timeline::keyPressEvent(QKeyEvent* ev) {
+    if (ev->key() == Qt::Key_Delete || ev->key() == Qt::Key_Backspace) {
+        e_.deleteSelection();
+        return;
+    }
+    if (ev->matches(QKeySequence::Copy)) {
+        e_.duplicateClip();
+        return;
+    }
+    QWidget::keyPressEvent(ev);
+}
+} // namespace reverie

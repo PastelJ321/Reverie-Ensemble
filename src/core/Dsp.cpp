@@ -1,0 +1,144 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright 2026 QuadraJ and contributors.
+
+#include "core/Dsp.h"
+#include <numbers>
+namespace reverie {
+static constexpr double tau = 2. * std::numbers::pi;
+static float blep(double t, double dt) noexcept {
+    if (t < dt) {
+        t /= dt;
+        return float(t + t - t * t - 1.);
+    }
+    if (t > 1. - dt) {
+        t = (t - 1.) / dt;
+        return float(t * t + t + t + 1.);
+    }
+    return 0;
+}
+Synthesizer::Synthesizer(Preset p, double r, const Sample* s)
+    : preset_(std::move(p)), rate_(r),
+      filterAlpha_(float(1. - std::exp(-tau * std::min(double(preset_.cutoff), r * .45) / r))),
+      sample_(s) {}
+void Synthesizer::reset() noexcept {
+    for (auto& v : voices_)
+        v = Voice{};
+}
+void Synthesizer::noteOn(Id token, int key, float velocity) noexcept {
+    Voice* target = &voices_[0];
+    for (auto& v : voices_) {
+        if (!v.stage) {
+            target = &v;
+            break;
+        }
+        if (v.env < target->env)
+            target = &v;
+    }
+    *target = Voice{};
+    auto& v = *target;
+    v.token = token;
+    v.key = key;
+    v.stage = 1;
+    v.velocity = velocity;
+    v.increment = std::min(.45, 440. * std::exp2((key - 69) / 12.) / rate_);
+    v.sampleStep =
+        (sample_ ? sample_->sampleRate : rate_) / rate_ * std::exp2((key - preset_.rootNote) / 12.);
+    v.noise = std::uint32_t(token * 747796405ULL + 2891336453ULL) | 1u;
+}
+void Synthesizer::noteOff(Id token) noexcept {
+    for (auto& v : voices_)
+        if (v.stage && v.token == token && v.stage != 4) {
+            v.stage = 4;
+            v.releaseStep = v.env / std::max(1.f, preset_.release * float(rate_));
+        }
+}
+float Synthesizer::oscillator(Voice& v) const noexcept {
+    const double p = v.phase;
+    float x = 0;
+    switch (preset_.wave) {
+    case Waveform::Sine:
+        x = float(std::sin(tau * p));
+        break;
+    case Waveform::Saw:
+        x = float(2 * p - 1) - blep(p, v.increment);
+        break;
+    case Waveform::Square:
+        x = (p < .5 ? 1.f : -1.f) + blep(p, v.increment) - blep(std::fmod(p + .5, 1.), v.increment);
+        break;
+    case Waveform::Triangle:
+        x = float(1. - 4. * std::abs(p - .5));
+        break;
+    }
+    if (preset_.color > 0)
+        x = x * (1.f - preset_.color * .4f) +
+            preset_.color * .3f * float(std::sin(tau * p * 2.)) * float(std::exp(-v.age * 1.8));
+    return x;
+}
+std::pair<float, float> Synthesizer::next() noexcept {
+    float left = 0, right = 0;
+    for (auto& v : voices_) {
+        if (!v.stage)
+            continue;
+        if (v.stage == 1) {
+            v.env += 1.f / (preset_.attack * float(rate_));
+            if (v.env >= 1) {
+                v.env = 1;
+                v.stage = 2;
+            }
+        } else if (v.stage == 2) {
+            v.env -= (1.f - preset_.sustain) / (preset_.decay * float(rate_));
+            if (v.env <= preset_.sustain) {
+                v.env = preset_.sustain;
+                v.stage = 3;
+            }
+        } else if (v.stage == 4) {
+            v.env -= v.releaseStep;
+            if (v.env <= 0) {
+                v.stage = 0;
+                continue;
+            }
+        }
+        float l = 0, r = 0;
+        if (preset_.kind == InstrumentKind::Sampler) {
+            if (!sample_ || v.samplePosition >= double(sample_->frames())) {
+                v.stage = 0;
+                continue;
+            }
+            const auto idx = std::size_t(v.samplePosition);
+            const float f = float(v.samplePosition - double(idx));
+            const auto next = std::min(idx + 1, sample_->frames() - 1);
+            l = std::lerp(sample_->stereo[idx * 2], sample_->stereo[next * 2], f);
+            r = std::lerp(sample_->stereo[idx * 2 + 1], sample_->stereo[next * 2 + 1], f);
+            v.samplePosition += v.sampleStep;
+        } else if (preset_.kind == InstrumentKind::Drums) {
+            v.noise ^= v.noise << 13;
+            v.noise ^= v.noise >> 17;
+            v.noise ^= v.noise << 5;
+            const float noise = float(v.noise) / float(UINT32_MAX) * 2 - 1;
+            if (v.key == 36 || v.key == 35) {
+                double freq = 45 + 110 * std::exp(-v.age * 40);
+                v.phase += freq / rate_;
+                l = float(std::sin(tau * v.phase) * std::exp(-v.age * 16));
+            } else if (v.key == 38 || v.key == 40)
+                l = (noise * .8f + float(std::sin(tau * 180 * v.age)) * .2f) *
+                    float(std::exp(-v.age * 23));
+            else
+                l = noise * float(std::exp(-v.age * (v.key == 46 ? 14 : 65)));
+            r = l;
+            if (v.age > 1.2)
+                v.stage = 0;
+        } else {
+            l = r = oscillator(v);
+        }
+        v.filterL += filterAlpha_ * (l - v.filterL);
+        v.filterR += filterAlpha_ * (r - v.filterR);
+        left += v.filterL * v.env * v.velocity * preset_.gain;
+        right += v.filterR * v.env * v.velocity * preset_.gain;
+        if (preset_.kind != InstrumentKind::Drums)
+            v.phase += v.increment;
+        v.phase -= std::floor(v.phase);
+        v.age += 1. / rate_;
+    }
+    return {left, right};
+}
+} // namespace reverie

@@ -1,0 +1,283 @@
+{
+  "bpm": 120.0,
+  "denominator": 4,
+  "format": "Reverie Ensemble",
+  "master": 0.800000011920929,
+  "name": "First light",
+  "numerator": 4,
+  "tracks": [
+    {
+      "clips": [
+        {
+          "beat": 0.0,
+          "id": 2,
+          "length": 16.0,
+          "media": "",
+          "name": "First light",
+          "notes": [
+            {
+              "beat": 0.0,
+              "duration": 0.75,
+              "id": 3,
+              "key": 60,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 1.0,
+              "duration": 0.75,
+              "id": 4,
+              "key": 64,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 2.0,
+              "duration": 0.75,
+              "id": 5,
+              "key": 67,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 3.0,
+              "duration": 0.75,
+              "id": 6,
+              "key": 71,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 4.0,
+              "duration": 0.75,
+              "id": 7,
+              "key": 69,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 5.0,
+              "duration": 0.75,
+              "id": 8,
+              "key": 67,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 6.0,
+              "duration": 0.75,
+              "id": 9,
+              "key": 64,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 7.0,
+              "duration": 0.75,
+              "id": 10,
+              "key": 62,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 8.0,
+              "duration": 0.75,
+              "id": 11,
+              "key": 60,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 9.0,
+              "duration": 0.75,
+              "id": 12,
+              "key": 64,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 10.0,
+              "duration": 0.75,
+              "id": 13,
+              "key": 67,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 11.0,
+              "duration": 0.75,
+              "id": 14,
+              "key": 72,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 12.0,
+              "duration": 0.75,
+              "id": 15,
+              "key": 71,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 13.0,
+              "duration": 0.75,
+              "id": 16,
+              "key": 67,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 14.0,
+              "duration": 0.75,
+              "id": 17,
+              "key": 64,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 15.0,
+              "duration": 0.75,
+              "id": 18,
+              "key": 62,
+              "velocity": 0.800000011920929
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4288058094,
+      "id": 1,
+      "kind": 0,
+      "mute": false,
+      "name": "01  Glass keys",
+      "pan": 0.0,
+      "preset": {
+        "attack": 0.003000000026077032,
+        "color": 0.3499999940395355,
+        "cutoff": 5500.0,
+        "decay": 0.6499999761581421,
+        "gain": 0.3799999952316284,
+        "kind": 0,
+        "license": "",
+        "name": "Simple Piano-like",
+        "release": 0.30000001192092896,
+        "rootNote": 60,
+        "sample": "",
+        "source": "",
+        "sustain": 0.15000000596046448,
+        "wave": 3
+      },
+      "solo": false,
+      "volume": 0.800000011920929
+    },
+    {
+      "clips": [
+        {
+          "beat": 0.0,
+          "id": 20,
+          "length": 16.0,
+          "media": "",
+          "name": "Slow bloom",
+          "notes": [
+            {
+              "beat": 0.0,
+              "duration": 3.5,
+              "id": 21,
+              "key": 48,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 0.0,
+              "duration": 3.5,
+              "id": 22,
+              "key": 55,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 0.0,
+              "duration": 3.5,
+              "id": 23,
+              "key": 64,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 4.0,
+              "duration": 3.5,
+              "id": 24,
+              "key": 48,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 4.0,
+              "duration": 3.5,
+              "id": 25,
+              "key": 55,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 4.0,
+              "duration": 3.5,
+              "id": 26,
+              "key": 64,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 8.0,
+              "duration": 3.5,
+              "id": 27,
+              "key": 53,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 8.0,
+              "duration": 3.5,
+              "id": 28,
+              "key": 60,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 8.0,
+              "duration": 3.5,
+              "id": 29,
+              "key": 69,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 12.0,
+              "duration": 3.5,
+              "id": 30,
+              "key": 48,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 12.0,
+              "duration": 3.5,
+              "id": 31,
+              "key": 55,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 12.0,
+              "duration": 3.5,
+              "id": 32,
+              "key": 64,
+              "velocity": 0.550000011920929
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4284794811,
+      "id": 19,
+      "kind": 0,
+      "mute": false,
+      "name": "02  Slow bloom",
+      "pan": 0.0,
+      "preset": {
+        "attack": 0.44999998807907104,
+        "color": 0.15000000596046448,
+        "cutoff": 1800.0,
+        "decay": 0.4000000059604645,
+        "gain": 0.2800000011920929,
+        "kind": 0,
+        "license": "",
+        "name": "Soft Pad",
+        "release": 1.100000023841858,
+        "rootNote": 60,
+        "sample": "",
+        "source": "",
+        "sustain": 0.699999988079071,
+        "wave": 3
+      },
+      "solo": false,
+      "volume": 0.550000011920929
+    }
+  ],
+  "version": 1
+}
