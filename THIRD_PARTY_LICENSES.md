@@ -2,7 +2,7 @@
 
 Copyright 2026 QuadraJ and contributors.
 
-Apache-2.0 covers **original Reverie Ensemble code and original included factory/demo material**. It does not relicense Qt, miniaudio, nlohmann/json, system frameworks or Qt's dependencies. No GPL/AGPL DAW engine, commercial instrument recordings or external sound pack is included.
+Apache-2.0 covers **original Reverie Ensemble code and original included factory/demo material**. It does not relicense Qt, miniaudio, nlohmann/json, system frameworks or Qt's dependencies. No GPL/AGPL DAW engine or commercial DAW instrument recordings are included. Version 0.2 includes a verified CC0 acoustic starter subset and OFL fonts, described below.
 
 ## Direct components
 
@@ -38,3 +38,11 @@ This repository supplies source, CMake build instructions and license texts. Loc
 The exact set depends on the Qt package/platform. In the tested Homebrew build, Qt Gui/Core also reference Qt DBus, GLib, FreeType, HarfBuzz, libpng, md4c, double-conversion, PCRE2, ICU, zstd and other dependencies. Examples of their licenses are GLib LGPL-2.1-or-later, FreeType FTL/GPL options (choose FTL when appropriate), HarfBuzz MIT-style, libpng's libpng license, md4c MIT, double-conversion BSD-3-Clause, PCRE2 BSD-3-Clause, ICU Unicode license and zstd BSD-3-Clause option. Treat this as an inventory to resolve against actual binaries, not a substitute for the exact notices. The installed Qt SPDX SBOM is at `<Qt-prefix>/share/qt/sbom/qtbase-<version>.spdx`; Homebrew formula source/build recipe and each installed dependency's licenses must accompany redistribution as appropriate. Qt's embedded components also have their own notices; consult [Qt's third-party inventory](https://doc.qt.io/qt-6/licenses-used-in-qt.html) and matching source.
 
 `docs/DEPENDENCIES.sha256` records checksums for the vendored source/license files used by this project. CMake does not download dependencies at configure/build time; miniaudio and JSON are vendored, and Qt is an explicit installed SDK dependency. No FluidSynth or SF2 asset is currently shipped.
+
+## Version 0.2 sound and font assets
+
+Community Essentials contains 35 unchanged VSCO 2 CE recordings under CC0-1.0 plus QuadraJ SFZ mappings. Credits: Versilian Studios / Sam Gossner, Ivy Audio / Simon Dalzell; sample cutting by Elan Hickler / Soundemote. Source revision, raw paths, URLs, exact sizes, root-mapping evidence and SHA-256 are retained in `assets/sounds/factory/pack.json`; the formal CC0 text is in the same folder. These recordings are not relicensed as Apache-2.0. See [Sound Library License Manifest](docs/SOUND_LIBRARY_LICENSE_MANIFEST.md) for the complete inventory and investigated-but-excluded libraries.
+
+IBM Plex Sans KR Regular/Medium/SemiBold and IBM Plex Mono Regular are included unmodified under SIL OFL 1.1. Preserve `assets/fonts/OFL.txt` and `Mono-OFL.txt`, IBM copyright and reserved-font-name conditions. Fonts may be bundled with the app but not sold separately or relicensed as Apache-2.0. Original sibling resources were reused without alteration; the macOS bundle carries its own resources rather than a runtime path into another project.
+
+Qt dynamic-link/source/relinking obligations above continue to apply. FluidSynth is **not linked or shipped**; SF2/SF3 hosting is not enabled. A future backend needs a fresh LGPL/build/transitive dependency review and callback safety validation. SFZ is a separate, limited mapping parser implemented by Reverie.

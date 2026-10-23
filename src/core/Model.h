@@ -18,6 +18,15 @@ constexpr int maxTracks = 64;
 constexpr double defaultRate = 48000.0;
 enum class Waveform { Sine, Saw, Square, Triangle };
 enum class InstrumentKind { Synth, Drums, Sampler };
+struct Sample;
+struct SampleZone {
+    std::string path;
+    std::shared_ptr<const Sample> sample;
+    int lowKey = 0, highKey = 127, lowVelocity = 0, highVelocity = 127, rootKey = 60;
+    std::uint64_t start = 0, end = 0, loopStart = 0, loopEnd = 0;
+    bool loop = false, oneShot = false, loopContinuous = false;
+    float gain = 1;
+};
 struct Preset {
     std::string name = "Basic Synth";
     InstrumentKind kind = InstrumentKind::Synth;
@@ -26,6 +35,8 @@ struct Preset {
     float cutoff = 8000.f, gain = .3f, color = 0.f;
     int rootNote = 60;
     std::string samplePath, source, license;
+    std::string instrumentId, category, tags;
+    std::vector<SampleZone> zones;
 };
 std::vector<Preset> factoryPresets();
 struct Sample {
@@ -54,6 +65,10 @@ struct Clip {
     std::shared_ptr<const Sample> sample;
     std::string mediaPath;
 };
+struct Effects {
+    bool enabled = false;
+    float lowDb = 0, highDb = 0, delayMix = 0, delaySeconds = .3f, feedback = .25f, reverbMix = 0;
+};
 struct Track {
     Id id = nextId();
     std::string name = "Instrument";
@@ -62,15 +77,19 @@ struct Track {
     bool mute = false, solo = false;
     float volume = .8f, pan = 0.;
     Preset preset;
+    Effects effects;
     std::shared_ptr<const Sample> instrumentSample;
     std::vector<Clip> clips;
 };
 struct Project {
-    int formatVersion = 1;
+    int formatVersion = 2;
     std::string name = "Untitled";
     double bpm = 120.;
     int numerator = 4, denominator = 4;
     float master = .8f;
+    bool loopEnabled = false, metronome = false;
+    double loopStart = 0, loopEnd = 16;
+    float clickLevel = .12f;
     std::vector<Track> tracks;
     double endBeat() const;
     double tailSeconds() const;

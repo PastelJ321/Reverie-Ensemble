@@ -10,11 +10,28 @@
 namespace reverie {
 using json = nlohmann::json;
 static json presetJson(const Preset& s) {
-    return {{"name", s.name},       {"kind", int(s.kind)},    {"wave", int(s.wave)},
-            {"attack", s.attack},   {"decay", s.decay},       {"sustain", s.sustain},
-            {"release", s.release}, {"cutoff", s.cutoff},     {"gain", s.gain},
-            {"color", s.color},     {"rootNote", s.rootNote}, {"sample", s.samplePath},
-            {"source", s.source},   {"license", s.license}};
+    json j = {{"name", s.name},         {"kind", int(s.kind)},    {"wave", int(s.wave)},
+              {"attack", s.attack},     {"decay", s.decay},       {"sustain", s.sustain},
+              {"release", s.release},   {"cutoff", s.cutoff},     {"gain", s.gain},
+              {"color", s.color},       {"rootNote", s.rootNote}, {"sample", s.samplePath},
+              {"source", s.source},     {"license", s.license},   {"instrumentId", s.instrumentId},
+              {"category", s.category}, {"tags", s.tags},         {"zones", json::array()}};
+    for (const auto& z : s.zones)
+        j["zones"].push_back({{"path", z.path},
+                              {"lowKey", z.lowKey},
+                              {"highKey", z.highKey},
+                              {"lowVelocity", z.lowVelocity},
+                              {"highVelocity", z.highVelocity},
+                              {"rootKey", z.rootKey},
+                              {"start", z.start},
+                              {"end", z.end},
+                              {"loopStart", z.loopStart},
+                              {"loopEnd", z.loopEnd},
+                              {"loop", z.loop},
+                              {"oneShot", z.oneShot},
+                              {"loopContinuous", z.loopContinuous},
+                              {"gain", z.gain}});
+    return j;
 }
 static Preset readPreset(const json& j) {
     Preset s;
@@ -32,6 +49,27 @@ static Preset readPreset(const json& j) {
     s.samplePath = j.value("sample", "");
     s.source = j.value("source", "");
     s.license = j.value("license", "");
+    s.instrumentId = j.value("instrumentId", "");
+    s.category = j.value("category", "");
+    s.tags = j.value("tags", "");
+    for (const auto& v : j.value("zones", json::array())) {
+        SampleZone z;
+        z.path = v.at("path");
+        z.lowKey = v.value("lowKey", 0);
+        z.highKey = v.value("highKey", 127);
+        z.lowVelocity = v.value("lowVelocity", 0);
+        z.highVelocity = v.value("highVelocity", 127);
+        z.rootKey = v.value("rootKey", 60);
+        z.start = v.value("start", std::uint64_t(0));
+        z.end = v.value("end", std::uint64_t(0));
+        z.loopStart = v.value("loopStart", std::uint64_t(0));
+        z.loopEnd = v.value("loopEnd", std::uint64_t(0));
+        z.loop = v.value("loop", false);
+        z.oneShot = v.value("oneShot", false);
+        z.loopContinuous = v.value("loopContinuous", false);
+        z.gain = v.value("gain", 1.f);
+        s.zones.push_back(z);
+    }
     Project test;
     Track t;
     t.preset = s;
@@ -100,7 +138,12 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
         return rel;
     };
     json j = {{"format", "Reverie Ensemble"},
-              {"version", 1},
+              {"version", 2},
+              {"loopEnabled", p.loopEnabled},
+              {"loopStart", p.loopStart},
+              {"loopEnd", p.loopEnd},
+              {"metronome", p.metronome},
+              {"clickLevel", p.clickLevel},
               {"name", p.name},
               {"bpm", p.bpm},
               {"numerator", p.numerator},
@@ -119,10 +162,24 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
                                      ? t.preset.samplePath
                                      : (t.instrumentSample ? t.instrumentSample->path : ""));
         t.preset.samplePath = absoluteRef(preset["sample"].get<std::string>());
+        for (std::size_t i = 0; i < t.preset.zones.size(); ++i) {
+            auto& z = t.preset.zones[i];
+            auto relative = stash(z.path.empty() && z.sample ? z.sample->path : z.path);
+            preset["zones"][i]["path"] = relative;
+            z.path = absoluteRef(relative);
+        }
         json jt = {
             {"id", t.id},       {"name", t.name},        {"kind", int(t.kind)}, {"color", t.color},
             {"mute", t.mute},   {"solo", t.solo},        {"volume", t.volume},  {"pan", t.pan},
             {"preset", preset}, {"clips", json::array()}};
+        const auto& fx = t.effects;
+        jt["effects"] = {{"enabled", fx.enabled},
+                         {"lowDb", fx.lowDb},
+                         {"highDb", fx.highDb},
+                         {"delayMix", fx.delayMix},
+                         {"delaySeconds", fx.delaySeconds},
+                         {"feedback", fx.feedback},
+                         {"reverbMix", fx.reverbMix}};
         for (auto& c : t.clips) {
             json jc = {{"id", c.id},
                        {"name", c.name},
@@ -152,7 +209,7 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
     std::ifstream f(path);
     json j;
     f >> j;
-    if (j.at("format") != "Reverie Ensemble" || j.at("version") != 1)
+    if (j.at("format") != "Reverie Ensemble" || (j.at("version") != 1 && j.at("version") != 2))
         throw std::runtime_error("Unsupported project format/version");
     LoadResult result;
     auto& p = result.project;
@@ -161,6 +218,12 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
     p.numerator = j.at("numerator");
     p.denominator = j.at("denominator");
     p.master = j.at("master");
+    p.formatVersion = 2;
+    p.loopEnabled = j.value("loopEnabled", false);
+    p.loopStart = j.value("loopStart", 0.);
+    p.loopEnd = j.value("loopEnd", 16.);
+    p.metronome = j.value("metronome", false);
+    p.clickLevel = j.value("clickLevel", .12f);
     std::unordered_map<std::string, std::shared_ptr<const Sample>> cache;
     std::size_t sampleBytes = 0;
     auto resolve = [&](std::string& ref) -> std::shared_ptr<const Sample> {
@@ -202,6 +265,18 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
         t.pan = jt.at("pan");
         t.preset = readPreset(jt.at("preset"));
         t.instrumentSample = resolve(t.preset.samplePath);
+        for (auto& z : t.preset.zones)
+            z.sample = resolve(z.path);
+        if (jt.contains("effects")) {
+            const auto& fx = jt["effects"];
+            t.effects.enabled = fx.value("enabled", false);
+            t.effects.lowDb = fx.value("lowDb", 0.f);
+            t.effects.highDb = fx.value("highDb", 0.f);
+            t.effects.delayMix = fx.value("delayMix", 0.f);
+            t.effects.delaySeconds = fx.value("delaySeconds", .3f);
+            t.effects.feedback = fx.value("feedback", .25f);
+            t.effects.reverbMix = fx.value("reverbMix", 0.f);
+        }
         for (const auto& jc : jt.at("clips")) {
             Clip c;
             c.id = jc.at("id");
@@ -249,6 +324,11 @@ Preset ProjectSerializer::loadPreset(const std::filesystem::path& p) {
     auto s = readPreset(j.at("preset"));
     if (!s.samplePath.empty() && std::filesystem::path(s.samplePath).is_relative())
         s.samplePath = (std::filesystem::absolute(p).parent_path() / s.samplePath).string();
+    for (auto& z : s.zones) {
+        if (std::filesystem::path(z.path).is_relative())
+            z.path = (std::filesystem::absolute(p).parent_path() / z.path).string();
+        z.sample = loadWav(z.path);
+    }
     return s;
 }
 } // namespace reverie

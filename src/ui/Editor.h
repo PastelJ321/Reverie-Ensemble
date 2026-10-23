@@ -19,7 +19,12 @@ class QPushButton;
 class QCheckBox;
 class QScrollArea;
 class QListWidget;
+class QStackedWidget;
 namespace reverie {
+class AudioEditor;
+class InspectorPanel;
+class SoundBrowser;
+class MixerView;
 class Timeline;
 class PianoRoll;
 class Editor : public QMainWindow {
@@ -33,6 +38,11 @@ class Editor : public QMainWindow {
     bool snap = true;
     double grid = .25;
     double pixelsPerBeat = 64;
+    int trackHeight = 82;
+    bool followPlayhead = false;
+    void auditionNote(int key, float velocity = .7f, double duration = .3);
+    void applyInstrument(const Preset&, bool newTrack = false);
+    void showMixer();
     void beginEdit();
     void endEdit();
     void edit(const std::function<void()>&);
@@ -70,6 +80,12 @@ class Editor : public QMainWindow {
     void closeEvent(QCloseEvent*) override;
 
   private:
+    QStackedWidget* bottomStack_ = nullptr;
+    AudioEditor* audioEditor_ = nullptr;
+    InspectorPanel* selectionInspector_ = nullptr;
+    SoundBrowser* browser_ = nullptr;
+    MixerView* mixer_ = nullptr;
+    QStackedWidget* workspace_ = nullptr;
     AudioDeviceManager device_;
     AudioRecorder recorder_;
     std::vector<Project> undo_, redo_;

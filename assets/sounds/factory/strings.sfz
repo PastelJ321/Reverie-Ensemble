@@ -1,0 +1,5 @@
+<global> ampeg_attack=0.003 ampeg_release=0.25 ampeg_sustain=100
+<region> sample=samples/strings-43.wav lokey=0 hikey=58 pitch_keycenter=55
+<region> sample=samples/strings-50.wav lokey=59 hikey=69 pitch_keycenter=62
+<region> sample=samples/strings-64.wav lokey=70 hikey=81 pitch_keycenter=76
+<region> sample=samples/strings-74.wav lokey=82 hikey=127 pitch_keycenter=86
