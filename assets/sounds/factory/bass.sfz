@@ -1,0 +1,5 @@
+<global> ampeg_attack=0.003 ampeg_release=0.25 ampeg_sustain=100
+<region> sample=samples/bass-16.wav lokey=0 hikey=32 pitch_keycenter=28
+<region> sample=samples/bass-24.wav lokey=33 hikey=40 pitch_keycenter=36
+<region> sample=samples/bass-33.wav lokey=41 hikey=52 pitch_keycenter=45
+<region> sample=samples/bass-47.wav lokey=53 hikey=127 pitch_keycenter=59

@@ -1,0 +1,5 @@
+<global> ampeg_attack=0.003 ampeg_release=0.25 ampeg_sustain=100
+<region> sample=samples/violin-55.wav lokey=0 hikey=62 pitch_keycenter=55
+<region> sample=samples/violin-69.wav lokey=63 hikey=75 pitch_keycenter=69
+<region> sample=samples/violin-81.wav lokey=76 hikey=88 pitch_keycenter=81
+<region> sample=samples/violin-96.wav lokey=89 hikey=127 pitch_keycenter=96

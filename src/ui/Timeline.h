@@ -3,12 +3,13 @@
 
 #pragma once
 #include "core/Model.h"
+#include "ui/DesignTokens.h"
 #include <QWidget>
 namespace reverie {
 class Editor;
 class Timeline final : public QWidget {
   public:
-    static constexpr int header = 204, ruler = 34, row = 82;
+    static constexpr int header = design::headerWidth, ruler = 34, row = design::trackHeight;
     explicit Timeline(Editor&);
     void updateExtent();
     QRectF clipRect(int, const Clip&) const;
@@ -21,9 +22,14 @@ class Timeline final : public QWidget {
     void mouseDoubleClickEvent(QMouseEvent*) override;
     void contextMenuEvent(QContextMenuEvent*) override;
     void keyPressEvent(QKeyEvent*) override;
+    void dragEnterEvent(QDragEnterEvent*) override;
+    void dropEvent(QDropEvent*) override;
 
   private:
+    int horizontalOffset() const;
+    int rowHeight() const;
     Editor& e_;
+    Id hover_ = 0;
     Id drag_ = 0;
     int sourceTrack_ = 0;
     double startBeat_ = 0, startLength_ = 0;

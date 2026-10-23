@@ -43,11 +43,41 @@ void Synthesizer::noteOn(Id token, int key, float velocity) noexcept {
     v.increment = std::min(.45, 440. * std::exp2((key - 69) / 12.) / rate_);
     v.sampleStep =
         (sample_ ? sample_->sampleRate : rate_) / rate_ * std::exp2((key - preset_.rootNote) / 12.);
+    if (preset_.kind == InstrumentKind::Sampler && !preset_.zones.empty()) {
+        int best = -1, distance = 1000;
+        int velocityKey = int(velocity * 127);
+        for (int i = 0; i < int(preset_.zones.size()); ++i) {
+            const auto& z = preset_.zones[i];
+            if (z.sample && key >= z.lowKey && key <= z.highKey && velocityKey >= z.lowVelocity &&
+                velocityKey <= z.highVelocity && std::abs(key - z.rootKey) < distance) {
+                best = i;
+                distance = std::abs(key - z.rootKey);
+            }
+        }
+        v.zone = best;
+        if (best < 0) {
+            v.stage = 0;
+            return;
+        }
+        const auto& z = preset_.zones[best];
+        v.samplePosition = double(z.start);
+        v.sampleStep = z.sample->sampleRate / rate_ * std::exp2((key - z.rootKey) / 12.);
+        v.velocity *= z.gain;
+    }
     v.noise = std::uint32_t(token * 747796405ULL + 2891336453ULL) | 1u;
 }
 void Synthesizer::noteOff(Id token) noexcept {
     for (auto& v : voices_)
         if (v.stage && v.token == token && v.stage != 4) {
+            if (v.zone >= 0 && preset_.zones[v.zone].oneShot)
+                continue;
+            v.stage = 4;
+            v.releaseStep = v.env / std::max(1.f, preset_.release * float(rate_));
+        }
+}
+void Synthesizer::releaseAll() noexcept {
+    for (auto& v : voices_)
+        if (v.stage && v.stage != 4) {
             v.stage = 4;
             v.releaseStep = v.env / std::max(1.f, preset_.release * float(rate_));
         }
@@ -100,15 +130,27 @@ std::pair<float, float> Synthesizer::next() noexcept {
         }
         float l = 0, r = 0;
         if (preset_.kind == InstrumentKind::Sampler) {
-            if (!sample_ || v.samplePosition >= double(sample_->frames())) {
+            const auto* z = v.zone >= 0 ? &preset_.zones[v.zone] : nullptr;
+            const Sample* sample = z ? z->sample.get() : sample_;
+            if (!sample) {
                 v.stage = 0;
                 continue;
             }
-            const auto idx = std::size_t(v.samplePosition);
+            const auto end =
+                z && z->end ? std::min(z->end, std::uint64_t(sample->frames())) : sample->frames();
+            if (z && z->loop && (v.stage != 4 || z->loopContinuous) &&
+                v.samplePosition >= z->loopEnd)
+                v.samplePosition = z->loopStart + std::fmod(v.samplePosition - z->loopStart,
+                                                            double(z->loopEnd - z->loopStart));
+            if (v.samplePosition >= double(end)) {
+                v.stage = 0;
+                continue;
+            }
+            const auto idx = std::size_t(v.samplePosition),
+                       next = std::min(idx + 1, std::size_t(end) - 1);
             const float f = float(v.samplePosition - double(idx));
-            const auto next = std::min(idx + 1, sample_->frames() - 1);
-            l = std::lerp(sample_->stereo[idx * 2], sample_->stereo[next * 2], f);
-            r = std::lerp(sample_->stereo[idx * 2 + 1], sample_->stereo[next * 2 + 1], f);
+            l = std::lerp(sample->stereo[idx * 2], sample->stereo[next * 2], f);
+            r = std::lerp(sample->stereo[idx * 2 + 1], sample->stereo[next * 2 + 1], f);
             v.samplePosition += v.sampleStep;
         } else if (preset_.kind == InstrumentKind::Drums) {
             v.noise ^= v.noise << 13;

@@ -1,0 +1,5 @@
+<global> ampeg_attack=0.003 ampeg_release=0.25 ampeg_sustain=100
+<region> sample=samples/marimba-29.wav lokey=0 hikey=50 pitch_keycenter=41
+<region> sample=samples/marimba-47.wav lokey=51 hikey=69 pitch_keycenter=59
+<region> sample=samples/marimba-67.wav lokey=70 hikey=87 pitch_keycenter=79
+<region> sample=samples/marimba-84.wav lokey=88 hikey=127 pitch_keycenter=96

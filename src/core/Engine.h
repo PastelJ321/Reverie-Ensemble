@@ -3,6 +3,7 @@
 
 #pragma once
 #include "core/Dsp.h"
+#include "core/Effects.h"
 #include <array>
 #include <atomic>
 #include <memory>
@@ -60,11 +61,13 @@ struct PreparedTrack {
     std::uint64_t scheduleKey = 0, soundKey = 0;
     std::shared_ptr<const Sample> sampleOwner;
     Synthesizer synth;
+    EffectChain effects;
+    float peakL = 0, peakR = 0;
     std::size_t cursor = 0;
     float peak = 0;
     PreparedTrack(const Track&, double, bool);
     void buildIndex();
-    void seek(std::int64_t) noexcept;
+    void seek(std::int64_t, bool clearEffects = true) noexcept;
     void restore(std::size_t, std::size_t, std::size_t, std::int64_t, int&) noexcept;
 };
 struct AudioProcessingGraph {
@@ -72,15 +75,23 @@ struct AudioProcessingGraph {
     TempoMap tempo;
     float master;
     std::int64_t end;
+    bool loop = false, metronome = false;
+    std::int64_t loopStart = 0, loopEnd = 0;
+    int numerator = 4, denominator = 4;
+    float clickLevel = .12f;
     std::vector<PreparedTrack> tracks;
     AudioProcessingGraph(const Project&, double);
     void seek(std::int64_t) noexcept;
     void render(float*, std::uint32_t, std::int64_t) noexcept;
-    void inherit(const AudioProcessingGraph*, std::int64_t) noexcept;
+    void inherit(AudioProcessingGraph*, std::int64_t) noexcept;
 };
 class AudioEngine {
   public:
-    explicit AudioEngine(double rate = defaultRate);
+    explicit AudioEngine(double rate = defaultRate, bool transportTools = true);
+    void audition(const Track&, int key, float velocity = .7f, double duration = .45);
+    void releaseAudition() {
+        releasePreview_.store(true);
+    }
     ~AudioEngine(); // Stop the device before destroying the engine.
     AudioEngine(const AudioEngine&) = delete;
     void publish(const Project&); // Control thread only; prepare/allocation here.
@@ -113,12 +124,23 @@ class AudioEngine {
     void clearClip() {
         clipped_.store(false);
     }
+    float trackPeakL(int i) const {
+        return i >= 0 && i < maxTracks ? leftPeaks_[i].load() : 0;
+    }
+    float trackPeakR(int i) const {
+        return i >= 0 && i < maxTracks ? rightPeaks_[i].load() : 0;
+    }
     float trackPeak(int index) const {
         return index >= 0 && index < maxTracks ? trackPeaks_[index].load() : 0;
     }
 
   private:
     double rate_;
+    bool transportTools_;
+    std::atomic<AudioProcessingGraph*> previewPending_{nullptr};
+    AudioProcessingGraph* preview_ = nullptr;
+    std::int64_t previewPosition_ = 0, previewLimit_ = 0;
+    std::atomic<bool> releasePreview_{false};
     std::atomic<AudioProcessingGraph*> pending_{nullptr};
     AudioProcessingGraph* active_ = nullptr;
     SpscQueue<AudioProcessingGraph*, 64> retired_;
@@ -126,6 +148,6 @@ class AudioEngine {
     bool wasPlaying_ = false;
     std::atomic<std::int64_t> position_{0}, seek_{-1};
     std::atomic<float> peak_{0};
-    std::array<std::atomic<float>, maxTracks> trackPeaks_{};
+    std::array<std::atomic<float>, maxTracks> trackPeaks_{}, leftPeaks_{}, rightPeaks_{};
 };
 } // namespace reverie

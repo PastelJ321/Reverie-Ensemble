@@ -9,10 +9,11 @@ namespace reverie {
 class Editor;
 class PianoRoll final : public QWidget {
   public:
-    static constexpr int keys = 60, ruler = 30, keyHeight = 15, topKey = 95, bottomKey = 24;
+    static constexpr int keys = 60, ruler = 30, keyHeight = 15, topKey = 127, bottomKey = 0;
     explicit PianoRoll(Editor&);
     QSet<Id> selection;
     void updateExtent();
+    void duplicate();
     void quantize();
     void erase();
     void setVelocity(double);
@@ -26,6 +27,10 @@ class PianoRoll final : public QWidget {
     void keyPressEvent(QKeyEvent*) override;
 
   private:
+    int horizontalOffset() const;
+    int verticalOffset() const;
+    int auditionKey_ = -1;
+    bool keyHeld_ = false;
     Editor& e_;
     QPointF press_;
     Id drag_ = 0;

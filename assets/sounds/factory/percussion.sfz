@@ -1,0 +1,4 @@
+<global> ampeg_attack=0.001 ampeg_release=0.1
+<region> sample=samples/drums-36.wav key=36 loop_mode=one_shot
+<region> sample=samples/drums-38.wav key=38 loop_mode=one_shot
+<region> sample=samples/drums-42.wav key=42 loop_mode=one_shot

@@ -9,12 +9,20 @@
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
     QApplication::setApplicationName("Reverie Ensemble");
-    QApplication::setApplicationVersion("0.1.0");
+    QApplication::setApplicationVersion("0.2.0");
     QApplication::setOrganizationName("QuadraJ");
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     const auto args = app.arguments();
     reverie::Editor editor(!args.contains("--no-audio"));
+    int size = args.indexOf("--size");
+    if (size >= 0 && size + 1 < args.size()) {
+        auto parts = args[size + 1].split('x');
+        if (parts.size() == 2)
+            editor.resize(parts[0].toInt(), parts[1].toInt());
+    }
     editor.show();
+    if (args.contains("--mixer"))
+        editor.showMixer();
     if (args.contains("--smoke-test"))
         QTimer::singleShot(1800, &app, &QApplication::quit);
     int shot = args.indexOf("--screenshot");

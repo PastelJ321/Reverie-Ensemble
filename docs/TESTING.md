@@ -1,81 +1,81 @@
-# Verification record — 2026-10-23 (Asia/Seoul)
+# 0.2 verification record — 2026-10-23 (Asia/Seoul)
 
-Tested locally on macOS 26.6.2 (25G83), arm64, Xcode Apple Clang 21.0.0, CMake 4.4.3, Ninja 1.13.2 and Homebrew Qt 6.11.2. Results below describe executions performed in this development session; they are not certifications of professional-session reliability.
+Executed on macOS 26.6.2, Apple Silicon, Apple Clang 21.0.0, CMake 4.4.3, Ninja 1.13.2 and shared Homebrew Qt 6.11.2. The [0.1 record](archive/TESTING-0.1.md) is retained separately. These results describe development checks, not certification for professional sessions.
 
-## Executed and passed
+## Executed results
 
 | Check | Result |
 |---|---|
-| Debug native Qt app + tools build | Passed with Clang / Ninja |
-| Debug CTest `audio-core`, `editor-workflow` | 2/2 passed |
-| Release native Qt app + tools build | Passed |
-| Release CTest `audio-core`, `editor-workflow` | 2/2 passed |
-| Qt-free core build/test | Passed |
-| ASan + UBSan Debug core build/CTest | 1/1 passed; no sanitizer errors reported |
-| Native Cocoa window startup, render and normal timed shutdown | Passed; app-owned screenshot inspected |
-| Real miniaudio output-device startup and short playback | Passed; Debug probe progressed to frame 67,328 with peak 0.146456; Release probe frame 67,072 / peak 0.156243 |
-| Offline demo WAV inspected by macOS `afinfo` | 48,000 Hz, 2 channels, Int16, 480,000 frames / 10 seconds, RIFF data offset 44 |
-| Demo save → separate CLI load → render identity | `cmp` verified byte-identical WAV output |
-| Synthetic Release callback CPU workload | 16 tracks / 256 held voices / 48 kHz / 256 frames; p50 0.590 ms, p99 0.975 ms, max 1.172 ms on this run |
+| Clean Release configure/build, native Qt app + core/tools | Passed, `build-02-release` |
+| Release CTest | **4/4 passed**: audio-core, features-02, editor-workflow, editor-02 |
+| Debug build and CTest | 4/4 passed before final UI refinements; final source validated in Release |
+| Clean Qt-free Debug ASan + UBSan build/CTest | **2/2 passed**, no sanitizer errors reported |
+| Native Cocoa startup and actual miniaudio output | Passed: 67,328 rendered frames, nonzero peak 0.0161143 with recorded piano/strings |
+| Legacy First Light v1 → WAV | Byte-identical to the saved 0.1 WAV using `cmp` |
+| Actual 9 recorded instruments → MIDI → collect/save → reopen → WAV | Passed in features-02, including missing-media handling |
+| 44.1 kHz recorded instrument render | Passed without hardware |
+| Callback C++ allocation/free instrumentation | Zero allocations/frees in covered graph replacement, audition, loop and effects paths |
+| Responsive Qt capture | Inspected 1440×900 and 1280×800 screenshots; inspected native Retina and simulated 2× capture |
+| Synthetic 16-track / 256-voice callback benchmark | p50 0.661 ms, p99 0.993 ms, max 1.195 ms; 256-frame deadline 5.333 ms |
 
-The 256-frame deadline is 5.333 ms at 48 kHz. The benchmark ran 750 blocks; it is a CPU measurement under one local load and is **not** a device round-trip latency measurement or a long-session glitch test. Scheduler load and hardware configuration can change results.
-
-The initial sandboxed native startup could not access macOS pasteboard/window services and exited with code 134. Repeating the native startup outside that restricted process sandbox succeeded. Offscreen Qt workflow tests ran normally inside the sandbox. This distinction is recorded so an execution-host restriction is not misreported as a passed launch.
-
-Current generated local evidence is in ignored `out/`: `editor.png`, `First-Light.wav`, `First-Light-restored.wav`, `benchmark.txt`, `wav-info.txt`, native startup/audio probe logs and test logs. These are development artifacts, not external uploaded files.
+The benchmark is a short synthetic CPU workload, **not** a physical round-trip latency or long-session glitch measurement. The native audio probe checks callback progression and rendered peak; it does not capture speakers or prove human listening quality. Native Cocoa probes required desktop access outside the restricted process sandbox; Qt offscreen tests run inside it.
 
 ## Automated coverage
 
-`audio-core` does not open audio hardware. It verifies:
+- **audio-core** retains the 0.1 scheduler/onset/Note Off, polyphony, volume/pan/mute/solo, seek/graph handoff, serialization/media collection, WAV decode/export, recorder ring/worker and concurrent graph replacement tests.
+- **features-02** verifies the shipped manifest and SHA-256 files; all nine recorded instrument round trips and exports; authoritative flute root key; velocity/key zones, sample offsets, loops and release; 44.1 kHz; 6/8 metronome timing, metronome excluded from export, exact loop wrap; independent audition and rapid Note Off; EQ DC response, exact delay echo and reverb tail; v1 migration/new fields; missing SFZ; safe local pack installation, traversal rejection and tamper detection; Standard MIDI File timing. Instrumented callbacks include preallocated effects state handoff.
+- **editor-workflow** retains the 0.1 track/clip/note gestures, Undo/Redo, mixer/preset/tempo, project reopen, audio import/export and safe device-initialization failure checks.
+- **editor-02** checks actual recorded flute search/application/preview, piano-key audition without note insertion, loop/metronome bindings, collected project reopen/export, fixed-header Mute/Solo after horizontal scroll, note duplication/Undo and responsive screenshots. It uses real models, widgets, files and DSP, not fake meter values.
 
-- fractional-tempo/sample/beat conversion, no output before the scheduled MIDI start, a nonzero sample immediately after the correct onset, and complete release after Note Off;
-- multiple tracks, 20-note polyphony, all factory presets at 44.1 kHz, drum keys 36/38/42/46, volume/master, hard pan, Mute and Solo against rendered samples;
-- seek into a held note and oscillator/envelope identity after replacing an unchanged graph;
-- no C++ `new/delete` during instrumented callback graph adoption, rendering and seek;
-- project/preset save/load, identical rendered audio after project round trip, content-collected WAV references and cached waveform bins; resaving/reopening after moving the external original, including Undo/Redo history;
-- valid PCM16 WAV export, WAV import/playback, sampler output and final-frame interpolation;
-- missing WAV references produce warnings and silence; corrupt JSON, invalid tempo/sample rate and failed validation leave existing saved project data intact;
-- capture-ring/worker output frame count and resulting WAV header, explicit capture overflow detection;
-- 600 publish/seek/play/collect operations from a producer while a separate audio consumer renders, under ASan/UBSan in the sanitizer run.
+## Reviewed screenshots
 
-`editor-workflow` runs Qt Widgets with `QT_QPA_PLATFORM=offscreen` and real widget events. It creates a MIDI track and clip through the timeline, draws/moves/resizes a piano-roll note, moves/resizes a clip, changes velocity, applies Undo/Redo, changes mixer/preset/BPM, duplicates/deletes clips, saves/opens a project, imports WAV and exports WAV. It also injects an output initialization failure and verifies safe error reporting. These tests use actual project/core classes and file formats, not mock audio data or fake meter values.
+The images below are generated by the actual application/widgets and were opened for visual inspection. They show the final Paper & Graphite components, not design mockups.
+
+- [Arrangement, 1440×900](screenshots/0.2/arrangement-1440x900.png)
+- [Arrangement, 1280×800](screenshots/0.2/arrangement-1280x800.png)
+- [Piano Roll](screenshots/0.2/piano-roll.png)
+- [Sound Browser](screenshots/0.2/sound-browser.png)
+- [Mixer](screenshots/0.2/mixer.png)
+- [Instrument Inspector](screenshots/0.2/instrument-inspector.png)
+- [Native Retina startup/playback](screenshots/0.2/native-arrangement.png)
+- [1280×800 at simulated 2× scale](screenshots/0.2/retina-1280x800.png)
+
+Reviewed text clipping, transport overflow, panel sizing, fader alignment, contrast, fixed headers and inactive sampler controls. Initial overflow, inconsistent fader heights and excessive browser width were corrected before the final captures. Native screen bounds reduced the requested 900-point window height to the available desktop height; exact target sizes are covered by offscreen captures.
 
 ## Reproduce
 
 ```sh
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug \
+cmake -S . -B build-02-release -G Ninja -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_PREFIX_PATH="$(brew --prefix qtbase)"
-cmake --build build -j 4
-ctest --test-dir build --output-on-failure
+cmake --build build-02-release -j 4
+ctest --test-dir build-02-release --output-on-failure
 
-cmake -S . -B build-asan -G Ninja -DCMAKE_BUILD_TYPE=Debug \
+cmake -S . -B build-02-asan -G Ninja -DCMAKE_BUILD_TYPE=Debug \
   -DREVERIE_BUILD_GUI=OFF -DREVERIE_SANITIZE=ON
-cmake --build build-asan -j 4
-ctest --test-dir build-asan --output-on-failure
+cmake --build build-02-asan -j 4
+ctest --test-dir build-02-asan --output-on-failure
 
-build-release/reverie-benchmark
+build-02-release/reverie-benchmark
 mkdir -p out
-build-release/reverie-render --demo out/demo.wav
-build-release/reverie-render --write-demo out/demo.reverie
-build-release/reverie-render out/demo.reverie out/restored.wav
-cmp out/demo.wav out/restored.wav
-afinfo out/demo.wav
-
-# Native desktop session required; this briefly plays the demo through the default output:
-build-release/ReverieEnsemble.app/Contents/MacOS/ReverieEnsemble --audio-smoke-test
-# Startup screenshot without opening an audio device:
-build-release/ReverieEnsemble.app/Contents/MacOS/ReverieEnsemble \
-  --no-audio --smoke-test --screenshot out/editor.png
+build-02-release/reverie-render 'examples/First Light.reverie' out/first-light.wav
+afinfo out/first-light.wav
+# Requires a native macOS desktop and briefly plays the default recorded instruments:
+build-02-release/ReverieEnsemble.app/Contents/MacOS/ReverieEnsemble \
+  --audio-smoke-test --size 1440x900 --screenshot out/native.png
+# Simulated high-DPI rendering, without opening audio hardware:
+QT_QPA_PLATFORM=offscreen QT_SCALE_FACTOR=2 \
+  build-02-release/ReverieEnsemble.app/Contents/MacOS/ReverieEnsemble \
+  --no-audio --smoke-test --size 1280x800 --screenshot out/retina.png
 ```
 
-`--audio-smoke-test` exits 0 only if the engine frame counter advances beyond 24,000 and the measured output peak is nonzero. It does not capture the physical speaker/loopback and does not prove that a human heard an undistorted signal. Normal startup does not automatically play audio.
+`--audio-smoke-test` succeeds only after more than 24,000 project frames and a nonzero rendered peak. Normal startup does not autoplay. `editor-02` writes its images to ignored `out/0.2`; the reviewed copies above are committed. Local execution logs are in ignored `out/02-*.txt` and `out/02-native-audio.log`.
 
 ## Not executed / manual release checks
 
-- Actual microphone capture, macOS permission allow/deny/restricted/reset flows, input-device removal and resulting clip placement against an external time reference.
-- Round-trip latency, monitoring, separate-device clock drift, hotplug recovery, no-device native workstation, 44.1 kHz physical output, negotiated hardware buffer size, long playback/recording and stress under competing CPU/disk loads.
-- Full disk, partial filesystem failure, power-loss save durability, atomic save on Windows, deeply nested/adversarial JSON fuzzing and large media-library memory behavior.
-- Intel macOS, universal binaries, Windows, Linux, accessibility review, all display scales/window sizes, notarized/quarantined clean-machine launch and LGPL library replacement in a staged release.
-- SF2/FluidSynth or external plugin testing (not integrated).
+- Actual microphone capture and permission allow/deny/restricted/reset, unplugging inputs and external-reference recording alignment. Recorder worker/ring behavior is automated; physical recording remains unverified.
+- Physical 44.1 kHz output, negotiated buffer size, round-trip latency, device reconnection/clock drift, sustained playback/recording and long sessions under competing CPU/disk loads.
+- External MIDI hardware (input backend not implemented), count-in, input monitoring and recording latency compensation (not implemented).
+- SF2/SF3/FluidSynth and advanced SFZ opcodes/streaming (not implemented). The limited SFZ subset is documented in SOUND_FORMATS.md.
+- Large-library stress/fuzzing, power loss/full-disk durability, every accessibility interaction, Intel/universal/Windows/Linux builds, standalone library replacement, signed/notarized clean-machine distribution.
 
-Before publishing a binary, run a complete manual song session: new project → several MIDI clips/chords → presets → edit while playing → mix/pan/mute/solo → import WAV → record microphone → undo/redo → save/close/reopen → export → listen to and inspect the export. Record devices, sample rate/buffer, measured latency, glitches and all failures. Do not mark these checks complete from the automated results above.
+Before a binary release, complete a physical session: compose several tracks → audition/edit during playback → loop/metronome → mix/effects → import WAV → record microphone → Undo/Redo → save/close/reopen → export → listen to and inspect the export. Record devices, sample rate, buffer, timing, glitches and failures. Do not mark this manual session complete from automated checks.

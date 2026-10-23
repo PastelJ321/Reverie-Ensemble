@@ -80,7 +80,7 @@ void writeWav16(const std::filesystem::path& p, const float* stereo, std::size_t
 }
 void exportWav(const Project& p, const std::filesystem::path& path, double rate,
                const std::function<void(double)>& progress) {
-    AudioEngine engine(rate);
+    AudioEngine engine(rate, false);
     engine.publish(p);
     engine.setPlaying(true);
     const auto total =

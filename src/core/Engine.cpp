@@ -15,7 +15,8 @@ static_assert(std::atomic<void*>::is_always_lock_free);
 static_assert(std::atomic<float>::is_always_lock_free);
 static_assert(std::atomic<std::int64_t>::is_always_lock_free);
 PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled)
-    : id(t.id), sampleOwner(t.instrumentSample), synth(t.preset, rate, sampleOwner.get()) {
+    : id(t.id), sampleOwner(t.instrumentSample), synth(t.preset, rate, sampleOwner.get()),
+      effects(t.effects, rate) {
     // Stereo balance: center leaves both channels unchanged; hard pan silences the opposite side.
     gainL = enabled ? t.volume * std::sqrt(1.f - std::max(0.f, t.pan)) : 0;
     gainR = enabled ? t.volume * std::sqrt(1.f + std::min(0.f, t.pan)) : 0;
@@ -25,6 +26,22 @@ PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled)
         soundKey ^= v + 0x9e3779b97f4a7c15ULL + (soundKey << 6) + (soundKey >> 2);
     };
     const auto& p = t.preset;
+    for (const auto& z : p.zones) {
+        mix(reinterpret_cast<std::uintptr_t>(z.sample.get()));
+        mix(z.lowKey);
+        mix(z.highKey);
+        mix(z.rootKey);
+        mix(z.lowVelocity);
+        mix(z.highVelocity);
+        mix(z.start);
+        mix(z.end);
+        mix(z.loopStart);
+        mix(z.loopEnd);
+        mix(z.loop);
+        mix(z.oneShot);
+        mix(z.loopContinuous);
+        mix(std::bit_cast<std::uint32_t>(z.gain));
+    }
     mix(int(p.kind));
     mix(int(p.wave));
     mix(p.rootNote);
@@ -39,6 +56,13 @@ AudioProcessingGraph::AudioProcessingGraph(const Project& p, double r)
       }()),
       tempo{p.bpm, rate}, master(p.master),
       end(tempo.sampleAt(p.endBeat()) + std::int64_t(rate * p.tailSeconds())) {
+    loop = p.loopEnabled;
+    metronome = p.metronome;
+    loopStart = tempo.sampleAt(p.loopStart);
+    loopEnd = tempo.sampleAt(p.loopEnd);
+    numerator = p.numerator;
+    denominator = p.denominator;
+    clickLevel = p.clickLevel;
     const bool anySolo =
         std::any_of(p.tracks.begin(), p.tracks.end(), [](const Track& t) { return t.solo; });
     tracks.reserve(p.tracks.size());
@@ -109,8 +133,10 @@ void PreparedTrack::restore(std::size_t node, std::size_t a, std::size_t b, std:
     restore(node * 2, a, mid, frame, voices);
     restore(node * 2 + 1, mid, b, frame, voices);
 }
-void PreparedTrack::seek(std::int64_t frame) noexcept {
+void PreparedTrack::seek(std::int64_t frame, bool clearEffects) noexcept {
     synth.reset();
+    if (clearEffects)
+        effects.reset();
     cursor =
         std::size_t(std::lower_bound(events.begin(), events.end(), frame,
                                      [](const Event& e, std::int64_t f) { return e.frame < f; }) -
@@ -123,13 +149,13 @@ void AudioProcessingGraph::seek(std::int64_t frame) noexcept {
     for (auto& t : tracks)
         t.seek(frame);
 }
-void AudioProcessingGraph::inherit(const AudioProcessingGraph* previous,
-                                   std::int64_t frame) noexcept {
+void AudioProcessingGraph::inherit(AudioProcessingGraph* previous, std::int64_t frame) noexcept {
     for (auto& t : tracks) {
-        t.seek(frame);
+        t.seek(frame, false);
         if (previous)
-            for (const auto& old : previous->tracks)
+            for (auto& old : previous->tracks)
                 if (t.id == old.id) {
+                    t.effects.inherit(old.effects);
                     t.gainL = old.gainL;
                     t.gainR = old.gainR;
                     t.rampRemaining = 128;
@@ -147,7 +173,7 @@ void AudioProcessingGraph::render(float* out, std::uint32_t frames, std::int64_t
     constexpr std::uint32_t blockSize = 256;
     std::array<float, blockSize * 2> scratch{};
     for (auto& t : tracks) {
-        t.peak = 0;
+        t.peak = t.peakL = t.peakR = 0;
         for (std::uint32_t offset = 0; offset < frames; offset += blockSize) {
             auto count = std::min(blockSize, frames - offset);
             auto blockStart = start + offset;
@@ -187,7 +213,10 @@ void AudioProcessingGraph::render(float* out, std::uint32_t frames, std::int64_t
                     t.gainR += (t.targetR - t.gainR) / float(t.rampRemaining);
                     --t.rampRemaining;
                 }
-                float l = scratch[i * 2] * t.gainL, r = scratch[i * 2 + 1] * t.gainR;
+                auto processed = t.effects.next(scratch[i * 2], scratch[i * 2 + 1]);
+                float l = processed.first * t.gainL, r = processed.second * t.gainR;
+                t.peakL = std::max(t.peakL, std::abs(l));
+                t.peakR = std::max(t.peakR, std::abs(r));
                 t.peak = std::max(t.peak, std::max(std::abs(l), std::abs(r)));
                 out[(offset + i) * 2] += l * master;
                 out[(offset + i) * 2 + 1] += r * master;
@@ -195,10 +224,13 @@ void AudioProcessingGraph::render(float* out, std::uint32_t frames, std::int64_t
         }
     }
 }
-AudioEngine::AudioEngine(double rate) : rate_(checkedRate(rate)) {}
+AudioEngine::AudioEngine(double rate, bool tools)
+    : rate_(checkedRate(rate)), transportTools_(tools) {}
 AudioEngine::~AudioEngine() {
     delete pending_.exchange(nullptr);
     delete active_;
+    delete previewPending_.exchange(nullptr);
+    delete preview_;
     collect();
 }
 void AudioEngine::collect() {
@@ -231,14 +263,79 @@ void AudioEngine::process(float* out, std::uint32_t frames) noexcept {
     if (play && !wasPlaying_ && active_)
         active_->seek(pos);
     wasPlaying_ = play;
-    if (!play || !active_) {
-        std::fill_n(out, std::size_t(frames) * 2, 0.f);
-        peak_.store(0);
-        for (auto& meter : trackPeaks_)
-            meter.store(0);
-        return;
+    std::fill_n(out, std::size_t(frames) * 2, 0.f);
+    if (play && active_) {
+        std::uint32_t offset = 0;
+        while (offset < frames) {
+            bool looping = transportTools_ && active_->loop && !freeRunning_.load();
+            if (looping && (pos >= active_->loopEnd || pos < active_->loopStart)) {
+                pos = active_->loopStart;
+                active_->seek(pos);
+            }
+            auto n = frames - offset;
+            if (looping)
+                n = std::uint32_t(std::min(std::int64_t(n), active_->loopEnd - pos));
+            active_->render(out + offset * 2, n, pos);
+            if (transportTools_ && active_->metronome) {
+                double beatFrames = 60. * rate_ / active_->tempo.bpm * 4. / active_->denominator;
+                for (std::uint32_t i = 0; i < n; ++i) {
+                    double beat = (pos + i) / beatFrames;
+                    auto index = std::int64_t(std::floor(beat));
+                    double elapsed = (beat - index) * beatFrames / rate_;
+                    if (elapsed < .025) {
+                        float click =
+                            active_->clickLevel *
+                            float(std::sin(6.283185307179586 *
+                                           (index % active_->numerator ? 1100 : 1700) * elapsed) *
+                                  std::exp(-elapsed * 180));
+                        out[(offset + i) * 2] += click;
+                        out[(offset + i) * 2 + 1] += click;
+                    }
+                }
+            }
+            // Short loop-edge fades avoid a hard discontinuity. No allocations or graph rebuilds.
+            if (looping)
+                for (std::uint32_t i = 0; i < n; ++i) {
+                    auto distance =
+                        std::min(pos + i - active_->loopStart, active_->loopEnd - (pos + i));
+                    float gain = float(std::clamp(double(distance) / 64., 0., 1.));
+                    out[(offset + i) * 2] *= gain;
+                    out[(offset + i) * 2 + 1] *= gain;
+                }
+            offset += n;
+            pos += n;
+        }
+        if (transportTools_ && active_->loop && pos >= active_->loopEnd && !freeRunning_.load()) {
+            pos = active_->loopStart;
+            active_->seek(pos);
+        }
+        position_.store(pos);
+        if (pos >= active_->end && !freeRunning_.load() && !(transportTools_ && active_->loop))
+            playing_.store(false);
     }
-    active_->render(out, frames, pos);
+    if (!retired_.full())
+        if (auto* p = previewPending_.exchange(nullptr)) {
+            if (preview_)
+                retired_.push(preview_);
+            preview_ = p;
+            previewPosition_ = 0;
+            previewLimit_ = std::min(p->end, std::int64_t(rate_ * 6));
+        }
+    if (preview_ && releasePreview_.exchange(false)) {
+        for (auto& t : preview_->tracks)
+            t.synth.releaseAll();
+        previewLimit_ = std::min(previewLimit_, previewPosition_ + std::int64_t(rate_ * 2));
+    }
+    if (preview_ && previewPosition_ < previewLimit_) {
+        std::array<float, 512> scratch{};
+        for (std::uint32_t offset = 0; offset < frames; offset += 256) {
+            auto n = std::min(std::uint32_t(256), frames - offset);
+            preview_->render(scratch.data(), n, previewPosition_);
+            for (std::uint32_t i = 0; i < n * 2; ++i)
+                out[offset * 2 + i] += scratch[i] * (active_ ? active_->master : .8f);
+            previewPosition_ += n;
+        }
+    }
     float peak = 0;
     for (std::size_t i = 0; i < std::size_t(frames) * 2; ++i) {
         if (!std::isfinite(out[i]))
@@ -249,11 +346,36 @@ void AudioEngine::process(float* out, std::uint32_t frames) noexcept {
     peak_.store(peak);
     if (peak > 1)
         clipped_.store(true);
-    for (int i = 0; i < maxTracks; ++i)
-        trackPeaks_[i].store(i < int(active_->tracks.size()) ? active_->tracks[i].peak : 0);
-    pos += frames;
-    position_.store(pos);
-    if (pos >= active_->end && !freeRunning_.load())
-        playing_.store(false);
+    for (int i = 0; i < maxTracks; ++i) {
+        bool valid = play && active_ && i < int(active_->tracks.size());
+        trackPeaks_[i].store(valid ? active_->tracks[i].peak : 0);
+        leftPeaks_[i].store(valid ? active_->tracks[i].peakL : 0);
+        rightPeaks_[i].store(valid ? active_->tracks[i].peakR : 0);
+    }
+}
+void AudioEngine::audition(const Track& source, int key, float velocity, double duration) {
+    if (key < 0 || key > 127 || !std::isfinite(velocity))
+        return;
+    Project p;
+    p.master = .45f;
+    auto t = source;
+    t.id = nextId();
+    t.kind = TrackKind::Midi;
+    t.clips.clear();
+    t.mute = t.solo = false;
+    t.volume = std::min(t.volume, .8f);
+    Clip c;
+    c.length = std::max(.25, duration * 2);
+    Note n;
+    n.key = key;
+    n.velocity = std::clamp(velocity, 0.f, 1.f);
+    n.duration = std::max(.01, duration * 2);
+    c.notes.push_back(n);
+    t.clips.push_back(c);
+    p.tracks.push_back(t);
+    auto graph = std::make_unique<AudioProcessingGraph>(p, rate_);
+    collect();
+    releasePreview_.store(false);
+    delete previewPending_.exchange(graph.release());
 }
 } // namespace reverie

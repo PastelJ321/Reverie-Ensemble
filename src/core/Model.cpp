@@ -30,7 +30,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     p[1] = {"Soft Pad",
             InstrumentKind::Synth,
             Waveform::Triangle,
@@ -44,7 +48,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     p[2] = {"Synth Lead",
             InstrumentKind::Synth,
             Waveform::Saw,
@@ -58,7 +66,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     p[3] = {"Synth Bass",
             InstrumentKind::Synth,
             Waveform::Square,
@@ -72,7 +84,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     p[4] = {"Pluck",
             InstrumentKind::Synth,
             Waveform::Saw,
@@ -86,7 +102,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     p[5] = {"Organ-like",
             InstrumentKind::Synth,
             Waveform::Sine,
@@ -100,7 +120,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     p[6] = {"Bell",
             InstrumentKind::Synth,
             Waveform::Sine,
@@ -114,7 +138,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     p[7] = {"Basic Synth",
             InstrumentKind::Synth,
             Waveform::Sine,
@@ -128,7 +156,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     p[8] = {"Studio Drums (synthetic)",
             InstrumentKind::Drums,
             Waveform::Sine,
@@ -142,7 +174,11 @@ std::vector<Preset> factoryPresets() {
             60,
             "",
             "",
-            ""};
+            "",
+            "",
+            "",
+            "",
+            {}};
     return p;
 }
 double Project::endBeat() const {
@@ -157,14 +193,26 @@ double Project::tailSeconds() const {
     for (const auto& t : tracks)
         if (t.kind == TrackKind::Midi)
             tail = std::max(tail, double(t.preset.release) + .05);
+    for (const auto& t : tracks)
+        if (t.effects.enabled) {
+            if (t.effects.reverbMix > 0)
+                tail = std::max(tail, 6.);
+            if (t.effects.delayMix > 0) {
+                double repeats =
+                    t.effects.feedback > 0
+                        ? std::ceil(std::log(.0001) / std::log(double(t.effects.feedback)))
+                        : 1.;
+                tail = std::max(tail, double(t.effects.delaySeconds) * (repeats + 1));
+            }
+        }
     return tail;
 }
 Track makeTrack(TrackKind kind, int index) {
     Track t;
     t.kind = kind;
     t.name = (kind == TrackKind::Midi ? "Instrument " : "Audio ") + std::to_string(index + 1);
-    static constexpr std::uint32_t colors[] = {0xff9692ee, 0xff64c7bb, 0xffe8ad74, 0xffcb8fbc,
-                                               0xff83b4e2};
+    static constexpr std::uint32_t colors[] = {0xffb18c70, 0xff7ea89b, 0xffbbad7b, 0xff849da5,
+                                               0xffb78f85};
     t.color = colors[index % 5];
     t.preset = factoryPresets()[0];
     return t;
@@ -173,10 +221,14 @@ static bool in(double x, double lo, double hi) {
     return std::isfinite(x) && x >= lo && x <= hi;
 }
 void validate(const Project& p) {
-    if (p.formatVersion != 1 || !in(p.bpm, 20, 300) || p.numerator < 1 || p.numerator > 16 ||
+    if ((p.formatVersion != 1 && p.formatVersion != 2) || !in(p.bpm, 20, 300) || p.numerator < 1 ||
+        p.numerator > 16 ||
         (p.denominator != 2 && p.denominator != 4 && p.denominator != 8 && p.denominator != 16) ||
         !in(p.master, 0, 2) || p.tracks.size() > maxTracks)
         throw std::runtime_error("Unsupported project version or invalid transport/track count");
+    if (!in(p.loopStart, 0, 100000) || !in(p.loopEnd, p.loopStart + 1. / 128, 200000) ||
+        !in(p.clickLevel, 0, .5))
+        throw std::runtime_error("Invalid loop/metronome range");
     std::unordered_set<Id> ids;
     auto unique = [&](Id id) {
         if (!id || id > 1000000000000ULL || !ids.insert(id).second)
@@ -192,6 +244,19 @@ void validate(const Project& p) {
             s.rootNote > 127 || int(s.kind) < 0 || int(s.kind) > 2 || int(s.wave) < 0 ||
             int(s.wave) > 3)
             throw std::runtime_error("Invalid mixer or instrument settings");
+        const auto& fx = t.effects;
+        if (!in(fx.lowDb, -18, 18) || !in(fx.highDb, -18, 18) || !in(fx.delayMix, 0, 1) ||
+            !in(fx.delaySeconds, .0099, 2) || !in(fx.feedback, 0, .8501) || !in(fx.reverbMix, 0, 1))
+            throw std::runtime_error("Invalid effect parameters");
+        if (s.zones.size() > 4096)
+            throw std::runtime_error("Too many sampler zones");
+        for (const auto& z : s.zones)
+            if (z.lowKey < 0 || z.highKey > 127 || z.lowKey > z.highKey || z.rootKey < 0 ||
+                z.rootKey > 127 || z.lowVelocity < 0 || z.highVelocity > 127 ||
+                z.lowVelocity > z.highVelocity || !in(z.gain, 0, 8) ||
+                (z.end && z.end <= z.start) || (z.loop && z.loopEnd <= z.loopStart) ||
+                (z.loop && z.oneShot))
+                throw std::runtime_error("Invalid sample mapping");
         totalClips += t.clips.size();
         for (const auto& c : t.clips) {
             unique(c.id);

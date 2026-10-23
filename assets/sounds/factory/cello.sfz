@@ -1,0 +1,5 @@
+<global> ampeg_attack=0.003 ampeg_release=0.25 ampeg_sustain=100
+<region> sample=samples/cello-24.wav lokey=0 hikey=43 pitch_keycenter=36
+<region> sample=samples/cello-38.wav lokey=44 hikey=57 pitch_keycenter=50
+<region> sample=samples/cello-52.wav lokey=58 hikey=70 pitch_keycenter=64
+<region> sample=samples/cello-65.wav lokey=71 hikey=127 pitch_keycenter=77

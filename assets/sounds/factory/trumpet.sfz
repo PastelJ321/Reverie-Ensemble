@@ -1,0 +1,5 @@
+<global> ampeg_attack=0.003 ampeg_release=0.25 ampeg_sustain=100
+<region> sample=samples/trumpet-41.wav lokey=0 hikey=58 pitch_keycenter=53
+<region> sample=samples/trumpet-51.wav lokey=59 hikey=68 pitch_keycenter=63
+<region> sample=samples/trumpet-62.wav lokey=69 hikey=79 pitch_keycenter=74
+<region> sample=samples/trumpet-72.wav lokey=80 hikey=127 pitch_keycenter=84

@@ -1,4 +1,4 @@
-Reverie Ensemble 0.1.0
+Reverie Ensemble 0.2.0
 Developed by QuadraJ.
 Copyright 2026 QuadraJ and contributors.
 
@@ -13,6 +13,13 @@ Reverie Ensemble and QuadraJ names and logos identify their respective projects.
 Apache 2.0 does not require derivative programs to display a QuadraJ logo and
 this notice grants no additional trademark rights.
 
-The included factory presets and demonstration composition are original QuadraJ
-project material distributed under Apache 2.0. No third-party sound recordings,
-commercial DAW instruments, or sound packs are included.
+The original synth presets and demonstration composition are QuadraJ material
+distributed under Apache 2.0. Separately licensed CC0 recordings and mappings
+are included in 0.2 as detailed below. No commercial DAW sounds are included.
+
+IBM Plex Sans KR and IBM Plex Mono are included under SIL OFL 1.1.
+Community Essentials includes CC0-1.0 recordings from Versilian Studios /
+VSCO 2 CE. Recorded by Sam Gossner and Simon Dalzell (Ivy Audio); sample
+editing by Elan Hickler / Soundemote. QuadraJ created the subset mappings.
+See assets/fonts/*OFL.txt and assets/sounds/factory/CC0-1.0.txt, pack.json,
+and docs/SOUND_LIBRARY_LICENSE_MANIFEST.md for provenance and checksums.

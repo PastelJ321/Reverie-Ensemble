@@ -1,0 +1,5 @@
+<global> ampeg_attack=0.003 ampeg_release=0.25 ampeg_sustain=100
+<region> sample=samples/flute-48.wav lokey=0 hikey=66 pitch_keycenter=60
+<region> sample=samples/flute-60.wav lokey=67 hikey=78 pitch_keycenter=72
+<region> sample=samples/flute-72.wav lokey=79 hikey=90 pitch_keycenter=84
+<region> sample=samples/flute-84.wav lokey=91 hikey=127 pitch_keycenter=96

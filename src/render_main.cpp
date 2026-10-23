@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
             return 0;
         }
         if (argc != 3) {
-            std::cout << "Reverie Ensemble 0.1.0 offline renderer\nUsage: reverie-render "
+            std::cout << "Reverie Ensemble 0.2.0 offline renderer\nUsage: reverie-render "
                          "project.reverie output.wav\n       reverie-render --demo output.wav\n";
             return 2;
         }

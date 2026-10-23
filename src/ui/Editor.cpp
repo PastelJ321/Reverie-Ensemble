@@ -3,8 +3,14 @@
 
 #include "ui/Editor.h"
 #include "core/Media.h"
+#include "core/MidiFile.h"
 #include "core/Serializer.h"
+#include "ui/AudioEditor.h"
+#include "ui/InspectorPanel.h"
+#include "ui/MixerView.h"
 #include "ui/PianoRoll.h"
+#include "ui/SoundBrowser.h"
+#include "ui/Theme.h"
 #include "ui/Timeline.h"
 #include <QAction>
 #include <QApplication>
@@ -30,8 +36,10 @@
 #include <QSignalBlocker>
 #include <QSpinBox>
 #include <QSplitter>
+#include <QStackedWidget>
 #include <QStandardPaths>
 #include <QStatusBar>
+#include <QTabWidget>
 #include <QTimer>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -40,43 +48,29 @@
 #include <future>
 #include <unordered_map>
 namespace reverie {
-class Meter final : public QWidget {
-    Editor& e_;
-    bool master_;
-
-  public:
-    Meter(Editor& e, bool master) : e_(e), master_(master) {
-        setMinimumHeight(18);
-        setMaximumHeight(18);
-    }
-    void paintEvent(QPaintEvent*) override {
-        QPainter p(this);
-        p.fillRect(rect(), QColor("#111621"));
-        float value = master_ ? e_.engine.masterPeak() : e_.engine.trackPeak(e_.selectedTrack);
-        double db = value > 0 ? 20 * std::log10(value) : -60;
-        int w = int(std::clamp((db + 60) / 60, 0., 1.) * width());
-        p.fillRect(QRect(0, 2, w, height() - 4),
-                   value >= 1 ? QColor("#eb7d84") : QColor("#71c9b3"));
-        p.setPen(QColor("#b4bdd2"));
-        p.drawText(rect(), Qt::AlignCenter,
-                   value > 0 ? QString::number(db, 'f', 1) + " dBFS" : "−∞ dBFS");
-    }
-};
-static QDoubleSpinBox* number(QWidget* parent, double lo, double hi, double step,
-                              int decimals = 2) {
-    auto* w = new QDoubleSpinBox(parent);
-    w->setRange(lo, hi);
-    w->setSingleStep(step);
-    w->setDecimals(decimals);
-    w->setKeyboardTracking(false);
-    return w;
-}
 Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabled_(audio) {
     setObjectName("reverieEditor");
-    resize(1440, 930);
-    setMinimumSize(1040, 680);
+    initializeTheme();
+    resize(1440, 900);
+    setMinimumSize(1000, 650);
     buildUi();
     buildMenus();
+    try {
+        auto first = browser_->presetAt(0);
+        auto second = browser_->presetAt(2);
+        if (first.instrumentId != "quadraj.cc0.upright" ||
+            second.instrumentId != "quadraj.cc0.strings")
+            throw std::runtime_error("Community Essentials is not installed");
+        project.tracks[0].preset = first;
+        project.tracks[0].name = "Upright Piano";
+        project.tracks[1].preset = second;
+        project.tracks[1].name = "Violin Ensemble";
+        for (auto& clip : project.tracks[1].clips)
+            for (auto& note : clip.notes)
+                note.key += 12;
+    } catch (const std::exception& ex) {
+        message(QString("Recorded starter unavailable; using factory synths: ") + ex.what());
+    }
     engine.publish(project);
     if (audioEnabled_ && !device_.startOutput())
         message(QString::fromStdString(device_.error()));
@@ -91,318 +85,6 @@ Editor::~Editor() {
     device_.stopCapture();
     recorder_.stop();
     device_.stopOutput();
-}
-void Editor::buildUi() {
-    setStyleSheet(R"(
-        QMainWindow,QWidget { background:#1b1f2b; color:#dce1f0; font-family:"Avenir Next",sans-serif; font-size:12px; }
-        QToolBar { background:#141824; border:0; spacing:9px; padding:8px; }
-        QPushButton,QToolButton { background:#30364b; border:1px solid #454c66; border-radius:5px; padding:6px 10px; }
-        QPushButton:hover,QToolButton:hover { background:#444a66; }
-        QPushButton:checked { background:#645d92; }
-        QSpinBox,QDoubleSpinBox,QComboBox { background:#111622; border:1px solid #3e465e; border-radius:4px; padding:5px; min-height:19px; }
-        QDockWidget { font-weight:600; }
-        QDockWidget::title { background:#141824; padding:9px; }
-        QListWidget { background:#202534; border:0; outline:0; padding:5px; }
-        QListWidget::item { padding:10px 5px; border-bottom:1px solid #2b3143; }
-        QListWidget::item:selected { background:#484666; border-radius:4px; }
-        QMenuBar,QMenu,QStatusBar { background:#151925; }
-        QScrollArea { border:0; }
-        QScrollBar { background:#171c29; width:11px; height:11px; }
-        QScrollBar::handle { background:#46506a; border-radius:4px; min-width:22px; min-height:22px; }
-        QScrollBar::add-line,QScrollBar::sub-line { width:0; height:0; }
-        QSplitter::handle { background:#40475f; height:4px; }
-        QCheckBox { spacing:7px; }
-    )");
-    auto* transport = addToolBar("Transport");
-    transport->setMovable(false);
-    auto* brand = new QLabel("◇  REVERIE", this);
-    brand->setStyleSheet("font-size:17px;font-weight:700;color:#c3b9f1;padding-right:20px");
-    transport->addWidget(brand);
-    projectLabel_ = new QLabel;
-    projectLabel_->setMaximumWidth(140);
-    projectLabel_->setStyleSheet("color:#abb2cd;padding-right:8px");
-    transport->addWidget(projectLabel_);
-    playButton_ = new QPushButton("▶  Play", this);
-    playButton_->setObjectName("play");
-    transport->addWidget(playButton_);
-    connect(playButton_, &QPushButton::clicked, this, [this] { play(); });
-    auto* stopButton = new QPushButton("■  Stop", this);
-    stopButton->setObjectName("stop");
-    transport->addWidget(stopButton);
-    connect(stopButton, &QPushButton::clicked, this, [this] { stop(); });
-    recordButton_ = new QPushButton("●  Record", this);
-    recordButton_->setObjectName("record");
-    recordButton_->setStyleSheet("color:#ef9ba7");
-    transport->addWidget(recordButton_);
-    connect(recordButton_, &QPushButton::clicked, this, [this] { toggleRecord(); });
-    transport->addSeparator();
-    transport->addWidget(new QLabel("BPM", this));
-    bpm_ = number(this, 20, 300, 1, 1);
-    bpm_->setObjectName("bpm");
-    bpm_->setValue(project.bpm);
-    bpm_->setMaximumWidth(85);
-    transport->addWidget(bpm_);
-    connect(bpm_, &QDoubleSpinBox::valueChanged, this, [this](double v) {
-        if (!refreshing_)
-            setTempo(v);
-    });
-    auto* meter = new QComboBox(this);
-    meter->setObjectName("timeSignature");
-    meter->addItems({"4/4", "3/4", "6/8", "7/8"});
-    transport->addWidget(meter);
-    connect(meter, &QComboBox::currentIndexChanged, this, [this, meter] {
-        if (refreshing_)
-            return;
-        auto parts = meter->currentText().split('/');
-        edit([&] {
-            project.numerator = parts[0].toInt();
-            project.denominator = parts[1].toInt();
-        });
-    });
-    position_ = new QLabel("1 : 1 : 000", this);
-    position_->setMinimumWidth(150);
-    position_->setStyleSheet("font-family:monospace;font-size:15px;color:#e7cd98;padding:8px");
-    transport->addWidget(position_);
-    auto* masterMeter = new Meter(*this, true);
-    masterMeter->setMinimumWidth(120);
-    transport->addWidget(masterMeter);
-    connect(&timer_, &QTimer::timeout, masterMeter, qOverload<>(&QWidget::update));
-    auto* left = new QDockWidget("SOUND LIBRARY", this);
-    left->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
-    auto* library = new QWidget;
-    auto* libLayout = new QVBoxLayout(library);
-    libLayout->setContentsMargins(10, 10, 10, 10);
-    auto* heading = new QLabel("Factory instruments");
-    heading->setStyleSheet("color:#a8acc4;font-weight:600");
-    libLayout->addWidget(heading);
-    auto* presets = new QListWidget;
-    presets->setObjectName("factoryPresets");
-    for (const auto& p : factoryPresets())
-        presets->addItem(QString::fromStdString(p.name));
-    libLayout->addWidget(presets);
-    connect(presets, &QListWidget::itemDoubleClicked, this, [this, presets] {
-        int index = presets->currentRow();
-        if (selectedTrack < 0 || selectedTrack >= int(project.tracks.size()) ||
-            project.tracks[selectedTrack].kind != TrackKind::Midi)
-            return;
-        edit([&] {
-            auto& t = project.tracks[selectedTrack];
-            t.preset = factoryPresets()[index];
-            t.instrumentSample.reset();
-        });
-    });
-    auto* note =
-        new QLabel("Double-click an instrument to apply it to the selected MIDI track.\n\nThese "
-                   "are original synth presets, not sampled acoustic instruments.");
-    note->setWordWrap(true);
-    note->setStyleSheet("color:#8f9bb5;font-size:11px");
-    libLayout->addWidget(note);
-    for (auto [text, fn] : std::vector<std::pair<QString, std::function<void()>>>{
-             {"+ MIDI track", [this] { addTrack(TrackKind::Midi); }},
-             {"+ Audio track", [this] { addTrack(TrackKind::Audio); }},
-             {"Import WAV…", [this] { importWav(); }},
-             {"Sampler WAV…", [this] { loadSampler(); }}}) {
-        auto* b = new QPushButton(text);
-        libLayout->addWidget(b);
-        connect(b, &QPushButton::clicked, this, fn);
-    }
-    left->setWidget(library);
-    addDockWidget(Qt::LeftDockWidgetArea, left);
-    left->setMinimumWidth(190);
-    auto* central = new QSplitter(Qt::Vertical, this);
-    timeline_ = new Timeline(*this);
-    timelineScroll_ = new QScrollArea;
-    timelineScroll_->setWidget(timeline_);
-    timelineScroll_->setWidgetResizable(false);
-    central->addWidget(timelineScroll_);
-    auto* pianoPanel = new QWidget;
-    auto* pianoLayout = new QVBoxLayout(pianoPanel);
-    pianoLayout->setContentsMargins(0, 0, 0, 0);
-    pianoLayout->setSpacing(0);
-    auto* pianoBar = new QToolBar;
-    pianoBar->addWidget(new QLabel("PIANO ROLL  "));
-    piano_ = new PianoRoll(*this);
-    auto* quant = pianoBar->addAction("Quantize");
-    connect(quant, &QAction::triggered, this, [this] { piano_->quantize(); });
-    pianoBar->addWidget(new QLabel("Velocity "));
-    auto* velocity = number(this, .01, 1, .05);
-    velocity->setObjectName("velocity");
-    velocity->setValue(.8);
-    velocity->setMaximumWidth(80);
-    pianoBar->addWidget(velocity);
-    connect(velocity, &QDoubleSpinBox::valueChanged, this,
-            [this](double v) { piano_->setVelocity(v); });
-    auto* snapBox = new QCheckBox("Snap");
-    snapBox->setChecked(true);
-    pianoBar->addWidget(snapBox);
-    connect(snapBox, &QCheckBox::toggled, this, [this](bool v) { snap = v; });
-    auto* gridBox = new QComboBox;
-    gridBox->addItems({"1/4", "1/8", "1/16", "1/32"});
-    gridBox->setCurrentIndex(2);
-    pianoBar->addWidget(gridBox);
-    connect(gridBox, &QComboBox::currentIndexChanged, this, [this](int i) {
-        grid = 1. / std::pow(2., i);
-        piano_->update();
-        timeline_->update();
-    });
-    pianoBar->addWidget(new QLabel(" Zoom "));
-    auto* zoom = number(this, 24, 160, 8, 0);
-    zoom->setValue(64);
-    zoom->setMaximumWidth(75);
-    pianoBar->addWidget(zoom);
-    connect(zoom, &QDoubleSpinBox::valueChanged, this, [this](double v) {
-        pixelsPerBeat = v;
-        timeline_->updateExtent();
-        piano_->updateExtent();
-    });
-    pianoLayout->addWidget(pianoBar);
-    pianoScroll_ = new QScrollArea;
-    pianoScroll_->setWidget(piano_);
-    pianoScroll_->setWidgetResizable(false);
-    pianoLayout->addWidget(pianoScroll_);
-    central->addWidget(pianoPanel);
-    central->setSizes({460, 300});
-    setCentralWidget(central);
-    auto* right = new QDockWidget("INSPECTOR / MIXER", this);
-    auto* inspector = new QWidget;
-    auto* layout = new QVBoxLayout(inspector);
-    trackTitle_ = new QLabel;
-    trackTitle_->setStyleSheet("font-weight:600;font-size:16px;color:#cec9f2");
-    layout->addWidget(trackTitle_);
-    auto* form = new QFormLayout;
-    volume_ = number(this, 0, 2, .05);
-    volume_->setObjectName("trackVolume");
-    pan_ = number(this, -1, 1, .05);
-    pan_->setObjectName("trackPan");
-    form->addRow("Volume", volume_);
-    form->addRow("Pan", pan_);
-    layout->addLayout(form);
-    auto* toggles = new QHBoxLayout;
-    mute_ = new QCheckBox("Mute");
-    solo_ = new QCheckBox("Solo");
-    toggles->addWidget(mute_);
-    toggles->addWidget(solo_);
-    layout->addLayout(toggles);
-    auto* selectedMeter = new Meter(*this, false);
-    layout->addWidget(selectedMeter);
-    connect(&timer_, &QTimer::timeout, selectedMeter, qOverload<>(&QWidget::update));
-    auto mixerChange = [this] {
-        if (refreshing_ || selectedTrack < 0 || selectedTrack >= int(project.tracks.size()))
-            return;
-        edit([&] {
-            auto& t = project.tracks[selectedTrack];
-            t.volume = float(volume_->value());
-            t.pan = float(pan_->value());
-            t.mute = mute_->isChecked();
-            t.solo = solo_->isChecked();
-        });
-    };
-    connect(volume_, &QDoubleSpinBox::valueChanged, this, mixerChange);
-    connect(pan_, &QDoubleSpinBox::valueChanged, this, mixerChange);
-    connect(mute_, &QCheckBox::toggled, this, mixerChange);
-    connect(solo_, &QCheckBox::toggled, this, mixerChange);
-    preset_ = new QComboBox;
-    preset_->setObjectName("preset");
-    for (const auto& p : factoryPresets())
-        preset_->addItem(QString::fromStdString(p.name));
-    layout->addWidget(preset_);
-    connect(preset_, &QComboBox::activated, this, [this](int i) {
-        if (selectedTrack < 0 || selectedTrack >= int(project.tracks.size()) ||
-            project.tracks[selectedTrack].kind != TrackKind::Midi)
-            return;
-        edit([&] {
-            project.tracks[selectedTrack].preset = factoryPresets()[i];
-            project.tracks[selectedTrack].instrumentSample.reset();
-        });
-    });
-    instrumentLabel_ = new QLabel;
-    instrumentLabel_->setWordWrap(true);
-    instrumentLabel_->setStyleSheet("color:#96a3bb;font-size:11px");
-    layout->addWidget(instrumentLabel_);
-    auto* synthForm = new QFormLayout;
-    wave_ = new QComboBox;
-    wave_->addItems({"Sine", "Saw", "Square", "Triangle"});
-    synthForm->addRow("Oscillator", wave_);
-    attack_ = number(this, .0001, 10, .01, 4);
-    decay_ = number(this, .0001, 10, .05, 4);
-    sustain_ = number(this, 0, 1, .05);
-    release_ = number(this, .001, 10, .05, 3);
-    cutoff_ = number(this, 20, 24000, 100, 0);
-    synthForm->addRow("Attack (s)", attack_);
-    synthForm->addRow("Decay (s)", decay_);
-    synthForm->addRow("Sustain", sustain_);
-    synthForm->addRow("Release (s)", release_);
-    synthForm->addRow("Low-pass Hz", cutoff_);
-    layout->addLayout(synthForm);
-    auto synthChange = [this] {
-        if (refreshing_ || selectedTrack < 0 || selectedTrack >= int(project.tracks.size()) ||
-            project.tracks[selectedTrack].kind != TrackKind::Midi)
-            return;
-        edit([&] {
-            auto& s = project.tracks[selectedTrack].preset;
-            s.wave = Waveform(wave_->currentIndex());
-            s.attack = float(attack_->value());
-            s.decay = float(decay_->value());
-            s.sustain = float(sustain_->value());
-            s.release = float(release_->value());
-            s.cutoff = float(cutoff_->value());
-        });
-    };
-    for (auto* spin : {attack_, decay_, sustain_, release_, cutoff_})
-        connect(spin, &QDoubleSpinBox::valueChanged, this, synthChange);
-    connect(wave_, &QComboBox::activated, this, synthChange);
-    auto* presetButtons = new QHBoxLayout;
-    auto* load = new QPushButton("Load preset");
-    auto* save = new QPushButton("Save preset");
-    presetButtons->addWidget(load);
-    presetButtons->addWidget(save);
-    layout->addLayout(presetButtons);
-    connect(load, &QPushButton::clicked, this, [this] { loadPreset(); });
-    connect(save, &QPushButton::clicked, this, [this] { savePreset(); });
-    layout->addStretch();
-    auto* masterForm = new QFormLayout;
-    master_ = number(this, 0, 2, .05);
-    master_->setValue(project.master);
-    masterForm->addRow("Master", master_);
-    layout->addLayout(masterForm);
-    connect(master_, &QDoubleSpinBox::valueChanged, this, [this](double v) {
-        if (!refreshing_)
-            edit([&] { project.master = float(v); });
-    });
-    inputs_ = new QComboBox;
-    inputs_->addItem("Default audio input");
-    layout->addWidget(inputs_);
-    auto* scan = new QPushButton("Choose / refresh inputs");
-    layout->addWidget(scan);
-    connect(scan, &QPushButton::clicked, this, [this] {
-        inputs_->clear();
-        inputs_->addItem("Default audio input");
-        for (const auto& name : device_.inputDevices())
-            inputs_->addItem(QString::fromStdString(name));
-        if (inputs_->count() == 1)
-            message("No input devices found. Recording will try the system default.");
-    });
-    output_ = new QLabel;
-    output_->setWordWrap(true);
-    output_->setStyleSheet("color:#99a9c5;font-size:11px");
-    layout->addWidget(output_);
-    auto* retry = new QPushButton("Reconnect audio / clear clip");
-    layout->addWidget(retry);
-    connect(retry, &QPushButton::clicked, this, [this] {
-        if (recording_)
-            return;
-        engine.clearClip();
-        if (audioEnabled_ && !device_.outputRunning() && !device_.startOutput())
-            message(QString::fromStdString(device_.error()));
-    });
-    auto* inspectorScroll = new QScrollArea;
-    inspectorScroll->setWidget(inspector);
-    inspectorScroll->setWidgetResizable(true);
-    right->setWidget(inspectorScroll);
-    right->setMinimumWidth(255);
-    addDockWidget(Qt::RightDockWidgetArea, right);
-    statusBar()->showMessage("Double-click a lane to create a clip · Click to draw notes · "
-                             "Shift-drag to select · Space to play");
 }
 void Editor::buildMenus() {
     auto* file = menuBar()->addMenu("&File");
@@ -448,10 +130,37 @@ void Editor::buildMenus() {
             exportProject(name);
     });
     action(file, "Quit", QKeySequence::Quit, [this] { close(); });
+    action(file, "Import MIDI file…", {}, [this] {
+        auto path = QFileDialog::getOpenFileName(this, "Import Standard MIDI File", {},
+                                                 "MIDI (*.mid *.midi)");
+        if (path.isEmpty())
+            return;
+        try {
+            auto imported = importMidiFile(path.toStdString());
+            edit([&] {
+                if (project.tracks.size() + imported.tracks.size() > maxTracks)
+                    throw std::runtime_error("Track limit exceeded");
+                if (project.tracks.empty()) {
+                    project.bpm = imported.bpm;
+                    project.numerator = imported.numerator;
+                    project.denominator = imported.denominator;
+                }
+                for (auto& t : imported.tracks)
+                    project.tracks.push_back(std::move(t));
+            });
+        } catch (const std::exception& ex) {
+            message(ex.what());
+        }
+    });
     auto* editMenu = menuBar()->addMenu("&Edit");
     action(editMenu, "Undo", QKeySequence::Undo, [this] { undo(); });
     action(editMenu, "Redo", QKeySequence::Redo, [this] { redo(); });
-    action(editMenu, "Duplicate clip", QKeySequence("Ctrl+D"), [this] { duplicateClip(); });
+    action(editMenu, "Duplicate clip", QKeySequence("Ctrl+D"), [this] {
+        if (piano_->hasFocus() && !piano_->selection.empty())
+            piano_->duplicate();
+        else
+            duplicateClip();
+    });
     action(editMenu, "Quantize notes", {}, [this] { piano_->quantize(); });
     auto* track = menuBar()->addMenu("&Track");
     action(track, "Add MIDI track", QKeySequence("Ctrl+Shift+M"),
@@ -484,8 +193,8 @@ void Editor::buildMenus() {
     });
     action(help, "About Reverie Ensemble", {}, [this] {
         QMessageBox::about(
-            this, "Reverie Ensemble 0.1.0",
-            "<h2>◇ Reverie Ensemble</h2><p>0.1.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
+            this, "Reverie Ensemble 0.2.0",
+            "<h2>Reverie Ensemble</h2><p>0.2.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
             "contributors.</p><p>A free, offline, open-source digital audio "
             "workstation.</p><p>Reverie code: Apache License 2.0.<br>Qt Core / Gui / Widgets: "
             "dynamically linked under LGPLv3.<br>miniaudio 0.11.23: MIT-0.<br>nlohmann/json "
@@ -547,6 +256,16 @@ void Editor::edit(const std::function<void()>& fn) {
 }
 void Editor::refresh() {
     refreshing_ = true;
+    if (auto* loop = findChild<QPushButton*>("loop"))
+        loop->setChecked(project.loopEnabled);
+    if (auto* click = findChild<QPushButton*>("metronome"))
+        click->setChecked(project.metronome);
+    if (auto* start = findChild<QDoubleSpinBox*>("loopStart"))
+        start->setValue(project.loopStart);
+    if (auto* end = findChild<QDoubleSpinBox*>("loopEnd"))
+        end->setValue(project.loopEnd);
+    if (auto* level = findChild<QDoubleSpinBox*>("clickLevel"))
+        level->setValue(project.clickLevel);
     projectLabel_->setText(QString::fromStdString(project.name));
     projectLabel_->setToolTip(QString::fromStdString(project.name));
     selectedTrack =
@@ -560,6 +279,12 @@ void Editor::refresh() {
     for (QWidget* w : std::initializer_list<QWidget*>{preset_, wave_, attack_, decay_, sustain_,
                                                       release_, cutoff_})
         w->setEnabled(midi && !recording_);
+    if (bottomStack_)
+        bottomStack_->setCurrentIndex(valid && !midi ? 1 : 0);
+    if (audioEditor_)
+        audioEditor_->update();
+    if (browser_)
+        browser_->setEnabled(!recording_);
     piano_->setEnabled(midi && !recording_);
     timeline_->setEnabled(!recording_);
     bpm_->setEnabled(!recording_);
@@ -582,6 +307,8 @@ void Editor::refresh() {
         int idx = preset_->findText(QString::fromStdString(s.name));
         preset_->setCurrentIndex(idx);
         wave_->setCurrentIndex(int(s.wave));
+        if (auto* form = qobject_cast<QFormLayout*>(wave_->parentWidget()->layout()))
+            form->setRowVisible(wave_, s.kind == InstrumentKind::Synth);
         attack_->setValue(s.attack);
         decay_->setValue(s.decay);
         sustain_->setValue(s.sustain);
@@ -590,7 +317,10 @@ void Editor::refresh() {
         instrumentLabel_->setText(
             midi ? QString::fromStdString(s.name) +
                        (s.kind == InstrumentKind::Sampler
-                            ? "\nRoot: C4 (MIDI 60) · " + QString::fromStdString(s.license)
+                            ? (s.zones.empty()
+                                   ? QString("\nRoot: C4 (MIDI 60) · ")
+                                   : QString("\n%1 key/velocity zones · ").arg(s.zones.size())) +
+                                  QString::fromStdString(s.license)
                             : "")
                  : "Audio track · non-destructive WAV playback");
     } else {
@@ -599,11 +329,17 @@ void Editor::refresh() {
     }
     timeline_->updateExtent();
     piano_->updateExtent();
+    if (selectionInspector_)
+        selectionInspector_->refresh();
     setWindowTitle(QString::fromStdString(project.name) + (dirty_ ? " *" : "") +
-                   " — Reverie Ensemble 0.1");
+                   " — Reverie Ensemble 0.2");
     refreshing_ = false;
 }
 void Editor::select(int track, Id clip) {
+    if (selectedClip != clip)
+        piano_->selection.clear();
+    if (auto* tabs = findChild<QTabWidget*>("inspectorTabs"))
+        tabs->setCurrentIndex(clip ? 0 : 1);
     selectedTrack = track;
     selectedClip = clip;
     refresh();
@@ -691,6 +427,7 @@ void Editor::play() {
     engine.setPlaying(!engine.playing());
 }
 void Editor::stop() {
+    engine.releaseAudition();
     if (recording_)
         finishRecord();
     engine.setPlaying(false);
@@ -716,11 +453,21 @@ void Editor::tick() {
                            .arg(int(beat / bar) + 1, 3, 10, QChar('0'))
                            .arg(int(std::fmod(beat, bar) / (4. / project.denominator)) + 1)
                            .arg(int((beat - std::floor(beat)) * 960), 3, 10, QChar('0')));
-    playButton_->setText(engine.playing() ? "Ⅱ  Pause" : "▶  Play");
+    playButton_->setText(engine.playing() ? "Pause" : "Play");
+    if (auto* label = findChild<QLabel*>("transportDeviceStatus"))
+        label->setText(device_.outputRunning() ? "48 kHz / 256 target" : "Offline audio");
     output_->setText(QString(device_.outputRunning() ? "48 kHz · 256 frames · float32"
                                                      : "Output unavailable · offline editor") +
                      (engine.clipped() ? "\nCLIPPING — lower track/master levels" : ""));
     timeline_->update();
+    playButton_->setIcon(toolIcon(engine.playing() ? "pause" : "play"));
+    if (followPlayhead && engine.playing()) {
+        int x = Timeline::header + int(beat * pixelsPerBeat);
+        auto* bar = timelineScroll_->horizontalScrollBar();
+        if (x > bar->value() + timelineScroll_->viewport()->width() - 50 ||
+            x < bar->value() + Timeline::header)
+            bar->setValue(std::max(0, x - Timeline::header - 80));
+    }
     if (recording_ && (recorder_.failed() || recorder_.overflowed() || !engine.playing())) {
         bool failed = recorder_.failed(), overflow = recorder_.overflowed();
         finishRecord();
@@ -805,6 +552,8 @@ bool Editor::saveProject(const QString& supplied) {
                     : (before.instrumentSample ? before.instrumentSample->path : "");
             if (!sampleSource.empty())
                 refs[sampleSource] = after.preset.samplePath;
+            for (std::size_t z = 0; z < before.preset.zones.size(); ++z)
+                refs[before.preset.zones[z].path] = after.preset.zones[z].path;
             for (std::size_t j = 0; j < before.clips.size(); ++j) {
                 const auto& c = before.clips[j];
                 auto source = !c.mediaPath.empty() ? c.mediaPath : (c.sample ? c.sample->path : "");
@@ -819,6 +568,9 @@ bool Editor::saveProject(const QString& supplied) {
                                   : (t.instrumentSample ? t.instrumentSample->path : "");
                 if (refs.contains(source))
                     t.preset.samplePath = refs.at(source);
+                for (auto& z : t.preset.zones)
+                    if (refs.contains(z.path))
+                        z.path = refs.at(z.path);
                 for (auto& c : t.clips) {
                     source = !c.mediaPath.empty() ? c.mediaPath : (c.sample ? c.sample->path : "");
                     if (refs.contains(source))
@@ -989,10 +741,11 @@ void Editor::toggleRecord() {
             message(QString::fromStdString(device_.error()));
             return;
         }
+        engine.releaseAudition();
         recording_ = true;
         engine.setFreeRunning(true);
         engine.setPlaying(true);
-        recordButton_->setText("■  Finish take");
+        recordButton_->setText("Finish take");
         refresh();
         message("Recording to project media. Press Stop or Finish take to place the clip.");
     } catch (const std::exception& ex) {
@@ -1009,7 +762,7 @@ void Editor::finishRecord() {
     engine.setPlaying(false);
     engine.setFreeRunning(false);
     recording_ = false;
-    recordButton_->setText("●  Record");
+    recordButton_->setText("Record");
     try {
         if (recorder_.framesWritten() > 0) {
             auto sample = background(this, "Finalizing take and waveform…",
@@ -1069,5 +822,31 @@ void Editor::closeEvent(QCloseEvent* e) {
         e->accept();
     else
         e->ignore();
+}
+void Editor::auditionNote(int key, float velocity, double duration) {
+    if (selectedTrack < 0 || selectedTrack >= int(project.tracks.size()) || recording_)
+        return;
+    engine.audition(project.tracks[selectedTrack], key, velocity, duration);
+}
+void Editor::applyInstrument(const Preset& preset, bool newTrack) {
+    edit([&] {
+        if (newTrack || selectedTrack < 0 ||
+            project.tracks[selectedTrack].kind != TrackKind::Midi) {
+            if (project.tracks.size() >= maxTracks)
+                throw std::runtime_error("Track limit");
+            project.tracks.push_back(makeTrack(TrackKind::Midi, int(project.tracks.size())));
+            selectedTrack = int(project.tracks.size()) - 1;
+            selectedClip = 0;
+        }
+        auto& t = project.tracks[selectedTrack];
+        t.preset = preset;
+        t.instrumentSample.reset();
+        if (!preset.zones.empty())
+            t.name = preset.name;
+    });
+}
+void Editor::showMixer() {
+    mixer_->refresh();
+    workspace_->setCurrentIndex(1);
 }
 } // namespace reverie

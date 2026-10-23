@@ -6,8 +6,8 @@
 <key>CFBundleName</key><string>Reverie Ensemble</string>
 <key>CFBundleDisplayName</key><string>Reverie Ensemble</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.1.0</string>
-<key>CFBundleVersion</key><string>0.1.0</string>
+<key>CFBundleShortVersionString</key><string>0.2.0</string>
+<key>CFBundleVersion</key><string>0.2.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSMicrophoneUsageDescription</key><string>Reverie Ensemble records audio into your local music project when you press Record.</string>
 <key>NSHumanReadableCopyright</key><string>Copyright 2026 QuadraJ and contributors.</string>
