@@ -26,6 +26,7 @@ struct SampleZone {
     std::uint64_t start = 0, end = 0, loopStart = 0, loopEnd = 0;
     bool loop = false, oneShot = false, loopContinuous = false;
     float gain = 1;
+    int sequenceLength = 1, sequencePosition = 1;
 };
 struct Preset {
     std::string name = "Basic Synth";
@@ -36,6 +37,10 @@ struct Preset {
     int rootNote = 60;
     std::string samplePath, source, license;
     std::string instrumentId, category, tags;
+    std::string family, patchId, articulation;
+    int calibrationVersion = 0;
+    float calibrationGain = 1, auditionGain = 1;
+    bool cubicInterpolation = false;
     std::vector<SampleZone> zones;
 };
 std::vector<Preset> factoryPresets();
@@ -82,7 +87,7 @@ struct Track {
     std::vector<Clip> clips;
 };
 struct Project {
-    int formatVersion = 2;
+    int formatVersion = 3;
     std::string name = "Untitled";
     double bpm = 120.;
     int numerator = 4, denominator = 4;

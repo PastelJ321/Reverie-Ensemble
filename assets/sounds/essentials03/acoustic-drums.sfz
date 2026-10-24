@@ -1,0 +1,13 @@
+<global> ampeg_attack=0.002 ampeg_decay=0.2 ampeg_sustain=100 ampeg_release=0.08
+<region> sample=samples/drum-36-1.wav key=36 loop_mode=one_shot seq_length=2 seq_position=1
+<region> sample=samples/drum-36-2.wav key=36 loop_mode=one_shot seq_length=2 seq_position=2
+<region> sample=samples/drum-38-1.wav key=38 loop_mode=one_shot seq_length=2 seq_position=1
+<region> sample=samples/drum-38-2.wav key=38 loop_mode=one_shot seq_length=2 seq_position=2
+<region> sample=samples/drum-42-1.wav key=42 loop_mode=one_shot seq_length=2 seq_position=1
+<region> sample=samples/drum-42-2.wav key=42 loop_mode=one_shot seq_length=2 seq_position=2
+<region> sample=samples/drum-46-1.wav key=46 loop_mode=one_shot seq_length=2 seq_position=1
+<region> sample=samples/drum-46-2.wav key=46 loop_mode=one_shot seq_length=2 seq_position=2
+<region> sample=samples/drum-48-1.wav key=48 loop_mode=one_shot seq_length=2 seq_position=1
+<region> sample=samples/drum-48-2.wav key=48 loop_mode=one_shot seq_length=2 seq_position=2
+<region> sample=samples/drum-45-1.wav key=45 loop_mode=one_shot seq_length=2 seq_position=1
+<region> sample=samples/drum-45-2.wav key=45 loop_mode=one_shot seq_length=2 seq_position=2

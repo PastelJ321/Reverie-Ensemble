@@ -12,6 +12,9 @@ class Timeline final : public QWidget {
     static constexpr int header = design::headerWidth, ruler = 34, row = design::trackHeight;
     explicit Timeline(Editor&);
     void updateExtent();
+    bool interacting() const {
+        return drag_ || seeking_ || loopDrag_;
+    }
     QRectF clipRect(int, const Clip&) const;
 
   protected:
@@ -34,7 +37,10 @@ class Timeline final : public QWidget {
     int sourceTrack_ = 0;
     double startBeat_ = 0, startLength_ = 0;
     QPointF press_;
-    bool resizing_ = false, changed_ = false;
+    bool resizing_ = false, changed_ = false, seeking_ = false;
+    int loopDrag_ = 0;
+    double loopAnchor_ = 0;
+    void moveRuler(QPointF, Qt::KeyboardModifiers);
     int trackAt(double y) const;
     Id hit(QPointF, int&) const;
 };

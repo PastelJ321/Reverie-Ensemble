@@ -10,8 +10,8 @@ Use C++20 and the project's `.clang-format`. On macOS:
 
 ```sh
 xcrun clang-format -i src/core/*.cpp src/core/*.h src/ui/*.cpp src/ui/*.h
-cmake --build build-02-release -j 4
-ctest --test-dir build-02-release --output-on-failure
+cmake --build build-03-release -j 4
+ctest --test-dir build-03-release --output-on-failure
 ```
 
 For DSP, ownership, or parser changes also run the sanitizer configuration in docs/TESTING.md. Test meaningful user behavior: sample timing, note termination, render identity, project round trips, missing media and editing gestures. Do not add UI controls before their actual engine/model behavior exists.

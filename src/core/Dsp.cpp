@@ -23,6 +23,7 @@ Synthesizer::Synthesizer(Preset p, double r, const Sample* s)
 void Synthesizer::reset() noexcept {
     for (auto& v : voices_)
         v = Voice{};
+    sequence_ = {};
 }
 void Synthesizer::noteOn(Id token, int key, float velocity) noexcept {
     Voice* target = &voices_[0];
@@ -46,10 +47,13 @@ void Synthesizer::noteOn(Id token, int key, float velocity) noexcept {
     if (preset_.kind == InstrumentKind::Sampler && !preset_.zones.empty()) {
         int best = -1, distance = 1000;
         int velocityKey = int(velocity * 127);
+        auto sequence = sequence_[std::clamp(key, 0, 127)]++;
         for (int i = 0; i < int(preset_.zones.size()); ++i) {
             const auto& z = preset_.zones[i];
             if (z.sample && key >= z.lowKey && key <= z.highKey && velocityKey >= z.lowVelocity &&
-                velocityKey <= z.highVelocity && std::abs(key - z.rootKey) < distance) {
+                velocityKey <= z.highVelocity &&
+                int(sequence % z.sequenceLength) + 1 == z.sequencePosition &&
+                std::abs(key - z.rootKey) < distance) {
                 best = i;
                 distance = std::abs(key - z.rootKey);
             }
@@ -149,8 +153,24 @@ std::pair<float, float> Synthesizer::next() noexcept {
             const auto idx = std::size_t(v.samplePosition),
                        next = std::min(idx + 1, std::size_t(end) - 1);
             const float f = float(v.samplePosition - double(idx));
-            l = std::lerp(sample->stereo[idx * 2], sample->stereo[next * 2], f);
-            r = std::lerp(sample->stereo[idx * 2 + 1], sample->stereo[next * 2 + 1], f);
+            auto interpolate = [&](int ch) {
+                auto value = [&](std::int64_t frame) {
+                    return sample
+                        ->stereo[std::size_t(std::clamp(frame, std::int64_t(z ? z->start : 0),
+                                                        std::int64_t(end) - 1)) *
+                                     2 +
+                                 ch];
+                };
+                if (!preset_.cubicInterpolation)
+                    return std::lerp(value(idx), value(next), f);
+                float a = value(std::int64_t(idx) - 1), b = value(idx), c = value(next),
+                      d = value(std::int64_t(idx) + 2);
+                return b +
+                       .5f * f *
+                           (c - a + f * (2 * a - 5 * b + 4 * c - d + f * (3 * (b - c) + d - a)));
+            };
+            l = interpolate(0);
+            r = interpolate(1);
             v.samplePosition += v.sampleStep;
         } else if (preset_.kind == InstrumentKind::Drums) {
             v.noise ^= v.noise << 13;
@@ -174,8 +194,14 @@ std::pair<float, float> Synthesizer::next() noexcept {
         }
         v.filterL += filterAlpha_ * (l - v.filterL);
         v.filterR += filterAlpha_ * (r - v.filterR);
-        left += v.filterL * v.env * v.velocity * preset_.gain;
-        right += v.filterR * v.env * v.velocity * preset_.gain;
+        // Preserve the original multiply/add contraction for uncalibrated legacy projects.
+        if (preset_.calibrationGain == 1.f) {
+            left += v.filterL * v.env * v.velocity * preset_.gain;
+            right += v.filterR * v.env * v.velocity * preset_.gain;
+        } else {
+            left += v.filterL * v.env * v.velocity * preset_.gain * preset_.calibrationGain;
+            right += v.filterR * v.env * v.velocity * preset_.gain * preset_.calibrationGain;
+        }
         if (preset_.kind != InstrumentKind::Drums)
             v.phase += v.increment;
         v.phase -= std::floor(v.phase);

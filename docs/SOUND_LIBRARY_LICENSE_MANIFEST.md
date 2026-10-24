@@ -41,3 +41,29 @@ Each melodic instrument uses four distinct original pitch recordings; the percus
 ## Fonts
 
 `assets/fonts/` includes IBM Plex Sans KR Regular/Medium/SemiBold and IBM Plex Mono Regular under SIL Open Font License 1.1. Original IBM copyright and reserved name are retained in OFL.txt / Mono-OFL.txt. Font binaries were reused byte-for-byte from existing related local project resources, then included independently for portable builds. No original sibling resource was changed or moved. The fonts are not sold separately, renamed, modified or relicensed as Apache-2.0. Qt system-font fallback remains available.
+
+## Ensemble Essentials 1.0.0 (0.3 addition)
+
+50 unchanged original WAVs, 4 instruments / 5 recorded patches, approximately 39 MiB. Combined with the 35 existing WAVs: **85 recordings, 13 instruments / 14 recorded patches**, approximately 95 MiB. The 9 synth/drum presets are separate synthesized sounds. No raw audio was normalized, truncated or converted during curation.
+
+| Instrument / patch | Source / rights holder | Selected recordings |
+|---|---|---|
+| Electric Bass / Natural | Karoryfer Samples, D. Smolken, Fashionbass | 3 roots x 2 velocity layers x 2 round-robins = 12 |
+| Hollowbody Electric Guitar / Natural | Karoryfer Samples, D. Smolken, Black And Green Guitars (black instrument) | 4 roots x 2 layers x 2 round-robins = 16 |
+| Same guitar / Staccato | Same original instrument, distinct articulation | 4 recordings; counted as a patch, not another instrument |
+| Concert Grand Piano / Natural | Versilian Studios / VCSL contributors, Kawai | 3 roots x 2 velocity layers = 6 |
+| Acoustic Drum Kit / Natural | Versilian Studios / VCSL contributors | Kick/snare/closed & open hi-hat/high & low tom, 2 round-robins = 12 |
+
+Primary rights evidence checked 2026-10-24:
+
+- [Karoryfer official free-sample policy](https://shop.karoryfer.com/pages/free-samples) states CC0 for these free libraries; Marie Ork remains a separately licensed exception and is excluded.
+- [Fashionbass individual LICENSE](https://github.com/sfzinstruments/karoryfer.fashionbass/blob/0703973b300a6bacb837602be9b588ab64732a72/LICENSE) and [Black And Green Guitars individual LICENSE](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars/blob/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/LICENSE) were independently fetched and confirmed CC0; their original texts/readmes are included in the pack.
+- [VCSL official page](https://versilian-studios.com/vcsl/) and [pinned VCSL README](https://github.com/sgossner/VCSL/blob/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/README.md) identify the sample library as CC0, with commercial/software redistribution allowed.
+- Raw sample revision: VCSL c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e. Piano roots and source gain/offsets were cross-checked against [official Kawai SFZ](https://github.com/sgossner/VCSL/blob/dfcf4a4918771eee884b96ad4493de82ef84daf6/Chordophones/Zithers/Grand%20Piano,%20Kawai.sfz); root keys 48/72/96 correspond to its C2/C4/C6 filenames. Original fine-tuning is not implemented, so no tuning-perfect claim is made.
+- Guitar roots follow [original Black guitar mapping](https://github.com/sfzinstruments/karoryfer.black-and-green-guitars/blob/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Programs/modules/maps_black/ord.sfz); E3 is MIDI 40 in those source names. Bass Ab1/2/3 roots are 32/44/56 in its original mapping.
+
+The complete file inventory, exact bytes, SHA-256, source paths/URLs, repository revisions, instrument grouping and calibration are in [the manifest](../assets/sounds/essentials03/pack.json). No entire multi-gigabyte collection was downloaded. [Developer reproduction script](../scripts/fetch_essentials03.py) requires an explicit --download flag; app/build/test never runs it. Versioned optional archive generation is documented in SOUND_FORMATS.md; no public downloadable release was published in this session.
+
+## Image / code / audio separation
+
+InstrumentArt.cpp creates original QPainter vector silhouettes and detailed illustrations under Apache-2.0. There are no downloaded instrument photos or Apple/third-party artwork assets. Audio is CC0 and fonts remain OFL. Sample permission is not asserted as permission for a photograph or logo. The original Demo Composition is Apache-2.0 content; its rendered guitar bounce uses the included CC0 source sound, not a microphone take or commercial DAW sample.

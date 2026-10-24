@@ -10,6 +10,9 @@ class AudioDeviceManager {
     explicit AudioDeviceManager(AudioEngine&);
     ~AudioDeviceManager();
     bool startOutput(bool forceFailure = false);
+    std::vector<std::string> outputDevices();
+    void configure(int outputIndex, unsigned bufferFrames);
+    std::string deviceReport() const;
     void stopOutput();
     std::vector<std::string> inputDevices();
     bool startCapture(int deviceIndex, AudioRecorder&);

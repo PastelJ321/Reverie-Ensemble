@@ -1,0 +1,17 @@
+<global> ampeg_attack=0.002 ampeg_decay=0.2 ampeg_sustain=100 ampeg_release=0.22
+<region> sample=samples/guitar-e3-p-1.wav lokey=28 hikey=44 pitch_keycenter=40 lovel=0 hivel=78 seq_length=2 seq_position=1
+<region> sample=samples/guitar-e3-p-2.wav lokey=28 hikey=44 pitch_keycenter=40 lovel=0 hivel=78 seq_length=2 seq_position=2
+<region> sample=samples/guitar-e3-f-1.wav lokey=28 hikey=44 pitch_keycenter=40 lovel=79 hivel=127 seq_length=2 seq_position=1
+<region> sample=samples/guitar-e3-f-2.wav lokey=28 hikey=44 pitch_keycenter=40 lovel=79 hivel=127 seq_length=2 seq_position=2
+<region> sample=samples/guitar-c4-p-1.wav lokey=45 hikey=54 pitch_keycenter=48 lovel=0 hivel=78 seq_length=2 seq_position=1
+<region> sample=samples/guitar-c4-p-2.wav lokey=45 hikey=54 pitch_keycenter=48 lovel=0 hivel=78 seq_length=2 seq_position=2
+<region> sample=samples/guitar-c4-f-1.wav lokey=45 hikey=54 pitch_keycenter=48 lovel=79 hivel=127 seq_length=2 seq_position=1
+<region> sample=samples/guitar-c4-f-2.wav lokey=45 hikey=54 pitch_keycenter=48 lovel=79 hivel=127 seq_length=2 seq_position=2
+<region> sample=samples/guitar-c5-p-1.wav lokey=55 hikey=66 pitch_keycenter=60 lovel=0 hivel=78 seq_length=2 seq_position=1
+<region> sample=samples/guitar-c5-p-2.wav lokey=55 hikey=66 pitch_keycenter=60 lovel=0 hivel=78 seq_length=2 seq_position=2
+<region> sample=samples/guitar-c5-f-1.wav lokey=55 hikey=66 pitch_keycenter=60 lovel=79 hivel=127 seq_length=2 seq_position=1
+<region> sample=samples/guitar-c5-f-2.wav lokey=55 hikey=66 pitch_keycenter=60 lovel=79 hivel=127 seq_length=2 seq_position=2
+<region> sample=samples/guitar-c6-p-1.wav lokey=67 hikey=96 pitch_keycenter=72 lovel=0 hivel=78 seq_length=2 seq_position=1
+<region> sample=samples/guitar-c6-p-2.wav lokey=67 hikey=96 pitch_keycenter=72 lovel=0 hivel=78 seq_length=2 seq_position=2
+<region> sample=samples/guitar-c6-f-1.wav lokey=67 hikey=96 pitch_keycenter=72 lovel=79 hivel=127 seq_length=2 seq_position=1
+<region> sample=samples/guitar-c6-f-2.wav lokey=67 hikey=96 pitch_keycenter=72 lovel=79 hivel=127 seq_length=2 seq_position=2

@@ -10,12 +10,31 @@
 namespace reverie {
 using json = nlohmann::json;
 static json presetJson(const Preset& s) {
-    json j = {{"name", s.name},         {"kind", int(s.kind)},    {"wave", int(s.wave)},
-              {"attack", s.attack},     {"decay", s.decay},       {"sustain", s.sustain},
-              {"release", s.release},   {"cutoff", s.cutoff},     {"gain", s.gain},
-              {"color", s.color},       {"rootNote", s.rootNote}, {"sample", s.samplePath},
-              {"source", s.source},     {"license", s.license},   {"instrumentId", s.instrumentId},
-              {"category", s.category}, {"tags", s.tags},         {"zones", json::array()}};
+    json j = {{"name", s.name},
+              {"kind", int(s.kind)},
+              {"wave", int(s.wave)},
+              {"attack", s.attack},
+              {"decay", s.decay},
+              {"sustain", s.sustain},
+              {"release", s.release},
+              {"cutoff", s.cutoff},
+              {"gain", s.gain},
+              {"color", s.color},
+              {"rootNote", s.rootNote},
+              {"sample", s.samplePath},
+              {"source", s.source},
+              {"license", s.license},
+              {"instrumentId", s.instrumentId},
+              {"category", s.category},
+              {"tags", s.tags},
+              {"family", s.family},
+              {"patchId", s.patchId},
+              {"articulation", s.articulation},
+              {"calibrationVersion", s.calibrationVersion},
+              {"calibrationGain", s.calibrationGain},
+              {"auditionGain", s.auditionGain},
+              {"cubicInterpolation", s.cubicInterpolation},
+              {"zones", json::array()}};
     for (const auto& z : s.zones)
         j["zones"].push_back({{"path", z.path},
                               {"lowKey", z.lowKey},
@@ -30,7 +49,9 @@ static json presetJson(const Preset& s) {
                               {"loop", z.loop},
                               {"oneShot", z.oneShot},
                               {"loopContinuous", z.loopContinuous},
-                              {"gain", z.gain}});
+                              {"gain", z.gain},
+                              {"sequenceLength", z.sequenceLength},
+                              {"sequencePosition", z.sequencePosition}});
     return j;
 }
 static Preset readPreset(const json& j) {
@@ -52,6 +73,13 @@ static Preset readPreset(const json& j) {
     s.instrumentId = j.value("instrumentId", "");
     s.category = j.value("category", "");
     s.tags = j.value("tags", "");
+    s.family = j.value("family", "");
+    s.patchId = j.value("patchId", "");
+    s.articulation = j.value("articulation", "");
+    s.calibrationVersion = j.value("calibrationVersion", 0);
+    s.calibrationGain = j.value("calibrationGain", 1.f);
+    s.auditionGain = j.value("auditionGain", 1.f);
+    s.cubicInterpolation = j.value("cubicInterpolation", false);
     for (const auto& v : j.value("zones", json::array())) {
         SampleZone z;
         z.path = v.at("path");
@@ -68,6 +96,8 @@ static Preset readPreset(const json& j) {
         z.oneShot = v.value("oneShot", false);
         z.loopContinuous = v.value("loopContinuous", false);
         z.gain = v.value("gain", 1.f);
+        z.sequenceLength = v.value("sequenceLength", 1);
+        z.sequencePosition = v.value("sequencePosition", 1);
         s.zones.push_back(z);
     }
     Project test;
@@ -138,7 +168,7 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
         return rel;
     };
     json j = {{"format", "Reverie Ensemble"},
-              {"version", 2},
+              {"version", 3},
               {"loopEnabled", p.loopEnabled},
               {"loopStart", p.loopStart},
               {"loopEnd", p.loopEnd},
@@ -209,7 +239,7 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
     std::ifstream f(path);
     json j;
     f >> j;
-    if (j.at("format") != "Reverie Ensemble" || (j.at("version") != 1 && j.at("version") != 2))
+    if (j.at("format") != "Reverie Ensemble" || (j.at("version") < 1 || j.at("version") > 3))
         throw std::runtime_error("Unsupported project format/version");
     LoadResult result;
     auto& p = result.project;
@@ -218,7 +248,7 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
     p.numerator = j.at("numerator");
     p.denominator = j.at("denominator");
     p.master = j.at("master");
-    p.formatVersion = 2;
+    p.formatVersion = 3;
     p.loopEnabled = j.value("loopEnabled", false);
     p.loopStart = j.value("loopStart", 0.);
     p.loopEnd = j.value("loopEnd", 16.);

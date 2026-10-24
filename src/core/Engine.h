@@ -87,7 +87,8 @@ struct AudioProcessingGraph {
 };
 class AudioEngine {
   public:
-    explicit AudioEngine(double rate = defaultRate, bool transportTools = true);
+    explicit AudioEngine(double rate = defaultRate, bool transportTools = true,
+                         bool protectOutput = true);
     void audition(const Track&, int key, float velocity = .7f, double duration = .45);
     void releaseAudition() {
         releasePreview_.store(true);
@@ -95,7 +96,9 @@ class AudioEngine {
     ~AudioEngine(); // Stop the device before destroying the engine.
     AudioEngine(const AudioEngine&) = delete;
     void publish(const Project&); // Control thread only; prepare/allocation here.
-    void collect(); // Control thread only; graph reclamation never occurs in callback.
+    void collect();
+    void setSampleRateStopped(double); // caller must stop/join the device first // Control thread
+                                       // only; graph reclamation never occurs in callback.
     void process(float*, std::uint32_t) noexcept; // Single audio consumer only.
     void setPlaying(bool play) {
         playing_.store(play);
@@ -108,6 +111,10 @@ class AudioEngine {
     }
     void seek(std::int64_t frame) {
         seek_.store(std::max(std::int64_t(0), frame));
+    }
+    std::int64_t displayPosition() const {
+        auto pending = seek_.load();
+        return pending >= 0 ? pending : position_.load();
     }
     std::int64_t position() const {
         return position_.load();
@@ -137,6 +144,7 @@ class AudioEngine {
   private:
     double rate_;
     bool transportTools_;
+    bool protectOutput_ = true;
     std::atomic<AudioProcessingGraph*> previewPending_{nullptr};
     AudioProcessingGraph* preview_ = nullptr;
     std::int64_t previewPosition_ = 0, previewLimit_ = 0;

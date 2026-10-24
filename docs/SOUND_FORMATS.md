@@ -1,6 +1,6 @@
-# Multisampler and sound packs — 0.2
+# Multisampler and sound packs — 0.3
 
-The original Reverie synthesizer/scheduler/mixer is retained. A `SampleZone` maps key and velocity ranges to an immutable cached WAV, root pitch, source start/end, optional forward-loop points, one-shot flag and gain. Voices store an integer zone index and sample position; callback processing neither decodes files nor allocates/frees sample memory. Each track has 32 voices. Overlapping matching zones select the nearest root (first zone wins equal distances); layered simultaneous regions and round-robin are not implemented. Playback uses linear interpolation, not time stretching.
+The original Reverie synthesizer/scheduler/mixer is retained. A `SampleZone` maps key and velocity ranges to an immutable cached WAV, root pitch, source start/end, optional forward-loop points, one-shot flag and gain. Voices store an integer zone index and sample position; callback processing neither decodes files nor allocates/frees sample memory. Each track has 32 voices. Overlapping matching zones select the nearest root (first zone wins equal distances); layered simultaneous regions are not implemented; 0.3 adds the round-robin subset below. Legacy playback uses linear interpolation; new selected library presets opt into cubic interpolation, without time stretching.
 
 ## SFZ subset
 
@@ -42,3 +42,25 @@ External collection links open official source pages only on explicit user actio
 ## SoundFont status
 
 SF2 and SF3 are not SFZ. This release does not load them and does not link FluidSynth. No Bank/Program picker or placeholder SoundFont button is provided. A later optional backend must prepare/load/free off the callback, explicitly validate render/note API allocation/locking behavior, share the offline path, and document LGPL/build/transitive dependencies and user-provided SoundFont rights. Basic SFZ support and a real included acoustic pack are functional now; SoundFont hosting remains unfinished.
+
+## 0.3 additions and optional pack releases
+
+0.3 supports seq_length/seq_position (1-based, maximum 128) in the same SFZ sections. Round-robin advances per MIDI key using fixed counters; independent group sequences/layered simultaneous regions are not supported. Presets selected from the new library use four-point cubic interpolation; this is not a band-limited anti-aliasing resampler. Legacy projects retain linear interpolation and neutral calibration. Sustain pedal, release triggers, loop crossfade, disk streaming and FluidSynth remain absent.
+
+Pack entries now optionally provide instrumentId, patchId, patchName, family, articulation, calibrationVersion, calibrationDb and auditionDb. The historical instruments array contains patch entries; instrumentId groups multiple entries into one browser instrument. Missing fields preserve v1 pack behavior. Source WAV data is unchanged; calibration gains are applied during rendering and embedded in projects. The bundled Community Essentials version is 1.1.0 (same 35 WAVs), Ensemble Essentials is 1.0.0 (50 WAVs / 4 new instruments / 5 patches).
+
+A reproducible, consent-based developer release workflow is available without publishing anything automatically:
+
+```sh
+# Explicit developer download only; never part of configure/startup:
+python3 scripts/fetch_essentials03.py --download
+cmake --build build-03-release -j 4
+build-03-release/reverie-calibrate assets/sounds out/levels.csv --apply
+# Verify payload and generate versioned ZIP + SHA-256 + download-size catalog:
+python3 scripts/package_soundpack.py assets/sounds/essentials03 out/packs \
+  --base-url https://github.com/PastelJ321/Reverie-Ensemble/releases/download/sounds-essentials-1.0.0
+```
+
+The publisher must review/license-audit the output, create the matching GitHub Release, and upload those exact generated files before advertising the catalog URL. **No such public Release was created in this session**; the command's URL is a proposed publication location, not a working installer endpoint. Never overwrite a published version: change manifest version, regenerate and publish a new immutable asset/catalog. Source revision and raw per-file hash records remain inside the pack. Catalog archive hash is integrity data, not a publisher signature.
+
+The current app deliberately installs **already unpacked verified folders**, so users download only after seeing source/license/size and extract with their system archive tool before choosing Install local sound pack. There is no in-app archive extractor or remote catalog downloader to imply verification of ZIP traversal handling. The packaging script rejects escapes and emits only listed files; the existing installer rechecks boundaries and integrity after extraction. Small bundled instruments remain offline-ready regardless of release availability.

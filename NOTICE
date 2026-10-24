@@ -1,4 +1,4 @@
-Reverie Ensemble 0.2.0
+Reverie Ensemble 0.3.0
 Developed by QuadraJ.
 Copyright 2026 QuadraJ and contributors.
 
@@ -23,3 +23,11 @@ VSCO 2 CE. Recorded by Sam Gossner and Simon Dalzell (Ivy Audio); sample
 editing by Elan Hickler / Soundemote. QuadraJ created the subset mappings.
 See assets/fonts/*OFL.txt and assets/sounds/factory/CC0-1.0.txt, pack.json,
 and docs/SOUND_LIBRARY_LICENSE_MANIFEST.md for provenance and checksums.
+
+Ensemble Essentials includes CC0 recordings from Karoryfer Samples / D. Smolken
+(Fashionbass and Black And Green Guitars) and Versilian Studios VCSL.
+Per-file immutable source URLs, revisions and SHA-256 are in its pack.json;
+individual original CC0/readme notices are retained inside the pack.
+InstrumentArt vector geometry and demonstration composition are original
+QuadraJ code/content under Apache-2.0; the recorded WAV assets remain CC0.
+No Apple instrument images, samples or presets are included.

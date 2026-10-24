@@ -1,0 +1,7 @@
+<global> ampeg_attack=0.002 ampeg_decay=0.2 ampeg_sustain=100 ampeg_release=0.4
+<region> sample=samples/grand-C2-1.wav volume=30.304520 offset=13 lokey=21 hikey=60 pitch_keycenter=48 lovel=0 hivel=78
+<region> sample=samples/grand-C2-3.wav volume=7.765060 offset=0 lokey=21 hikey=60 pitch_keycenter=48 lovel=79 hivel=127
+<region> sample=samples/grand-C4-1.wav volume=36.000888 offset=0 lokey=61 hikey=84 pitch_keycenter=72 lovel=0 hivel=78
+<region> sample=samples/grand-C4-3.wav volume=8.582979 offset=0 lokey=61 hikey=84 pitch_keycenter=72 lovel=79 hivel=127
+<region> sample=samples/grand-C6-1.wav volume=36.458918 offset=0 lokey=85 hikey=108 pitch_keycenter=96 lovel=0 hivel=78
+<region> sample=samples/grand-C6-3.wav volume=2.975836 offset=0 lokey=85 hikey=108 pitch_keycenter=96 lovel=79 hivel=127

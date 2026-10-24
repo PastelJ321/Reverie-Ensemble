@@ -1,422 +1,495 @@
 {
-  "id": "quadraj.community-essentials",
-  "version": "1.0.0",
-  "name": "Community Essentials",
   "author": "Versilian Studios: Sam Gossner; Ivy Audio: Simon Dalzell; sample editing: Elan Hickler / Soundemote; QuadraJ mappings",
-  "source": "https://versilian-studios.com/vsco-community/",
-  "license": "CC0-1.0",
-  "upstreamRevision": "440300901dfe9275fd84e0b7763af1f8443ae62e",
-  "installSize": 58673138,
-  "sha256": "db8f9b15ea1a3d575c414f1a0e501411e749b0e50f272548a2bbf33a4fdb0d29",
-  "instruments": [
-    {
-      "id": "quadraj.cc0.upright",
-      "name": "Upright Piano",
-      "category": "Piano & Keys",
-      "tags": "acoustic recorded multisample upright piano",
-      "format": "sfz",
-      "file": "upright.sfz",
-      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/VSUpright1.sfz"
-    },
-    {
-      "id": "quadraj.cc0.violin",
-      "name": "Solo Violin",
-      "category": "Strings",
-      "tags": "acoustic recorded multisample solo violin",
-      "format": "sfz",
-      "file": "violin.sfz",
-      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/SViolinVib.sfz"
-    },
-    {
-      "id": "quadraj.cc0.strings",
-      "name": "Violin Ensemble",
-      "category": "Orchestral",
-      "tags": "acoustic recorded multisample violin ensemble",
-      "format": "sfz",
-      "file": "strings.sfz",
-      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/ViolinEnsSusVib.sfz"
-    },
-    {
-      "id": "quadraj.cc0.cello",
-      "name": "Cello Ensemble",
-      "category": "Strings",
-      "tags": "acoustic recorded multisample cello ensemble",
-      "format": "sfz",
-      "file": "cello.sfz",
-      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/CelloEnsSusVib.sfz"
-    },
-    {
-      "id": "quadraj.cc0.bass",
-      "name": "Pizzicato Contrabass",
-      "category": "Guitar & Bass",
-      "tags": "acoustic recorded multisample pizzicato contrabass",
-      "format": "sfz",
-      "file": "bass.sfz",
-      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/ContrabassPizz.sfz"
-    },
-    {
-      "id": "quadraj.cc0.flute",
-      "name": "Concert Flute",
-      "category": "Woodwinds",
-      "tags": "acoustic recorded multisample concert flute",
-      "format": "sfz",
-      "file": "flute.sfz",
-      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/FluteExpVib.sfz"
-    },
-    {
-      "id": "quadraj.cc0.trumpet",
-      "name": "Concert Trumpet",
-      "category": "Brass",
-      "tags": "acoustic recorded multisample concert trumpet",
-      "format": "sfz",
-      "file": "trumpet.sfz",
-      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/TrumpetSus.sfz"
-    },
-    {
-      "id": "quadraj.cc0.marimba",
-      "name": "Marimba",
-      "category": "Melodic Percussion",
-      "tags": "acoustic recorded multisample marimba",
-      "format": "sfz",
-      "file": "marimba.sfz",
-      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/Marimba.sfz"
-    },
-    {
-      "id": "quadraj.cc0.percussion",
-      "name": "Recorded Percussion Kit",
-      "category": "Drums & Percussion",
-      "tags": "recorded bass drum snare cymbal GM",
-      "format": "sfz",
-      "file": "percussion.sfz"
-    }
-  ],
+  "calibrationPolicy": "v1; new preset selection only; never applied automatically on project load",
   "files": [
     {
-      "path": "samples/upright-24.wav",
-      "size": 3392398,
-      "sha256": "27ebfc57cdf9a4a4a956f91ba338c093619972c99a57d0663bc1452f16c91329",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Nr1/UR1_C1_mf_RR2.wav",
       "original": "Keys/Upright Nr1/UR1_C1_mf_RR2.wav",
-      "rootKey": 24
+      "path": "samples/upright-24.wav",
+      "rootKey": 24,
+      "sha256": "27ebfc57cdf9a4a4a956f91ba338c093619972c99a57d0663bc1452f16c91329",
+      "size": 3392398,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Nr1/UR1_C1_mf_RR2.wav"
     },
     {
-      "path": "samples/upright-55.wav",
-      "size": 2602206,
-      "sha256": "f5285e48d4a4c6083216e0efdbb47d5d87304206fd0dedac062136cf0f20a166",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Nr1/UR1_G3_mf_RR1.wav",
       "original": "Keys/Upright Nr1/UR1_G3_mf_RR1.wav",
-      "rootKey": 55
+      "path": "samples/upright-55.wav",
+      "rootKey": 55,
+      "sha256": "f5285e48d4a4c6083216e0efdbb47d5d87304206fd0dedac062136cf0f20a166",
+      "size": 2602206,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Nr1/UR1_G3_mf_RR1.wav"
     },
     {
-      "path": "samples/upright-79.wav",
-      "size": 1665486,
-      "sha256": "16407000a20cafb6602078ea61e19bddbeb709810f7d1b931528e86b3dd96787",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Nr1/UR1_G5_mf_RR1.wav",
       "original": "Keys/Upright Nr1/UR1_G5_mf_RR1.wav",
-      "rootKey": 79
+      "path": "samples/upright-79.wav",
+      "rootKey": 79,
+      "sha256": "16407000a20cafb6602078ea61e19bddbeb709810f7d1b931528e86b3dd96787",
+      "size": 1665486,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Nr1/UR1_G5_mf_RR1.wav"
     },
     {
-      "path": "samples/upright-103.wav",
-      "size": 446034,
-      "sha256": "94c6d713dc3fea6fe3e1554d5d1b8c4d3f627a304a950fa14072911cdd4e59d9",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Nr1/UR1_G7_mf_RR2.wav",
       "original": "Keys/Upright Nr1/UR1_G7_mf_RR2.wav",
-      "rootKey": 103
+      "path": "samples/upright-103.wav",
+      "rootKey": 103,
+      "sha256": "94c6d713dc3fea6fe3e1554d5d1b8c4d3f627a304a950fa14072911cdd4e59d9",
+      "size": 446034,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Keys/Upright%20Nr1/UR1_G7_mf_RR2.wav"
     },
     {
-      "path": "samples/violin-55.wav",
-      "size": 2936890,
-      "sha256": "80bae3776b0ccd3d4774f47429e829c7764f5fe6061ff844a8affc6ac68b7899",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Violin/Arco%20Vib/LLVln_ArcoVib_G3_f.wav",
       "original": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_G3_f.wav",
-      "rootKey": 55
+      "path": "samples/violin-55.wav",
+      "rootKey": 55,
+      "sha256": "80bae3776b0ccd3d4774f47429e829c7764f5fe6061ff844a8affc6ac68b7899",
+      "size": 2936890,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Violin/Arco%20Vib/LLVln_ArcoVib_G3_f.wav"
     },
     {
-      "path": "samples/violin-69.wav",
-      "size": 2488526,
-      "sha256": "19e5374658351508a9e2c929e871a43caff41e62d5e3363ead6f88428a9ab863",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Violin/Arco%20Vib/LLVln_ArcoVib_A4_f.wav",
       "original": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A4_f.wav",
-      "rootKey": 69
+      "path": "samples/violin-69.wav",
+      "rootKey": 69,
+      "sha256": "19e5374658351508a9e2c929e871a43caff41e62d5e3363ead6f88428a9ab863",
+      "size": 2488526,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Violin/Arco%20Vib/LLVln_ArcoVib_A4_f.wav"
     },
     {
-      "path": "samples/violin-81.wav",
-      "size": 1986834,
-      "sha256": "0558d79d23db55c710e664e6283b62619f5a582ce261a5c082700a0d01536627",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Violin/Arco%20Vib/LLVln_ArcoVib_A5_f.wav",
       "original": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_A5_f.wav",
-      "rootKey": 81
+      "path": "samples/violin-81.wav",
+      "rootKey": 81,
+      "sha256": "0558d79d23db55c710e664e6283b62619f5a582ce261a5c082700a0d01536627",
+      "size": 1986834,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Violin/Arco%20Vib/LLVln_ArcoVib_A5_f.wav"
     },
     {
-      "path": "samples/violin-96.wav",
-      "size": 2176486,
-      "sha256": "f8223aed62911ef3f6937111bf3cdcc36fc25a636d4f99480b97029c4d28f393",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Violin/Arco%20Vib/LLVln_ArcoVib_C7_f.wav",
       "original": "Strings/Solo Violin/Arco Vib/LLVln_ArcoVib_C7_f.wav",
-      "rootKey": 96
+      "path": "samples/violin-96.wav",
+      "rootKey": 96,
+      "sha256": "f8223aed62911ef3f6937111bf3cdcc36fc25a636d4f99480b97029c4d28f393",
+      "size": 2176486,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Violin/Arco%20Vib/LLVln_ArcoVib_C7_f.wav"
     },
     {
-      "path": "samples/strings-43.wav",
-      "size": 2341712,
-      "sha256": "feb96c5064fbef43087c495d61a9cab9f70ff1be5b22905147c1f86d5f89547c",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Violin%20Section/susVib/VlnEns_susVib_G2_v1.wav",
       "original": "Strings/Violin Section/susVib/VlnEns_susVib_G2_v1.wav",
-      "rootKey": 55
+      "path": "samples/strings-43.wav",
+      "rootKey": 55,
+      "sha256": "feb96c5064fbef43087c495d61a9cab9f70ff1be5b22905147c1f86d5f89547c",
+      "size": 2341712,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Violin%20Section/susVib/VlnEns_susVib_G2_v1.wav"
     },
     {
-      "path": "samples/strings-50.wav",
-      "size": 2061808,
-      "sha256": "583e660bc5daa4e094aef5fc014fbb92751040be8741ed7a16847306a1fe0a99",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Violin%20Section/susVib/VlnEns_susVib_D3_v1.wav",
       "original": "Strings/Violin Section/susVib/VlnEns_susVib_D3_v1.wav",
-      "rootKey": 62
+      "path": "samples/strings-50.wav",
+      "rootKey": 62,
+      "sha256": "583e660bc5daa4e094aef5fc014fbb92751040be8741ed7a16847306a1fe0a99",
+      "size": 2061808,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Violin%20Section/susVib/VlnEns_susVib_D3_v1.wav"
     },
     {
-      "path": "samples/strings-64.wav",
-      "size": 2315540,
-      "sha256": "787fb4bcfb47d5c88ee1573c8db15f32d345386301be4a8eea6a825847413ae2",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Violin%20Section/susVib/VlnEns_susVib_E4_v1.wav",
       "original": "Strings/Violin Section/susVib/VlnEns_susVib_E4_v1.wav",
-      "rootKey": 76
+      "path": "samples/strings-64.wav",
+      "rootKey": 76,
+      "sha256": "787fb4bcfb47d5c88ee1573c8db15f32d345386301be4a8eea6a825847413ae2",
+      "size": 2315540,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Violin%20Section/susVib/VlnEns_susVib_E4_v1.wav"
     },
     {
-      "path": "samples/strings-74.wav",
-      "size": 2116352,
-      "sha256": "f8d870457826c94270b9c3ead8e8ec02cb7e6c4a3481cded055641b7fab7df62",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Violin%20Section/susVib/VlnEns_susVib_D5_v1.wav",
       "original": "Strings/Violin Section/susVib/VlnEns_susVib_D5_v1.wav",
-      "rootKey": 86
+      "path": "samples/strings-74.wav",
+      "rootKey": 86,
+      "sha256": "f8d870457826c94270b9c3ead8e8ec02cb7e6c4a3481cded055641b7fab7df62",
+      "size": 2116352,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Violin%20Section/susVib/VlnEns_susVib_D5_v1.wav"
     },
     {
-      "path": "samples/cello-24.wav",
-      "size": 2347376,
-      "sha256": "abdcea431f384e135c469b0f3e4ac2a437f282f521dc5bcbe22abc221536e8de",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_C1_v1_1.wav",
       "original": "Strings/Cello Section/susvib/susvib_C1_v1_1.wav",
-      "rootKey": 36
+      "path": "samples/cello-24.wav",
+      "rootKey": 36,
+      "sha256": "abdcea431f384e135c469b0f3e4ac2a437f282f521dc5bcbe22abc221536e8de",
+      "size": 2347376,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_C1_v1_1.wav"
     },
     {
-      "path": "samples/cello-38.wav",
-      "size": 2550956,
-      "sha256": "e8640dec9febc6e39fcf06b19d2c95a85d5ff8c38f13c9879e69f551eaf38ab8",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_D2_v1_1.wav",
       "original": "Strings/Cello Section/susvib/susvib_D2_v1_1.wav",
-      "rootKey": 50
+      "path": "samples/cello-38.wav",
+      "rootKey": 50,
+      "sha256": "e8640dec9febc6e39fcf06b19d2c95a85d5ff8c38f13c9879e69f551eaf38ab8",
+      "size": 2550956,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_D2_v1_1.wav"
     },
     {
-      "path": "samples/cello-52.wav",
-      "size": 2456672,
-      "sha256": "d2f961e30bf64021cf4acbd88e0e7a1fd1840943ae78c62a711bcce3d109216e",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_E3_v1_1.wav",
       "original": "Strings/Cello Section/susvib/susvib_E3_v1_1.wav",
-      "rootKey": 64
+      "path": "samples/cello-52.wav",
+      "rootKey": 64,
+      "sha256": "d2f961e30bf64021cf4acbd88e0e7a1fd1840943ae78c62a711bcce3d109216e",
+      "size": 2456672,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_E3_v1_1.wav"
     },
     {
-      "path": "samples/cello-65.wav",
-      "size": 1922948,
-      "sha256": "a9888547b4b684c7649a882e693d61964848f18401a18e4646a8449b40c08bad",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_F4_v1_1.wav",
       "original": "Strings/Cello Section/susvib/susvib_F4_v1_1.wav",
-      "rootKey": 77
+      "path": "samples/cello-65.wav",
+      "rootKey": 77,
+      "sha256": "a9888547b4b684c7649a882e693d61964848f18401a18e4646a8449b40c08bad",
+      "size": 1922948,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Cello%20Section/susvib/susvib_F4_v1_1.wav"
     },
     {
-      "path": "samples/bass-16.wav",
-      "size": 423964,
-      "sha256": "7901d4aa056d2a6057a264ce98fc9e66a7ce48575d077a30f14083aa798cd188",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Contrabass/Pizz/BKCtbss_Pizz_E0_v1_rr1.wav",
       "original": "Strings/Solo Contrabass/Pizz/BKCtbss_Pizz_E0_v1_rr1.wav",
-      "rootKey": 28
+      "path": "samples/bass-16.wav",
+      "rootKey": 28,
+      "sha256": "7901d4aa056d2a6057a264ce98fc9e66a7ce48575d077a30f14083aa798cd188",
+      "size": 423964,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Contrabass/Pizz/BKCtbss_Pizz_E0_v1_rr1.wav"
     },
     {
-      "path": "samples/bass-24.wav",
-      "size": 270720,
-      "sha256": "5591160a867b21ba193d601390c9e1f35ec8d5deb0de686a410d25a98a103b06",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Contrabass/Pizz/BKCtbss_Pizz_C1_v1_rr1.wav",
       "original": "Strings/Solo Contrabass/Pizz/BKCtbss_Pizz_C1_v1_rr1.wav",
-      "rootKey": 36
+      "path": "samples/bass-24.wav",
+      "rootKey": 36,
+      "sha256": "5591160a867b21ba193d601390c9e1f35ec8d5deb0de686a410d25a98a103b06",
+      "size": 270720,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Contrabass/Pizz/BKCtbss_Pizz_C1_v1_rr1.wav"
     },
     {
-      "path": "samples/bass-33.wav",
-      "size": 623260,
-      "sha256": "c88e632ac4f716d4e85112d6ea5bbe2d27d67019296787c25d27178a9e5f18ac",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Contrabass/Pizz/BKCtbss_Pizz_A1_v1_rr1.wav",
       "original": "Strings/Solo Contrabass/Pizz/BKCtbss_Pizz_A1_v1_rr1.wav",
-      "rootKey": 45
+      "path": "samples/bass-33.wav",
+      "rootKey": 45,
+      "sha256": "c88e632ac4f716d4e85112d6ea5bbe2d27d67019296787c25d27178a9e5f18ac",
+      "size": 623260,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Contrabass/Pizz/BKCtbss_Pizz_A1_v1_rr1.wav"
     },
     {
-      "path": "samples/bass-47.wav",
-      "size": 417472,
-      "sha256": "58d70398829e87b9bd3b43fb3d384d9bc3e0aa9bfe70175ec2f4e7a914226c8b",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Contrabass/Pizz/BKCtbss_Pizz_B2_v1_rr1.wav",
       "original": "Strings/Solo Contrabass/Pizz/BKCtbss_Pizz_B2_v1_rr1.wav",
-      "rootKey": 59
+      "path": "samples/bass-47.wav",
+      "rootKey": 59,
+      "sha256": "58d70398829e87b9bd3b43fb3d384d9bc3e0aa9bfe70175ec2f4e7a914226c8b",
+      "size": 417472,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Solo%20Contrabass/Pizz/BKCtbss_Pizz_B2_v1_rr1.wav"
     },
     {
-      "path": "samples/flute-48.wav",
-      "size": 2642046,
-      "sha256": "5fde88f6ce3994f8a5c3b38d2c31e3245f2fcd563d6334e598d38bb9d6004af6",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/expvib/LDFlute_expvib_C3_v1_1.wav",
       "original": "Woodwinds/Flute/expvib/LDFlute_expvib_C3_v1_1.wav",
-      "rootKey": 60
+      "path": "samples/flute-48.wav",
+      "rootKey": 60,
+      "sha256": "5fde88f6ce3994f8a5c3b38d2c31e3245f2fcd563d6334e598d38bb9d6004af6",
+      "size": 2642046,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/expvib/LDFlute_expvib_C3_v1_1.wav"
     },
     {
-      "path": "samples/flute-60.wav",
-      "size": 3142338,
-      "sha256": "af29be391cd3de946c8ff263a05f349a3c85e7298deed183339004a2ab1cad26",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/expvib/LDFlute_expvib_C4_v1_1.wav",
       "original": "Woodwinds/Flute/expvib/LDFlute_expvib_C4_v1_1.wav",
-      "rootKey": 72
+      "path": "samples/flute-60.wav",
+      "rootKey": 72,
+      "sha256": "af29be391cd3de946c8ff263a05f349a3c85e7298deed183339004a2ab1cad26",
+      "size": 3142338,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/expvib/LDFlute_expvib_C4_v1_1.wav"
     },
     {
-      "path": "samples/flute-72.wav",
-      "size": 3190830,
-      "sha256": "7f85ac8b21270bacf48d37e39b0c59ad25b3710bf270150940a948369f30028a",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/expvib/LDFlute_expvib_C5_v1_1.wav",
       "original": "Woodwinds/Flute/expvib/LDFlute_expvib_C5_v1_1.wav",
-      "rootKey": 84
+      "path": "samples/flute-72.wav",
+      "rootKey": 84,
+      "sha256": "7f85ac8b21270bacf48d37e39b0c59ad25b3710bf270150940a948369f30028a",
+      "size": 3190830,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/expvib/LDFlute_expvib_C5_v1_1.wav"
     },
     {
-      "path": "samples/flute-84.wav",
-      "size": 1091082,
-      "sha256": "fdf1cab7e2e6cc7fc088fdbc77d735638fc3a314f4fcb9ccd1bfb7bcf064040c",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/expvib/LDFlute_expvib_C6_v1_1.wav",
       "original": "Woodwinds/Flute/expvib/LDFlute_expvib_C6_v1_1.wav",
-      "rootKey": 96
+      "path": "samples/flute-84.wav",
+      "rootKey": 96,
+      "sha256": "fdf1cab7e2e6cc7fc088fdbc77d735638fc3a314f4fcb9ccd1bfb7bcf064040c",
+      "size": 1091082,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/expvib/LDFlute_expvib_C6_v1_1.wav"
     },
     {
-      "path": "samples/trumpet-41.wav",
-      "size": 980856,
-      "sha256": "31992fbdf596d77e9464dc57166718389f13870f8b9b1f1e83380f5ec2217c87",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Brass/Trumpet/sus/Sum_SHTrumpet_sus_F2_v3_rr1.wav",
       "original": "Brass/Trumpet/sus/Sum_SHTrumpet_sus_F2_v3_rr1.wav",
-      "rootKey": 53
+      "path": "samples/trumpet-41.wav",
+      "rootKey": 53,
+      "sha256": "31992fbdf596d77e9464dc57166718389f13870f8b9b1f1e83380f5ec2217c87",
+      "size": 980856,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Brass/Trumpet/sus/Sum_SHTrumpet_sus_F2_v3_rr1.wav"
     },
     {
-      "path": "samples/trumpet-51.wav",
-      "size": 1654796,
-      "sha256": "8cf8ffb7948c8d787fa9dd2469ff7fc60ad26f079721ed038c9d6a9d6b402318",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Brass/Trumpet/sus/Sum_SHTrumpet_sus_D%233_v3_rr1.wav",
       "original": "Brass/Trumpet/sus/Sum_SHTrumpet_sus_D#3_v3_rr1.wav",
-      "rootKey": 63
+      "path": "samples/trumpet-51.wav",
+      "rootKey": 63,
+      "sha256": "8cf8ffb7948c8d787fa9dd2469ff7fc60ad26f079721ed038c9d6a9d6b402318",
+      "size": 1654796,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Brass/Trumpet/sus/Sum_SHTrumpet_sus_D%233_v3_rr1.wav"
     },
     {
-      "path": "samples/trumpet-62.wav",
-      "size": 1422408,
-      "sha256": "71d77fc5c3c43b9453f17293c6039bf8554dec6581ca15c14c45893f8bc57566",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Brass/Trumpet/sus/Sum_SHTrumpet_sus_D4_v3_rr1.wav",
       "original": "Brass/Trumpet/sus/Sum_SHTrumpet_sus_D4_v3_rr1.wav",
-      "rootKey": 74
+      "path": "samples/trumpet-62.wav",
+      "rootKey": 74,
+      "sha256": "71d77fc5c3c43b9453f17293c6039bf8554dec6581ca15c14c45893f8bc57566",
+      "size": 1422408,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Brass/Trumpet/sus/Sum_SHTrumpet_sus_D4_v3_rr1.wav"
     },
     {
-      "path": "samples/trumpet-72.wav",
-      "size": 1339832,
-      "sha256": "ba7dc7050f277c5bba6c59a6dd330c2d50e29dc1d97bd19fb6bcbba4a8cad4d5",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Brass/Trumpet/sus/Sum_SHTrumpet_sus_C5_v3_rr1.wav",
       "original": "Brass/Trumpet/sus/Sum_SHTrumpet_sus_C5_v3_rr1.wav",
-      "rootKey": 84
+      "path": "samples/trumpet-72.wav",
+      "rootKey": 84,
+      "sha256": "ba7dc7050f277c5bba6c59a6dd330c2d50e29dc1d97bd19fb6bcbba4a8cad4d5",
+      "size": 1339832,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Brass/Trumpet/sus/Sum_SHTrumpet_sus_C5_v3_rr1.wav"
     },
     {
-      "path": "samples/marimba-29.wav",
-      "size": 972392,
-      "sha256": "c5cb5ce59540b0a23628a919e90153a6cee9bb35325b056e0710c12b64f0b193",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Marimba/Marimba_hit_Outrigger_F1_loud_01.wav",
       "original": "Percussion/Marimba/Marimba_hit_Outrigger_F1_loud_01.wav",
-      "rootKey": 41
+      "path": "samples/marimba-29.wav",
+      "rootKey": 41,
+      "sha256": "c5cb5ce59540b0a23628a919e90153a6cee9bb35325b056e0710c12b64f0b193",
+      "size": 972392,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Marimba/Marimba_hit_Outrigger_F1_loud_01.wav"
     },
     {
-      "path": "samples/marimba-47.wav",
-      "size": 1585778,
-      "sha256": "a329138008daae1c03652822d7079c0e1e9941071b8c22195e1985f0c685fdeb",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Marimba/Marimba_hit_Outrigger_B2_loud_01.wav",
       "original": "Percussion/Marimba/Marimba_hit_Outrigger_B2_loud_01.wav",
-      "rootKey": 59
+      "path": "samples/marimba-47.wav",
+      "rootKey": 59,
+      "sha256": "a329138008daae1c03652822d7079c0e1e9941071b8c22195e1985f0c685fdeb",
+      "size": 1585778,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Marimba/Marimba_hit_Outrigger_B2_loud_01.wav"
     },
     {
-      "path": "samples/marimba-67.wav",
-      "size": 800102,
-      "sha256": "36f39f9f24789001add2b4c440defb7641178b0e8449c5cb7f1960bccaf0aaaf",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Marimba/Marimba_hit_Outrigger_G4_loud_01.wav",
       "original": "Percussion/Marimba/Marimba_hit_Outrigger_G4_loud_01.wav",
-      "rootKey": 79
+      "path": "samples/marimba-67.wav",
+      "rootKey": 79,
+      "sha256": "36f39f9f24789001add2b4c440defb7641178b0e8449c5cb7f1960bccaf0aaaf",
+      "size": 800102,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Marimba/Marimba_hit_Outrigger_G4_loud_01.wav"
     },
     {
-      "path": "samples/marimba-84.wav",
-      "size": 472142,
-      "sha256": "2e42b1b6f6923f32e3daadc12b063e94d15af20fa410ddcb267eb906fd6e0e89",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Marimba/Marimba_hit_Outrigger_C6_loud_01.wav",
       "original": "Percussion/Marimba/Marimba_hit_Outrigger_C6_loud_01.wav",
-      "rootKey": 96
+      "path": "samples/marimba-84.wav",
+      "rootKey": 96,
+      "sha256": "2e42b1b6f6923f32e3daadc12b063e94d15af20fa410ddcb267eb906fd6e0e89",
+      "size": 472142,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/Marimba/Marimba_hit_Outrigger_C6_loud_01.wav"
     },
     {
+      "original": "Percussion/BDrumNewhit_v3_rr1_Sum.wav",
       "path": "samples/drums-36.wav",
-      "size": 367124,
       "sha256": "a2d8829e8b2b59e8afb12fa396b01758827059339c2a84ad066d17b36c82d1ff",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/BDrumNewhit_v3_rr1_Sum.wav",
-      "original": "Percussion/BDrumNewhit_v3_rr1_Sum.wav"
+      "size": 367124,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/BDrumNewhit_v3_rr1_Sum.wav"
     },
     {
+      "original": "VSCO 1 Percussion/drums/snare/OldSnare/snare_f.wav",
       "path": "samples/drums-38.wav",
-      "size": 58134,
       "sha256": "c332f9548c64202a6740d6ee327b17f87e1fd13fee034a9ad58fc8b4c07a80f2",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/VSCO%201%20Percussion/drums/snare/OldSnare/snare_f.wav",
-      "original": "VSCO 1 Percussion/drums/snare/OldSnare/snare_f.wav"
+      "size": 58134,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/VSCO%201%20Percussion/drums/snare/OldSnare/snare_f.wav"
     },
     {
+      "original": "Percussion/susCymb1-hitstick_mp_rr1.wav",
       "path": "samples/drums-42.wav",
-      "size": 1399926,
       "sha256": "17294cefa7f50367d1d9ae885a5f63a52eab372b90aeb7c3a8b400942cc95b9f",
-      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/susCymb1-hitstick_mp_rr1.wav",
-      "original": "Percussion/susCymb1-hitstick_mp_rr1.wav"
+      "size": 1399926,
+      "source": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Percussion/susCymb1-hitstick_mp_rr1.wav"
     },
     {
       "path": "bass.sfz",
-      "size": 357,
-      "sha256": "8bc46640f6f02953869140ad6c963e050b48178b3371008f2c395b5aab1d1318"
+      "sha256": "8bc46640f6f02953869140ad6c963e050b48178b3371008f2c395b5aab1d1318",
+      "size": 357
     },
     {
       "path": "cello.sfz",
-      "size": 361,
-      "sha256": "c3a678dfe058fd7175f150a95171bbe328db83bf13b4d908dd69569f105addc1"
+      "sha256": "c3a678dfe058fd7175f150a95171bbe328db83bf13b4d908dd69569f105addc1",
+      "size": 361
     },
     {
       "path": "flute.sfz",
-      "size": 361,
-      "sha256": "1ed098f87e88d781e187605688b9f8bf55d9db4587b7774cd5c75b76256adbd4"
+      "sha256": "1ed098f87e88d781e187605688b9f8bf55d9db4587b7774cd5c75b76256adbd4",
+      "size": 361
     },
     {
       "path": "marimba.sfz",
-      "size": 369,
-      "sha256": "3337f2a839ebe1f7e47df83bf9207bede14f0d230bd5d38711bf38ba324f541f"
+      "sha256": "3337f2a839ebe1f7e47df83bf9207bede14f0d230bd5d38711bf38ba324f541f",
+      "size": 369
     },
     {
       "path": "percussion.sfz",
-      "size": 235,
-      "sha256": "136fb5df8c3deb15c91d28e264a223fdf21c4acf518575259aa031e13e50939a"
+      "sha256": "136fb5df8c3deb15c91d28e264a223fdf21c4acf518575259aa031e13e50939a",
+      "size": 235
     },
     {
       "path": "strings.sfz",
-      "size": 369,
-      "sha256": "8be950d39c2da5272789789d5524ebb085f9723c673402c236f7671171c34e03"
+      "sha256": "8be950d39c2da5272789789d5524ebb085f9723c673402c236f7671171c34e03",
+      "size": 369
     },
     {
       "path": "trumpet.sfz",
-      "size": 369,
-      "sha256": "af2586cd3101e7261e87cce7b7a14135b6ab89c03bf46619b10daac3585aa443"
+      "sha256": "af2586cd3101e7261e87cce7b7a14135b6ab89c03bf46619b10daac3585aa443",
+      "size": 369
     },
     {
       "path": "upright.sfz",
-      "size": 371,
-      "sha256": "83982bf973add8ebcad8410bedfecd4e8e4aa747e717423a555a56d57ba26797"
+      "sha256": "83982bf973add8ebcad8410bedfecd4e8e4aa747e717423a555a56d57ba26797",
+      "size": 371
     },
     {
       "path": "violin.sfz",
-      "size": 365,
-      "sha256": "4e54c5436d49cd99a0e86664128de16bb379e61201a7c9191e7ef682fb1be50f"
+      "sha256": "4e54c5436d49cd99a0e86664128de16bb379e61201a7c9191e7ef682fb1be50f",
+      "size": 365
     },
     {
       "path": "CC0-1.0.txt",
-      "size": 6555,
-      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+      "size": 6555
     }
-  ]
+  ],
+  "id": "quadraj.community-essentials",
+  "installSize": 58673138,
+  "instruments": [
+    {
+      "articulation": "Sustain",
+      "auditionDb": -8.30274134972245,
+      "calibrationDb": 4.993215101844918,
+      "calibrationVersion": 1,
+      "category": "Piano & Keys",
+      "family": "upright",
+      "file": "upright.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.upright",
+      "instrumentId": "quadraj.cc0.upright",
+      "name": "Upright Piano",
+      "patchId": "quadraj.cc0.upright.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/VSUpright1.sfz",
+      "tags": "acoustic recorded multisample upright piano"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -9.0,
+      "calibrationDb": 5.765709301438008,
+      "calibrationVersion": 1,
+      "category": "Strings",
+      "family": "strings",
+      "file": "violin.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.violin",
+      "instrumentId": "quadraj.cc0.violin",
+      "name": "Solo Violin",
+      "patchId": "quadraj.cc0.violin.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/SViolinVib.sfz",
+      "tags": "acoustic recorded multisample solo violin"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -9.0,
+      "calibrationDb": 24.319688678840436,
+      "calibrationVersion": 1,
+      "category": "Orchestral",
+      "family": "strings",
+      "file": "strings.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.strings",
+      "instrumentId": "quadraj.cc0.strings",
+      "name": "Violin Ensemble",
+      "patchId": "quadraj.cc0.strings.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/ViolinEnsSusVib.sfz",
+      "tags": "acoustic recorded multisample violin ensemble"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -8.35159701332325,
+      "calibrationDb": 16.212546029007022,
+      "calibrationVersion": 1,
+      "category": "Strings",
+      "family": "cello",
+      "file": "cello.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.cello",
+      "instrumentId": "quadraj.cc0.cello",
+      "name": "Cello Ensemble",
+      "patchId": "quadraj.cc0.cello.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/CelloEnsSusVib.sfz",
+      "tags": "acoustic recorded multisample cello ensemble"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -9.0,
+      "calibrationDb": 18.19582134853049,
+      "calibrationVersion": 1,
+      "category": "Guitar & Bass",
+      "family": "double-bass",
+      "file": "bass.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.bass",
+      "instrumentId": "quadraj.cc0.bass",
+      "name": "Pizzicato Contrabass",
+      "patchId": "quadraj.cc0.bass.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/ContrabassPizz.sfz",
+      "tags": "acoustic recorded multisample pizzicato contrabass"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -9.0,
+      "calibrationDb": 1.2579872386373747,
+      "calibrationVersion": 1,
+      "category": "Woodwinds",
+      "family": "wind",
+      "file": "flute.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.flute",
+      "instrumentId": "quadraj.cc0.flute",
+      "name": "Concert Flute",
+      "patchId": "quadraj.cc0.flute.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/FluteExpVib.sfz",
+      "tags": "acoustic recorded multisample concert flute"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -0.8768845298783461,
+      "calibrationDb": -7.249000723154751,
+      "calibrationVersion": 1,
+      "category": "Brass",
+      "family": "brass",
+      "file": "trumpet.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.trumpet",
+      "instrumentId": "quadraj.cc0.trumpet",
+      "name": "Concert Trumpet",
+      "patchId": "quadraj.cc0.trumpet.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/TrumpetSus.sfz",
+      "tags": "acoustic recorded multisample concert trumpet"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -9.0,
+      "calibrationDb": 15.222257524411553,
+      "calibrationVersion": 1,
+      "category": "Melodic Percussion",
+      "family": "mallet",
+      "file": "marimba.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.marimba",
+      "instrumentId": "quadraj.cc0.marimba",
+      "name": "Marimba",
+      "patchId": "quadraj.cc0.marimba.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VSCO-2-CE/blob/6dd651d55dde97fd4028699be9d4481f26917891/Marimba.sfz",
+      "tags": "acoustic recorded multisample marimba"
+    },
+    {
+      "articulation": "One-shot",
+      "auditionDb": -9.0,
+      "calibrationDb": 7.677685942717334,
+      "calibrationVersion": 1,
+      "category": "Drums & Percussion",
+      "family": "drums",
+      "file": "percussion.sfz",
+      "format": "sfz",
+      "id": "quadraj.cc0.percussion",
+      "instrumentId": "quadraj.cc0.percussion",
+      "name": "Recorded Percussion Kit",
+      "patchId": "quadraj.cc0.percussion.natural",
+      "patchName": "Natural",
+      "tags": "recorded bass drum snare cymbal GM"
+    }
+  ],
+  "license": "CC0-1.0",
+  "name": "Community Essentials",
+  "sha256": "db8f9b15ea1a3d575c414f1a0e501411e749b0e50f272548a2bbf33a4fdb0d29",
+  "source": "https://versilian-studios.com/vsco-community/",
+  "upstreamRevision": "440300901dfe9275fd84e0b7763af1f8443ae62e",
+  "version": "1.1.0"
 }

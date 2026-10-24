@@ -1,4 +1,4 @@
-# Paper & Graphite — Ensemble 0.2
+# Paper & Graphite — Ensemble 0.3
 
 Music sits on paper; tools live in graphite. The desktop remains Qt Widgets, with QPainter editing canvases. No web view, card dashboard, texture overlay, decorative gradient or fake hardware is used.
 
@@ -42,3 +42,11 @@ Transport is 56 px. A separate compact edit row avoids overflow at 1280 px. Defa
 ## Review evidence
 
 `docs/screenshots/0.2/` contains inspected Arrangement at 1440×900 and 1280×800, Piano Roll, Sound Browser, Mixer and Instrument Inspector. Additional local Retina/native snapshots are recorded in TESTING.md. QA corrected toolbar overflow, overly wide browser, unaligned master/channel faders, stale disabled Inspector rows and sampler oscillator controls that had no meaningful effect. These images are captures of real model-backed Qt widgets.
+
+## 0.3 instrument and workflow refinement
+
+The existing palette/fonts/flat geometry remain. InstrumentArt is original QPainter vector geometry: small track/list silhouettes and a detailed Paper illustration mode, including upright/grand, electric guitar/bass, strings/cello, flute/brass, mallets, drums and synths. No Apple or third-party imagery is imported. Illustrations are code assets under Apache-2.0; audio is separately CC0. They provide category identification, not photographic manufacturer-specific instrument depictions.
+
+SoundBrowser separates instrument identities from patch rows, preserves category/search/favorites and adds recent selection. Artwork follows the selected family; patch metadata and real previews remain tied to actual preset loaders. Family controls expose tone, attack/release and room through supported DSP only. Transport position becomes an editable mono-font field; the ruler has an accessible drag hit area and distinct cycle handles. Long track names are elided instead of silently clipped.
+
+Export Audio and Settings use the same shared QSS, compact rectangular controls, aligned forms and explicit status text. Export offers only working WAV combinations. Settings omits fake MIDI/autosave/online-update controls and explains their absence. Reviewed 0.3 application captures are in docs/screenshots/0.3; TESTING.md records exact sizes and limitations.

@@ -2,6 +2,7 @@
 // Copyright 2026 QuadraJ and contributors.
 #include "ui/SoundBrowser.h"
 #include "ui/Editor.h"
+#include "ui/InstrumentArt.h"
 #include "ui/Theme.h"
 #include <QApplication>
 #include <QComboBox>
@@ -17,14 +18,17 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QMouseEvent>
+#include <QPainter>
 #include <QProgressDialog>
 #include <QPushButton>
 #include <QSettings>
+#include <QSignalBlocker>
 #include <QStandardPaths>
 #include <QUrl>
 #include <QVBoxLayout>
 #include <chrono>
 #include <future>
+#include <set>
 namespace reverie {
 template <class F> static auto libraryJob(QWidget* parent, const QString& label, F job) {
     if (!parent->isVisible())
@@ -65,15 +69,23 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
     layout->addWidget(search_);
     categories_ = new QComboBox;
     categories_->setObjectName("soundCategory");
-    categories_->addItems({"All instruments", "Favorites", "Piano & Keys", "Synthesizers",
-                           "Guitar & Bass", "Strings", "Brass", "Woodwinds", "Drums & Percussion",
-                           "Melodic Percussion", "Orchestral", "Pads & Textures",
-                           "User Instruments"});
+    categories_->addItems({"All instruments", "Favorites", "Recently used", "Piano & Keys",
+                           "Synthesizers", "Guitar & Bass", "Strings", "Brass", "Woodwinds",
+                           "Drums & Percussion", "Melodic Percussion", "Orchestral",
+                           "Pads & Textures", "User Instruments"});
     layout->addWidget(categories_);
     list_ = new PresetList;
     list_->setObjectName("soundList");
     list_->setDragEnabled(true);
     layout->addWidget(list_, 1);
+    artwork_ = new InstrumentArtwork;
+    layout->addWidget(artwork_);
+    auto* patchHeading = new QLabel("PATCHES");
+    layout->addWidget(patchHeading);
+    patches_ = new QListWidget;
+    patches_->setObjectName("patchList");
+    patches_->setMaximumHeight(76);
+    layout->addWidget(patches_);
     detail_ = new QLabel;
     detail_->setTextFormat(Qt::PlainText);
     detail_->setWordWrap(true);
@@ -116,19 +128,9 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
     layout->addWidget(status_);
     connect(search_, &QLineEdit::textChanged, this, [this] { filter(); });
     connect(categories_, &QComboBox::currentIndexChanged, this, [this] { filter(); });
-    connect(list_, &QListWidget::currentRowChanged, this, [this] {
-        int index = currentIndex();
-        if (index >= 0) {
-            const auto& entry = entries_[index];
-            detail_->setToolTip(QString::fromStdString(entry.preset.source).toHtmlEscaped());
-            detail_->setText(QString::fromStdString(entry.category) +
-                             (entry.sfz.empty()
-                                  ? " / synthesis"
-                                  : " / recorded multisample · " +
-                                        QString::fromStdString(entry.preset.license)) +
-                             "\n" + QString::fromStdString(entry.name));
-        }
-    });
+    connect(list_, &QListWidget::currentRowChanged, this, [this] { updateDetails(); });
+    connect(patches_, &QListWidget::currentRowChanged, this, [this] { updateDetails(false); });
+    connect(patches_, &QListWidget::itemDoubleClicked, this, [this] { applyCurrent(); });
     connect(list_, &QListWidget::itemDoubleClicked, this, [this] { applyCurrent(); });
     connect(listen, &QPushButton::clicked, this, [this] { preview(); });
     connect(apply, &QPushButton::clicked, this, [this] { applyCurrent(); });
@@ -182,16 +184,31 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
             editor_.message(ex.what());
         }
     });
+    auto* tools = new QPushButton("Library tools…");
+    layout->addWidget(tools);
+    for (auto* b : {install, sources, import, wav}) {
+        layout->removeWidget(b);
+        b->hide();
+    }
+    connect(tools, &QPushButton::clicked, this, [=] {
+        QMenu menu;
+        for (auto* b : {install, sources, import, wav})
+            menu.addAction(b->text(), [b] { b->click(); });
+        menu.exec(tools->mapToGlobal(QPoint(0, tools->height())));
+    });
     reload();
 }
 int SoundBrowser::currentIndex() const {
+    if (auto* patch = patches_->currentItem())
+        return patch->data(Qt::UserRole).toInt();
     int row = list_->currentRow();
     return row >= 0 && row < int(visible_.size()) ? visible_[row] : -1;
 }
 void SoundBrowser::reload() {
     entries_.clear();
     int n = 0;
-    for (auto p : factoryPresets()) {
+    for (auto p :
+         calibratedFactoryPresets((assetPath() + "/sounds/synth-calibration.json").toStdString())) {
         std::string category = n == 0 || n == 5 || n == 6 ? "Piano & Keys"
                                : n == 1                   ? "Pads & Textures"
                                : n == 8                   ? "Drums & Percussion"
@@ -208,10 +225,11 @@ void SoundBrowser::reload() {
             auto pack = readSoundPack(folder, false);
             for (auto i : pack.instruments) {
                 Preset p;
-                p.source = pack.source;
+                p.source = i.source.empty() ? pack.source : i.source;
                 p.license = pack.license;
                 p.instrumentId = i.id;
-                entries_.push_back({i.name, i.category, i.tags, p, i.file, i.id, false});
+                p.family = i.family;
+                entries_.push_back({i.name, i.category, i.tags, p, i.file, i.id, false, i, pack});
             }
             size += pack.installSize;
             ++packs;
@@ -220,6 +238,7 @@ void SoundBrowser::reload() {
         }
     };
     addPack((assetPath() + "/sounds/factory").toStdString());
+    addPack((assetPath() + "/sounds/essentials03").toStdString());
     QDir user(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
               "/SoundPacks");
     for (const auto& name : user.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
@@ -229,36 +248,57 @@ void SoundBrowser::reload() {
     });
     QSettings settings;
     auto favorites = settings.value("library/favorites").toStringList();
+    recent_ = settings.value("library/recent").toStringList();
     for (auto& e : entries_)
         e.favorite = favorites.contains(QString::fromStdString(e.id));
+    std::set<std::string> instrumentIds;
+    for (auto& e : entries_)
+        instrumentIds.insert(e.sfz.empty() ? e.id : e.metadata.instrumentId);
     status_->setText(
-        QString("%1 installed pack(s) · %2 MiB\n%3 playable instruments · Offline "
+        QString("%1 installed pack(s) · %2 MiB\n%3 instruments / %4 patches · Offline "
                 "ready\nAdditional packs: install licensed local folders. No automatic downloads.")
             .arg(packs)
             .arg(size / 1048576., 0, 'f', 1)
+            .arg(instrumentIds.size())
             .arg(entries_.size()));
     filter();
 }
 void SoundBrowser::filter() {
     list_->clear();
     visible_.clear();
+    patches_->clear();
+    std::set<std::string> shown;
     QString query = search_->text().trimmed().toLower(), category = categories_->currentText();
     for (int i = 0; i < int(entries_.size()); ++i) {
         const auto& e = entries_[i];
         if (category == "Favorites" && !e.favorite)
             continue;
-        if (category != "All instruments" && category != "Favorites" &&
-            QString::fromStdString(e.category) != category)
+        if (category == "Recently used" && !recent_.contains(QString::fromStdString(e.id)))
             continue;
-        if (!QString::fromStdString(e.name + " " + e.tags + " " + e.category)
+        if (category != "All instruments" && category != "Favorites" &&
+            category != "Recently used" && QString::fromStdString(e.category) != category)
+            continue;
+        if (!QString::fromStdString(e.name + " " + e.tags + " " + e.category + " " +
+                                    e.metadata.patchName + " " + e.metadata.articulation)
                  .toLower()
                  .contains(query))
+            continue;
+        auto instrument = e.sfz.empty() ? e.id : e.metadata.instrumentId;
+        if (!shown.insert(instrument).second)
             continue;
         visible_.push_back(i);
         auto* item = new QListWidgetItem(QString::fromStdString(e.name) + "\n" +
                                              (e.sfz.empty() ? "SYNTH" : "RECORDED") +
                                              (e.favorite ? " · Favorite" : ""),
                                          list_);
+        auto glyph = instrumentDrawing(instrumentFamily(e.preset), QSize(40, 28), false,
+                                       devicePixelRatioF());
+        {
+            QPainter paint(&glyph);
+            paint.setCompositionMode(QPainter::CompositionMode_SourceIn);
+            paint.fillRect(glyph.rect(), QColor("#D4A67A"));
+        }
+        item->setIcon(QIcon(glyph));
         item->setData(Qt::UserRole, i);
         item->setToolTip(QString::fromStdString(e.category + " · " + e.tags));
     }
@@ -272,20 +312,55 @@ Preset SoundBrowser::presetAt(int i) {
     if (e.sfz.empty())
         return e.preset;
     auto p = libraryJob(this, "Preparing recorded instrument…",
-                        [this, path = e.sfz] { return loadSfz(path, cache_); });
-    p.name = e.name;
-    p.instrumentId = e.id;
-    p.category = e.category;
-    p.tags = e.tags;
-    p.source = e.preset.source;
-    p.license = e.preset.license;
+                        [this, &e] { return loadLibraryPreset(e.metadata, e.pack, cache_); });
     return p;
+}
+void SoundBrowser::updateDetails(bool rebuild) {
+    if (rebuild) {
+        QSignalBlocker block(patches_);
+        patches_->clear();
+        int row = list_->currentRow();
+        if (row < 0 || row >= int(visible_.size())) {
+            detail_->clear();
+            return;
+        }
+        int selected = visible_[row];
+        const auto& entry = entries_[selected];
+        for (int index = 0; index < int(entries_.size()); ++index) {
+            const auto& patch = entries_[index];
+            if ((!entry.sfz.empty() &&
+                 patch.metadata.instrumentId == entry.metadata.instrumentId) ||
+                (entry.sfz.empty() && index == selected)) {
+                auto* item = new QListWidgetItem(
+                    QString::fromStdString(patch.sfz.empty() ? patch.name
+                                                             : patch.metadata.patchName),
+                    patches_);
+                item->setData(Qt::UserRole, index);
+                if (index == selected)
+                    patches_->setCurrentItem(item);
+            }
+        }
+    }
+    int i = currentIndex();
+    if (i < 0)
+        return;
+    const auto& e = entries_[i];
+    artwork_->setFamily(instrumentFamily(e.preset));
+    detail_->setText(
+        QString::fromStdString(e.category + " · " +
+                               (e.sfz.empty() ? "Synthesis" : e.metadata.articulation)) +
+        "\n" + QString::fromStdString(e.preset.license));
+    detail_->setToolTip(
+        QString::fromStdString(e.pack.name + "\n" + e.pack.author + "\n" + e.pack.source +
+                               "\nCalibration v" + std::to_string(e.metadata.calibrationVersion) +
+                               ": " + std::to_string(e.metadata.calibrationDb) + " dB"));
 }
 void SoundBrowser::preview() {
     try {
         auto p = presetAt(currentIndex());
         auto t = makeTrack(TrackKind::Midi, 0);
         t.preset = p;
+        t.preset.calibrationGain *= p.auditionGain;
         t.volume = .7;
         editor_.engine.audition(t, p.category == "Drums & Percussion" ? 38 : 60, .8, .65);
     } catch (const std::exception& ex) {
@@ -294,7 +369,15 @@ void SoundBrowser::preview() {
 }
 void SoundBrowser::applyCurrent(bool newTrack) {
     try {
-        editor_.applyInstrument(presetAt(currentIndex()), newTrack);
+        auto index = currentIndex();
+        auto p = presetAt(index);
+        editor_.applyInstrument(p, newTrack);
+        auto id = QString::fromStdString(entries_[index].id);
+        recent_.removeAll(id);
+        recent_.prepend(id);
+        while (recent_.size() > 16)
+            recent_.removeLast();
+        QSettings().setValue("library/recent", recent_);
     } catch (const std::exception& ex) {
         editor_.message(ex.what());
     }

@@ -4,6 +4,7 @@
 #include "ui/Timeline.h"
 #include "ui/DesignTokens.h"
 #include "ui/Editor.h"
+#include "ui/InstrumentArt.h"
 #include "ui/SoundBrowser.h"
 #include <QColorDialog>
 #include <QDragEnterEvent>
@@ -133,10 +134,14 @@ void Timeline::paintEvent(QPaintEvent* event) {
         p.drawLine(0, y + rowHeight(), header, y + rowHeight());
         p.fillRect(QRect(0, y, 4, rowHeight()), QColor::fromRgba(t.color));
         p.setPen(design::ink);
-        p.drawText(QRect(14, y + 10, header - 22, 25), Qt::AlignVCenter,
-                   QString::fromStdString(t.name));
+        p.drawText(QRect(46, y + 10, header - 54, 25), Qt::AlignVCenter,
+                   p.fontMetrics().elidedText(QString::fromStdString(t.name), Qt::ElideRight,
+                                              header - 56));
         p.setPen(design::mutedInk);
         p.drawText(14, y + rowHeight() - 20, t.kind == TrackKind::Midi ? "MIDI" : "AUDIO");
+        p.drawPixmap(10, y + 10,
+                     instrumentDrawing(instrumentFamily(t.preset), QSize(30, 24), false,
+                                       devicePixelRatioF()));
         for (int b = 0; b < 2; ++b) {
             QRect r(header - 72 + b * 31, y + rowHeight() - 34, 25, 23);
             p.setBrush((b ? t.solo : t.mute) ? QColor(b ? "#D4A67A" : "#BC655C") : design::grid);
@@ -165,12 +170,17 @@ void Timeline::paintEvent(QPaintEvent* event) {
     if (e_.project.loopEnabled) {
         int start = header + int(e_.project.loopStart * ppb),
             end = header + int(e_.project.loopEnd * ppb);
-        p.fillRect(QRect(start, 2, end - start, 4), design::selection);
+        p.fillRect(QRect(start, 2, end - start, 7), design::selection);
+        p.fillRect(QRect(start, 1, 5, 12), design::ink);
+        p.fillRect(QRect(end - 4, 1, 5, 12), design::ink);
     }
-    double beat = TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(e_.engine.position());
+    double beat =
+        TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(e_.engine.displayPosition());
     int playX = header + int(beat * ppb);
     p.setPen(QPen(QColor("#443D34"), 1.5));
     p.drawLine(playX, 0, playX, height());
+    p.setBrush(design::ink);
+    p.drawPolygon(QPolygonF{QPointF(playX - 6, 20), QPointF(playX + 6, 20), QPointF(playX, 29)});
     p.restore();
     if (e_.project.tracks.empty()) {
         p.setPen(design::mutedInk);
@@ -183,10 +193,21 @@ void Timeline::mousePressEvent(QMouseEvent* ev) {
     if (ev->button() != Qt::LeftButton)
         return;
     auto pt = ev->position();
-    if (pt.y() < ruler && pt.x() >= header) {
-        e_.engine.seek(TempoMap{e_.project.bpm, e_.engine.sampleRate()}.sampleAt(
-            std::max(0., e_.snapped((pt.x() - header) / e_.pixelsPerBeat))));
-        update();
+    if (pt.y() < ruler && pt.x() >= horizontalOffset() + header) {
+        double start = header + e_.project.loopStart * e_.pixelsPerBeat,
+               end = header + e_.project.loopEnd * e_.pixelsPerBeat;
+        if (pt.y() < 15 && (std::abs(pt.x() - start) < 10 || std::abs(pt.x() - end) < 10)) {
+            loopDrag_ = std::abs(pt.x() - start) < std::abs(pt.x() - end) ? 1 : 2;
+            e_.beginEdit();
+            changed_ = true;
+        } else if (ev->modifiers() & Qt::ShiftModifier) {
+            loopDrag_ = 3;
+            loopAnchor_ = std::max(0., e_.snapped((pt.x() - header) / e_.pixelsPerBeat));
+            e_.beginEdit();
+            changed_ = true;
+        } else
+            seeking_ = true;
+        moveRuler(pt, ev->modifiers());
         return;
     }
     int t;
@@ -217,7 +238,36 @@ void Timeline::mousePressEvent(QMouseEvent* ev) {
         changed_ = false;
     }
 }
+void Timeline::moveRuler(QPointF pt, Qt::KeyboardModifiers modifiers) {
+    double beat = std::max(0., (pt.x() - header) / e_.pixelsPerBeat);
+    if (!(modifiers & Qt::AltModifier))
+        beat = e_.snapped(beat);
+    if (seeking_)
+        e_.engine.seek(TempoMap{e_.project.bpm, e_.engine.sampleRate()}.sampleAt(beat));
+    else if (loopDrag_) {
+        auto& p = e_.project;
+        p.loopEnabled = true;
+        if (loopDrag_ == 1)
+            p.loopStart = std::min(beat, p.loopEnd - e_.grid);
+        else if (loopDrag_ == 2)
+            p.loopEnd = std::max(beat, p.loopStart + e_.grid);
+        else {
+            p.loopStart = std::min(beat, loopAnchor_);
+            p.loopEnd = std::max(std::max(beat, loopAnchor_), p.loopStart + e_.grid);
+        }
+    }
+    update();
+}
 void Timeline::mouseMoveEvent(QMouseEvent* ev) {
+    if (seeking_ || loopDrag_) {
+        moveRuler(ev->position(), ev->modifiers());
+        setCursor(Qt::SizeHorCursor);
+        return;
+    }
+    if (ev->position().y() < ruler && ev->position().x() >= horizontalOffset() + header) {
+        setCursor(Qt::SizeHorCursor);
+        return;
+    }
     if (!drag_) {
         int t;
         auto id = hit(ev->position(), t);
@@ -262,6 +312,8 @@ void Timeline::mouseReleaseEvent(QMouseEvent*) {
     if (changed_)
         e_.endEdit();
     drag_ = 0;
+    seeking_ = false;
+    loopDrag_ = 0;
     changed_ = false;
 }
 void Timeline::mouseDoubleClickEvent(QMouseEvent* ev) {

@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 
+#include "core/Library.h"
 #include "core/Media.h"
 #include "core/Serializer.h"
 #include "ui/AudioEditor.h"
 #include "ui/DesignTokens.h"
 #include "ui/Editor.h"
 #include "ui/InspectorPanel.h"
+#include "ui/InstrumentArt.h"
+#include "ui/InstrumentEditor.h"
 #include "ui/MixerView.h"
 #include "ui/PianoRoll.h"
 #include "ui/SoundBrowser.h"
@@ -152,9 +155,66 @@ void Editor::buildUi() {
             project.denominator = parts[1].toInt();
         });
     });
-    position_ = new QLabel("1 : 1 : 000", this);
+    position_ = new QLineEdit("1 : 1 : 000", this);
+    position_->setObjectName("transportPosition");
+    position_->setMaximumWidth(150);
+    position_->setToolTip("Bars : Beats : Ticks (960 / notated beat), or minutes:seconds with s "
+                          "suffix. Return to seek.");
+    connect(position_, &QLineEdit::returnPressed, this, [this] {
+        auto text = position_->text().trimmed();
+        double beat = -1;
+        bool valid = false;
+        if (text.endsWith('s')) {
+            auto parts = text.chopped(1).split(':');
+            bool ok = false;
+            double seconds = parts.back().toDouble(&ok);
+            if (parts.size() == 2) {
+                bool m = false;
+                double minutes = parts.front().toDouble(&m);
+                ok = ok && m && minutes >= 0;
+                seconds += 60 * minutes;
+            }
+            if (ok && parts.size() <= 2 && seconds >= 0) {
+                beat = seconds * project.bpm / 60;
+                valid = true;
+            }
+        } else {
+            auto parts = text.split(':');
+            if (parts.size() == 3) {
+                bool a, b, c;
+                int bars = parts[0].trimmed().toInt(&a), beats = parts[1].trimmed().toInt(&b),
+                    ticks = parts[2].trimmed().toInt(&c);
+                if (a && b && c && bars >= 1 && bars <= 100000 && beats >= 1 &&
+                    beats <= project.numerator && ticks >= 0 && ticks < 960) {
+                    beat = ((bars - 1) * project.numerator + (beats - 1) + ticks / 960.) * 4 /
+                           project.denominator;
+                    valid = true;
+                }
+            }
+        }
+        if (valid && std::isfinite(beat) && beat <= 1000000) {
+            engine.seek(TempoMap{project.bpm, engine.sampleRate()}.sampleAt(beat));
+            position_->clearFocus();
+        } else
+            message("Enter bars:beats:ticks, or minutes:seconds with s suffix (e.g. 0:12.5s).");
+    });
     position_->setMinimumWidth(125);
     position_->setStyleSheet("font-family:IBM Plex Mono;font-size:15px;color:#EDE5D8;padding:8px");
+    position_->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(position_, &QLineEdit::customContextMenuRequested, this, [this](QPoint point) {
+        auto* menu = position_->createStandardContextMenu();
+        menu->addSeparator();
+        menu->addAction("Display bars / beats / ticks", [this] {
+            timeDisplaySeconds = false;
+            position_->clearFocus();
+        });
+        menu->addAction("Display minutes / seconds", [this] {
+            timeDisplaySeconds = true;
+            position_->clearFocus();
+        });
+        menu->exec(position_->mapToGlobal(point));
+        delete menu;
+    });
     transport->addWidget(position_);
     auto* masterMeter = new Meter(*this, true);
     masterMeter->setMinimumWidth(120);
@@ -252,6 +312,7 @@ void Editor::buildUi() {
     lower->setChecked(true);
     connect(lower, &QAction::toggled, pianoPanel, &QWidget::setVisible);
     auto* follow = new QCheckBox("Follow");
+    follow->setChecked(followPlayhead);
     modes->addWidget(follow);
     connect(follow, &QCheckBox::toggled, this, [this](bool value) { followPlayhead = value; });
     modes->addWidget(new QLabel("Track height"));
@@ -337,7 +398,8 @@ void Editor::buildUi() {
             project.tracks[selectedTrack].kind != TrackKind::Midi)
             return;
         edit([&] {
-            project.tracks[selectedTrack].preset = factoryPresets()[i];
+            project.tracks[selectedTrack].preset = calibratedFactoryPresets(
+                (assetPath() + "/sounds/synth-calibration.json").toStdString())[i];
             project.tracks[selectedTrack].instrumentSample.reset();
         });
     });
@@ -345,6 +407,7 @@ void Editor::buildUi() {
     instrumentLabel_->setWordWrap(true);
     instrumentLabel_->setStyleSheet("color:#BEB2A4;font-size:11px");
     layout->addWidget(instrumentLabel_);
+    layout->addWidget(new InstrumentEditor(*this));
     auto* instrumentToggle = new QPushButton("Instrument parameters");
     instrumentToggle->setCheckable(true);
     layout->addWidget(instrumentToggle);
@@ -402,19 +465,12 @@ void Editor::buildUi() {
         if (!refreshing_)
             edit([&] { project.master = float(v); });
     });
-    inputs_ = new QComboBox;
-    inputs_->addItem("Default audio input");
-    layout->addWidget(inputs_);
-    auto* scan = new QPushButton("Choose / refresh inputs");
-    layout->addWidget(scan);
-    connect(scan, &QPushButton::clicked, this, [this] {
-        inputs_->clear();
-        inputs_->addItem("Default audio input");
-        for (const auto& name : device_.inputDevices())
-            inputs_->addItem(QString::fromStdString(name));
-        if (inputs_->count() == 1)
-            message("No input devices found. Recording will try the system default.");
-    });
+    inputs_ = new QComboBox(this);
+    inputs_->addItem("System default");
+    inputs_->hide();
+    auto* settings = new QPushButton("Audio Settings…");
+    layout->addWidget(settings);
+    connect(settings, &QPushButton::clicked, this, [this] { showSettings(); });
     output_ = new QLabel;
     output_->setWordWrap(true);
     output_->setStyleSheet("color:#BEB2A4;font-size:11px");

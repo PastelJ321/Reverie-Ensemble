@@ -221,7 +221,7 @@ static bool in(double x, double lo, double hi) {
     return std::isfinite(x) && x >= lo && x <= hi;
 }
 void validate(const Project& p) {
-    if ((p.formatVersion != 1 && p.formatVersion != 2) || !in(p.bpm, 20, 300) || p.numerator < 1 ||
+    if ((p.formatVersion < 1 || p.formatVersion > 3) || !in(p.bpm, 20, 300) || p.numerator < 1 ||
         p.numerator > 16 ||
         (p.denominator != 2 && p.denominator != 4 && p.denominator != 8 && p.denominator != 16) ||
         !in(p.master, 0, 2) || p.tracks.size() > maxTracks)
@@ -240,9 +240,10 @@ void validate(const Project& p) {
         const auto& s = t.preset;
         if (!in(t.volume, 0, 2) || !in(t.pan, -1, 1) || !in(s.attack, .00009, 10) ||
             !in(s.decay, .00009, 10) || !in(s.sustain, 0, 1) || !in(s.release, .0009, 10) ||
-            !in(s.gain, 0, 2) || !in(s.cutoff, 20, 24000) || !in(s.color, 0, 1) || s.rootNote < 0 ||
-            s.rootNote > 127 || int(s.kind) < 0 || int(s.kind) > 2 || int(s.wave) < 0 ||
-            int(s.wave) > 3)
+            !in(s.calibrationGain, .01, 32) || !in(s.auditionGain, .01, 8) ||
+            s.calibrationVersion < 0 || !in(s.gain, 0, 2) || !in(s.cutoff, 20, 24000) ||
+            !in(s.color, 0, 1) || s.rootNote < 0 || s.rootNote > 127 || int(s.kind) < 0 ||
+            int(s.kind) > 2 || int(s.wave) < 0 || int(s.wave) > 3)
             throw std::runtime_error("Invalid mixer or instrument settings");
         const auto& fx = t.effects;
         if (!in(fx.lowDb, -18, 18) || !in(fx.highDb, -18, 18) || !in(fx.delayMix, 0, 1) ||
@@ -253,7 +254,9 @@ void validate(const Project& p) {
         for (const auto& z : s.zones)
             if (z.lowKey < 0 || z.highKey > 127 || z.lowKey > z.highKey || z.rootKey < 0 ||
                 z.rootKey > 127 || z.lowVelocity < 0 || z.highVelocity > 127 ||
-                z.lowVelocity > z.highVelocity || !in(z.gain, 0, 8) ||
+                z.lowVelocity > z.highVelocity || !in(z.gain, 0, 256) ||
+                (z.sequenceLength < 1 || z.sequenceLength > 128 || z.sequencePosition < 1 ||
+                 z.sequencePosition > z.sequenceLength) ||
                 (z.end && z.end <= z.start) || (z.loop && z.loopEnd <= z.loopStart) ||
                 (z.loop && z.oneShot))
                 throw std::runtime_error("Invalid sample mapping");

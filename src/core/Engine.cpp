@@ -41,12 +41,16 @@ PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled)
         mix(z.oneShot);
         mix(z.loopContinuous);
         mix(std::bit_cast<std::uint32_t>(z.gain));
+        mix(z.sequenceLength);
+        mix(z.sequencePosition);
     }
     mix(int(p.kind));
     mix(int(p.wave));
     mix(p.rootNote);
     mix(reinterpret_cast<std::uintptr_t>(sampleOwner.get()));
-    for (float v : {p.attack, p.decay, p.sustain, p.release, p.cutoff, p.gain, p.color})
+    mix(p.cubicInterpolation);
+    for (float v :
+         {p.attack, p.decay, p.sustain, p.release, p.cutoff, p.gain, p.color, p.calibrationGain})
         mix(std::bit_cast<std::uint32_t>(v));
 }
 AudioProcessingGraph::AudioProcessingGraph(const Project& p, double r)
@@ -224,14 +228,33 @@ void AudioProcessingGraph::render(float* out, std::uint32_t frames, std::int64_t
         }
     }
 }
-AudioEngine::AudioEngine(double rate, bool tools)
-    : rate_(checkedRate(rate)), transportTools_(tools) {}
+AudioEngine::AudioEngine(double rate, bool tools, bool protect)
+    : rate_(checkedRate(rate)), transportTools_(tools) {
+    protectOutput_ = protect;
+}
 AudioEngine::~AudioEngine() {
     delete pending_.exchange(nullptr);
     delete active_;
     delete previewPending_.exchange(nullptr);
     delete preview_;
     collect();
+}
+void AudioEngine::setSampleRateStopped(double rate) {
+    auto nextRate = checkedRate(rate);
+    playing_.store(false);
+    wasPlaying_ = false;
+    delete pending_.exchange(nullptr);
+    delete active_;
+    active_ = nullptr;
+    delete previewPending_.exchange(nullptr);
+    delete preview_;
+    preview_ = nullptr;
+    collect();
+    rate_ = nextRate;
+    position_.store(0);
+    seek_.store(-1);
+    peak_.store(0);
+    clearClip();
 }
 void AudioEngine::collect() {
     AudioProcessingGraph* p;
@@ -341,7 +364,8 @@ void AudioEngine::process(float* out, std::uint32_t frames) noexcept {
         if (!std::isfinite(out[i]))
             out[i] = 0;
         peak = std::max(peak, std::abs(out[i]));
-        out[i] = std::clamp(out[i], -1.f, 1.f);
+        if (protectOutput_)
+            out[i] = std::clamp(out[i], -1.f, 1.f);
     }
     peak_.store(peak);
     if (peak > 1)

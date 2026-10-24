@@ -67,7 +67,7 @@ Preset loadSfz(const std::filesystem::path& path, SampleCache& cache) {
     p.sustain = 1;
     p.release = .2;
     p.gain = .7;
-    std::map<std::string,float> envelopeValues;
+    std::map<std::string, float> envelopeValues;
     bool inRegion = false;
     auto flush = [&] {
         if (!inRegion)
@@ -76,7 +76,12 @@ Preset loadSfz(const std::filesystem::path& path, SampleCache& cache) {
         for (auto [op, value] : region) {
             while (!value.empty() && std::isspace(static_cast<unsigned char>(value.back())))
                 value.pop_back();
-            if(op.rfind("ampeg_",0)==0){float v=std::stof(value);auto [it,inserted]=envelopeValues.try_emplace(op,v);if(!inserted&&it->second!=v)throw std::runtime_error("Region-specific SFZ envelope is unsupported");}
+            if (op.rfind("ampeg_", 0) == 0) {
+                float v = std::stof(value);
+                auto [it, inserted] = envelopeValues.try_emplace(op, v);
+                if (!inserted && it->second != v)
+                    throw std::runtime_error("Region-specific SFZ envelope is unsupported");
+            }
             if (op == "sample") {
                 std::replace(value.begin(), value.end(), '\\', '/');
                 z.path = (std::filesystem::absolute(path).parent_path() / value)
@@ -103,11 +108,16 @@ Preset loadSfz(const std::filesystem::path& path, SampleCache& cache) {
             else if (op == "loop_end")
                 z.loopEnd = std::stoull(value) + 1;
             else if (op == "loop_mode") {
-                z.loop = value == "loop_continuous" || value == "loop_sustain";z.loopContinuous=value=="loop_continuous";
+                z.loop = value == "loop_continuous" || value == "loop_sustain";
+                z.loopContinuous = value == "loop_continuous";
                 z.oneShot = value == "one_shot";
                 if (!z.loop && !z.oneShot && value != "no_loop")
                     throw std::runtime_error("Unsupported SFZ loop mode");
-            } else if (op == "volume")
+            } else if (op == "seq_length")
+                z.sequenceLength = std::stoi(value);
+            else if (op == "seq_position")
+                z.sequencePosition = std::stoi(value);
+            else if (op == "volume")
                 z.gain = std::pow(10.f, std::stof(value) / 20);
             else if (op == "ampeg_attack")
                 p.attack = std::max(.0001f, std::stof(value));
@@ -218,6 +228,18 @@ SoundPack readSoundPack(const std::filesystem::path& folder, bool verify) {
         v.name = i.at("name");
         v.category = i.at("category");
         v.tags = i.value("tags", "");
+        v.instrumentId = i.value("instrumentId", v.id);
+        v.patchId = i.value("patchId", v.id);
+        v.patchName = i.value("patchName", "Natural");
+        v.family = i.value("family", "");
+        v.articulation = i.value("articulation", "");
+        v.source = i.value("source", p.source);
+        v.calibrationDb = i.value("calibrationDb", 0.f);
+        v.auditionDb = i.value("auditionDb", 0.f);
+        v.calibrationVersion = i.value("calibrationVersion", 0);
+        if (!std::isfinite(v.calibrationDb) || std::abs(v.calibrationDb) > 30 ||
+            !std::isfinite(v.auditionDb) || std::abs(v.auditionDb) > 18)
+            throw std::runtime_error("Invalid calibration metadata");
         v.format = i.at("format");
         v.file = safePath(folder, i.at("file"));
         if (!listed.contains(v.file) || !std::filesystem::is_regular_file(v.file))
@@ -266,5 +288,42 @@ SoundPack installSoundPack(const std::filesystem::path& folder,
         std::filesystem::remove_all(staging, ec);
         throw;
     }
+}
+std::vector<Preset> calibratedFactoryPresets(const std::filesystem::path& file) {
+    auto presets = factoryPresets();
+    if (std::filesystem::exists(file)) {
+        nlohmann::json j;
+        std::ifstream f(file);
+        f >> j;
+        for (auto& m : j) {
+            auto index = m.at("index").get<std::size_t>();
+            float db = m.at("calibrationDb");
+            if (index >= presets.size() || !std::isfinite(db) || std::abs(db) > 30)
+                throw std::runtime_error("Invalid synth calibration");
+            auto& p = presets[index];
+            p.calibrationVersion = m.at("calibrationVersion");
+            p.calibrationGain = std::pow(10.f, db / 20);
+            p.auditionGain = std::pow(10.f, m.value("auditionDb", 0.f) / 20);
+            p.family = p.kind == InstrumentKind::Drums ? "drums" : "synth";
+        }
+    }
+    return presets;
+}
+Preset loadLibraryPreset(const LibraryInstrument& i, const SoundPack& pack, SampleCache& cache) {
+    auto p = loadSfz(i.file, cache);
+    p.name = i.name;
+    p.instrumentId = i.instrumentId;
+    p.patchId = i.patchId;
+    p.category = i.category;
+    p.tags = i.tags;
+    p.family = i.family;
+    p.articulation = i.articulation;
+    p.source = i.source.empty() ? pack.source : i.source;
+    p.license = pack.license;
+    p.calibrationVersion = i.calibrationVersion;
+    p.calibrationGain = std::pow(10.f, i.calibrationDb / 20);
+    p.auditionGain = std::pow(10.f, i.auditionDb / 20);
+    p.cubicInterpolation = true;
+    return p;
 }
 } // namespace reverie

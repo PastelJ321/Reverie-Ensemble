@@ -1,0 +1,7 @@
+Requested client: 48000 Hz / 256 frames / stereo float32
+Client format: 48000 Hz / 2 channels / 32-bit IEEE Floating Point
+Device: MacBook Air 스피커
+Reported backend format: 44100 Hz / 2 channels / 32-bit IEEE Floating Point
+Reported period: 256 frames × 3
+Nominal queued duration: 17.414966 ms (not round-trip latency)
+Audio probe: frame= 64256 peak= 0.0565002

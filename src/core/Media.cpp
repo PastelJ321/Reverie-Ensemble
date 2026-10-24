@@ -65,8 +65,10 @@ void writeWav16(const std::filesystem::path& p, const float* stereo, std::size_t
     for (std::size_t offset = 0; offset < frames; offset += 512) {
         auto n = std::min(std::size_t(512), frames - offset);
         for (std::size_t i = 0; i < n * 2; ++i)
-            pcm[i] =
-                std::int16_t(std::lrint(std::clamp(stereo[offset * 2 + i], -1.f, 1.f) * 32767));
+            pcm[i] = std::int16_t(std::lrint((std::isfinite(stereo[offset * 2 + i])
+                                                  ? std::clamp(stereo[offset * 2 + i], -1.f, 1.f)
+                                                  : 0.f) *
+                                             32767));
         ma_uint64 written = 0;
         if (ma_encoder_write_pcm_frames(&encoder, pcm.data(), n, &written) != MA_SUCCESS ||
             written != n) {
@@ -101,7 +103,8 @@ void exportWav(const Project& p, const std::filesystem::path& path, double rate,
             const auto n = std::uint32_t(std::min(std::int64_t(512), total - offset));
             engine.process(buffer.data(), n);
             for (std::size_t i = 0; i < n * 2; ++i)
-                pcm[i] = std::int16_t(std::lrint(buffer[i] * 32767));
+                pcm[i] = std::int16_t(std::lrint(
+                    (std::isfinite(buffer[i]) ? std::clamp(buffer[i], -1.f, 1.f) : 0.f) * 32767));
             ma_uint64 written = 0;
             if (ma_encoder_write_pcm_frames(&enc, pcm.data(), n, &written) != MA_SUCCESS ||
                 written != n)

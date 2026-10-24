@@ -9,7 +9,7 @@
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
     QApplication::setApplicationName("Reverie Ensemble");
-    QApplication::setApplicationVersion("0.2.0");
+    QApplication::setApplicationVersion("0.3.0");
     QApplication::setOrganizationName("QuadraJ");
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     const auto args = app.arguments();
@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
     if (args.contains("--audio-smoke-test")) {
         QTimer::singleShot(200, &editor, [&] { editor.play(); });
         QTimer::singleShot(1600, &editor, [&] {
+            qInfo().noquote() << QString::fromStdString(editor.audioDeviceReport());
             qInfo() << "Audio probe: frame=" << editor.engine.position()
                     << "peak=" << editor.engine.masterPeak();
             app.exit(editor.engine.position() > 24000 && editor.engine.masterPeak() > 0 ? 0 : 3);
