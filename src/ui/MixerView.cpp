@@ -72,6 +72,7 @@ void MixerView::refresh() {
         auto* name = new QPushButton(
             master ? "MASTER" : QString::fromStdString(e_.project.tracks[index].name));
         name->setToolTip(name->text());
+        name->setText(name->fontMetrics().elidedText(name->text(), Qt::ElideRight, 96));
         column->addWidget(name);
         if (!master)
             connect(name, &QPushButton::clicked, this, [this, index] {

@@ -8,6 +8,7 @@ class QComboBox;
 class QListWidget;
 class QLabel;
 namespace reverie {
+class InstrumentArtwork;
 class Editor;
 class SoundBrowser final : public QWidget {
     Q_OBJECT
@@ -27,6 +28,8 @@ class SoundBrowser final : public QWidget {
         std::filesystem::path sfz;
         std::string id;
         bool favorite = false;
+        LibraryInstrument metadata;
+        SoundPack pack;
     };
     Editor& editor_;
     SampleCache cache_;
@@ -37,6 +40,10 @@ class SoundBrowser final : public QWidget {
     QListWidget* list_;
     QLabel* status_;
     QLabel* detail_;
+    InstrumentArtwork* artwork_;
+    QListWidget* patches_;
+    QStringList recent_;
+    void updateDetails(bool rebuildPatches = true);
     int currentIndex() const;
 };
 } // namespace reverie

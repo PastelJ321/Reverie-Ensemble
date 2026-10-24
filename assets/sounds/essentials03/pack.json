@@ -1,0 +1,626 @@
+{
+  "author": "Karoryfer Samples / D. Smolken; Versilian Studios / contributors; QuadraJ selection and mapping",
+  "calibrationPolicy": "v1; new preset selection only",
+  "files": [
+    {
+      "path": "samples/bass-ab1-p-1.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "0ee10591e1869417dc547f9de2afdb0c5c298cc4977dca237c121f3fe7936f2e",
+      "size": 1160434,
+      "sourcePath": "notes/ab1_p_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab1_p_rr1.wav"
+    },
+    {
+      "path": "samples/bass-ab1-p-2.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "48df02e36e3777cce7dc440894642a94cbeeec4d26c9d067bd9ef2b402d796e9",
+      "size": 1160434,
+      "sourcePath": "notes/ab1_p_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab1_p_rr2.wav"
+    },
+    {
+      "path": "samples/bass-ab1-f-1.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "6b8f0408fb4385700f0d4ca4362b74613840a614719813b91dcaee1a5fa25e05",
+      "size": 1160434,
+      "sourcePath": "notes/ab1_f_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab1_f_rr1.wav"
+    },
+    {
+      "path": "samples/bass-ab1-f-2.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "fc95613d626be2b231e648720422d63c8c304f9a7656b8e09382d36cbe23aa10",
+      "size": 1160434,
+      "sourcePath": "notes/ab1_f_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab1_f_rr2.wav"
+    },
+    {
+      "path": "samples/bass-ab2-p-1.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "cb4c92330d49dd8a1b401156912c9cf188b8a71977419565f2ffaa53f5d2c5c8",
+      "size": 1160432,
+      "sourcePath": "notes/ab2_p_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab2_p_rr1.wav"
+    },
+    {
+      "path": "samples/bass-ab2-p-2.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "c295b9e579f1057802ab2bcd4ae29833061df86dc33d5a353c02cd0112d0d86e",
+      "size": 1160432,
+      "sourcePath": "notes/ab2_p_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab2_p_rr2.wav"
+    },
+    {
+      "path": "samples/bass-ab2-f-1.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "d49026679dc8b2e9a0563cbb2cb85d888f83eaa45f9da1604be28c863847046f",
+      "size": 1160432,
+      "sourcePath": "notes/ab2_f_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab2_f_rr1.wav"
+    },
+    {
+      "path": "samples/bass-ab2-f-2.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "060093642bb73bd3724c54a32c52f9754958b443c27f07cf67d83869c3e62b01",
+      "size": 1160432,
+      "sourcePath": "notes/ab2_f_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab2_f_rr2.wav"
+    },
+    {
+      "path": "samples/bass-ab3-p-1.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "6de3f8c45f9ffc59bc68a25e22c7f7c22f4bdcc92d3fb27182331ab67abe2dc1",
+      "size": 1160432,
+      "sourcePath": "notes/ab3_p_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab3_p_rr1.wav"
+    },
+    {
+      "path": "samples/bass-ab3-p-2.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "1e0462d24c6c59e4dbebe9845bc00f43a206982de9754b1379a1e29d91356623",
+      "size": 1160432,
+      "sourcePath": "notes/ab3_p_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab3_p_rr2.wav"
+    },
+    {
+      "path": "samples/bass-ab3-f-1.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "3df45ac14fb0f54ad5850a33f911cc23f7e61d52ae980463181387cffcb1ad84",
+      "size": 1160432,
+      "sourcePath": "notes/ab3_f_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab3_f_rr1.wav"
+    },
+    {
+      "path": "samples/bass-ab3-f-2.wav",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "d4424da0472eb7733dfcf5b8e28e2d35f459f84f3e5afa5ea2414e8b959fc852",
+      "size": 1160432,
+      "sourcePath": "notes/ab3_f_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/notes/ab3_f_rr2.wav"
+    },
+    {
+      "path": "Fashionbass-CC0.txt",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "size": 7048,
+      "sourcePath": "LICENSE",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/LICENSE"
+    },
+    {
+      "path": "Fashionbass-readme.txt",
+      "repository": "sfzinstruments/karoryfer.fashionbass",
+      "revision": "0703973b300a6bacb837602be9b588ab64732a72",
+      "sha256": "c3c7192c0345bde4f91b0eb814cec124d0b90f9c7c0802c37f0a00384e659a03",
+      "size": 778,
+      "sourcePath": "readme.txt",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.fashionbass/0703973b300a6bacb837602be9b588ab64732a72/readme.txt"
+    },
+    {
+      "path": "electric-bass.sfz",
+      "sha256": "6d7d4b1b6860f37548e37dd4eb217db28d498080c75fc9adde7db2d794db7888",
+      "size": 1569
+    },
+    {
+      "path": "samples/guitar-e3-p-1.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "027d03e3972b6151215202b065b018a34eb1d609e5e4e9b4d644e19559a84004",
+      "size": 304980,
+      "sourcePath": "Samples/black/ord/twang_e3_p_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_e3_p_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-e3-p-2.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "fd29a448bf81e00f7b1161f15e739db822bd139d8b48d6113ae0260a5ea14802",
+      "size": 329756,
+      "sourcePath": "Samples/black/ord/twang_e3_p_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_e3_p_rr2.wav"
+    },
+    {
+      "path": "samples/guitar-e3-f-1.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "e5b4974650157e43ee5f87270c03d8070c69152f60c90281ead89a658eded5a4",
+      "size": 741936,
+      "sourcePath": "Samples/black/ord/twang_e3_f_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_e3_f_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-e3-f-2.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "8e9b19298e559a6c1644faf3551c461c3f90f5a47ae94f14ba348c7ec478ddf5",
+      "size": 739970,
+      "sourcePath": "Samples/black/ord/twang_e3_f_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_e3_f_rr2.wav"
+    },
+    {
+      "path": "samples/guitar-c4-p-1.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "aa2ba311aade5d59da87df685c61c694a2e31c4f571b8405d6813e4ed4598dc1",
+      "size": 195752,
+      "sourcePath": "Samples/black/ord/twang_c4_p_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c4_p_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-c4-p-2.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "bf0322c727d6fe44d90108d4e134dfc2d627d2872d9e914ddf8c03d6e22c8875",
+      "size": 205118,
+      "sourcePath": "Samples/black/ord/twang_c4_p_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c4_p_rr2.wav"
+    },
+    {
+      "path": "samples/guitar-c4-f-1.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "0cf4c535352c8d0c4c08445e874e1abad9639432ffb25f4309a502c455727d1b",
+      "size": 594336,
+      "sourcePath": "Samples/black/ord/twang_c4_f_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c4_f_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-c4-f-2.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "d5aefd8b5d8f280ddc372b0b4e184927475c9b5c0a4e1910e9a7f6d9225d2452",
+      "size": 566714,
+      "sourcePath": "Samples/black/ord/twang_c4_f_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c4_f_rr2.wav"
+    },
+    {
+      "path": "samples/guitar-c5-p-1.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "b30cb701681ecfa7a49e2c5bb84853bdc75063725fab74707554e47d0413a05f",
+      "size": 201612,
+      "sourcePath": "Samples/black/ord/twang_c5_p_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c5_p_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-c5-p-2.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "a7f75ff4dd7337f063282d5f060695d2e74a257d6b5bcc42ddc555208557f650",
+      "size": 265808,
+      "sourcePath": "Samples/black/ord/twang_c5_p_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c5_p_rr2.wav"
+    },
+    {
+      "path": "samples/guitar-c5-f-1.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "a3778ef1c2434b200bb067e786838acd1af92bd481aa091ace4041c48077e99e",
+      "size": 657432,
+      "sourcePath": "Samples/black/ord/twang_c5_f_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c5_f_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-c5-f-2.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "bb0b990337226f8d461b8e3e413f011965ae72abe756c9e1ee7cdbc4a075bc47",
+      "size": 717840,
+      "sourcePath": "Samples/black/ord/twang_c5_f_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c5_f_rr2.wav"
+    },
+    {
+      "path": "samples/guitar-c6-p-1.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "1b05d70ca27671cd1cdc3dfefcb9ad1545fb9797b2a69e6139a38e8f11e96588",
+      "size": 237944,
+      "sourcePath": "Samples/black/ord/twang_c6_p_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c6_p_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-c6-p-2.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "fcbc23726b97dc1a89d64b9f2ee1d8456adb9bf9275aa8575f16167d932a6870",
+      "size": 223070,
+      "sourcePath": "Samples/black/ord/twang_c6_p_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c6_p_rr2.wav"
+    },
+    {
+      "path": "samples/guitar-c6-f-1.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "676007166499cc7fa18839f4dfe900e2bca2c565f8b68efafccd54a674569601",
+      "size": 526160,
+      "sourcePath": "Samples/black/ord/twang_c6_f_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c6_f_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-c6-f-2.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "5cd48940a736e8c98af9ec45a5885d153244a50425d3bf41aeef72740bba7f7f",
+      "size": 519656,
+      "sourcePath": "Samples/black/ord/twang_c6_f_rr2.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/ord/twang_c6_f_rr2.wav"
+    },
+    {
+      "path": "Guitar-CC0.txt",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499",
+      "size": 7048,
+      "sourcePath": "LICENSE",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/LICENSE"
+    },
+    {
+      "path": "Guitar-readme.txt",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "c5de1216ecef300f0bf3337c04b40f1b7e11e5d0ee172269a1ac344b7819b595",
+      "size": 978,
+      "sourcePath": "readme.txt",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/readme.txt"
+    },
+    {
+      "path": "electric-guitar.sfz",
+      "sha256": "cedb1b8f27dadc997fe916c005c64647ac99e64f08586ea28014006a9fe0d96e",
+      "size": 2081
+    },
+    {
+      "path": "samples/grand-C2-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "eba9adfb3977605a494830081d4e9e4ff0a4efd017439fe402a208aca9f11d7a",
+      "size": 2939740,
+      "sourcePath": "Chordophones/Zithers/Grand Piano, Kawai/Sustains/GPiano_sus_C2_v1_rr1_Player.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Chordophones/Zithers/Grand%20Piano%2C%20Kawai/Sustains/GPiano_sus_C2_v1_rr1_Player.wav"
+    },
+    {
+      "path": "samples/grand-C2-3.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "5d22de6d71e3accb05e2dea5c5208856ac2361c45e26079bffac7b1a98e9360d",
+      "size": 5398316,
+      "sourcePath": "Chordophones/Zithers/Grand Piano, Kawai/Sustains/GPiano_sus_C2_v3_rr1_Player.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Chordophones/Zithers/Grand%20Piano%2C%20Kawai/Sustains/GPiano_sus_C2_v3_rr1_Player.wav"
+    },
+    {
+      "path": "samples/grand-C4-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "f921d4737ee847ecb55ce251a94e1841069b70e206b00342676954992ea7d0dc",
+      "size": 1768284,
+      "sourcePath": "Chordophones/Zithers/Grand Piano, Kawai/Sustains/GPiano_sus_C4_v1_rr1_Player.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Chordophones/Zithers/Grand%20Piano%2C%20Kawai/Sustains/GPiano_sus_C4_v1_rr1_Player.wav"
+    },
+    {
+      "path": "samples/grand-C4-3.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "eb5faca3331cd32f15f6a2302dba69b073a2ca600fed606bf456e60260d06e5b",
+      "size": 2600852,
+      "sourcePath": "Chordophones/Zithers/Grand Piano, Kawai/Sustains/GPiano_sus_C4_v3_rr1_Player.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Chordophones/Zithers/Grand%20Piano%2C%20Kawai/Sustains/GPiano_sus_C4_v3_rr1_Player.wav"
+    },
+    {
+      "path": "samples/grand-C6-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "3441f01103d79e1fcc4047a2ea4125aa475d6a6688d25e10f193a2f3a6349080",
+      "size": 527624,
+      "sourcePath": "Chordophones/Zithers/Grand Piano, Kawai/Sustains/GPiano_sus_C6_v1_rr1_Player.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Chordophones/Zithers/Grand%20Piano%2C%20Kawai/Sustains/GPiano_sus_C6_v1_rr1_Player.wav"
+    },
+    {
+      "path": "samples/grand-C6-3.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "ed4edce9bad4b285b0f35be28029b29f16fc74de4cf336e29cca1b2a8b24acaf",
+      "size": 993184,
+      "sourcePath": "Chordophones/Zithers/Grand Piano, Kawai/Sustains/GPiano_sus_C6_v3_rr1_Player.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Chordophones/Zithers/Grand%20Piano%2C%20Kawai/Sustains/GPiano_sus_C6_v3_rr1_Player.wav"
+    },
+    {
+      "path": "grand.sfz",
+      "sha256": "783e9831f7799ccab9796eead2f180c9ff17662fe63acffc58b4f6d7c38feef3",
+      "size": 800
+    },
+    {
+      "path": "samples/drum-36-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "56827fe9b55f282a0db851e242bc24660d339a0e358b182966aea047240c1136",
+      "size": 281616,
+      "sourcePath": "Membranophones/Struck Membranophones/Bass Drum 1/BDrumNew_hit_v2_rr1_Sum.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Membranophones/Struck%20Membranophones/Bass%20Drum%201/BDrumNew_hit_v2_rr1_Sum.wav"
+    },
+    {
+      "path": "samples/drum-36-2.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "f1f8979de26f8efe278fe778da7bdce2a39fbfb9f2cbf345e38ce8c66f171b59",
+      "size": 302396,
+      "sourcePath": "Membranophones/Struck Membranophones/Bass Drum 1/BDrumNew_hit_v2_rr2_Sum.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Membranophones/Struck%20Membranophones/Bass%20Drum%201/BDrumNew_hit_v2_rr2_Sum.wav"
+    },
+    {
+      "path": "samples/drum-38-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "ef3d567a517ce2ccca8a933eac0cba1aca6bfc1129f17773d13da5fce769eff2",
+      "size": 153432,
+      "sourcePath": "Membranophones/Struck Membranophones/Snare Drum, Modern 3/Snare4_HitSN_v2_rr1_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Membranophones/Struck%20Membranophones/Snare%20Drum%2C%20Modern%203/Snare4_HitSN_v2_rr1_Mid.wav"
+    },
+    {
+      "path": "samples/drum-38-2.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "f79ab2c3343ac5360128cd4c6753a540e00d32ea72bfef2a9e232a469d2f566a",
+      "size": 136828,
+      "sourcePath": "Membranophones/Struck Membranophones/Snare Drum, Modern 3/Snare4_HitSN_v2_rr2_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Membranophones/Struck%20Membranophones/Snare%20Drum%2C%20Modern%203/Snare4_HitSN_v2_rr2_Mid.wav"
+    },
+    {
+      "path": "samples/drum-42-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "4e4dbb4ddbeea653f95c2c229685fd5966ed9492fb8489d89d19dbd864f1a6b4",
+      "size": 236820,
+      "sourcePath": "Idiophones/Struck Idiophones/Hi-Hat Cymbal/HiHat_Close_rr1_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Idiophones/Struck%20Idiophones/Hi-Hat%20Cymbal/HiHat_Close_rr1_Mid.wav"
+    },
+    {
+      "path": "samples/drum-42-2.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "7a6c73b5ea831498d5c5c596b464a57e380cdc7dd2ab697bf10a2696b7f1987d",
+      "size": 254600,
+      "sourcePath": "Idiophones/Struck Idiophones/Hi-Hat Cymbal/HiHat_Close_rr2_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Idiophones/Struck%20Idiophones/Hi-Hat%20Cymbal/HiHat_Close_rr2_Mid.wav"
+    },
+    {
+      "path": "samples/drum-46-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "fa492ec14cc6924b43ad5fcf9e9a0f406d926998835bde2eb5847cd15ad25be7",
+      "size": 1026612,
+      "sourcePath": "Idiophones/Struck Idiophones/Hi-Hat Cymbal/HiHat_HitO_rr1_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Idiophones/Struck%20Idiophones/Hi-Hat%20Cymbal/HiHat_HitO_rr1_Mid.wav"
+    },
+    {
+      "path": "samples/drum-46-2.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "f71f21883f6fe5466d15610ef0e9241ba3851c821858a958f8a6a75bff774760",
+      "size": 1086072,
+      "sourcePath": "Idiophones/Struck Idiophones/Hi-Hat Cymbal/HiHat_HitO_rr2_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Idiophones/Struck%20Idiophones/Hi-Hat%20Cymbal/HiHat_HitO_rr2_Mid.wav"
+    },
+    {
+      "path": "samples/drum-48-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "ed22e076b649b9fd678454a6fc8852fb8e6a86d782d8b48e0107c1fb73104122",
+      "size": 413568,
+      "sourcePath": "Membranophones/Struck Membranophones/Tom 1/Stick/TomH_HitS_v2_rr1_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Membranophones/Struck%20Membranophones/Tom%201/Stick/TomH_HitS_v2_rr1_Mid.wav"
+    },
+    {
+      "path": "samples/drum-48-2.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "6cb3888e0077a20ac2063064cbcaef08e6d0ba04d925e3938019897452fe14fb",
+      "size": 449628,
+      "sourcePath": "Membranophones/Struck Membranophones/Tom 1/Stick/TomH_HitS_v2_rr2_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Membranophones/Struck%20Membranophones/Tom%201/Stick/TomH_HitS_v2_rr2_Mid.wav"
+    },
+    {
+      "path": "samples/drum-45-1.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "662aebda82f294d754a1c026bba81304e78d6ef49aadac4fb5edb582bdbe061a",
+      "size": 411556,
+      "sourcePath": "Membranophones/Struck Membranophones/Tom 2/Stick/TomL_HitS_v2_rr1_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Membranophones/Struck%20Membranophones/Tom%202/Stick/TomL_HitS_v2_rr1_Mid.wav"
+    },
+    {
+      "path": "samples/drum-45-2.wav",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "0436df2d06e0520f35dccf835cf60c515f0ae34bd618f9c8d4c0a6a0ba5cb014",
+      "size": 457960,
+      "sourcePath": "Membranophones/Struck Membranophones/Tom 2/Stick/TomL_HitS_v2_rr2_Mid.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/Membranophones/Struck%20Membranophones/Tom%202/Stick/TomL_HitS_v2_rr2_Mid.wav"
+    },
+    {
+      "path": "acoustic-drums.sfz",
+      "sha256": "97379acfe2e3f957f9656e973194735f853d610b7764453478dd7f0c17ecfd66",
+      "size": 1185
+    },
+    {
+      "path": "VCSL-readme.md",
+      "repository": "sgossner/VCSL",
+      "revision": "c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e",
+      "sha256": "6f7214a188f106c917d6503748485413c3e47cf56bce69f82beb9d16aa0894a9",
+      "size": 4365,
+      "sourcePath": "README.md",
+      "sourceUrl": "https://raw.githubusercontent.com/sgossner/VCSL/c1ea7bcc3c7309650ab0da9d15c9cd1fbc4a4c7e/README.md"
+    },
+    {
+      "path": "samples/guitar-staccato-e3.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "c30da4752057db3f0ceac4918787f507a4e07ef9fcd8790a087555ceb5545648",
+      "size": 118100,
+      "sourcePath": "Samples/black/stac/staccato_e3_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/stac/staccato_e3_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-staccato-c4.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "8773636691e280ba02ddc172174043fa49b70f902da26f7ceaa731da694cd063",
+      "size": 113576,
+      "sourcePath": "Samples/black/stac/staccato_c4_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/stac/staccato_c4_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-staccato-c5.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "9a170db2f98d0ca79b5edc2bb336115f3caa3efbcf7218b07601e30cc9ffd5e0",
+      "size": 132852,
+      "sourcePath": "Samples/black/stac/staccato_c5_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/stac/staccato_c5_rr1.wav"
+    },
+    {
+      "path": "samples/guitar-staccato-c6.wav",
+      "repository": "sfzinstruments/karoryfer.black-and-green-guitars",
+      "revision": "b3b3249d37dc977a1a297bd2dc053e6d9b6b805c",
+      "sha256": "2ccac047ddc686361da6e391eb8bc877cc12e14ee175de2de79ac6691823236c",
+      "size": 122114,
+      "sourcePath": "Samples/black/stac/staccato_c6_rr1.wav",
+      "sourceUrl": "https://raw.githubusercontent.com/sfzinstruments/karoryfer.black-and-green-guitars/b3b3249d37dc977a1a297bd2dc053e6d9b6b805c/Samples/black/stac/staccato_c6_rr1.wav"
+    },
+    {
+      "path": "guitar-staccato.sfz",
+      "sha256": "c86d43ac987b448c156a16ee2b03b7c511c98d53a143cf8a929a704f199396b6",
+      "size": 417
+    },
+    {
+      "path": "CC0-1.0.txt",
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+      "size": 6555
+    }
+  ],
+  "id": "quadraj.ensemble-essentials",
+  "installSize": 40911830,
+  "instruments": [
+    {
+      "articulation": "Sustain",
+      "auditionDb": -9.0,
+      "calibrationDb": -2.3779960351302583,
+      "calibrationVersion": 1,
+      "category": "Guitar & Bass",
+      "family": "bass",
+      "file": "electric-bass.sfz",
+      "format": "sfz",
+      "id": "quadraj.essentials.electric-bass",
+      "instrumentId": "quadraj.instrument.electric-bass",
+      "name": "Electric Bass",
+      "patchId": "electric-bass.natural",
+      "patchName": "Natural",
+      "source": "https://github.com/sfzinstruments/karoryfer.fashionbass",
+      "tags": "recorded bass"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -9.0,
+      "calibrationDb": -1.5145173979450979,
+      "calibrationVersion": 1,
+      "category": "Guitar & Bass",
+      "family": "guitar",
+      "file": "electric-guitar.sfz",
+      "format": "sfz",
+      "id": "quadraj.essentials.electric-guitar",
+      "instrumentId": "quadraj.instrument.electric-guitar",
+      "name": "Hollowbody Electric Guitar",
+      "patchId": "electric-guitar.natural",
+      "patchName": "Natural",
+      "source": "https://github.com/sfzinstruments/karoryfer.black-and-green-guitars",
+      "tags": "recorded guitar"
+    },
+    {
+      "articulation": "Sustain",
+      "auditionDb": -7.251690496095852,
+      "calibrationDb": -0.4024559653947435,
+      "calibrationVersion": 1,
+      "category": "Piano & Keys",
+      "family": "grand",
+      "file": "grand.sfz",
+      "format": "sfz",
+      "id": "quadraj.essentials.grand",
+      "instrumentId": "quadraj.instrument.grand",
+      "name": "Concert Grand Piano",
+      "patchId": "grand.natural",
+      "patchName": "Natural",
+      "rootMappingSource": "https://github.com/sgossner/VCSL/blob/dfcf4a4918771eee884b96ad4493de82ef84daf6/Chordophones/Zithers/Grand%20Piano,%20Kawai.sfz",
+      "source": "https://versilian-studios.com/vcsl/",
+      "tags": "recorded grand"
+    },
+    {
+      "articulation": "GM one-shots",
+      "auditionDb": -9.0,
+      "calibrationDb": 18.28846919669902,
+      "calibrationVersion": 1,
+      "category": "Drums & Percussion",
+      "family": "drums",
+      "file": "acoustic-drums.sfz",
+      "format": "sfz",
+      "id": "quadraj.essentials.acoustic-drums",
+      "instrumentId": "quadraj.instrument.acoustic-drums",
+      "name": "Acoustic Drum Kit",
+      "patchId": "acoustic-drums.natural",
+      "patchName": "Natural",
+      "source": "https://versilian-studios.com/vcsl/",
+      "tags": "recorded drums"
+    },
+    {
+      "articulation": "Staccato",
+      "auditionDb": -9.0,
+      "calibrationDb": -1.9772468607632554,
+      "calibrationVersion": 1,
+      "category": "Guitar & Bass",
+      "family": "guitar",
+      "file": "guitar-staccato.sfz",
+      "format": "sfz",
+      "id": "quadraj.essentials.guitar-staccato",
+      "instrumentId": "quadraj.instrument.electric-guitar",
+      "name": "Hollowbody Electric Guitar",
+      "patchId": "electric-guitar.staccato",
+      "patchName": "Staccato",
+      "source": "https://github.com/sfzinstruments/karoryfer.black-and-green-guitars",
+      "tags": "recorded guitar"
+    }
+  ],
+  "license": "CC0-1.0",
+  "name": "Ensemble Essentials",
+  "sha256": "148644e167b12cf3d6621e7fe305096e34af059753c674472a7284ee1bb9c849",
+  "source": "https://shop.karoryfer.com/pages/free-samples",
+  "version": "1.0.0"
+}

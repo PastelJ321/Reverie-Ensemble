@@ -1,0 +1,5 @@
+<global> ampeg_attack=0.002 ampeg_decay=0.2 ampeg_sustain=100 ampeg_release=0.06
+<region> sample=samples/guitar-staccato-e3.wav lokey=28 hikey=44 pitch_keycenter=40
+<region> sample=samples/guitar-staccato-c4.wav lokey=45 hikey=54 pitch_keycenter=48
+<region> sample=samples/guitar-staccato-c5.wav lokey=55 hikey=66 pitch_keycenter=60
+<region> sample=samples/guitar-staccato-c6.wav lokey=67 hikey=96 pitch_keycenter=72

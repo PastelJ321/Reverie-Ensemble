@@ -10,6 +10,7 @@
 #include <QSet>
 #include <QTimer>
 #include <functional>
+class QLineEdit;
 class QLabel;
 class QDoubleSpinBox;
 class QSpinBox;
@@ -28,6 +29,8 @@ class MixerView;
 class Timeline;
 class PianoRoll;
 class Editor : public QMainWindow {
+    friend class SettingsDialog;
+
   public:
     explicit Editor(bool audio = true);
     ~Editor() override;
@@ -40,9 +43,13 @@ class Editor : public QMainWindow {
     double pixelsPerBeat = 64;
     int trackHeight = 82;
     bool followPlayhead = false;
+    bool timeDisplaySeconds = false;
     void auditionNote(int key, float velocity = .7f, double duration = .3);
     void applyInstrument(const Preset&, bool newTrack = false);
     void showMixer();
+    void showSettings();
+    std::string audioDeviceReport() const { return device_.deviceReport(); }
+    void showExport();
     void beginEdit();
     void endEdit();
     void edit(const std::function<void()>&);
@@ -100,7 +107,7 @@ class Editor : public QMainWindow {
     QScrollArea* timelineScroll_ = nullptr;
     QScrollArea* pianoScroll_ = nullptr;
     QLabel* projectLabel_ = nullptr;
-    QLabel* position_ = nullptr;
+    QLineEdit* position_ = nullptr;
     QLabel* output_ = nullptr;
     QLabel* trackTitle_ = nullptr;
     QLabel* instrumentLabel_ = nullptr;

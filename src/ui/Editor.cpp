@@ -6,9 +6,12 @@
 #include "core/MidiFile.h"
 #include "core/Serializer.h"
 #include "ui/AudioEditor.h"
+#include "ui/ExportDialog.h"
 #include "ui/InspectorPanel.h"
+#include "ui/InstrumentEditor.h"
 #include "ui/MixerView.h"
 #include "ui/PianoRoll.h"
+#include "ui/SettingsDialog.h"
 #include "ui/SoundBrowser.h"
 #include "ui/Theme.h"
 #include "ui/Timeline.h"
@@ -33,6 +36,7 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QSettings>
 #include <QSignalBlocker>
 #include <QSpinBox>
 #include <QSplitter>
@@ -53,6 +57,9 @@ Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabl
     initializeTheme();
     resize(1440, 900);
     setMinimumSize(1000, 650);
+    QSettings prefs;
+    trackHeight = std::clamp(prefs.value("interface/trackHeight", 82).toInt(), 62, 130);
+    followPlayhead = prefs.value("interface/follow", false).toBool();
     buildUi();
     buildMenus();
     try {
@@ -70,6 +77,26 @@ Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabl
                 note.key += 12;
     } catch (const std::exception& ex) {
         message(QString("Recorded starter unavailable; using factory synths: ") + ex.what());
+    }
+    if (audioEnabled_) {
+        int rate = prefs.value("audio/rate", 48000).toInt();
+        if (rate != 44100 && rate != 48000 && rate != 96000)
+            rate = 48000;
+        engine.setSampleRateStopped(rate);
+        auto names = device_.outputDevices();
+        int output = -1;
+        for (int i = 0; i < int(names.size()); ++i)
+            if (QString::fromStdString(names[i]) == prefs.value("audio/outputName").toString())
+                output = i;
+        unsigned frames = prefs.value("audio/buffer", 256).toUInt();
+        if (frames != 128 && frames != 256 && frames != 512 && frames != 1024)
+            frames = 256;
+        device_.configure(output, frames);
+        inputs_->clear();
+        inputs_->addItem("System default");
+        for (auto& name : device_.inputDevices())
+            inputs_->addItem(QString::fromStdString(name));
+        inputs_->setCurrentText(prefs.value("audio/inputName", "System default").toString());
     }
     engine.publish(project);
     if (audioEnabled_ && !device_.startOutput())
@@ -123,12 +150,10 @@ void Editor::buildMenus() {
     });
     file->addSeparator();
     action(file, "Import WAV…", QKeySequence("Ctrl+I"), [this] { importWav(); });
-    action(file, "Export WAV…", QKeySequence("Ctrl+Shift+E"), [this] {
-        auto name = QFileDialog::getSaveFileName(this, "Export 48 kHz · 16-bit stereo WAV", {},
-                                                 "WAV (*.wav)");
-        if (!name.isEmpty())
-            exportProject(name);
-    });
+    action(file, "Export Audio…", QKeySequence("Ctrl+Shift+E"), [this] { showExport(); });
+    auto* settingsAction =
+        action(file, "Settings…", QKeySequence::Preferences, [this] { showSettings(); });
+    settingsAction->setMenuRole(QAction::PreferencesRole);
     action(file, "Quit", QKeySequence::Quit, [this] { close(); });
     action(file, "Import MIDI file…", {}, [this] {
         auto path = QFileDialog::getOpenFileName(this, "Import Standard MIDI File", {},
@@ -193,8 +218,8 @@ void Editor::buildMenus() {
     });
     action(help, "About Reverie Ensemble", {}, [this] {
         QMessageBox::about(
-            this, "Reverie Ensemble 0.2.0",
-            "<h2>Reverie Ensemble</h2><p>0.2.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
+            this, "Reverie Ensemble 0.3.0",
+            "<h2>Reverie Ensemble</h2><p>0.3.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
             "contributors.</p><p>A free, offline, open-source digital audio "
             "workstation.</p><p>Reverie code: Apache License 2.0.<br>Qt Core / Gui / Widgets: "
             "dynamically linked under LGPLv3.<br>miniaudio 0.11.23: MIT-0.<br>nlohmann/json "
@@ -327,12 +352,14 @@ void Editor::refresh() {
         trackTitle_->setText("No track selected");
         instrumentLabel_->clear();
     }
+    if (auto* controls = findChild<QWidget*>("smartControls"))
+        static_cast<InstrumentEditor*>(controls)->refresh();
     timeline_->updateExtent();
     piano_->updateExtent();
     if (selectionInspector_)
         selectionInspector_->refresh();
     setWindowTitle(QString::fromStdString(project.name) + (dirty_ ? " *" : "") +
-                   " — Reverie Ensemble 0.2");
+                   " — Reverie Ensemble 0.3");
     refreshing_ = false;
 }
 void Editor::select(int track, Id clip) {
@@ -411,7 +438,7 @@ void Editor::redo() {
     refresh();
 }
 void Editor::setTempo(double bpm) {
-    const double beat = TempoMap{project.bpm, engine.sampleRate()}.beatAt(engine.position());
+    const double beat = TempoMap{project.bpm, engine.sampleRate()}.beatAt(engine.displayPosition());
     edit([&] { project.bpm = bpm; });
     engine.seek(TempoMap{project.bpm, engine.sampleRate()}.sampleAt(beat));
 }
@@ -447,21 +474,32 @@ void Editor::openPiano(Id clip) {
 }
 void Editor::tick() {
     engine.collect();
-    auto beat = TempoMap{project.bpm, engine.sampleRate()}.beatAt(engine.position());
+    auto beat = TempoMap{project.bpm, engine.sampleRate()}.beatAt(engine.displayPosition());
     double bar = project.numerator * 4. / project.denominator;
-    position_->setText(QString("%1 : %2 : %3")
-                           .arg(int(beat / bar) + 1, 3, 10, QChar('0'))
-                           .arg(int(std::fmod(beat, bar) / (4. / project.denominator)) + 1)
-                           .arg(int((beat - std::floor(beat)) * 960), 3, 10, QChar('0')));
+    if (!position_->hasFocus())
+        position_->setText(QString("%1 : %2 : %3")
+                               .arg(int(beat / bar) + 1, 3, 10, QChar('0'))
+                               .arg(int(std::fmod(beat, bar) / (4. / project.denominator)) + 1)
+                               .arg(int(std::fmod(beat / (4. / project.denominator), 1.) * 960), 3,
+                                    10, QChar('0')));
+    if (!position_->hasFocus() && timeDisplaySeconds) {
+        double seconds = double(engine.displayPosition()) / engine.sampleRate();
+        position_->setText(QString("%1:%2s")
+                               .arg(int(seconds / 60), 2, 10, QChar('0'))
+                               .arg(std::fmod(seconds, 60), 6, 'f', 3, QChar('0')));
+    }
     playButton_->setText(engine.playing() ? "Pause" : "Play");
     if (auto* label = findChild<QLabel*>("transportDeviceStatus"))
-        label->setText(device_.outputRunning() ? "48 kHz / 256 target" : "Offline audio");
-    output_->setText(QString(device_.outputRunning() ? "48 kHz · 256 frames · float32"
-                                                     : "Output unavailable · offline editor") +
+        label->setText(device_.outputRunning()
+                           ? QString::number(int(engine.sampleRate() / 1000.)) + " kHz · active"
+                           : "Offline audio");
+    output_->setText(QString(device_.outputRunning() ? "Audio active · reported format in Settings"
+                                                     : "Offline audio · export available") +
                      (engine.clipped() ? "\nCLIPPING — lower track/master levels" : ""));
     timeline_->update();
     playButton_->setIcon(toolIcon(engine.playing() ? "pause" : "play"));
-    if (followPlayhead && engine.playing()) {
+    if (followPlayhead && engine.playing() && !timeline_->interacting() &&
+        QApplication::mouseButtons() == Qt::NoButton) {
         int x = Timeline::header + int(beat * pixelsPerBeat);
         auto* bar = timelineScroll_->horizontalScrollBar();
         if (x > bar->value() + timelineScroll_->viewport()->width() - 50 ||
@@ -623,6 +661,21 @@ bool Editor::openProject(const QString& path) {
         return false;
     }
 }
+void Editor::showSettings() {
+    if (recording_) {
+        message("Stop recording before opening device settings.");
+        return;
+    }
+    SettingsDialog dialog(*this);
+    dialog.exec();
+}
+void Editor::showExport() {
+    if (recording_)
+        finishRecord();
+    auto* c = findClip(project, selectedClip);
+    ExportDialog dialog(project, c ? c->beat : 0, c ? c->beat + c->length : 0, this);
+    dialog.exec();
+}
 bool Editor::exportProject(const QString& supplied) {
     if (recording_)
         finishRecord();
@@ -734,7 +787,8 @@ void Editor::toggleRecord() {
         auto stamp = std::chrono::system_clock::now().time_since_epoch().count();
         recordingPath_ = media / ("take-" + std::to_string(stamp) + ".wav");
         recordingTrack_ = project.tracks[selectedTrack].id;
-        recordingBeat_ = TempoMap{project.bpm, engine.sampleRate()}.beatAt(engine.position());
+        recordingBeat_ =
+            TempoMap{project.bpm, engine.sampleRate()}.beatAt(engine.displayPosition());
         recorder_.start(recordingPath_, 48000);
         if (!device_.startCapture(inputs_->currentIndex() - 1, recorder_)) {
             recorder_.stop();

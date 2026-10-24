@@ -25,6 +25,7 @@ class Synthesizer final : public Instrument {
     void releaseAll() noexcept;
     void copyStateFrom(const Synthesizer& source) noexcept {
         voices_ = source.voices_;
+        sequence_ = source.sequence_;
     }
 
   private:
@@ -36,6 +37,7 @@ class Synthesizer final : public Instrument {
         std::uint32_t noise = 12345;
     };
     std::array<Voice, 32> voices_{};
+    std::array<std::uint64_t, 128> sequence_{};
     Preset preset_;
     double rate_;
     float filterAlpha_;

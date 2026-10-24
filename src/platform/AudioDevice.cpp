@@ -3,13 +3,16 @@
 
 #include "platform/AudioDevice.h"
 #include "miniaudio.h"
+#include <stdexcept>
 namespace reverie {
 struct AudioDeviceManager::Impl {
     AudioEngine& engine;
     ma_context context{};
     ma_device output{}, input{};
     bool initialized = false, outputReady = false, inputReady = false;
-    std::vector<ma_device_id> inputs;
+    std::vector<ma_device_id> inputs, outputs;
+    int outputIndex = -1;
+    unsigned bufferFrames = 256;
     std::string error;
     AudioRecorder* recorder = nullptr;
     explicit Impl(AudioEngine& e) : engine(e) {}
@@ -43,8 +46,10 @@ bool AudioDeviceManager::startOutput(bool forceFailure) {
     auto cfg = ma_device_config_init(ma_device_type_playback);
     cfg.playback.format = ma_format_f32;
     cfg.playback.channels = 2;
+    if (p.outputIndex >= 0 && p.outputIndex < int(p.outputs.size()))
+        cfg.playback.pDeviceID = &p.outputs[p.outputIndex];
     cfg.sampleRate = ma_uint32(p.engine.sampleRate());
-    cfg.periodSizeInFrames = 256;
+    cfg.periodSizeInFrames = p.bufferFrames;
     cfg.pUserData = &p;
     cfg.dataCallback = [](ma_device* d, void* output, const void*, ma_uint32 frames) {
         if (output)
@@ -62,6 +67,49 @@ bool AudioDeviceManager::startOutput(bool forceFailure) {
     }
     p.error.clear();
     return true;
+}
+void AudioDeviceManager::configure(int index, unsigned frames) {
+    if (frames != 128 && frames != 256 && frames != 512 && frames != 1024)
+        throw std::runtime_error("Unsupported requested buffer size");
+    impl_->outputIndex = index;
+    impl_->bufferFrames = frames;
+}
+std::vector<std::string> AudioDeviceManager::outputDevices() {
+    auto& p = *impl_;
+    p.outputs.clear();
+    std::vector<std::string> names;
+    if (!p.ensureContext())
+        return names;
+    ma_device_info* devices = nullptr;
+    ma_uint32 count = 0;
+    if (ma_context_get_devices(&p.context, &devices, &count, nullptr, nullptr) != MA_SUCCESS)
+        return names;
+    for (ma_uint32 i = 0; i < count; ++i) {
+        p.outputs.push_back(devices[i].id);
+        names.emplace_back(devices[i].name);
+    }
+    return names;
+}
+std::string AudioDeviceManager::deviceReport() const {
+    const auto& p = *impl_;
+    auto request = "Requested client: " + std::to_string(int(p.engine.sampleRate())) + " Hz / " +
+                   std::to_string(p.bufferFrames) + " frames / stereo float32";
+    if (!p.outputReady)
+        return request + "\nOutput offline. Offline export remains available.";
+    auto& d = p.output;
+    auto& b = d.playback;
+    return request + "\nClient format: " + std::to_string(d.sampleRate) + " Hz / " +
+           std::to_string(b.channels) + " channels / " + ma_get_format_name(b.format) +
+           "\nDevice: " + b.name +
+           "\nReported backend format: " + std::to_string(b.internalSampleRate) + " Hz / " +
+           std::to_string(b.internalChannels) + " channels / " +
+           ma_get_format_name(b.internalFormat) +
+           "\nReported period: " + std::to_string(b.internalPeriodSizeInFrames) + " frames × " +
+           std::to_string(b.internalPeriods) + "\nNominal queued duration: " +
+           std::to_string(b.internalSampleRate ? 1000. * b.internalPeriodSizeInFrames *
+                                                     b.internalPeriods / b.internalSampleRate
+                                               : 0) +
+           " ms (not round-trip latency)";
 }
 void AudioDeviceManager::stopOutput() {
     auto& p = *impl_;
@@ -97,7 +145,7 @@ bool AudioDeviceManager::startCapture(int index, AudioRecorder& recorder) {
     cfg.capture.format = ma_format_f32;
     cfg.capture.channels = 2;
     cfg.sampleRate = ma_uint32(p.engine.sampleRate());
-    cfg.periodSizeInFrames = 256;
+    cfg.periodSizeInFrames = p.bufferFrames;
     cfg.pUserData = &p;
     if (index >= 0 && index < int(p.inputs.size()))
         cfg.capture.pDeviceID = &p.inputs[index];

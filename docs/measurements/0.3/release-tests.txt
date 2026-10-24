@@ -1,0 +1,17 @@
+Test project <workspace>/build-03-release
+    Start 1: features-03
+1/6 Test #1: features-03 ......................   Passed    1.16 sec
+    Start 2: audio-core
+2/6 Test #2: audio-core .......................   Passed    0.10 sec
+    Start 3: features-02
+3/6 Test #3: features-02 ......................   Passed    0.75 sec
+    Start 4: editor-03
+4/6 Test #4: editor-03 ........................   Passed    1.36 sec
+    Start 5: editor-workflow
+5/6 Test #5: editor-workflow ..................   Passed    1.08 sec
+    Start 6: editor-02
+6/6 Test #6: editor-02 ........................   Passed    1.30 sec
+
+100% tests passed out of 6
+
+Total Test time (real) =   5.75 sec

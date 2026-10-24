@@ -1,0 +1,23 @@
+Electric Bass: -2.378 dB; medium RMS -32.358 -> -34.736
+Hollowbody Electric Guitar: -1.51452 dB; medium RMS -36.8469 -> -38.3614
+Concert Grand Piano: -0.402456 dB; medium RMS -29.5975 -> -30
+Acoustic Drum Kit: 18.2885 dB; medium RMS -50.7313 -> -32.4429
+Hollowbody Electric Guitar / Staccato: -1.97725 dB; medium RMS -38.7795 -> -40.7567
+Upright Piano: 4.99322 dB; medium RMS -34.9932 -> -30
+Solo Violin: 5.76571 dB; medium RMS -33.2072 -> -27.4415
+Violin Ensemble: 24.3197 dB; medium RMS -53.386 -> -29.0663
+Cello Ensemble: 16.2125 dB; medium RMS -46.2125 -> -30
+Pizzicato Contrabass: 18.1958 dB; medium RMS -57.9003 -> -39.7045
+Concert Flute: 1.25799 dB; medium RMS -33.7585 -> -32.5005
+Concert Trumpet: -7.249 dB; medium RMS -22.751 -> -30
+Marimba: 15.2223 dB; medium RMS -48.9449 -> -33.7226
+Recorded Percussion Kit: 7.67769 dB; medium RMS -44.1099 -> -36.4322
+Simple Piano-like: 0.0682973 dB; medium RMS -25.0683 -> -25
+Soft Pad: -1.91097 dB; medium RMS -23.089 -> -25
+Synth Lead: 1.20483 dB; medium RMS -26.2048 -> -25
+Synth Bass: -2.30471 dB; medium RMS -22.6953 -> -25
+Pluck: 3.30061 dB; medium RMS -31.6988 -> -28.3982
+Organ-like: -1.20825 dB; medium RMS -23.7917 -> -25
+Bell: -0.0739985 dB; medium RMS -24.926 -> -25
+Basic Synth: -3.74986 dB; medium RMS -21.2501 -> -25
+Studio Drums (synthetic): -1.54342 dB; medium RMS -36.055 -> -37.5984

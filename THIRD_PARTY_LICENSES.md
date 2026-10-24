@@ -46,3 +46,11 @@ Community Essentials contains 35 unchanged VSCO 2 CE recordings under CC0-1.0 pl
 IBM Plex Sans KR Regular/Medium/SemiBold and IBM Plex Mono Regular are included unmodified under SIL OFL 1.1. Preserve `assets/fonts/OFL.txt` and `Mono-OFL.txt`, IBM copyright and reserved-font-name conditions. Fonts may be bundled with the app but not sold separately or relicensed as Apache-2.0. Original sibling resources were reused without alteration; the macOS bundle carries its own resources rather than a runtime path into another project.
 
 Qt dynamic-link/source/relinking obligations above continue to apply. FluidSynth is **not linked or shipped**; SF2/SF3 hosting is not enabled. A future backend needs a fresh LGPL/build/transitive dependency review and callback safety validation. SFZ is a separate, limited mapping parser implemented by Reverie.
+
+## 0.3 audio and illustration additions
+
+Ensemble Essentials 1.0.0 contains 50 unchanged CC0 recordings from the individually verified Karoryfer Fashionbass / Black And Green Guitars repositories and VCSL. It is separate from the unchanged 35 VSCO 2 CE WAVs in Community Essentials 1.1.0. Exact repositories/revisions/raw paths and hashes are in assets/sounds/essentials03/pack.json; Fashionbass-CC0.txt, Guitar-CC0.txt, CC0-1.0.txt and original readmes accompany that pack. SFZ mappings are QuadraJ CC0 pack data; player/calibration code is Apache-2.0. See the expanded Sound Library License Manifest.
+
+The source-code-rendered InstrumentArt silhouettes/detailed illustrations are original QuadraJ Apache-2.0 assets. CC0 audio permission was not used as a substitute for image permission: no third-party photos, Apple imagery, UI icons or preset artwork were copied. Existing IBM Plex OFL notices and Qt LGPL dynamic-link/source/replacement obligations continue unchanged.
+
+No FluidSynth, libsndfile, MP3/AAC encoder or new codec dependency is linked or shipped. Configurable WAV writing is original code; legacy miniaudio WAV decoding/encoding retains its existing license. Future encoders and SoundFonts require their own separate licensing and distribution review.

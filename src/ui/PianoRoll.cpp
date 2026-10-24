@@ -106,7 +106,7 @@ void PianoRoll::paintEvent(QPaintEvent* event) {
     if (!c) {
         p.fillRect(rect(), QColor(232, 225, 213, 220));
         p.setPen(design::ink);
-        p.drawText(QRect(90, ruler + 400, 650, 60),
+        p.drawText(QRect(horizontalOffset() + 80, verticalOffset() + ruler + 60, 600, 60),
                    "Double-click a MIDI clip in the arrangement to edit notes.");
     }
 }

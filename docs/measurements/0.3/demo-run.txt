@@ -1,0 +1,6 @@
+6 tracks; 108 BPM; 16 beats; 44100 Hz / 24-bit stereo
+Frames: 656600
+Peak: -11.0093 dBFS
+RMS: -32.032 dBFS
+Over-range samples: 0
+Audio track is a rendered guitar bounce, not a microphone recording.

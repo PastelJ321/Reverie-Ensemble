@@ -1,0 +1,13 @@
+<global> ampeg_attack=0.002 ampeg_decay=0.2 ampeg_sustain=100 ampeg_release=0.18
+<region> sample=samples/bass-ab1-p-1.wav lokey=12 hikey=38 pitch_keycenter=32 lovel=0 hivel=78 seq_length=2 seq_position=1
+<region> sample=samples/bass-ab1-p-2.wav lokey=12 hikey=38 pitch_keycenter=32 lovel=0 hivel=78 seq_length=2 seq_position=2
+<region> sample=samples/bass-ab1-f-1.wav lokey=12 hikey=38 pitch_keycenter=32 lovel=79 hivel=127 seq_length=2 seq_position=1
+<region> sample=samples/bass-ab1-f-2.wav lokey=12 hikey=38 pitch_keycenter=32 lovel=79 hivel=127 seq_length=2 seq_position=2
+<region> sample=samples/bass-ab2-p-1.wav lokey=39 hikey=50 pitch_keycenter=44 lovel=0 hivel=78 seq_length=2 seq_position=1
+<region> sample=samples/bass-ab2-p-2.wav lokey=39 hikey=50 pitch_keycenter=44 lovel=0 hivel=78 seq_length=2 seq_position=2
+<region> sample=samples/bass-ab2-f-1.wav lokey=39 hikey=50 pitch_keycenter=44 lovel=79 hivel=127 seq_length=2 seq_position=1
+<region> sample=samples/bass-ab2-f-2.wav lokey=39 hikey=50 pitch_keycenter=44 lovel=79 hivel=127 seq_length=2 seq_position=2
+<region> sample=samples/bass-ab3-p-1.wav lokey=51 hikey=96 pitch_keycenter=56 lovel=0 hivel=78 seq_length=2 seq_position=1
+<region> sample=samples/bass-ab3-p-2.wav lokey=51 hikey=96 pitch_keycenter=56 lovel=0 hivel=78 seq_length=2 seq_position=2
+<region> sample=samples/bass-ab3-f-1.wav lokey=51 hikey=96 pitch_keycenter=56 lovel=79 hivel=127 seq_length=2 seq_position=1
+<region> sample=samples/bass-ab3-f-2.wav lokey=51 hikey=96 pitch_keycenter=56 lovel=79 hivel=127 seq_length=2 seq_position=2

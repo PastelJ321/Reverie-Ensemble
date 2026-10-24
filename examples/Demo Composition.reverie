@@ -1,0 +1,2119 @@
+{
+  "bpm": 108.0,
+  "clickLevel": 0.11999999731779099,
+  "denominator": 4,
+  "format": "Reverie Ensemble",
+  "loopEnabled": false,
+  "loopEnd": 16.0,
+  "loopStart": 0.0,
+  "master": 0.6499999761581421,
+  "metronome": false,
+  "name": "Ensemble 0.3 \u2014 Demo Composition",
+  "numerator": 4,
+  "tracks": [
+    {
+      "clips": [
+        {
+          "beat": 0.0,
+          "id": 15,
+          "length": 16.0,
+          "media": "",
+          "name": "Concert Grand Piano",
+          "notes": [
+            {
+              "beat": 0.0,
+              "duration": 0.4,
+              "id": 16,
+              "key": 60,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 0.5,
+              "duration": 0.4,
+              "id": 17,
+              "key": 64,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 1.0,
+              "duration": 0.4,
+              "id": 18,
+              "key": 67,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 1.5,
+              "duration": 0.4,
+              "id": 19,
+              "key": 72,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 2.0,
+              "duration": 0.4,
+              "id": 20,
+              "key": 67,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 2.5,
+              "duration": 0.4,
+              "id": 21,
+              "key": 64,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 3.0,
+              "duration": 0.4,
+              "id": 22,
+              "key": 67,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 3.5,
+              "duration": 0.4,
+              "id": 23,
+              "key": 64,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 4.0,
+              "duration": 0.4,
+              "id": 24,
+              "key": 57,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 4.5,
+              "duration": 0.4,
+              "id": 25,
+              "key": 61,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 5.0,
+              "duration": 0.4,
+              "id": 26,
+              "key": 64,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 5.5,
+              "duration": 0.4,
+              "id": 27,
+              "key": 69,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 6.0,
+              "duration": 0.4,
+              "id": 28,
+              "key": 64,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 6.5,
+              "duration": 0.4,
+              "id": 29,
+              "key": 61,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 7.0,
+              "duration": 0.4,
+              "id": 30,
+              "key": 64,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 7.5,
+              "duration": 0.4,
+              "id": 31,
+              "key": 61,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 8.0,
+              "duration": 0.4,
+              "id": 32,
+              "key": 65,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 8.5,
+              "duration": 0.4,
+              "id": 33,
+              "key": 69,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 9.0,
+              "duration": 0.4,
+              "id": 34,
+              "key": 72,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 9.5,
+              "duration": 0.4,
+              "id": 35,
+              "key": 77,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 10.0,
+              "duration": 0.4,
+              "id": 36,
+              "key": 72,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 10.5,
+              "duration": 0.4,
+              "id": 37,
+              "key": 69,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 11.0,
+              "duration": 0.4,
+              "id": 38,
+              "key": 72,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 11.5,
+              "duration": 0.4,
+              "id": 39,
+              "key": 69,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 12.0,
+              "duration": 0.4,
+              "id": 40,
+              "key": 67,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 12.5,
+              "duration": 0.4,
+              "id": 41,
+              "key": 71,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 13.0,
+              "duration": 0.4,
+              "id": 42,
+              "key": 74,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 13.5,
+              "duration": 0.4,
+              "id": 43,
+              "key": 79,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 14.0,
+              "duration": 0.4,
+              "id": 44,
+              "key": 74,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 14.5,
+              "duration": 0.4,
+              "id": 45,
+              "key": 71,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 15.0,
+              "duration": 0.4,
+              "id": 46,
+              "key": 74,
+              "velocity": 0.5799999833106995
+            },
+            {
+              "beat": 15.5,
+              "duration": 0.4,
+              "id": 47,
+              "key": 71,
+              "velocity": 0.699999988079071
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4289825904,
+      "effects": {
+        "delayMix": 0.0,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": true,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.11999999731779099
+      },
+      "id": 6,
+      "kind": 0,
+      "mute": false,
+      "name": "Concert Grand Piano",
+      "pan": 0.0,
+      "preset": {
+        "articulation": "Sustain",
+        "attack": 0.0020000000949949026,
+        "auditionGain": 0.4339258074760437,
+        "calibrationGain": 0.9547225832939148,
+        "calibrationVersion": 1,
+        "category": "Piano & Keys",
+        "color": 0.0,
+        "cubicInterpolation": true,
+        "cutoff": 8000.0,
+        "decay": 0.20000000298023224,
+        "family": "grand",
+        "gain": 0.699999988079071,
+        "instrumentId": "quadraj.instrument.grand",
+        "kind": 2,
+        "license": "CC0-1.0",
+        "name": "Concert Grand Piano",
+        "patchId": "grand.natural",
+        "release": 0.4000000059604645,
+        "rootNote": 60,
+        "sample": "",
+        "source": "https://versilian-studios.com/vcsl/",
+        "sustain": 1.0,
+        "tags": "recorded grand",
+        "wave": 0,
+        "zones": [
+          {
+            "end": 0,
+            "gain": 32.7511100769043,
+            "highKey": 60,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 21,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C2-1.wav",
+            "rootKey": 48,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 13
+          },
+          {
+            "end": 0,
+            "gain": 2.444854497909546,
+            "highKey": 60,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 21,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C2-3.wav",
+            "rootKey": 48,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 63.10218811035156,
+            "highKey": 84,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 61,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C4-1.wav",
+            "rootKey": 72,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 2.686265707015991,
+            "highKey": 84,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 61,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C4-3.wav",
+            "rootKey": 72,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 66.51903533935547,
+            "highKey": 108,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 85,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C6-1.wav",
+            "rootKey": 96,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.4086133241653442,
+            "highKey": 108,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 85,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C6-3.wav",
+            "rootKey": 96,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          }
+        ]
+      },
+      "solo": false,
+      "volume": 0.5
+    },
+    {
+      "clips": [
+        {
+          "beat": 0.0,
+          "id": 48,
+          "length": 16.0,
+          "media": "",
+          "name": "Electric Bass",
+          "notes": [
+            {
+              "beat": 0.0,
+              "duration": 0.75,
+              "id": 49,
+              "key": 36,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 1.0,
+              "duration": 0.75,
+              "id": 50,
+              "key": 36,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 2.0,
+              "duration": 0.75,
+              "id": 51,
+              "key": 36,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 3.0,
+              "duration": 0.75,
+              "id": 52,
+              "key": 36,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 4.0,
+              "duration": 0.75,
+              "id": 53,
+              "key": 33,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 5.0,
+              "duration": 0.75,
+              "id": 54,
+              "key": 33,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 6.0,
+              "duration": 0.75,
+              "id": 55,
+              "key": 33,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 7.0,
+              "duration": 0.75,
+              "id": 56,
+              "key": 33,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 8.0,
+              "duration": 0.75,
+              "id": 57,
+              "key": 41,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 9.0,
+              "duration": 0.75,
+              "id": 58,
+              "key": 41,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 10.0,
+              "duration": 0.75,
+              "id": 59,
+              "key": 41,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 11.0,
+              "duration": 0.75,
+              "id": 60,
+              "key": 41,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 12.0,
+              "duration": 0.75,
+              "id": 61,
+              "key": 43,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 13.0,
+              "duration": 0.75,
+              "id": 62,
+              "key": 43,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 14.0,
+              "duration": 0.75,
+              "id": 63,
+              "key": 43,
+              "velocity": 0.699999988079071
+            },
+            {
+              "beat": 15.0,
+              "duration": 0.75,
+              "id": 64,
+              "key": 43,
+              "velocity": 0.699999988079071
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4286490779,
+      "effects": {
+        "delayMix": 0.0,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": false,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.0
+      },
+      "id": 8,
+      "kind": 0,
+      "mute": false,
+      "name": "Electric Bass",
+      "pan": 0.0,
+      "preset": {
+        "articulation": "Sustain",
+        "attack": 0.0020000000949949026,
+        "auditionGain": 0.3548133969306946,
+        "calibrationGain": 0.7605017423629761,
+        "calibrationVersion": 1,
+        "category": "Guitar & Bass",
+        "color": 0.0,
+        "cubicInterpolation": true,
+        "cutoff": 8000.0,
+        "decay": 0.20000000298023224,
+        "family": "bass",
+        "gain": 0.699999988079071,
+        "instrumentId": "quadraj.instrument.electric-bass",
+        "kind": 2,
+        "license": "CC0-1.0",
+        "name": "Electric Bass",
+        "patchId": "electric-bass.natural",
+        "release": 0.18000000715255737,
+        "rootNote": 60,
+        "sample": "",
+        "source": "https://github.com/sfzinstruments/karoryfer.fashionbass",
+        "sustain": 1.0,
+        "tags": "recorded bass",
+        "wave": 0,
+        "zones": [
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 38,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 12,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab1-p-1.wav",
+            "rootKey": 32,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 38,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 12,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab1-p-2.wav",
+            "rootKey": 32,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 38,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 12,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab1-f-1.wav",
+            "rootKey": 32,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 38,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 12,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab1-f-2.wav",
+            "rootKey": 32,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 50,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 39,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab2-p-1.wav",
+            "rootKey": 44,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 50,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 39,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab2-p-2.wav",
+            "rootKey": 44,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 50,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 39,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab2-f-1.wav",
+            "rootKey": 44,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 50,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 39,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab2-f-2.wav",
+            "rootKey": 44,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 96,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 51,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab3-p-1.wav",
+            "rootKey": 56,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 96,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 51,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab3-p-2.wav",
+            "rootKey": 56,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 96,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 51,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab3-f-1.wav",
+            "rootKey": 56,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 96,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 51,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/bass-ab3-f-2.wav",
+            "rootKey": 56,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          }
+        ]
+      },
+      "solo": false,
+      "volume": 0.4000000059604645
+    },
+    {
+      "clips": [
+        {
+          "beat": 0.0,
+          "id": 65,
+          "length": 16.0,
+          "media": "",
+          "name": "Hollowbody Guitar",
+          "notes": [
+            {
+              "beat": 0.0,
+              "duration": 1.5,
+              "id": 66,
+              "key": 48,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 0.024,
+              "duration": 1.5,
+              "id": 67,
+              "key": 52,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 0.042,
+              "duration": 1.5,
+              "id": 68,
+              "key": 55,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 2.0,
+              "duration": 1.5,
+              "id": 69,
+              "key": 48,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 2.024,
+              "duration": 1.5,
+              "id": 70,
+              "key": 52,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 2.042,
+              "duration": 1.5,
+              "id": 71,
+              "key": 55,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 4.0,
+              "duration": 1.5,
+              "id": 72,
+              "key": 45,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 4.024,
+              "duration": 1.5,
+              "id": 73,
+              "key": 49,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 4.042,
+              "duration": 1.5,
+              "id": 74,
+              "key": 52,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 6.0,
+              "duration": 1.5,
+              "id": 75,
+              "key": 45,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 6.024,
+              "duration": 1.5,
+              "id": 76,
+              "key": 49,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 6.042,
+              "duration": 1.5,
+              "id": 77,
+              "key": 52,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 8.0,
+              "duration": 1.5,
+              "id": 78,
+              "key": 53,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 8.024,
+              "duration": 1.5,
+              "id": 79,
+              "key": 57,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 8.042,
+              "duration": 1.5,
+              "id": 80,
+              "key": 60,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 10.0,
+              "duration": 1.5,
+              "id": 81,
+              "key": 53,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 10.024,
+              "duration": 1.5,
+              "id": 82,
+              "key": 57,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 10.042,
+              "duration": 1.5,
+              "id": 83,
+              "key": 60,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 12.0,
+              "duration": 1.5,
+              "id": 84,
+              "key": 55,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 12.024,
+              "duration": 1.5,
+              "id": 85,
+              "key": 59,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 12.042,
+              "duration": 1.5,
+              "id": 86,
+              "key": 62,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 14.0,
+              "duration": 1.5,
+              "id": 87,
+              "key": 55,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 14.024,
+              "duration": 1.5,
+              "id": 88,
+              "key": 59,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 14.042,
+              "duration": 1.5,
+              "id": 89,
+              "key": 62,
+              "velocity": 0.6499999761581421
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4290489723,
+      "effects": {
+        "delayMix": 0.07999999821186066,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": true,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.0
+      },
+      "id": 10,
+      "kind": 0,
+      "mute": false,
+      "name": "Hollowbody Guitar",
+      "pan": -0.20000000298023224,
+      "preset": {
+        "articulation": "Sustain",
+        "attack": 0.0020000000949949026,
+        "auditionGain": 0.3548133969306946,
+        "calibrationGain": 0.8399900197982788,
+        "calibrationVersion": 1,
+        "category": "Guitar & Bass",
+        "color": 0.0,
+        "cubicInterpolation": true,
+        "cutoff": 8000.0,
+        "decay": 0.20000000298023224,
+        "family": "guitar",
+        "gain": 0.699999988079071,
+        "instrumentId": "quadraj.instrument.electric-guitar",
+        "kind": 2,
+        "license": "CC0-1.0",
+        "name": "Hollowbody Electric Guitar",
+        "patchId": "electric-guitar.natural",
+        "release": 0.2199999988079071,
+        "rootNote": 60,
+        "sample": "",
+        "source": "https://github.com/sfzinstruments/karoryfer.black-and-green-guitars",
+        "sustain": 1.0,
+        "tags": "recorded guitar",
+        "wave": 0,
+        "zones": [
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 44,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 28,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-e3-p-1.wav",
+            "rootKey": 40,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 44,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 28,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-e3-p-2.wav",
+            "rootKey": 40,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 44,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 28,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-e3-f-1.wav",
+            "rootKey": 40,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 44,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 28,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-e3-f-2.wav",
+            "rootKey": 40,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 54,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 45,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c4-p-1.wav",
+            "rootKey": 48,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 54,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 45,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c4-p-2.wav",
+            "rootKey": 48,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 54,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 45,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c4-f-1.wav",
+            "rootKey": 48,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 54,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 45,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c4-f-2.wav",
+            "rootKey": 48,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 66,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 55,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c5-p-1.wav",
+            "rootKey": 60,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 66,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 55,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c5-p-2.wav",
+            "rootKey": 60,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 66,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 55,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c5-f-1.wav",
+            "rootKey": 60,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 66,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 55,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c5-f-2.wav",
+            "rootKey": 60,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 96,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 67,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c6-p-1.wav",
+            "rootKey": 72,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 96,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 67,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c6-p-2.wav",
+            "rootKey": 72,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 96,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 67,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c6-f-1.wav",
+            "rootKey": 72,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 96,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 67,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/guitar-c6-f-2.wav",
+            "rootKey": 72,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          }
+        ]
+      },
+      "solo": false,
+      "volume": 0.30000001192092896
+    },
+    {
+      "clips": [
+        {
+          "beat": 0.0,
+          "id": 90,
+          "length": 16.0,
+          "media": "",
+          "name": "Acoustic Drum Kit",
+          "notes": [
+            {
+              "beat": 0.0,
+              "duration": 0.12,
+              "id": 91,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 0.5,
+              "duration": 0.12,
+              "id": 92,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 1.0,
+              "duration": 0.12,
+              "id": 93,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 1.5,
+              "duration": 0.12,
+              "id": 94,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 2.0,
+              "duration": 0.12,
+              "id": 95,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 2.5,
+              "duration": 0.12,
+              "id": 96,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 3.0,
+              "duration": 0.12,
+              "id": 97,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 3.5,
+              "duration": 0.12,
+              "id": 98,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 0.0,
+              "duration": 0.2,
+              "id": 99,
+              "key": 36,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 2.0,
+              "duration": 0.2,
+              "id": 100,
+              "key": 36,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 1.0,
+              "duration": 0.2,
+              "id": 101,
+              "key": 38,
+              "velocity": 0.75
+            },
+            {
+              "beat": 3.0,
+              "duration": 0.2,
+              "id": 102,
+              "key": 38,
+              "velocity": 0.75
+            },
+            {
+              "beat": 4.0,
+              "duration": 0.12,
+              "id": 103,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 4.5,
+              "duration": 0.12,
+              "id": 104,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 5.0,
+              "duration": 0.12,
+              "id": 105,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 5.5,
+              "duration": 0.12,
+              "id": 106,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 6.0,
+              "duration": 0.12,
+              "id": 107,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 6.5,
+              "duration": 0.12,
+              "id": 108,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 7.0,
+              "duration": 0.12,
+              "id": 109,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 7.5,
+              "duration": 0.12,
+              "id": 110,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 4.0,
+              "duration": 0.2,
+              "id": 111,
+              "key": 36,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 6.0,
+              "duration": 0.2,
+              "id": 112,
+              "key": 36,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 5.0,
+              "duration": 0.2,
+              "id": 113,
+              "key": 38,
+              "velocity": 0.75
+            },
+            {
+              "beat": 7.0,
+              "duration": 0.2,
+              "id": 114,
+              "key": 38,
+              "velocity": 0.75
+            },
+            {
+              "beat": 8.0,
+              "duration": 0.12,
+              "id": 115,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 8.5,
+              "duration": 0.12,
+              "id": 116,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 9.0,
+              "duration": 0.12,
+              "id": 117,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 9.5,
+              "duration": 0.12,
+              "id": 118,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 10.0,
+              "duration": 0.12,
+              "id": 119,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 10.5,
+              "duration": 0.12,
+              "id": 120,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 11.0,
+              "duration": 0.12,
+              "id": 121,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 11.5,
+              "duration": 0.12,
+              "id": 122,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 8.0,
+              "duration": 0.2,
+              "id": 123,
+              "key": 36,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 10.0,
+              "duration": 0.2,
+              "id": 124,
+              "key": 36,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 9.0,
+              "duration": 0.2,
+              "id": 125,
+              "key": 38,
+              "velocity": 0.75
+            },
+            {
+              "beat": 11.0,
+              "duration": 0.2,
+              "id": 126,
+              "key": 38,
+              "velocity": 0.75
+            },
+            {
+              "beat": 12.0,
+              "duration": 0.12,
+              "id": 127,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 12.5,
+              "duration": 0.12,
+              "id": 128,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 13.0,
+              "duration": 0.12,
+              "id": 129,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 13.5,
+              "duration": 0.12,
+              "id": 130,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 14.0,
+              "duration": 0.12,
+              "id": 131,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 14.5,
+              "duration": 0.12,
+              "id": 132,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 15.0,
+              "duration": 0.12,
+              "id": 133,
+              "key": 42,
+              "velocity": 0.6499999761581421
+            },
+            {
+              "beat": 15.5,
+              "duration": 0.12,
+              "id": 134,
+              "key": 42,
+              "velocity": 0.5
+            },
+            {
+              "beat": 12.0,
+              "duration": 0.2,
+              "id": 135,
+              "key": 36,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 14.0,
+              "duration": 0.2,
+              "id": 136,
+              "key": 36,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 13.0,
+              "duration": 0.2,
+              "id": 137,
+              "key": 38,
+              "velocity": 0.75
+            },
+            {
+              "beat": 15.0,
+              "duration": 0.2,
+              "id": 138,
+              "key": 38,
+              "velocity": 0.75
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4286881189,
+      "effects": {
+        "delayMix": 0.0,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": false,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.0
+      },
+      "id": 12,
+      "kind": 0,
+      "mute": false,
+      "name": "Acoustic Drum Kit",
+      "pan": 0.0,
+      "preset": {
+        "articulation": "GM one-shots",
+        "attack": 0.0020000000949949026,
+        "auditionGain": 0.3548133969306946,
+        "calibrationGain": 8.211518287658691,
+        "calibrationVersion": 1,
+        "category": "Drums & Percussion",
+        "color": 0.0,
+        "cubicInterpolation": true,
+        "cutoff": 8000.0,
+        "decay": 0.20000000298023224,
+        "family": "drums",
+        "gain": 0.699999988079071,
+        "instrumentId": "quadraj.instrument.acoustic-drums",
+        "kind": 2,
+        "license": "CC0-1.0",
+        "name": "Acoustic Drum Kit",
+        "patchId": "acoustic-drums.natural",
+        "release": 0.07999999821186066,
+        "rootNote": 60,
+        "sample": "",
+        "source": "https://versilian-studios.com/vcsl/",
+        "sustain": 1.0,
+        "tags": "recorded drums",
+        "wave": 0,
+        "zones": [
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 36,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 36,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-36-1.wav",
+            "rootKey": 36,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 36,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 36,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-36-2.wav",
+            "rootKey": 36,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 38,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 38,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-38-1.wav",
+            "rootKey": 38,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 38,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 38,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-38-2.wav",
+            "rootKey": 38,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 42,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 42,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-42-1.wav",
+            "rootKey": 42,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 42,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 42,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-42-2.wav",
+            "rootKey": 42,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 46,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 46,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-46-1.wav",
+            "rootKey": 46,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 46,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 46,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-46-2.wav",
+            "rootKey": 46,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 48,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 48,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-48-1.wav",
+            "rootKey": 48,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 48,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 48,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-48-2.wav",
+            "rootKey": 48,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 45,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 45,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-45-1.wav",
+            "rootKey": 45,
+            "sequenceLength": 2,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 45,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 45,
+            "lowVelocity": 0,
+            "oneShot": true,
+            "path": "../assets/sounds/essentials03/samples/drum-45-2.wav",
+            "rootKey": 45,
+            "sequenceLength": 2,
+            "sequencePosition": 2,
+            "start": 0
+          }
+        ]
+      },
+      "solo": false,
+      "volume": 0.550000011920929
+    },
+    {
+      "clips": [
+        {
+          "beat": 0.0,
+          "id": 139,
+          "length": 16.0,
+          "media": "",
+          "name": "Soft Pad",
+          "notes": [
+            {
+              "beat": 0.0,
+              "duration": 3.8,
+              "id": 140,
+              "key": 60,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 0.0,
+              "duration": 3.8,
+              "id": 141,
+              "key": 64,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 0.0,
+              "duration": 3.8,
+              "id": 142,
+              "key": 67,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 4.0,
+              "duration": 3.8,
+              "id": 143,
+              "key": 57,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 4.0,
+              "duration": 3.8,
+              "id": 144,
+              "key": 61,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 4.0,
+              "duration": 3.8,
+              "id": 145,
+              "key": 64,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 8.0,
+              "duration": 3.8,
+              "id": 146,
+              "key": 65,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 8.0,
+              "duration": 3.8,
+              "id": 147,
+              "key": 69,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 8.0,
+              "duration": 3.8,
+              "id": 148,
+              "key": 72,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 12.0,
+              "duration": 3.8,
+              "id": 149,
+              "key": 67,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 12.0,
+              "duration": 3.8,
+              "id": 150,
+              "key": 71,
+              "velocity": 0.6000000238418579
+            },
+            {
+              "beat": 12.0,
+              "duration": 3.8,
+              "id": 151,
+              "key": 74,
+              "velocity": 0.6000000238418579
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4290219909,
+      "effects": {
+        "delayMix": 0.0,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": false,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.0
+      },
+      "id": 14,
+      "kind": 0,
+      "mute": false,
+      "name": "Soft Pad",
+      "pan": 0.25,
+      "preset": {
+        "articulation": "",
+        "attack": 0.44999998807907104,
+        "auditionGain": 0.7752185463905334,
+        "calibrationGain": 0.8025115728378296,
+        "calibrationVersion": 1,
+        "category": "",
+        "color": 0.15000000596046448,
+        "cubicInterpolation": false,
+        "cutoff": 1800.0,
+        "decay": 0.4000000059604645,
+        "family": "synth",
+        "gain": 0.2800000011920929,
+        "instrumentId": "",
+        "kind": 0,
+        "license": "",
+        "name": "Soft Pad",
+        "patchId": "",
+        "release": 1.100000023841858,
+        "rootNote": 60,
+        "sample": "",
+        "source": "",
+        "sustain": 0.699999988079071,
+        "tags": "",
+        "wave": 3,
+        "zones": []
+      },
+      "solo": false,
+      "volume": 0.20000000298023224
+    },
+    {
+      "clips": [
+        {
+          "beat": 8.0,
+          "id": 154,
+          "length": 4.0,
+          "media": "media/Guitar Bounce.wav",
+          "name": "Non-destructive WAV bounce",
+          "notes": [],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4289825904,
+      "effects": {
+        "delayMix": 0.0,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": false,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.0
+      },
+      "id": 153,
+      "kind": 1,
+      "mute": false,
+      "name": "Audio \u00b7 Guitar Bounce",
+      "pan": 0.0,
+      "preset": {
+        "articulation": "",
+        "attack": 0.003000000026077032,
+        "auditionGain": 1.0,
+        "calibrationGain": 1.0,
+        "calibrationVersion": 0,
+        "category": "",
+        "color": 0.3499999940395355,
+        "cubicInterpolation": false,
+        "cutoff": 5500.0,
+        "decay": 0.6499999761581421,
+        "family": "",
+        "gain": 0.3799999952316284,
+        "instrumentId": "",
+        "kind": 0,
+        "license": "",
+        "name": "Simple Piano-like",
+        "patchId": "",
+        "release": 0.30000001192092896,
+        "rootNote": 60,
+        "sample": "",
+        "source": "",
+        "sustain": 0.15000000596046448,
+        "tags": "",
+        "wave": 3,
+        "zones": []
+      },
+      "solo": false,
+      "volume": 0.20000000298023224
+    }
+  ],
+  "version": 3
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "auditionDb": -6.245929574360655,
+    "calibrationDb": 0.06829732044722192,
+    "calibrationVersion": 1,
+    "index": 0
+  },
+  {
+    "auditionDb": -2.211516505121402,
+    "calibrationDb": -1.9109740760557905,
+    "calibrationVersion": 1,
+    "index": 1
+  },
+  {
+    "auditionDb": -3.7928912633923666,
+    "calibrationDb": 1.2048296867363497,
+    "calibrationVersion": 1,
+    "index": 2
+  },
+  {
+    "auditionDb": -2.286266115850596,
+    "calibrationDb": -2.3047077853780173,
+    "calibrationVersion": 1,
+    "index": 3
+  },
+  {
+    "auditionDb": -9.0,
+    "calibrationDb": 3.3006061123673938,
+    "calibrationVersion": 1,
+    "index": 4
+  },
+  {
+    "auditionDb": -0.7596734714995073,
+    "calibrationDb": -1.2082549172533383,
+    "calibrationVersion": 1,
+    "index": 5
+  },
+  {
+    "auditionDb": -4.287054069818813,
+    "calibrationDb": -0.07399846453052916,
+    "calibrationVersion": 1,
+    "index": 6
+  },
+  {
+    "auditionDb": -1.7782148061039074,
+    "calibrationDb": -3.7498570915153593,
+    "calibrationVersion": 1,
+    "index": 7
+  },
+  {
+    "auditionDb": -9.0,
+    "calibrationDb": -1.5434155459656296,
+    "calibrationVersion": 1,
+    "index": 8
+  }
+]
