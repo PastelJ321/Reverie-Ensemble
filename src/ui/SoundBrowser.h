@@ -5,6 +5,9 @@
 #include <QWidget>
 class QLineEdit;
 class QComboBox;
+class QCheckBox;
+class QPushButton;
+class QSplitter;
 class QListWidget;
 class QLabel;
 namespace reverie {
@@ -14,6 +17,14 @@ class SoundBrowser final : public QWidget {
     Q_OBJECT
   public:
     explicit SoundBrowser(Editor&);
+    ~SoundBrowser() override;
+    void setExpanded(bool);
+    bool expanded() const {
+        return expanded_;
+    }
+    void showManager();
+    void importInstrument(const QString&);
+    bool packInUse(const QString&) const;
     void filter();
     void reload();
     void applyCurrent(bool newTrack = false);
@@ -30,16 +41,26 @@ class SoundBrowser final : public QWidget {
         bool favorite = false;
         LibraryInstrument metadata;
         SoundPack pack;
+        bool installed = true;
     };
     Editor& editor_;
     SampleCache cache_;
-    std::vector<Entry> entries_;
+    std::vector<Entry> entries_, userEntries_;
     std::vector<int> visible_;
     QLineEdit* search_;
-    QComboBox* categories_;
+    QListWidget* categories_;
+    QWidget* categoryColumn_;
+    QWidget* detailColumn_;
+    QSplitter* columns_;
+    QComboBox* packs_;
+    QCheckBox* installedOnly_;
+    QPushButton* expand_;
+    QPushButton* pin_;
+    bool expanded_ = false;
     QListWidget* list_;
     QLabel* status_;
     QLabel* detail_;
+    QLabel* detailTitle_;
     InstrumentArtwork* artwork_;
     QListWidget* patches_;
     QStringList recent_;

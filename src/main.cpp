@@ -2,6 +2,7 @@
 // Copyright 2026 QuadraJ and contributors.
 
 #include "ui/Editor.h"
+#include "ui/SoundBrowser.h"
 #include <QApplication>
 #include <QDebug>
 #include <QStyleFactory>
@@ -9,10 +10,13 @@
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
     QApplication::setApplicationName("Reverie Ensemble");
-    QApplication::setApplicationVersion("0.3.0");
+    QApplication::setApplicationVersion("0.4.0");
     QApplication::setOrganizationName("QuadraJ");
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     const auto args = app.arguments();
+    int libraryRoot = args.indexOf("--library-root");
+    if (libraryRoot >= 0 && libraryRoot + 1 < args.size())
+        qputenv("REVERIE_LIBRARY_ROOT", args[libraryRoot + 1].toUtf8());
     reverie::Editor editor(!args.contains("--no-audio"));
     int size = args.indexOf("--size");
     if (size >= 0 && size + 1 < args.size()) {
@@ -21,6 +25,14 @@ int main(int argc, char** argv) {
             editor.resize(parts[0].toInt(), parts[1].toInt());
     }
     editor.show();
+    if (args.contains("--expanded"))
+        QTimer::singleShot(100, &editor, [&] { editor.showBrowser(); });
+    if (args.contains("--keyboard"))
+        QTimer::singleShot(100, &editor, [&] { editor.showKeyboard(); });
+    if (args.contains("--library-manager"))
+        QTimer::singleShot(200, &editor, [&] {
+            editor.findChild<reverie::SoundBrowser*>("soundBrowser")->showManager();
+        });
     if (args.contains("--mixer"))
         editor.showMixer();
     if (args.contains("--smoke-test"))

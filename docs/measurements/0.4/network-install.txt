@@ -1,0 +1,8 @@
+This plugin does not support propagateSizeHints()
+Enabling freewheeling
+This plugin does not support propagateSizeHints()
+This plugin does not support propagateSizeHints()
+This plugin does not support propagateSizeHints()
+This plugin does not support propagateSizeHints()
+This plugin does not support propagateSizeHints()
+PASS: native HTTPS download/install, SHA-256, real downloaded sfizz audio, update, corrupt hash rollback, cancel cleanup; bytes=1243745 peak=0.303706

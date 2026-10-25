@@ -37,7 +37,7 @@ This repository supplies source, CMake build instructions and license texts. Loc
 
 The exact set depends on the Qt package/platform. In the tested Homebrew build, Qt Gui/Core also reference Qt DBus, GLib, FreeType, HarfBuzz, libpng, md4c, double-conversion, PCRE2, ICU, zstd and other dependencies. Examples of their licenses are GLib LGPL-2.1-or-later, FreeType FTL/GPL options (choose FTL when appropriate), HarfBuzz MIT-style, libpng's libpng license, md4c MIT, double-conversion BSD-3-Clause, PCRE2 BSD-3-Clause, ICU Unicode license and zstd BSD-3-Clause option. Treat this as an inventory to resolve against actual binaries, not a substitute for the exact notices. The installed Qt SPDX SBOM is at `<Qt-prefix>/share/qt/sbom/qtbase-<version>.spdx`; Homebrew formula source/build recipe and each installed dependency's licenses must accompany redistribution as appropriate. Qt's embedded components also have their own notices; consult [Qt's third-party inventory](https://doc.qt.io/qt-6/licenses-used-in-qt.html) and matching source.
 
-`docs/DEPENDENCIES.sha256` records checksums for the vendored source/license files used by this project. CMake does not download dependencies at configure/build time; miniaudio and JSON are vendored, and Qt is an explicit installed SDK dependency. No FluidSynth or SF2 asset is currently shipped.
+`docs/DEPENDENCIES.sha256` records checksums for the vendored source/license files used by this project. The main project CMake does not download dependencies at configure/build time; miniaudio and JSON are vendored, and Qt is an explicit installed SDK dependency. The 0.4 external-engine additions are described below; no recorded SF2 bank is bundled.
 
 ## Version 0.2 sound and font assets
 
@@ -45,7 +45,7 @@ Community Essentials contains 35 unchanged VSCO 2 CE recordings under CC0-1.0 pl
 
 IBM Plex Sans KR Regular/Medium/SemiBold and IBM Plex Mono Regular are included unmodified under SIL OFL 1.1. Preserve `assets/fonts/OFL.txt` and `Mono-OFL.txt`, IBM copyright and reserved-font-name conditions. Fonts may be bundled with the app but not sold separately or relicensed as Apache-2.0. Original sibling resources were reused without alteration; the macOS bundle carries its own resources rather than a runtime path into another project.
 
-Qt dynamic-link/source/relinking obligations above continue to apply. FluidSynth is **not linked or shipped**; SF2/SF3 hosting is not enabled. A future backend needs a fresh LGPL/build/transitive dependency review and callback safety validation. SFZ is a separate, limited mapping parser implemented by Reverie.
+Qt dynamic-link/source/relinking obligations above continue to apply. In historical 0.2, FluidSynth was not linked and SF2/SF3 hosting was disabled. The original limited SFZ parser remains a compatibility backend; 0.4 adds the separately licensed engines described below.
 
 ## 0.3 audio and illustration additions
 
@@ -53,4 +53,26 @@ Ensemble Essentials 1.0.0 contains 50 unchanged CC0 recordings from the individu
 
 The source-code-rendered InstrumentArt silhouettes/detailed illustrations are original QuadraJ Apache-2.0 assets. CC0 audio permission was not used as a substitute for image permission: no third-party photos, Apple imagery, UI icons or preset artwork were copied. Existing IBM Plex OFL notices and Qt LGPL dynamic-link/source/replacement obligations continue unchanged.
 
-No FluidSynth, libsndfile, MP3/AAC encoder or new codec dependency is linked or shipped. Configurable WAV writing is original code; legacy miniaudio WAV decoding/encoding retains its existing license. Future encoders and SoundFonts require their own separate licensing and distribution review.
+Historical 0.3 did not link FluidSynth, libsndfile or new codec dependencies. Configurable WAV writing is original code; legacy miniaudio WAV decoding/encoding retains its existing license. Future encoders and SoundFonts require their own separate licensing and distribution review.
+
+## Ensemble 0.4 external instruments and media
+
+Original Reverie source remains Apache-2.0. New engine/sample integration does not relicense third-party code or the user's music. Full notices are in `third_party/licenses/instruments/` and copied into the app's Legal resources.
+
+| Component | Pinned build / license | Integration |
+|---|---|---|
+| sfizz | 1.2.3, `4e70dc0bef53b41f2853ed46e26f5911114c92d0`, BSD-2-Clause | Shared library; original DSP/streaming engine, not the plugins/UI/JACK client |
+| FluidSynth | 2.6.1, `71e85b2ca6bf48641ba7e2261d8f2640ae473773`, LGPL-2.1-or-later | Shared library built without Readline, device/network/unused effect integrations |
+| GCEM | `012ae73c6d0a2cb09ffe86475f5c6fba3926e200`, Apache-2.0 | FluidSynth header dependency; archive SHA-256 pinned by its CMake module |
+| Qt SVG / Network | Same Qt 6 license selection as Core/Gui/Widgets, LGPLv3 in this development build | Real small SVG asset rendering and HTTPS installer |
+| VSCO 2 CE / VCSL | CC0-1.0; exact pinned source revisions and file URLs/hashes in `assets/sounds/catalog/` | Optional individual downloads; recordings retain source attribution even though CC0 does not require it |
+| Generated instrument atlases | QuadraJ dedicates its rights under CC0-1.0; generated-output rights vary by jurisdiction | Original generated illustrations, source/prompts in `assets/artwork/README.md` |
+| Small instrument SVGs / tone fixtures / example composition | QuadraJ Apache-2.0 | Original project assets, no Apple/commercial-DAW imagery or extracted samples |
+
+The pinned sfizz build applies the recorded atomic_queue compiler spelling fix and an offline FilePool pending-queue fix (see `scripts/bootstrap_instruments.sh` and `third_party/patches/sfizz-1.2.3-freewheel.patch`). Original BSD/MIT notices remain in place.
+
+The sfizz build retains Abseil (Apache-2.0), atomic_queue (MIT), ghc/filesystem (BSD-3-Clause), SIMDe (MIT), dr_libs (MIT-0), libaiff (MIT), WavPack (BSD), stb_vorbis (MIT option), st_audiofile (BSD-2-Clause), pugixml (MIT), KISS FFT (BSD-3-Clause), spline (BSD-3-Clause), tuning library (MIT), hiir (WTFPL), cpuid (BSD), JSL (MIT) and cephes' preserved BSD inclusion permission. Generated DSP headers declare their original authors/BSD-2-Clause; their notices and the Faust LGPL output exception/STK-4.3 text are retained separately. Optional JACK, plugins, test/benchmark clients and libsndfile are disabled in the sfizz build.
+
+FluidSynth uses libsndfile for actual SF3 decoding. This local libsndfile dynamically depends on Ogg/Vorbis, FLAC, Opus, mpg123 and LAME. Their BSD/LGPL notices are preserved. The Homebrew FluidSynth binary examined during development also linked GPL Readline; **that is not the final application dependency**. The source bootstrap builds a Readline-free library, verified with `otool -L`. Do not silently substitute a system build and assume only its top-level LGPL applies.
+
+A standalone distributor must ship the relevant license texts, exact corresponding LGPL library sources/build modifications and installation/relinking information, permit debugging modifications to those libraries, preserve replaceable dynamic linkage and check signing/runtime restrictions. Source/bootstrap instructions alone are not a claim that an eventual binary release has satisfied every source-offer obligation. No signed/notarized standalone binary or paid/private sample pack was published in this task. See `docs/DISTRIBUTION.md`.

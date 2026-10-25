@@ -1,3 +1,17 @@
+# Project format 4 — 0.4
+
+Versions 1–3 remain readable. New files use version 4; older applications should reject that version explicitly. Legacy instrument kind values 0/1/2 retain their exact meanings; 3 is sfizz and 4 is FluidSynth SoundFont. New fields default neutrally on old projects.
+
+Preset adds `backendPath`, `renderTailSeconds`, `soundFontBank`, `soundFontProgram` and artwork URI/thumbnail/license/author/aspect metadata. Track adds `armed`, `midiInput` and `midiChannel` (-1 all, otherwise zero-based). Note adds zero-based channel. Clip adds `mute` and controller events (`beat`, `channel`, `controller`, `value`); controller 128 represents 14-bit pitch bend. Timing remains quarter-note beats converted from captured transport frames.
+
+Save collects SoundFonts with their actual extensions and plain-SFZ sample/include dependencies under content-addressed media folders, preserving relative mapping paths. Macro-based/uncollectable SFZs keep an explicit external reference; the UI reports that portability depends on retaining that library. Missing external instruments preserve references and warn rather than replacing the patch with a synth. Undo snapshots share sample PCM as before.
+
+Keep the `.reverie` file and sibling `.media` folder together. Source libraries, calibrated gains and bank/program state are not inferred again on reopen; recorded MIDI can be reassigned to another instrument without changing notes.
+
+---
+
+## Historical format documentation
+
 # Project and instrument formats
 
 A saved project consists of:

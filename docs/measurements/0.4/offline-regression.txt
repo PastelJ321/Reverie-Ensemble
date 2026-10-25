@@ -1,0 +1,7 @@
+sfizz 1.2.3 freewheeling queue regression — 2026-10-25 Asia/Seoul
+
+An initial export while Debug/Release/ASan builds ran concurrently exhausted the 8192-frame preload before the dispatcher registered its loading job. The tone voice became silent before note-off. Stock waitForBackgroundLoading waits registered futures but not the pending filesToLoad queue.
+
+Bootstrap patch: while holding the existing loadingJobsMutex, drain queued requests into loadingJobs before awaiting the futures. Used only in freewheeling; the live callback path is unchanged. Original source notices retained.
+
+After installing the patch: 20 consecutive runs of reverie-features04-tests passed while full-library audits ran. Includes real SFZ/SF2/SF3 audio, long-release included SFZ export/save/reopen, bank/program, pitch/sustain, capture timing, live queues and panic. Full pinned VSCO/VCSL render audits repeated; calibrated peak differences above 0.0002: 0 patches.

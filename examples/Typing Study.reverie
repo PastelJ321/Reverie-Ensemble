@@ -1,0 +1,1044 @@
+{
+  "bpm": 120.0,
+  "clickLevel": 0.11999999731779099,
+  "denominator": 4,
+  "format": "Reverie Ensemble",
+  "loopEnabled": false,
+  "loopEnd": 16.0,
+  "loopStart": 0.0,
+  "master": 0.800000011920929,
+  "metronome": false,
+  "name": "Typing Study \u00b7 automated MIDI workflow",
+  "numerator": 4,
+  "tracks": [
+    {
+      "armed": false,
+      "clips": [
+        {
+          "beat": 0.0,
+          "controllers": [],
+          "id": 2,
+          "length": 16.0,
+          "media": "",
+          "mute": false,
+          "name": "First light",
+          "notes": [
+            {
+              "beat": 0.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 3,
+              "key": 60,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 1.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 4,
+              "key": 64,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 2.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 5,
+              "key": 67,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 3.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 6,
+              "key": 71,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 4.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 7,
+              "key": 69,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 5.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 8,
+              "key": 67,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 6.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 9,
+              "key": 64,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 7.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 10,
+              "key": 62,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 8.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 11,
+              "key": 60,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 9.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 12,
+              "key": 64,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 10.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 13,
+              "key": 67,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 11.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 14,
+              "key": 72,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 12.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 15,
+              "key": 71,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 13.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 16,
+              "key": 67,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 14.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 17,
+              "key": 64,
+              "velocity": 0.800000011920929
+            },
+            {
+              "beat": 15.0,
+              "channel": 0,
+              "duration": 0.75,
+              "id": 18,
+              "key": 62,
+              "velocity": 0.800000011920929
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4289825904,
+      "effects": {
+        "delayMix": 0.0,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": false,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.0
+      },
+      "id": 1,
+      "kind": 0,
+      "midiChannel": -1,
+      "midiInput": "all",
+      "mute": false,
+      "name": "Upright Piano",
+      "pan": 0.0,
+      "preset": {
+        "articulation": "Sustain",
+        "artworkAuthor": "",
+        "artworkId": "upright",
+        "artworkLicense": "",
+        "artworkUri": "",
+        "attack": 0.003000000026077032,
+        "auditionGain": 0.3844704329967499,
+        "backendPath": "",
+        "calibrationGain": 1.7768908739089966,
+        "calibrationVersion": 1,
+        "category": "Piano & Keys",
+        "color": 0.0,
+        "cubicInterpolation": true,
+        "cutoff": 8000.0,
+        "decay": 0.10000000149011612,
+        "family": "upright",
+        "gain": 0.699999988079071,
+        "imageAspectRatio": 1.0,
+        "instrumentId": "quadraj.cc0.upright",
+        "kind": 2,
+        "license": "CC0-1.0",
+        "name": "Upright Piano",
+        "patchId": "quadraj.cc0.upright.natural",
+        "release": 0.25,
+        "rootNote": 60,
+        "sample": "",
+        "soundFontBank": 0,
+        "soundFontProgram": 0,
+        "source": "https://versilian-studios.com/vsco-community/",
+        "sustain": 1.0,
+        "tags": "acoustic recorded multisample upright piano",
+        "thumbnailAsset": "",
+        "wave": 0,
+        "zones": [
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 39,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 0,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/factory/samples/upright-24.wav",
+            "rootKey": 24,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 67,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 40,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/factory/samples/upright-55.wav",
+            "rootKey": 55,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 91,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 68,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/factory/samples/upright-79.wav",
+            "rootKey": 79,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 127,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 92,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/factory/samples/upright-103.wav",
+            "rootKey": 103,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          }
+        ]
+      },
+      "solo": false,
+      "volume": 0.800000011920929
+    },
+    {
+      "armed": false,
+      "clips": [
+        {
+          "beat": 0.0,
+          "controllers": [],
+          "id": 20,
+          "length": 16.0,
+          "media": "",
+          "mute": false,
+          "name": "Slow bloom",
+          "notes": [
+            {
+              "beat": 0.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 21,
+              "key": 60,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 0.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 22,
+              "key": 67,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 0.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 23,
+              "key": 76,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 4.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 24,
+              "key": 60,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 4.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 25,
+              "key": 67,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 4.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 26,
+              "key": 76,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 8.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 27,
+              "key": 65,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 8.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 28,
+              "key": 72,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 8.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 29,
+              "key": 81,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 12.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 30,
+              "key": 60,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 12.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 31,
+              "key": 67,
+              "velocity": 0.550000011920929
+            },
+            {
+              "beat": 12.0,
+              "channel": 0,
+              "duration": 3.5,
+              "id": 32,
+              "key": 76,
+              "velocity": 0.550000011920929
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4286490779,
+      "effects": {
+        "delayMix": 0.0,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": false,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.0
+      },
+      "id": 19,
+      "kind": 0,
+      "midiChannel": -1,
+      "midiInput": "all",
+      "mute": false,
+      "name": "Violin Ensemble",
+      "pan": 0.0,
+      "preset": {
+        "articulation": "Sustain",
+        "artworkAuthor": "",
+        "artworkId": "strings",
+        "artworkLicense": "",
+        "artworkUri": "",
+        "attack": 0.003000000026077032,
+        "auditionGain": 0.3548133969306946,
+        "backendPath": "",
+        "calibrationGain": 16.44312858581543,
+        "calibrationVersion": 1,
+        "category": "Orchestral",
+        "color": 0.0,
+        "cubicInterpolation": true,
+        "cutoff": 8000.0,
+        "decay": 0.10000000149011612,
+        "family": "strings",
+        "gain": 0.699999988079071,
+        "imageAspectRatio": 1.0,
+        "instrumentId": "quadraj.cc0.strings",
+        "kind": 2,
+        "license": "CC0-1.0",
+        "name": "Violin Ensemble",
+        "patchId": "quadraj.cc0.strings.natural",
+        "release": 0.25,
+        "rootNote": 60,
+        "sample": "",
+        "soundFontBank": 0,
+        "soundFontProgram": 0,
+        "source": "https://versilian-studios.com/vsco-community/",
+        "sustain": 1.0,
+        "tags": "acoustic recorded multisample violin ensemble",
+        "thumbnailAsset": "",
+        "wave": 0,
+        "zones": [
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 58,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 0,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/factory/samples/strings-43.wav",
+            "rootKey": 55,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 69,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 59,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/factory/samples/strings-50.wav",
+            "rootKey": 62,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 81,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 70,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/factory/samples/strings-64.wav",
+            "rootKey": 76,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.0,
+            "highKey": 127,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 82,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/factory/samples/strings-74.wav",
+            "rootKey": 86,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          }
+        ]
+      },
+      "solo": false,
+      "volume": 0.550000011920929
+    },
+    {
+      "armed": true,
+      "clips": [
+        {
+          "beat": 4.0,
+          "controllers": [
+            {
+              "beat": 0.48,
+              "channel": 0,
+              "controller": 64,
+              "value": 127
+            },
+            {
+              "beat": 0.8,
+              "channel": 0,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 0,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 1,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 2,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 3,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 4,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 5,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 6,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 7,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 8,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 9,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 10,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 11,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 12,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 13,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 14,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 15,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 0,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 1,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 2,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 3,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 4,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 5,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 6,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 7,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 8,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 9,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 10,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 11,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 12,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 13,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 14,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 15,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 0,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 1,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 2,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 3,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 4,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 5,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 6,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 7,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 8,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 9,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 10,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 11,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 12,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 13,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 14,
+              "controller": 64,
+              "value": 0
+            },
+            {
+              "beat": 1.1733333333333333,
+              "channel": 15,
+              "controller": 64,
+              "value": 0
+            }
+          ],
+          "id": 39,
+          "length": 1.1733333333333333,
+          "media": "",
+          "mute": false,
+          "name": "MIDI take",
+          "notes": [
+            {
+              "beat": 0.05333333333333334,
+              "channel": 0,
+              "duration": 0.42666666666666664,
+              "id": 41,
+              "key": 60,
+              "velocity": 0.787401556968689
+            },
+            {
+              "beat": 0.05333333333333334,
+              "channel": 0,
+              "duration": 0.42666666666666664,
+              "id": 43,
+              "key": 64,
+              "velocity": 0.787401556968689
+            },
+            {
+              "beat": 0.05333333333333334,
+              "channel": 0,
+              "duration": 0.42666666666666664,
+              "id": 45,
+              "key": 67,
+              "velocity": 0.787401556968689
+            },
+            {
+              "beat": 0.8,
+              "channel": 2,
+              "duration": 0.2666666666666666,
+              "id": 47,
+              "key": 67,
+              "velocity": 0.787401556968689
+            }
+          ],
+          "sourceOffset": 0.0
+        }
+      ],
+      "color": 4290489723,
+      "effects": {
+        "delayMix": 0.0,
+        "delaySeconds": 0.30000001192092896,
+        "enabled": false,
+        "feedback": 0.25,
+        "highDb": 0.0,
+        "lowDb": 0.0,
+        "reverbMix": 0.0
+      },
+      "id": 38,
+      "kind": 0,
+      "midiChannel": -1,
+      "midiInput": "all",
+      "mute": false,
+      "name": "Concert Grand Piano",
+      "pan": 0.0,
+      "preset": {
+        "articulation": "Sustain",
+        "artworkAuthor": "",
+        "artworkId": "grand",
+        "artworkLicense": "",
+        "artworkUri": "",
+        "attack": 0.0020000000949949026,
+        "auditionGain": 0.4339258074760437,
+        "backendPath": "",
+        "calibrationGain": 0.9547225832939148,
+        "calibrationVersion": 1,
+        "category": "Piano & Keys",
+        "color": 0.0,
+        "cubicInterpolation": true,
+        "cutoff": 8000.0,
+        "decay": 0.20000000298023224,
+        "family": "grand",
+        "gain": 0.699999988079071,
+        "imageAspectRatio": 1.0,
+        "instrumentId": "quadraj.instrument.grand",
+        "kind": 2,
+        "license": "CC0-1.0",
+        "name": "Concert Grand Piano",
+        "patchId": "grand.natural",
+        "release": 0.4000000059604645,
+        "rootNote": 60,
+        "sample": "",
+        "soundFontBank": 0,
+        "soundFontProgram": 0,
+        "source": "https://versilian-studios.com/vcsl/",
+        "sustain": 1.0,
+        "tags": "recorded grand",
+        "thumbnailAsset": "",
+        "wave": 0,
+        "zones": [
+          {
+            "end": 0,
+            "gain": 32.7511100769043,
+            "highKey": 60,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 21,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C2-1.wav",
+            "rootKey": 48,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 13
+          },
+          {
+            "end": 0,
+            "gain": 2.444854497909546,
+            "highKey": 60,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 21,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C2-3.wav",
+            "rootKey": 48,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 63.10218811035156,
+            "highKey": 84,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 61,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C4-1.wav",
+            "rootKey": 72,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 2.686265707015991,
+            "highKey": 84,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 61,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C4-3.wav",
+            "rootKey": 72,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 66.51903533935547,
+            "highKey": 108,
+            "highVelocity": 78,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 85,
+            "lowVelocity": 0,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C6-1.wav",
+            "rootKey": 96,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          },
+          {
+            "end": 0,
+            "gain": 1.4086133241653442,
+            "highKey": 108,
+            "highVelocity": 127,
+            "loop": false,
+            "loopContinuous": false,
+            "loopEnd": 0,
+            "loopStart": 0,
+            "lowKey": 85,
+            "lowVelocity": 79,
+            "oneShot": false,
+            "path": "../assets/sounds/essentials03/samples/grand-C6-3.wav",
+            "rootKey": 96,
+            "sequenceLength": 1,
+            "sequencePosition": 1,
+            "start": 0
+          }
+        ]
+      },
+      "solo": false,
+      "volume": 0.800000011920929
+    }
+  ],
+  "version": 4
+}

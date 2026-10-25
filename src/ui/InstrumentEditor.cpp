@@ -35,11 +35,14 @@ InstrumentEditor::InstrumentEditor(Editor& e) : e_(e) {
             return;
         e_.edit([&] {
             auto& t = e_.project.tracks[e_.selectedTrack];
-            t.preset.cutoff = float(tone_->value());
+            bool external = t.preset.kind == InstrumentKind::Sfizz ||
+                            t.preset.kind == InstrumentKind::SoundFont;
+            if (!external)
+                t.preset.cutoff = float(tone_->value());
             auto family = instrumentFamily(t.preset);
-            if (family == "strings" || family == "cello")
+            if (!external && (family == "strings" || family == "cello"))
                 t.preset.attack = float(time_->value());
-            else
+            else if (!external)
                 t.preset.release = float(time_->value());
             t.effects.reverbMix = float(space_->value());
             if (t.effects.reverbMix > 0)
@@ -57,6 +60,12 @@ void InstrumentEditor::refresh() {
     if (valid) {
         const auto& t = e_.project.tracks[e_.selectedTrack];
         auto family = instrumentFamily(t.preset);
+        bool external =
+            t.preset.kind == InstrumentKind::Sfizz || t.preset.kind == InstrumentKind::SoundFont;
+        tone_->setEnabled(!external);
+        time_->setEnabled(!external);
+        tone_->setToolTip(external ? "Defined by the source instrument" : "");
+        time_->setToolTip(external ? "Defined by the source instrument" : "");
         bool strings = family == "strings" || family == "cello";
         timeLabel_->setText(strings ? "Bow attack" : "Release");
         time_->setValue(strings ? t.preset.attack : t.preset.release);

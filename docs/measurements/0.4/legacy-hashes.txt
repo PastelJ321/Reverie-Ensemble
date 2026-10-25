@@ -1,0 +1,4 @@
+1a34739e4d9c7e377eca90f8a8bc704ad17c5ae73eb746d6d82f901d25543f37  out/regression03-first.wav
+1a34739e4d9c7e377eca90f8a8bc704ad17c5ae73eb746d6d82f901d25543f37  out/regression04-first.wav
+ff1177c3a4d35c7d04148f5dd16d45dba804d8b403ae3947dba6647fd6145e1b  out/regression03-v2.wav
+ff1177c3a4d35c7d04148f5dd16d45dba804d8b403ae3947dba6647fd6145e1b  out/regression04-v2.wav

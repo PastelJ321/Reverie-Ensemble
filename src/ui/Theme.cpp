@@ -7,12 +7,20 @@
 #include <QFontDatabase>
 #include <QPainter>
 #include <QPainterPath>
+#include <QStandardPaths>
 namespace reverie {
 QString assetPath() {
     auto bundled = QCoreApplication::applicationDirPath() + "/../Resources/assets";
     if (QDir(bundled).exists())
         return QDir(bundled).absolutePath();
     return QString::fromUtf8(REVERIE_ASSET_DIR);
+}
+QString soundPackPath() {
+    auto override = qEnvironmentVariable("REVERIE_LIBRARY_ROOT");
+    return override.isEmpty()
+               ? QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
+                     "/SoundPacks"
+               : override;
 }
 void initializeTheme() {
     static bool initialized = false;

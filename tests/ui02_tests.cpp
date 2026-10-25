@@ -118,7 +118,8 @@ int main(int argc, char** argv) {
         }
         e.piano()->parentWidget()->grab().save(shots.filePath("piano-roll.png"));
         e.resize(1440, 900);
-        e.findChild<QComboBox*>("soundCategory")->setCurrentText("Strings");
+        auto* categories = e.findChild<QListWidget*>("soundCategory");
+        categories->setCurrentItem(categories->findItems("Strings", Qt::MatchExactly).front());
         QTest::qWait(20);
         check(list->count() >= 2, "Recorded strings category absent");
         e.grab().save(shots.filePath("sound-browser.png"));

@@ -14,6 +14,11 @@ class SampleCache {
 struct LibraryInstrument {
     std::string id, name, category, tags, format;
     std::string instrumentId, patchId, patchName, family, articulation, source;
+    std::string backend, unsupportedOpcodes;
+    int auditionKey = 60, midiLow = 0, midiHigh = 127, sampleCount = 0, velocityLayers = 1;
+    int bank = 0, program = 0;
+    std::string artworkId, artworkUri, thumbnailAsset, artworkLicense, artworkAuthor;
+    float imageAspectRatio = 1;
     float calibrationDb = 0, auditionDb = 0;
     int calibrationVersion = 0;
     std::filesystem::path file;

@@ -1,0 +1,19 @@
+diff --git a/src/sfizz/FilePool.cpp b/src/sfizz/FilePool.cpp
+index 2afcd68..f8c86b1 100644
+--- a/src/sfizz/FilePool.cpp
++++ b/src/sfizz/FilePool.cpp
+@@ -571,6 +571,14 @@ void sfz::FilePool::waitForBackgroundLoading() noexcept
+ {
+     std::lock_guard<std::mutex> guard { loadingJobsMutex };
+ 
++    // Reverie: include requests not yet picked up by the dispatcher (offline only).
++    QueuedFileData queuedData;
++    while (filesToLoad->try_pop(queuedData)) {
++        if (!queuedData.id.expired())
++            loadingJobs.push_back(
++                threadPool->enqueue([this](const QueuedFileData& data) { loadingJob(data); }, queuedData));
++    }
++
+     for (auto& job : loadingJobs)
+         job.wait();
+ 

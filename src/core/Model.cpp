@@ -192,7 +192,8 @@ double Project::tailSeconds() const {
     double tail = 2.;
     for (const auto& t : tracks)
         if (t.kind == TrackKind::Midi)
-            tail = std::max(tail, double(t.preset.release) + .05);
+            tail = std::max(
+                {tail, double(t.preset.release) + .05, double(t.preset.renderTailSeconds)});
     for (const auto& t : tracks)
         if (t.effects.enabled) {
             if (t.effects.reverbMix > 0)
@@ -221,7 +222,7 @@ static bool in(double x, double lo, double hi) {
     return std::isfinite(x) && x >= lo && x <= hi;
 }
 void validate(const Project& p) {
-    if ((p.formatVersion < 1 || p.formatVersion > 3) || !in(p.bpm, 20, 300) || p.numerator < 1 ||
+    if ((p.formatVersion < 1 || p.formatVersion > 4) || !in(p.bpm, 20, 300) || p.numerator < 1 ||
         p.numerator > 16 ||
         (p.denominator != 2 && p.denominator != 4 && p.denominator != 8 && p.denominator != 16) ||
         !in(p.master, 0, 2) || p.tracks.size() > maxTracks)
@@ -234,17 +235,20 @@ void validate(const Project& p) {
         if (!id || id > 1000000000000ULL || !ids.insert(id).second)
             throw std::runtime_error("Duplicate/invalid object identifier");
     };
-    std::size_t totalNotes = 0, totalClips = 0;
+    std::size_t totalNotes = 0, totalClips = 0, totalControllers = 0;
     for (const auto& t : p.tracks) {
         unique(t.id);
         const auto& s = t.preset;
         if (!in(t.volume, 0, 2) || !in(t.pan, -1, 1) || !in(s.attack, .00009, 10) ||
             !in(s.decay, .00009, 10) || !in(s.sustain, 0, 1) || !in(s.release, .0009, 10) ||
-            !in(s.calibrationGain, .01, 32) || !in(s.auditionGain, .01, 8) ||
-            s.calibrationVersion < 0 || !in(s.gain, 0, 2) || !in(s.cutoff, 20, 24000) ||
-            !in(s.color, 0, 1) || s.rootNote < 0 || s.rootNote > 127 || int(s.kind) < 0 ||
-            int(s.kind) > 2 || int(s.wave) < 0 || int(s.wave) > 3)
+            !in(s.renderTailSeconds, 0, 120) || !in(s.calibrationGain, .01, 32) ||
+            !in(s.auditionGain, .01, 8) || s.calibrationVersion < 0 || !in(s.gain, 0, 2) ||
+            !in(s.cutoff, 20, 24000) || !in(s.color, 0, 1) || s.rootNote < 0 || s.rootNote > 127 ||
+            int(s.kind) < 0 || int(s.kind) > 4 || int(s.wave) < 0 || int(s.wave) > 3)
             throw std::runtime_error("Invalid mixer or instrument settings");
+        if (t.midiChannel < -1 || t.midiChannel > 15 || s.soundFontBank < 0 ||
+            s.soundFontBank > 16383 || s.soundFontProgram < 0 || s.soundFontProgram > 127)
+            throw std::runtime_error("Invalid MIDI bank/channel/program");
         const auto& fx = t.effects;
         if (!in(fx.lowDb, -18, 18) || !in(fx.highDb, -18, 18) || !in(fx.delayMix, 0, 1) ||
             !in(fx.delaySeconds, .0099, 2) || !in(fx.feedback, 0, .8501) || !in(fx.reverbMix, 0, 1))
@@ -266,16 +270,22 @@ void validate(const Project& p) {
             if (!in(c.beat, 0, 100000) || !in(c.length, 1. / 1024, 100000) ||
                 !in(c.sourceOffset, 0, 100000))
                 throw std::runtime_error("Invalid clip range");
+            totalControllers += c.controllers.size();
+            for (const auto& e : c.controllers)
+                if (!in(e.beat, 0, 100000) || e.channel < 0 || e.channel > 15 || e.controller < 0 ||
+                    e.controller > 128 || e.value < 0 ||
+                    e.value > (e.controller == 128 ? 16383 : 127))
+                    throw std::runtime_error("Invalid MIDI controller event");
             totalNotes += c.notes.size();
             for (const auto& n : c.notes) {
                 unique(n.id);
                 if (!in(n.beat, 0, 100000) || !in(n.duration, 1. / 4096, 100000) || n.key < 0 ||
-                    n.key > 127 || !in(n.velocity, 0, 1))
+                    n.key > 127 || n.channel < 0 || n.channel > 15 || !in(n.velocity, 0, 1))
                     throw std::runtime_error("Invalid MIDI note");
             }
         }
     }
-    if (totalNotes > 200000 || totalClips > 20000)
+    if (totalNotes > 200000 || totalClips > 20000 || totalControllers > 200000)
         throw std::runtime_error("Project exceeds 0.1 editing limits");
 }
 Project demoProject() {

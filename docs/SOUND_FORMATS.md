@@ -1,3 +1,15 @@
+# Instrument formats — 0.4
+
+New full SFZ packs/imports use sfizz 1.2.3. Its actual opcode coverage is [documented upstream](https://sfz.tools/sfizz/development/status/) and remains partial for SFZv2/ARIA. Original VSCO/VCSL mappings were audited; 258/258 produced audio. `group_label` is ignored in 46 VSCO patches. Velocity layers, round-robin, release triggers, sustain/CC/pitch bend and stereo are handled by the real backend, not the limited legacy parser. Old projects retain the existing sampler and its subset below.
+
+SoundFont imports use FluidSynth 2.6.1 for actual SF2 and Vorbis SF3, bank/program inventory and selection, sustain/controllers, state restoration and offline rendering. Unsupported/invalid files report errors; user assets retain their own license. Original test tone fixtures do not constitute a bundled GM instrument library.
+
+Native installation downloads pinned, individually hashed files instead of extracting archives. All inventory paths must remain inside the managed root. Plain SFZ dependency scans support sequential default-path changes and include files; unaudited macro-generated paths are rejected for managed catalogs. Playback of user macro SFZs can use sfizz, while project save preserves those as external references when collection is unavailable. Pack maximum is 32 GiB, manifest maximum 8 MiB, and free space is checked before installation.
+
+[Complete inventory, source revisions, corrections and limits](ENSEMBLE_0.4_REPORT.md). The following is historical 0.3 subset documentation, not the limit of the new sfizz/FluidSynth backends.
+
+---
+
 # Multisampler and sound packs — 0.3
 
 The original Reverie synthesizer/scheduler/mixer is retained. A `SampleZone` maps key and velocity ranges to an immutable cached WAV, root pitch, source start/end, optional forward-loop points, one-shot flag and gain. Voices store an integer zone index and sample position; callback processing neither decodes files nor allocates/frees sample memory. Each track has 32 voices. Overlapping matching zones select the nearest root (first zone wins equal distances); layered simultaneous regions are not implemented; 0.3 adds the round-robin subset below. Legacy playback uses linear interpolation; new selected library presets opt into cubic interpolation, without time stretching.

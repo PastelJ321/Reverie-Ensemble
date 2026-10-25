@@ -11,6 +11,7 @@
 #include "ui/InstrumentArt.h"
 #include "ui/InstrumentEditor.h"
 #include "ui/MixerView.h"
+#include "ui/PerformanceKeyboard.h"
 #include "ui/PianoRoll.h"
 #include "ui/SoundBrowser.h"
 #include "ui/Theme.h"
@@ -36,6 +37,7 @@
 #include <QPushButton>
 #include <QScrollArea>
 #include <QScrollBar>
+#include <QSettings>
 #include <QSignalBlocker>
 #include <QSpinBox>
 #include <QSplitter>
@@ -230,8 +232,15 @@ void Editor::buildUi() {
     browser_ = new SoundBrowser(*this);
     left->setWidget(browser_);
     left->setMinimumWidth(220);
-    left->setMaximumWidth(280);
+    left->setMaximumWidth(900);
+    left->setObjectName("browserDock");
     addDockWidget(Qt::LeftDockWidgetArea, left);
+    auto* keyboardDock = new QDockWidget("VIRTUAL KEYBOARD · ⌘K", this);
+    keyboardDock->setObjectName("keyboardDock");
+    keyboard_ = new PerformanceKeyboard(*this);
+    keyboardDock->setWidget(keyboard_);
+    addDockWidget(Qt::BottomDockWidgetArea, keyboardDock);
+    keyboardDock->hide();
     auto* central = new QSplitter(Qt::Vertical, this);
     timeline_ = new Timeline(*this);
     timelineScroll_ = new QScrollArea;
@@ -307,6 +316,10 @@ void Editor::buildUi() {
         mixer_->refresh();
         workspace_->setCurrentIndex(1);
     });
+    auto* keysAction = modes->addAction("Keyboard");
+    connect(keysAction, &QAction::triggered, this, [this] { showKeyboard(); });
+    auto* browserAction = modes->addAction("Browse");
+    connect(browserAction, &QAction::triggered, this, [this] { showBrowser(); });
     auto* lower = modes->addAction("Piano editor");
     lower->setCheckable(true);
     lower->setChecked(true);
@@ -369,6 +382,13 @@ void Editor::buildUi() {
     solo_ = new QCheckBox("Solo");
     toggles->addWidget(mute_);
     toggles->addWidget(solo_);
+    auto* arm = new QCheckBox("Arm");
+    arm->setObjectName("trackArm");
+    toggles->addWidget(arm);
+    connect(arm, &QCheckBox::toggled, this, [this](bool on) {
+        if (!refreshing_)
+            armTrack(selectedTrack, on);
+    });
     layout->addLayout(toggles);
     auto* selectedMeter = new Meter(*this, false);
     layout->addWidget(selectedMeter);
@@ -388,21 +408,6 @@ void Editor::buildUi() {
     connect(pan_, &QDoubleSpinBox::valueChanged, this, mixerChange);
     connect(mute_, &QCheckBox::toggled, this, mixerChange);
     connect(solo_, &QCheckBox::toggled, this, mixerChange);
-    preset_ = new QComboBox;
-    preset_->setObjectName("preset");
-    for (const auto& p : factoryPresets())
-        preset_->addItem(QString::fromStdString(p.name));
-    layout->addWidget(preset_);
-    connect(preset_, &QComboBox::activated, this, [this](int i) {
-        if (selectedTrack < 0 || selectedTrack >= int(project.tracks.size()) ||
-            project.tracks[selectedTrack].kind != TrackKind::Midi)
-            return;
-        edit([&] {
-            project.tracks[selectedTrack].preset = calibratedFactoryPresets(
-                (assetPath() + "/sounds/synth-calibration.json").toStdString())[i];
-            project.tracks[selectedTrack].instrumentSample.reset();
-        });
-    });
     instrumentLabel_ = new QLabel;
     instrumentLabel_->setWordWrap(true);
     instrumentLabel_->setStyleSheet("color:#BEB2A4;font-size:11px");
@@ -468,6 +473,49 @@ void Editor::buildUi() {
     inputs_ = new QComboBox(this);
     inputs_->addItem("System default");
     inputs_->hide();
+    auto* countIn = new QComboBox;
+    countIn->setObjectName("countIn");
+    countIn->addItems({"Count-in: None", "Count-in: 1 bar", "Count-in: 2 bars"});
+    countIn->setCurrentIndex(QSettings().value("record/countInBars", 1).toInt());
+    layout->addWidget(countIn);
+    connect(countIn, &QComboBox::currentIndexChanged, this,
+            [](int i) { QSettings().setValue("record/countInBars", i); });
+    auto* activity = new QLabel("MIDI input ready");
+    activity->setObjectName("midiActivity");
+    layout->addWidget(activity);
+    auto* midiDevice = new QComboBox;
+    midiDevice->setObjectName("midiInputDevice");
+    midiDevice->addItem("All MIDI inputs", -1);
+    midiDevice->addItem("MIDI disabled", 0);
+    for (auto& d : midiInput_.devices())
+        midiDevice->addItem(QString::fromStdString(d.name), d.id);
+    layout->addWidget(midiDevice);
+    connect(midiDevice, &QComboBox::currentIndexChanged, this, [this, midiDevice] {
+        if (refreshing_)
+            return;
+        releasePerformance();
+        int id = midiDevice->currentData().toInt();
+        midiInput_.select(-1);
+        if (selectedTrack >= 0)
+            edit([&] {
+                project.tracks[selectedTrack].midiInput = id == -1 ? "all" : std::to_string(id);
+            });
+    });
+    auto* channel = new QComboBox;
+    channel->setObjectName("midiChannel");
+    channel->addItem("All MIDI channels", -1);
+    for (int i = 0; i < 16; ++i)
+        channel->addItem(QString("Channel %1").arg(i + 1), i);
+    layout->addWidget(channel);
+    connect(channel, &QComboBox::currentIndexChanged, this, [this, channel] {
+        if (refreshing_)
+            return;
+        releasePerformance();
+        if (selectedTrack >= 0)
+            edit([&] {
+                project.tracks[selectedTrack].midiChannel = channel->currentData().toInt();
+            });
+    });
     auto* settings = new QPushButton("Audio Settings…");
     layout->addWidget(settings);
     connect(settings, &QPushButton::clicked, this, [this] { showSettings(); });

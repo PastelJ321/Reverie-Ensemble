@@ -1,0 +1,184 @@
+instrument,patch,file,samples,peak,rms,unknown_opcodes,prepare_ms
+"Ball Whistle","Natural","Aerophones/Edge-blown Aerophones/Ball Whistle.sfz",2,0.132116,0.0207391,"",14.7966
+"Baroque Alto Recorder","Keyswitch","Aerophones/Edge-blown Aerophones/Baroque Alto Recorder - Keyswitch.sfz",36,0.149659,0.0305019,"",15.6885
+"Baroque Alto Recorder","Staccato","Aerophones/Edge-blown Aerophones/Baroque Alto Recorder - Staccato.sfz",12,0.182422,0.0385591,"",1.41446
+"Baroque Alto Recorder","SusVib","Aerophones/Edge-blown Aerophones/Baroque Alto Recorder - SusVib.sfz",12,0.191313,0.0499139,"",1.323
+"Baroque Alto Recorder","Sustain","Aerophones/Edge-blown Aerophones/Baroque Alto Recorder - Sustain.sfz",12,0.149659,0.0317445,"",1.39637
+"Baroque Bass Recorder","Keyswitch","Aerophones/Edge-blown Aerophones/Baroque Bass Recorder - Keyswitch.sfz",41,0.11008,0.018337,"",18.0536
+"Baroque Bass Recorder","Staccato","Aerophones/Edge-blown Aerophones/Baroque Bass Recorder - Staccato.sfz",15,0.119868,0.0145553,"",1.50421
+"Baroque Bass Recorder","SusVib","Aerophones/Edge-blown Aerophones/Baroque Bass Recorder - SusVib.sfz",14,0.13738,0.0215992,"",1.42796
+"Baroque Bass Recorder","Sustain","Aerophones/Edge-blown Aerophones/Baroque Bass Recorder - Sustain.sfz",12,0.110166,0.0216634,"",1.31379
+"Baroque Soprano Recorder","Keyswitch","Aerophones/Edge-blown Aerophones/Baroque Soprano Recorder - Keyswitch.sfz",25,0.137802,0.0301243,"",11.3494
+"Baroque Soprano Recorder","Staccato","Aerophones/Edge-blown Aerophones/Baroque Soprano Recorder - Staccato.sfz",12,0.255725,0.0318701,"",1.30175
+"Baroque Soprano Recorder","Sustain","Aerophones/Edge-blown Aerophones/Baroque Soprano Recorder - Sustain.sfz",13,0.137802,0.0301243,"",1.33438
+"Baroque Tenor Recorder","Keyswitch","Aerophones/Edge-blown Aerophones/Baroque Tenor Recorder - Keyswitch.sfz",39,0.181202,0.0302218,"",17.5535
+"Baroque Tenor Recorder","Staccato","Aerophones/Edge-blown Aerophones/Baroque Tenor Recorder - Staccato.sfz",12,0.219112,0.0281671,"",1.28758
+"Baroque Tenor Recorder","SusVib","Aerophones/Edge-blown Aerophones/Baroque Tenor Recorder - SusVib.sfz",14,0.165713,0.025721,"",1.41671
+"Baroque Tenor Recorder","Sustain","Aerophones/Edge-blown Aerophones/Baroque Tenor Recorder - Sustain.sfz",13,0.181202,0.0302218,"",1.35838
+"Ocarina, Small","Keyswitch","Aerophones/Edge-blown Aerophones/Ocarina, Small - Keyswitch.sfz",23,0.202959,0.0469748,"",11.132
+"Ocarina, Small","Staccato","Aerophones/Edge-blown Aerophones/Ocarina, Small - Staccato.sfz",13,0.209635,0.045634,"",1.37683
+"Ocarina, Small","Sustain","Aerophones/Edge-blown Aerophones/Ocarina, Small - Sustain.sfz",10,0.200277,0.0525116,"",1.13071
+"Ocarina, Typical","Keyswitch","Aerophones/Edge-blown Aerophones/Ocarina, Typical - Keyswitch.sfz",42,0.0768204,0.0184303,"",18.9663
+"Ocarina, Typical","Sus","Aerophones/Edge-blown Aerophones/Ocarina, Typical - Sus.sfz",22,0.0865377,0.0204356,"",2.14254
+"Ocarina, Typical","SusVib","Aerophones/Edge-blown Aerophones/Ocarina, Typical - SusVib.sfz",20,0.100886,0.0208864,"",2.02892
+"Pipe Organ","Keyswitch","Aerophones/Edge-blown Aerophones/Pipe Organ - Keyswitch.sfz",64,0.16051,0.0277245,"",26.3422
+"Pipe Organ","Loud Pedal","Aerophones/Edge-blown Aerophones/Pipe Organ - Loud Pedal.sfz",11,0.223072,0.044843,"",1.21221
+"Pipe Organ","Loud","Aerophones/Edge-blown Aerophones/Pipe Organ - Loud.sfz",21,0.16051,0.0277245,"",1.94879
+"Pipe Organ","Quiet Pedal","Aerophones/Edge-blown Aerophones/Pipe Organ - Quiet Pedal.sfz",11,0.229129,0.058405,"",1.26662
+"Pipe Organ","Quiet","Aerophones/Edge-blown Aerophones/Pipe Organ - Quiet.sfz",21,0.0998023,0.0299454,"",1.96704
+"Renaissance Organ","4'+8'","Aerophones/Edge-blown Aerophones/Renaissance Organ - 4'+8'.sfz",54,0.0879423,0.0242343,"",23.8837
+"Renaissance Organ","4'","Aerophones/Edge-blown Aerophones/Renaissance Organ - 4'.sfz",27,0.0762633,0.0278589,"",2.50533
+"Renaissance Organ","8'","Aerophones/Edge-blown Aerophones/Renaissance Organ - 8'.sfz",27,0.0756365,0.0196762,"",2.55008
+"Renaissance Organ","Full","Aerophones/Edge-blown Aerophones/Renaissance Organ - Full.sfz",27,0.111165,0.032536,"",13.0586
+"Renaissance Organ","Keyswitch","Aerophones/Edge-blown Aerophones/Renaissance Organ - Keyswitch.sfz",81,0.0762633,0.0278589,"",8.42263
+"Train Whistle, Toy","Natural","Aerophones/Edge-blown Aerophones/Train Whistle, Toy.sfz",6,0.121963,0.0107668,"",3.14571
+"Harmonica-Hohner-Special20-C","Keyswitch","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-C - Keyswitch.sfz",58,0.118271,0.0163452,"",19.6755
+"Harmonica-Hohner-Special20-C","Normal","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-C - Normal.sfz",18,0.118271,0.0163452,"",1.69208
+"Harmonica-Hohner-Special20-C","Soft","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-C - Soft.sfz",20,0.103649,0.0134673,"",1.79767
+"Harmonica-Hohner-Special20-C","Vib","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-C - Vib.sfz",20,0.223247,0.0333975,"",1.82308
+"Harmonica-Hohner-Special20-F","Accented","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-F - Accented.sfz",20,0.209472,0.0311992,"",6.78667
+"Harmonica-Hohner-Special20-F","HandVib","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-F - HandVib.sfz",20,0.284144,0.0467005,"",6.8055
+"Harmonica-Hohner-Special20-F","Keyswitch","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-F - Keyswitch.sfz",94,0.111543,0.0140506,"",21.9962
+"Harmonica-Hohner-Special20-F","Normal","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-F - Normal.sfz",16,0.160025,0.0193486,"",1.52375
+"Harmonica-Hohner-Special20-F","Stac","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-F - Stac.sfz",20,0.150411,0.0174775,"",1.78746
+"Harmonica-Hohner-Special20-F","Vib","Aerophones/Free Aerophones/Harmonica-Hohner-Special20-F - Vib.sfz",18,0.129952,0.0190521,"",1.70854
+"Harmonica-Hohner-Super64","Accented","Aerophones/Free Aerophones/Harmonica-Hohner-Super64 - Accented.sfz",26,0.14471,0.0227143,"",8.91758
+"Harmonica-Hohner-Super64","Keyswitch","Aerophones/Free Aerophones/Harmonica-Hohner-Super64 - Keyswitch.sfz",78,0.148781,0.0347775,"",19.3105
+"Harmonica-Hohner-Super64","Normal","Aerophones/Free Aerophones/Harmonica-Hohner-Super64 - Normal.sfz",26,0.148781,0.0347775,"",2.27838
+"Harmonica-Hohner-Super64","Vib","Aerophones/Free Aerophones/Harmonica-Hohner-Super64 - Vib.sfz",26,0.135314,0.0195665,"",2.19067
+"Siren","Natural","Aerophones/Free Aerophones/Siren.sfz",5,0.152613,0.00995282,"",2.70671
+"Didgeridoo","Natural","Aerophones/Lip Aerophones/Didgeridoo.sfz",12,0.268152,0.0205942,"",5.41767
+"Saxello","Keyswitch","Aerophones/Reed Aerophones/Saxello - Keyswitch.sfz",39,0.241323,0.0565139,"",17.0343
+"Saxello","Non-Vibrato","Aerophones/Reed Aerophones/Saxello - Non-Vibrato.sfz",16,0.260945,0.0485024,"",2.045
+"Saxello","Staccato","Aerophones/Reed Aerophones/Saxello - Staccato.sfz",15,0.273034,0.0421507,"",1.67196
+"Saxello","Vibrato","Aerophones/Reed Aerophones/Saxello - Vibrato.sfz",8,0.264069,0.0608901,"",1.10888
+"Tenor Saxophone","Keyswitch","Aerophones/Reed Aerophones/Tenor Saxophone - Keyswitch.sfz",105,0.218112,0.0428825,"",47.0423
+"Tenor Saxophone","Non-Vibrato","Aerophones/Reed Aerophones/Tenor Saxophone - Non-Vibrato.sfz",46,0.271863,0.0463838,"",4.25392
+"Tenor Saxophone","Staccato","Aerophones/Reed Aerophones/Tenor Saxophone - Staccato.sfz",40,0.299944,0.0435814,"",3.86954
+"Tenor Saxophone","Vibrato","Aerophones/Reed Aerophones/Tenor Saxophone - Vibrato.sfz",19,0.218586,0.0417404,"",2.02096
+"Concert Harp","Natural","Chordophones/Composite Chordophones/Concert Harp.sfz",45,0.185869,0.0223917,"",19.6287
+"Folk Harp","Natural","Chordophones/Composite Chordophones/Folk Harp.sfz",58,0.161476,0.0265844,"",24.1322
+"Strumstick","Natural","Chordophones/Composite Chordophones/Strumstick.sfz",57,0.132065,0.0076697,"",24.8491
+"Dan Tranh","FX","Chordophones/Zithers/Dan Tranh - FX.sfz",7,0.285217,0.0162497,"",2.99788
+"Dan Tranh","Gliss","Chordophones/Zithers/Dan Tranh - Gliss.sfz",12,0.0589816,0.00603917,"",4.49275
+"Dan Tranh","Keyswitch","Chordophones/Zithers/Dan Tranh - Keyswitch.sfz",115,0.180282,0.012035,"",32.1139
+"Dan Tranh","Normal","Chordophones/Zithers/Dan Tranh - Normal.sfz",48,0.180282,0.0115348,"",3.61692
+"Dan Tranh","Tremolo","Chordophones/Zithers/Dan Tranh - Tremolo.sfz",16,0.164284,0.013149,"",1.44217
+"Dan Tranh","Vibrato","Chordophones/Zithers/Dan Tranh - Vibrato.sfz",32,0.124557,0.018322,"",2.59725
+"Grand Piano, Kawai","Legacy","Chordophones/Zithers/Grand Piano, Kawai - Legacy.sfz",126,0.277219,0.0295613,"",51.1143
+"Grand Piano, Kawai","Natural","Chordophones/Zithers/Grand Piano, Kawai.sfz",222,0.183749,0.0192684,"",92.11
+"Grand Piano, Steinway B","Natural","Chordophones/Zithers/Grand Piano, Steinway B.sfz",351,0.274823,0.0235971,"",165.166
+"Harpsichord, English","Keyswitch","Chordophones/Zithers/Harpsichord, English - Keyswitch.sfz",107,0.063624,0.0100128,"",48.7205
+"Harpsichord, English","Lute","Chordophones/Zithers/Harpsichord, English - Lute.sfz",53,0.0479411,0.00853167,"",4.75308
+"Harpsichord, English","Normal","Chordophones/Zithers/Harpsichord, English - Normal.sfz",54,0.0548363,0.0104402,"",4.88054
+"Harpsichord, Flemish","4'","Chordophones/Zithers/Harpsichord, Flemish - 4'.sfz",52,0.0544274,0.0111764,"",23.0195
+"Harpsichord, Flemish","8'","Chordophones/Zithers/Harpsichord, Flemish - 8'.sfz",56,0.0633743,0.0144928,"",23.7945
+"Harpsichord, Flemish","Full","Chordophones/Zithers/Harpsichord, Flemish - Full.sfz",108,0.0763071,0.0191811,"",12.5649
+"Harpsichord, Flemish","Keyswitch","Chordophones/Zithers/Harpsichord, Flemish - Keyswitch.sfz",108,0.0533686,0.0108902,"",12.7532
+"Harpsichord, French","Natural","Chordophones/Zithers/Harpsichord, French.sfz",58,0.0512264,0.0123735,"",25.8468
+"Harpsichord, Italian","Natural","Chordophones/Zithers/Harpsichord, Italian.sfz",63,0.0805607,0.0191302,"",27.6078
+"Harpsichord, Unk","Natural","Chordophones/Zithers/Harpsichord, Unk.sfz",122,0.0590972,0.0161689,"",54.4491
+"Psaltery, Bowed and Plucked","Keyswitch","Chordophones/Zithers/Psaltery, Bowed and Plucked - Keyswitch.sfz",33,0.144527,0.0180944,"",14.6227
+"Psaltery, Bowed and Plucked","LongBow","Chordophones/Zithers/Psaltery, Bowed and Plucked - LongBow.sfz",11,0.0928797,0.01112,"",1.32763
+"Psaltery, Bowed and Plucked","Pluck","Chordophones/Zithers/Psaltery, Bowed and Plucked - Pluck.sfz",11,0.144527,0.0180944,"",1.27492
+"Psaltery, Bowed and Plucked","Spiccato","Chordophones/Zithers/Psaltery, Bowed and Plucked - Spiccato.sfz",11,0.280035,0.0149498,"",1.28087
+"Upright Piano, Knight","Natural","Chordophones/Zithers/Upright Piano, Knight.sfz",143,0.253781,0.0334761,"",50.0508
+"Upright Piano, Yamaha","Natural","Chordophones/Zithers/Upright Piano, Yamaha.sfz",138,0.159212,0.0214918,"",39.8139
+"TX81Z","Clavisynth","Electrophones/TX81Z - Clavisynth.sfz",57,0.116725,0.0192999,"",15.2246
+"TX81Z","FM Piano","Electrophones/TX81Z - FM Piano.sfz",66,0.165327,0.0291,"",18.4751
+"TX81Z","Keyswitch","Electrophones/TX81Z - Keyswitch.sfz",189,0.155005,0.0344703,"",28.0895
+"TX81Z","Piano 1","Electrophones/TX81Z - Piano 1.sfz",66,0.155005,0.0344703,"",5.11988
+"Wine Glasses","Fast","Idiophones/Friction Idiophones/Wine Glasses - Fast.sfz",8,0.141478,0.0241085,"",2.76492
+"Wine Glasses","Keyswitch","Idiophones/Friction Idiophones/Wine Glasses - Keyswitch.sfz",16,0.141478,0.0241085,"",3.54833
+"Wine Glasses","Slow","Idiophones/Friction Idiophones/Wine Glasses - Slow.sfz",8,0.131873,0.0290913,"",1.03721
+"Kalimba, Kenya","Natural","Idiophones/Plucked Idiophones/Kalimba, Kenya.sfz",15,0.246808,0.0110803,"",4.61442
+"Kalimba, Tanzania","Natural","Idiophones/Plucked Idiophones/Kalimba, Tanzania.sfz",27,0.657757,0.0318594,"",7.77008
+"Mbira Mavembe (Gandanga), Zimbabwe, Low G","Natural","Idiophones/Plucked Idiophones/Mbira Mavembe (Gandanga), Zimbabwe, Low G.sfz",24,0.222036,0.0188866,"",6.91862
+"Mbira dzaVadzimu Nyamaropa, Zimbabwe, Low B","Natural","Idiophones/Plucked Idiophones/Mbira dzaVadzimu Nyamaropa, Zimbabwe, Low B.sfz",24,0.272833,0.0185377,"",6.78625
+"Nyunga Nyunga, Mozambique, Low F","Natural","Idiophones/Plucked Idiophones/Nyunga Nyunga, Mozambique, Low F.sfz",19,0.245974,0.0156076,"",5.46346
+"Agogo Bells","Natural","Idiophones/Struck Idiophones/Agogo Bells.sfz",5,0.100284,0.00682585,"",1.7485
+"Anvil","Natural","Idiophones/Struck Idiophones/Anvil.sfz",9,0.287022,0.0235847,"",2.79983
+"Balafon","Hard Mallet","Idiophones/Struck Idiophones/Balafon - Hard Mallet.sfz",18,0.175025,0.013879,"",5.01479
+"Balafon","Keyswitch","Idiophones/Struck Idiophones/Balafon - Keyswitch.sfz",54,0.175025,0.013879,"",11.6148
+"Balafon","Soft Mallet","Idiophones/Struck Idiophones/Balafon - Soft Mallet.sfz",18,0.078215,0.00810426,"",1.68837
+"Balafon","Traditional Mallet","Idiophones/Struck Idiophones/Balafon - Traditional Mallet.sfz",18,0.139886,0.00984988,"",1.69196
+"Bell Tree","Individual","Idiophones/Struck Idiophones/Bell Tree - Individual.sfz",6,0.0635764,0.00545341,"",2.17083
+"Bell Tree","Keyswitch","Idiophones/Struck Idiophones/Bell Tree - Keyswitch.sfz",16,0.143781,0.00543079,"",3.65033
+"Bell Tree","Legacy","Idiophones/Struck Idiophones/Bell Tree - Legacy.sfz",5,0.143781,0.00865091,"",0.736709
+"Bell Tree","Stroke","Idiophones/Struck Idiophones/Bell Tree - Stroke.sfz",5,0.123053,0.00983116,"",0.724791
+"Brake Drum","Natural","Idiophones/Struck Idiophones/Brake Drum.sfz",17,0.0884073,0.00398625,"",5.04929
+"Cabasa","Natural","Idiophones/Struck Idiophones/Cabasa.sfz",6,0.132967,0.00662305,"",2.06171
+"Cajon","Natural","Idiophones/Struck Idiophones/Cajon.sfz",18,0.216206,0.0157431,"",4.99329
+"Claps","Natural","Idiophones/Struck Idiophones/Claps.sfz",10,0.176094,0.00727965,"",2.94658
+"Clash Cymbals 1","Natural","Idiophones/Struck Idiophones/Clash Cymbals 1.sfz",10,0.200741,0.0141361,"",3.04371
+"Clash Cymbals 2","Natural","Idiophones/Struck Idiophones/Clash Cymbals 2.sfz",5,0.136829,0.0222971,"",1.84667
+"Claves","Natural","Idiophones/Struck Idiophones/Claves.sfz",6,0.150934,0.00625174,"",2.05158
+"Cowbells","Natural","Idiophones/Struck Idiophones/Cowbells.sfz",13,0.191213,0.0132177,"",3.60875
+"Finger Cymbals","Natural","Idiophones/Struck Idiophones/Finger Cymbals.sfz",1,0.039333,0.00290831,"",0.67975
+"Flexatone","Natural","Idiophones/Struck Idiophones/Flexatone.sfz",8,0.0643409,0.00357654,"",2.70571
+"Glockenspiel","Natural","Idiophones/Struck Idiophones/Glockenspiel.sfz",18,0.182669,0.0163023,"",5.15017
+"Gong 1","Natural","Idiophones/Struck Idiophones/Gong 1.sfz",7,0.132823,0.015919,"",2.27854
+"Gong 2","Natural","Idiophones/Struck Idiophones/Gong 2.sfz",6,0.294417,0.0324612,"",4.43246
+"Guiro","Keyswitch","Idiophones/Struck Idiophones/Guiro - Keyswitch.sfz",14,0.0437435,0.00199357,"",4.17358
+"Guiro","Legacy","Idiophones/Struck Idiophones/Guiro - Legacy.sfz",9,0.0211782,0.00155808,"",1.12321
+"Guiro","Natural","Idiophones/Struck Idiophones/Guiro.sfz",5,0.0437435,0.00213057,"",0.689209
+"Hand Bells, Nepalese","Natural","Idiophones/Struck Idiophones/Hand Bells, Nepalese.sfz",3,0.164711,0.0108277,"",1.34283
+"Hand Chimes","Natural","Idiophones/Struck Idiophones/Hand Chimes.sfz",19,0.207894,0.0325315,"",5.76496
+"Hi-Hat Cymbal","Natural","Idiophones/Struck Idiophones/Hi-Hat Cymbal.sfz",15,0.274421,0.0227104,"",4.51713
+"Marimba","Natural","Idiophones/Struck Idiophones/Marimba.sfz",30,0.264795,0.0259736,"",8.69933
+"Mark Trees","Natural","Idiophones/Struck Idiophones/Mark Trees.sfz",6,0.0183205,0.00180303,"",2.15117
+"Ratchet","Natural","Idiophones/Struck Idiophones/Ratchet.sfz",8,0.223065,0.00907058,"",2.62208
+"Shaker","Legacy","Idiophones/Struck Idiophones/Shaker - Legacy.sfz",2,0.294533,0.00586198,"",0.942
+"Shaker, Large","Natural","Idiophones/Struck Idiophones/Shaker, Large.sfz",6,0.177539,0.00724729,"",2.00396
+"Shaker, Small","Natural","Idiophones/Struck Idiophones/Shaker, Small.sfz",16,0.176044,0.00771776,"",4.20796
+"Slapstick","Natural","Idiophones/Struck Idiophones/Slapstick.sfz",5,0.335059,0.00554467,"",1.89171
+"Sleigh Bells","Natural","Idiophones/Struck Idiophones/Sleigh Bells.sfz",6,0.170727,0.0113345,"",2.04258
+"Slit Drum","Natural","Idiophones/Struck Idiophones/Slit Drum.sfz",6,0.177962,0.0168141,"",1.98529
+"Suspended Cymbal 1","Natural","Idiophones/Struck Idiophones/Suspended Cymbal 1.sfz",22,0.122259,0.0071935,"",6.79454
+"Suspended Cymbal 2","Natural","Idiophones/Struck Idiophones/Suspended Cymbal 2.sfz",23,0.14057,0.0072088,"",6.41008
+"Tambourine 1","Natural","Idiophones/Struck Idiophones/Tambourine 1.sfz",7,0.254276,0.0176973,"",3.61725
+"Tambourine 2","Natural","Idiophones/Struck Idiophones/Tambourine 2.sfz",7,0.46306,0.0194282,"",2.51512
+"Tambourine 3","Legacy","Idiophones/Struck Idiophones/Tambourine 3 - Legacy.sfz",4,0.259311,0.0146699,"",1.57462
+"Tambourine 4","Legacy","Idiophones/Struck Idiophones/Tambourine 4 - Legacy.sfz",6,0.156532,0.0102811,"",2.22117
+"Tambourine 5","Legacy","Idiophones/Struck Idiophones/Tambourine 5 - Legacy.sfz",9,0.194873,0.0122915,"",2.926
+"Triangles","Natural","Idiophones/Struck Idiophones/Triangles.sfz",37,0.0850765,0.00646608,"",10.7177
+"Tubular Bells 1","Natural","Idiophones/Struck Idiophones/Tubular Bells 1.sfz",18,0.243137,0.0267691,"",5.09504
+"Tubular Bells 2","Natural","Idiophones/Struck Idiophones/Tubular Bells 2.sfz",22,0.261271,0.0395809,"",6.67804
+"Tubular Bells 3","Legacy","Idiophones/Struck Idiophones/Tubular Bells 3 - Legacy.sfz",18,0.195153,0.0307201,"",51.0325
+"Tubular Glockenspiel","Natural","Idiophones/Struck Idiophones/Tubular Glockenspiel.sfz",25,0.274077,0.0173684,"",7.75113
+"Vibraphone","Bowed","Idiophones/Struck Idiophones/Vibraphone - Bowed.sfz",6,0.00822304,0.0012559,"",2.11633
+"Vibraphone","Hard Mallets","Idiophones/Struck Idiophones/Vibraphone - Hard Mallets.sfz",22,0.288994,0.044907,"",6.49925
+"Vibraphone","Keyswitch","Idiophones/Struck Idiophones/Vibraphone - Keyswitch.sfz",50,0.00822304,0.00121167,"",8.71633
+"Vibraphone","Soft Mallets","Idiophones/Struck Idiophones/Vibraphone - Soft Mallets.sfz",22,0.112916,0.0271069,"",1.95908
+"Vibraslap","Natural","Idiophones/Struck Idiophones/Vibraslap.sfz",4,0.201396,0.010713,"",1.56246
+"Woodblock","Natural","Idiophones/Struck Idiophones/Woodblock.sfz",10,0.197254,0.00901461,"",3.37846
+"Xylophone","Hard Mallets","Idiophones/Struck Idiophones/Xylophone - Hard Mallets.sfz",15,0.330909,0.0258434,"",4.62137
+"Xylophone","Keyswitch","Idiophones/Struck Idiophones/Xylophone - Keyswitch.sfz",47,0.330909,0.0258434,"",10.242
+"Xylophone","Medium Mallets","Idiophones/Struck Idiophones/Xylophone - Medium Mallets.sfz",16,0.182219,0.0160585,"",1.6675
+"Xylophone","Soft Mallets","Idiophones/Struck Idiophones/Xylophone - Soft Mallets.sfz",16,0.139121,0.012194,"",1.641
+"Ocean Drum","Natural","Membranophones/Other Membranophones/Ocean Drum.sfz",3,0.0379309,0.00207266,"",1.28533
+"Bass Drum 1","Natural","Membranophones/Struck Membranophones/Bass Drum 1.sfz",8,0.403126,0.0586013,"",2.72646
+"Bass Drum 2","Natural","Membranophones/Struck Membranophones/Bass Drum 2.sfz",30,0.236838,0.0336709,"",8.50954
+"Bass Drum 3","Legacy","Membranophones/Struck Membranophones/Bass Drum 3 - Legacy.sfz",39,0.433349,0.0380852,"",11.2608
+"Bongos","Natural","Membranophones/Struck Membranophones/Bongos.sfz",28,0.25203,0.0264478,"",7.87625
+"Conga","Natural","Membranophones/Struck Membranophones/Conga.sfz",34,0.472041,0.0443193,"",9.689
+"Darbuka","Natural","Membranophones/Struck Membranophones/Darbuka.sfz",20,0.250499,0.0224629,"",5.42492
+"Frame Drum","Natural","Membranophones/Struck Membranophones/Frame Drum.sfz",18,0.202418,0.00789205,"",5.04338
+"Legacy Snares","Keyswitch","Membranophones/Struck Membranophones/Legacy Snares - Keyswitch.sfz",108,0.463702,0.0204914,"",28.8967
+"Legacy Snares","OldSnare","Membranophones/Struck Membranophones/Legacy Snares - OldSnare.sfz",15,0.387056,0.0206598,"",1.63992
+"Legacy Snares","drum1","Membranophones/Struck Membranophones/Legacy Snares - drum1.sfz",40,0.463702,0.0204914,"",3.91487
+"Legacy Snares","drum2","Membranophones/Struck Membranophones/Legacy Snares - drum2.sfz",36,0.247352,0.0160108,"",3.54217
+"Legacy Snares","drum3_marching","Membranophones/Struck Membranophones/Legacy Snares - drum3_marching.sfz",17,0.496727,0.0215187,"",2.39417
+"Legacy Toms","Natural","Membranophones/Struck Membranophones/Legacy Toms.sfz",41,0.255314,0.0173617,"",12.5512
+"Snare Drum, Modern 1","Natural","Membranophones/Struck Membranophones/Snare Drum, Modern 1.sfz",29,0.374059,0.0319936,"",7.77192
+"Snare Drum, Modern 2","Natural","Membranophones/Struck Membranophones/Snare Drum, Modern 2.sfz",24,0.31031,0.0261256,"",6.48654
+"Snare Drum, Modern 3","Natural","Membranophones/Struck Membranophones/Snare Drum, Modern 3.sfz",19,0.291947,0.0126072,"",5.28025
+"Snare Drum, Rope Tension","Natural","Membranophones/Struck Membranophones/Snare Drum, Rope Tension.sfz",32,0.226518,0.0168539,"",9.23567
+"Timpani 1","Hit","Membranophones/Struck Membranophones/Timpani 1 - Hit.sfz",30,0.363993,0.0391712,"",8.98275
+"Timpani 1","Keyswitch","Membranophones/Struck Membranophones/Timpani 1 - Keyswitch.sfz",40,0.363993,0.0391712,"",5.5255
+"Timpani 1","Roll","Membranophones/Struck Membranophones/Timpani 1 - Roll.sfz",10,0.457414,0.061304,"",1.119
+"Timpani 2","All Samples","Membranophones/Struck Membranophones/Timpani 2 - All Samples.sfz",204,0.29853,0.0230422,"",26.4206
+"Timpani 2","Keyswitch","Membranophones/Struck Membranophones/Timpani 2 - Keyswitch.sfz",204,0.231884,0.0170404,"",18.8291
+"Timpani 2","Scale","Membranophones/Struck Membranophones/Timpani 2 - Scale.sfz",54,0.430535,0.0327395,"",4.80563
+"Tom 1","Natural","Membranophones/Struck Membranophones/Tom 1.sfz",22,0.071247,0.00563843,"",2.08992
+"Tom 2","Natural","Membranophones/Struck Membranophones/Tom 2.sfz",22,0.0499839,0.00603329,"",2.02183

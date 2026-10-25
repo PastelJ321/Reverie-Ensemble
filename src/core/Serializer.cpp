@@ -2,7 +2,10 @@
 // Copyright 2026 QuadraJ and contributors.
 
 #include "core/Serializer.h"
+#include "core/Hash.h"
+#include "core/InstrumentBackend.h"
 #include "core/Media.h"
+#include "core/SfzSupport.h"
 #include "json.hpp"
 #include <fstream>
 #include <sstream>
@@ -35,6 +38,16 @@ static json presetJson(const Preset& s) {
               {"auditionGain", s.auditionGain},
               {"cubicInterpolation", s.cubicInterpolation},
               {"zones", json::array()}};
+    j["backendPath"] = s.backendPath;
+    j["renderTailSeconds"] = s.renderTailSeconds;
+    j["soundFontBank"] = s.soundFontBank;
+    j["soundFontProgram"] = s.soundFontProgram;
+    j["artworkId"] = s.artworkId;
+    j["artworkUri"] = s.artworkUri;
+    j["thumbnailAsset"] = s.thumbnailAsset;
+    j["artworkLicense"] = s.artworkLicense;
+    j["artworkAuthor"] = s.artworkAuthor;
+    j["imageAspectRatio"] = s.imageAspectRatio;
     for (const auto& z : s.zones)
         j["zones"].push_back({{"path", z.path},
                               {"lowKey", z.lowKey},
@@ -56,6 +69,16 @@ static json presetJson(const Preset& s) {
 }
 static Preset readPreset(const json& j) {
     Preset s;
+    s.backendPath = j.value("backendPath", "");
+    s.renderTailSeconds = j.value("renderTailSeconds", 0.f);
+    s.soundFontBank = j.value("soundFontBank", 0);
+    s.soundFontProgram = j.value("soundFontProgram", 0);
+    s.artworkId = j.value("artworkId", "");
+    s.artworkUri = j.value("artworkUri", "");
+    s.thumbnailAsset = j.value("thumbnailAsset", "");
+    s.artworkLicense = j.value("artworkLicense", "");
+    s.artworkAuthor = j.value("artworkAuthor", "");
+    s.imageAspectRatio = j.value("imageAspectRatio", 1.f);
     s.name = j.at("name");
     s.kind = InstrumentKind(j.at("kind").get<int>());
     s.wave = Waveform(j.at("wave").get<int>());
@@ -155,7 +178,7 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
             }
         }
         std::ostringstream name;
-        name << std::hex << hash << ".wav";
+        name << std::hex << hash << (src.extension().empty() ? ".wav" : src.extension().string());
         auto dest = media / name.str();
         if (!std::filesystem::exists(dest)) {
             auto tmp = dest;
@@ -168,7 +191,7 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
         return rel;
     };
     json j = {{"format", "Reverie Ensemble"},
-              {"version", 3},
+              {"version", 4},
               {"loopEnabled", p.loopEnabled},
               {"loopStart", p.loopStart},
               {"loopEnd", p.loopEnd},
@@ -198,10 +221,68 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
             preset["zones"][i]["path"] = relative;
             z.path = absoluteRef(relative);
         }
+        if (t.preset.kind == InstrumentKind::SoundFont &&
+            std::filesystem::exists(t.preset.backendPath)) {
+            auto relative = stash(t.preset.backendPath);
+            preset["backendPath"] = relative;
+            t.preset.backendPath = absoluteRef(relative);
+        } else if (t.preset.kind == InstrumentKind::Sfizz &&
+                   std::filesystem::exists(t.preset.backendPath)) {
+            auto mapping = std::filesystem::path(t.preset.backendPath);
+            auto root = mapping.parent_path();
+            for (auto parent = root; !parent.empty() && parent != parent.root_path();
+                 parent = parent.parent_path())
+                if (std::filesystem::exists(parent / "pack.json")) {
+                    root = parent;
+                    break;
+                }
+            try {
+                auto files = sfzDependencies(mapping, root);
+                std::uint64_t fingerprint = 14695981039346656037ULL;
+                for (auto& file : files)
+                    for (unsigned char c :
+                         sha256File(file) + file.lexically_relative(root).generic_string()) {
+                        fingerprint ^= c;
+                        fingerprint *= 1099511628211ULL;
+                    }
+                std::ostringstream label;
+                label << std::hex << fingerprint;
+                auto target = media / ("sfz-" + label.str());
+                for (auto& file : files) {
+                    auto relative = file.lexically_relative(root);
+                    auto dst = target / relative;
+                    std::filesystem::create_directories(dst.parent_path());
+                    if (!std::filesystem::exists(dst) ||
+                        std::filesystem::file_size(dst) != std::filesystem::file_size(file) ||
+                        sha256File(dst) != sha256File(file)) {
+                        auto temporary = dst;
+                        temporary += ".collect-" + std::to_string(nextId()) + ".tmp";
+                        try {
+                            std::filesystem::copy_file(file, temporary);
+                            std::filesystem::rename(temporary, dst);
+                        } catch (...) {
+                            std::error_code error;
+                            std::filesystem::remove(temporary, error);
+                            throw;
+                        }
+                    }
+                }
+                auto relocated = target / mapping.lexically_relative(root);
+                preset["backendPath"] =
+                    std::filesystem::relative(relocated, folder).generic_string();
+                t.preset.backendPath = relocated.string();
+            } catch (const std::runtime_error&) {
+                preset["backendPath"] = t.preset.backendPath;
+                preset["externalMediaReferenced"] = true;
+            }
+        }
         json jt = {
             {"id", t.id},       {"name", t.name},        {"kind", int(t.kind)}, {"color", t.color},
             {"mute", t.mute},   {"solo", t.solo},        {"volume", t.volume},  {"pan", t.pan},
             {"preset", preset}, {"clips", json::array()}};
+        jt["armed"] = t.armed;
+        jt["midiChannel"] = t.midiChannel;
+        jt["midiInput"] = t.midiInput;
         const auto& fx = t.effects;
         jt["effects"] = {{"enabled", fx.enabled},
                          {"lowDb", fx.lowDb},
@@ -219,13 +300,21 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
                        {"media", stash(!c.mediaPath.empty() ? c.mediaPath
                                                             : (c.sample ? c.sample->path : ""))},
                        {"notes", json::array()}};
+            jc["mute"] = c.mute;
+            jc["controllers"] = json::array();
+            for (const auto& cc : c.controllers)
+                jc["controllers"].push_back({{"beat", cc.beat},
+                                             {"channel", cc.channel},
+                                             {"controller", cc.controller},
+                                             {"value", cc.value}});
             c.mediaPath = absoluteRef(jc["media"].get<std::string>());
             for (const auto& n : c.notes)
                 jc["notes"].push_back({{"id", n.id},
                                        {"beat", n.beat},
                                        {"duration", n.duration},
                                        {"key", n.key},
-                                       {"velocity", n.velocity}});
+                                       {"velocity", n.velocity},
+                                       {"channel", n.channel}});
             jt["clips"].push_back(jc);
         }
         j["tracks"].push_back(jt);
@@ -239,7 +328,7 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
     std::ifstream f(path);
     json j;
     f >> j;
-    if (j.at("format") != "Reverie Ensemble" || (j.at("version") < 1 || j.at("version") > 3))
+    if (j.at("format") != "Reverie Ensemble" || (j.at("version") < 1 || j.at("version") > 4))
         throw std::runtime_error("Unsupported project format/version");
     LoadResult result;
     auto& p = result.project;
@@ -248,7 +337,7 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
     p.numerator = j.at("numerator");
     p.denominator = j.at("denominator");
     p.master = j.at("master");
-    p.formatVersion = 3;
+    p.formatVersion = 4;
     p.loopEnabled = j.value("loopEnabled", false);
     p.loopStart = j.value("loopStart", 0.);
     p.loopEnd = j.value("loopEnd", 16.);
@@ -284,6 +373,9 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
         Track t;
         t.id = jt.at("id");
         t.name = jt.at("name");
+        t.armed = jt.value("armed", false);
+        t.midiChannel = jt.value("midiChannel", -1);
+        t.midiInput = jt.value("midiInput", "all");
         auto kind = jt.at("kind").get<int>();
         if (kind < 0 || kind > 1)
             throw std::runtime_error("Invalid track kind");
@@ -294,6 +386,19 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
         t.volume = jt.at("volume");
         t.pan = jt.at("pan");
         t.preset = readPreset(jt.at("preset"));
+        if (!t.preset.backendPath.empty() &&
+            std::filesystem::path(t.preset.backendPath).is_relative())
+            t.preset.backendPath =
+                (std::filesystem::absolute(path).parent_path() / t.preset.backendPath)
+                    .lexically_normal()
+                    .string();
+        if (!t.preset.backendPath.empty() && !std::filesystem::exists(t.preset.backendPath)) {
+            result.warnings.push_back("Missing external instrument: " + t.preset.backendPath);
+        }
+        if ((t.preset.kind == InstrumentKind::Sfizz && !sfizzAvailable()) ||
+            (t.preset.kind == InstrumentKind::SoundFont && !fluidSynthAvailable()))
+            result.warnings.push_back("Instrument backend unavailable; track is silent: " +
+                                      t.preset.name);
         t.instrumentSample = resolve(t.preset.samplePath);
         for (auto& z : t.preset.zones)
             z.sample = resolve(z.path);
@@ -311,6 +416,10 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
             Clip c;
             c.id = jc.at("id");
             c.name = jc.at("name");
+            c.mute = jc.value("mute", false);
+            for (const auto& cc : jc.value("controllers", json::array()))
+                c.controllers.push_back(
+                    {cc.at("beat"), cc.value("channel", 0), cc.at("controller"), cc.at("value")});
             c.beat = jc.at("beat");
             c.length = jc.at("length");
             c.sourceOffset = jc.at("sourceOffset");
@@ -323,6 +432,7 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
                 n.duration = jn.at("duration");
                 n.key = jn.at("key");
                 n.velocity = jn.at("velocity");
+                n.channel = jn.value("channel", 0);
                 c.notes.push_back(n);
             }
             t.clips.push_back(std::move(c));

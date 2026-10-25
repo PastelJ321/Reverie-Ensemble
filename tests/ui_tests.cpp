@@ -76,8 +76,7 @@ int main(int argc, char** argv) {
         require(findClip(e.project, id)->length == oldClip.length + 1, "resize clip");
         e.findChild<QDoubleSpinBox*>("trackVolume")->setValue(.4);
         require(e.project.tracks[index].volume == .4f, "mixer model binding");
-        e.findChild<QComboBox*>("preset")->setCurrentIndex(2);
-        QMetaObject::invokeMethod(e.findChild<QComboBox*>("preset"), "activated", Q_ARG(int, 2));
+        e.applyInstrument(factoryPresets()[2]);
         require(e.project.tracks[index].preset.name == "Synth Lead", "instrument binding");
         e.duplicateClip();
         require(e.project.tracks[index].clips.size() == 2, "duplicate clip");

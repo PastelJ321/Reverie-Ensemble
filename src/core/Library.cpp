@@ -2,7 +2,9 @@
 // Copyright 2026 QuadraJ and contributors.
 #include "core/Library.h"
 #include "core/Hash.h"
+#include "core/InstrumentBackend.h"
 #include "core/Media.h"
+#include "core/SfzSupport.h"
 #include "json.hpp"
 #include <fstream>
 #include <map>
@@ -188,7 +190,7 @@ static std::filesystem::path safePath(const std::filesystem::path& base,
 }
 SoundPack readSoundPack(const std::filesystem::path& folder, bool verify) {
     auto path = folder / "pack.json";
-    if (std::filesystem::file_size(path) > 1024 * 1024)
+    if (std::filesystem::file_size(path) > 8 * 1024 * 1024)
         throw std::runtime_error("Pack manifest too large");
     std::ifstream f(path);
     nlohmann::json j;
@@ -203,13 +205,13 @@ SoundPack readSoundPack(const std::filesystem::path& folder, bool verify) {
     p.license = j.at("license");
     p.installSize = j.at("installSize");
     if (!std::regex_match(p.id, std::regex("[a-z0-9][a-z0-9.-]{0,95}")) || p.license.empty() ||
-        p.installSize > 1024ULL * 1024 * 1024)
+        p.installSize > 32ULL * 1024 * 1024 * 1024)
         throw std::runtime_error("Invalid sound pack metadata");
     std::uint64_t totalSize = 0;
     for (const auto& file : j.at("files")) {
         auto bytes = file.at("size").get<std::uint64_t>();
-        if (bytes > 1024ULL * 1024 * 1024 - totalSize)
-            throw std::runtime_error("Pack payload exceeds 1 GiB");
+        if (bytes > 32ULL * 1024 * 1024 * 1024 - totalSize)
+            throw std::runtime_error("Pack payload exceeds 32 GiB");
         totalSize += bytes;
         auto local = safePath(folder, file.at("path"));
         if (!std::filesystem::is_regular_file(local) ||
@@ -240,17 +242,40 @@ SoundPack readSoundPack(const std::filesystem::path& folder, bool verify) {
         if (!std::isfinite(v.calibrationDb) || std::abs(v.calibrationDb) > 30 ||
             !std::isfinite(v.auditionDb) || std::abs(v.auditionDb) > 18)
             throw std::runtime_error("Invalid calibration metadata");
+        v.unsupportedOpcodes = i.value("unsupportedOpcodes", "");
+        v.auditionKey = i.value("auditionKey", 60);
+        v.midiLow = i.value("midiLow", 0);
+        v.midiHigh = i.value("midiHigh", 127);
+        v.sampleCount = i.value("sampleCount", 0);
+        v.velocityLayers = i.value("velocityLayers", 1);
+        v.bank = i.value("bank", 0);
+        v.program = i.value("program", 0);
+        v.artworkId = i.value("artworkId", v.family);
+        v.artworkUri = i.value("artworkUri", "");
+        v.thumbnailAsset = i.value("thumbnailAsset", "");
+        v.artworkLicense = i.value("artworkLicense", "");
+        v.artworkAuthor = i.value("artworkAuthor", "");
+        v.imageAspectRatio = i.value("imageAspectRatio", 1.f);
         v.format = i.at("format");
         v.file = safePath(folder, i.at("file"));
         if (!listed.contains(v.file) || !std::filesystem::is_regular_file(v.file))
             throw std::runtime_error("Instrument mapping absent from pack inventory");
-        if (v.format != "sfz")
+        if (v.format != "sfz" && v.format != "sfizz" && v.format != "sf2" && v.format != "sf3")
             throw std::runtime_error("Unsupported pack format");
         p.instruments.push_back(v);
     }
     if (verify) {
         SampleCache cache;
         for (const auto& i : p.instruments) {
+            if (i.format == "sfizz") {
+                for (const auto& ref : sfzDependencies(i.file, folder))
+                    if (!listed.contains(ref))
+                        throw std::runtime_error("SFZ dependency absent from inventory: " +
+                                                 ref.string());
+                continue;
+            }
+            if (i.format == "sf2" || i.format == "sf3")
+                continue;
             auto instrument = loadSfz(i.file, cache);
             for (const auto& z : instrument.zones)
                 if (!listed.contains(std::filesystem::weakly_canonical(z.path)))
@@ -266,9 +291,12 @@ SoundPack installSoundPack(const std::filesystem::path& folder,
     if (std::filesystem::exists(final))
         throw std::runtime_error("Pack already installed");
     std::filesystem::create_directories(destination);
+    if (std::filesystem::space(destination).available < p.installSize + 64 * 1024 * 1024)
+        throw std::runtime_error("Insufficient disk space for sound pack");
     auto staging = destination / (p.id + ".install-" + std::to_string(nextId()));
     try {
-        std::filesystem::create_directory(staging);
+        if (!std::filesystem::create_directory(staging))
+            throw std::runtime_error("Sound pack staging already exists");
         std::ifstream f(folder / "pack.json");
         nlohmann::json j;
         f >> j;
@@ -310,8 +338,20 @@ std::vector<Preset> calibratedFactoryPresets(const std::filesystem::path& file) 
     return presets;
 }
 Preset loadLibraryPreset(const LibraryInstrument& i, const SoundPack& pack, SampleCache& cache) {
-    auto p = loadSfz(i.file, cache);
+    auto p = i.format == "sfizz"
+                 ? externalPreset(i.file, InstrumentKind::Sfizz)
+                 : ((i.format == "sf2" || i.format == "sf3")
+                        ? externalPreset(i.file, InstrumentKind::SoundFont, i.bank, i.program)
+                        : loadSfz(i.file, cache));
     p.name = i.name;
+    if (i.format == "sfizz")
+        p.rootNote = i.auditionKey;
+    p.artworkId = i.artworkId;
+    p.artworkUri = i.artworkUri;
+    p.thumbnailAsset = i.thumbnailAsset;
+    p.artworkLicense = i.artworkLicense;
+    p.artworkAuthor = i.artworkAuthor;
+    p.imageAspectRatio = i.imageAspectRatio;
     p.instrumentId = i.instrumentId;
     p.patchId = i.patchId;
     p.category = i.category;
