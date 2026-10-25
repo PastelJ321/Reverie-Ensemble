@@ -31,3 +31,12 @@ individual original CC0/readme notices are retained inside the pack.
 InstrumentArt vector geometry and demonstration composition are original
 QuadraJ code/content under Apache-2.0; the recorded WAV assets remain CC0.
 No Apple instrument images, samples or presets are included.
+
+Ensemble 0.4 uses sfizz (BSD-2-Clause), FluidSynth (LGPL-2.1-or-later),
+GCEM (Apache-2.0), Qt Network/SVG and separately licensed dependencies.
+Full retained notices are under third_party/licenses/instruments.
+VSCO 2 CE and VCSL optional source recordings and mappings are CC0-1.0;
+source revisions, original URLs and hashes are preserved in the catalogs.
+The original generated instrument illustrations and their provenance are
+in assets/artwork; the small vector icons are original QuadraJ assets.
+No ownership of music created by users is asserted by Reverie Ensemble.

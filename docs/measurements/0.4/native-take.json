@@ -1,0 +1,13 @@
+{
+  "midiNotes": 9,
+  "controllers": 65,
+  "clipStartBeat": 4.0,
+  "lengthBeats": 4.341333333333333,
+  "renderTailSeconds": 10.100000381469727,
+  "sampleRate": 48000,
+  "frames": 684992,
+  "depthBits": 16,
+  "peak": 0.345794677734375,
+  "rms": 0.01478451591735064,
+  "source": "Native Cocoa automated Musical Typing take; no physical MIDI hardware or human listening"
+}

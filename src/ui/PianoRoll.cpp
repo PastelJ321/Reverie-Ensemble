@@ -5,7 +5,9 @@
 #include "ui/DesignTokens.h"
 #include "ui/Editor.h"
 #include "ui/InspectorPanel.h"
+#include <QInputDialog>
 #include <QKeyEvent>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QPainter>
@@ -136,7 +138,55 @@ void PianoRoll::mousePressEvent(QMouseEvent* ev) {
     if (ev->button() == Qt::RightButton) {
         if (hit) {
             selection = {hit};
-            erase();
+            QMenu menu(this);
+            menu.addAction("Delete", this, [this] { erase(); });
+            menu.addAction("Duplicate", this, [this] { duplicate(); });
+            menu.addAction("Quantize", this, [this] { quantize(); });
+            menu.addAction("Set Velocity…", this, [this] {
+                bool ok = false;
+                double v = QInputDialog::getDouble(this, "Note velocity", "Velocity (1–127)", 100,
+                                                   1, 127, 0, &ok);
+                if (ok)
+                    setVelocity(v / 127.);
+            });
+            menu.addAction("Set Length…", this, [this] {
+                bool ok = false;
+                double v = QInputDialog::getDouble(this, "Note length", "Quarter-note beats", 1,
+                                                   1. / 1024, 10000, 4, &ok);
+                if (ok)
+                    e_.edit([&] {
+                        if (auto* clip = findClip(e_.project, e_.selectedClip))
+                            for (auto& n : clip->notes)
+                                if (selection.contains(n.id))
+                                    n.duration = v;
+                    });
+            });
+            menu.addAction("Transpose…", this, [this] {
+                bool ok = false;
+                int v = QInputDialog::getInt(this, "Transpose", "Semitones", 0, -127, 127, 1, &ok);
+                if (ok)
+                    e_.edit([&] {
+                        if (auto* clip = findClip(e_.project, e_.selectedClip))
+                            for (auto& n : clip->notes)
+                                if (selection.contains(n.id))
+                                    n.key = std::clamp(n.key + v, 0, 127);
+                    });
+            });
+            menu.addAction("Note Properties…", this, [this] {
+                if (auto* clip = findClip(e_.project, e_.selectedClip))
+                    for (auto& n : clip->notes)
+                        if (selection.contains(n.id)) {
+                            e_.message(
+                                QString("MIDI %1 · Channel %2 · Beat %3 · Length %4 · Velocity %5")
+                                    .arg(n.key)
+                                    .arg(n.channel + 1)
+                                    .arg(n.beat, 0, 'f', 4)
+                                    .arg(n.duration, 0, 'f', 4)
+                                    .arg(std::lround(n.velocity * 127)));
+                            break;
+                        }
+            });
+            menu.exec(ev->globalPosition().toPoint());
         }
         return;
     }
@@ -256,6 +306,7 @@ void PianoRoll::mouseMoveEvent(QMouseEvent* ev) {
 }
 void PianoRoll::mouseReleaseEvent(QMouseEvent*) {
     if (keyHeld_) {
+        e_.releaseAuditionNote();
         e_.engine.releaseAudition();
         keyHeld_ = false;
     }

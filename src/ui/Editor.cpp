@@ -10,6 +10,7 @@
 #include "ui/InspectorPanel.h"
 #include "ui/InstrumentEditor.h"
 #include "ui/MixerView.h"
+#include "ui/PerformanceKeyboard.h"
 #include "ui/PianoRoll.h"
 #include "ui/SettingsDialog.h"
 #include "ui/SoundBrowser.h"
@@ -98,17 +99,22 @@ Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabl
             inputs_->addItem(QString::fromStdString(name));
         inputs_->setCurrentText(prefs.value("audio/inputName", "System default").toString());
     }
-    engine.publish(project);
+    publishProject();
     if (audioEnabled_ && !device_.startOutput())
         message(QString::fromStdString(device_.error()));
     connect(&timer_, &QTimer::timeout, this, [this] { tick(); });
     timer_.start(33);
+    connect(&midiTimer_, &QTimer::timeout, this, [this] { drainMidi(); });
+    midiTimer_.setTimerType(Qt::PreciseTimer);
+    midiTimer_.start(4);
     select(0, project.tracks[0].clips[0].id);
     openPiano(selectedClip);
     refresh();
 }
 Editor::~Editor() {
+    releasePerformance();
     timer_.stop();
+    midiTimer_.stop();
     device_.stopCapture();
     recorder_.stop();
     device_.stopOutput();
@@ -201,29 +207,44 @@ void Editor::buildMenus() {
     auto* transport = menuBar()->addMenu("&Transport");
     action(transport, "Play / pause", QKeySequence(Qt::Key_Space), [this] { play(); });
     action(transport, "Stop / return to start", QKeySequence(Qt::Key_Home), [this] { stop(); });
+    action(track, "Arm selected track", QKeySequence("Ctrl+Shift+R"), [this] {
+        if (selectedTrack >= 0)
+            armTrack(selectedTrack, !project.tracks[selectedTrack].armed);
+    });
+    action(transport, "Record", QKeySequence(Qt::Key_R), [this] { toggleRecord(); });
+    auto* view = menuBar()->addMenu("&View");
+    action(view, "Virtual Keyboard / Musical Typing", QKeySequence("Ctrl+K"),
+           [this] { showKeyboard(); });
+    action(view, "Expand Instrument Browser", QKeySequence("Ctrl+Shift+B"),
+           [this] { showBrowser(); });
     auto* help = menuBar()->addMenu("&Help");
     action(help, "Editing guide", {}, [this] {
         QMessageBox::information(
             this, "Making music in Reverie Ensemble",
-            "1. Add a MIDI track and double-click its lane to create a clip.\n2. Double-click the "
-            "clip, then click the piano grid to add notes.\n3. Drag notes or their right edges to "
-            "move / resize. Ctrl/Cmd-click toggles selection; Shift-drag selects an area. "
-            "Right-click deletes a note.\n4. Select a factory preset and press Play. Drums use "
-            "MIDI 36 (kick), 38 (snare), 42 (hat), 46 (open hat).\n5. Select each track to mix "
-            "volume / pan / mute / solo.\n6. File → Save and File → Export WAV.\n\nClip edges "
-            "resize non-destructively; Ctrl/Cmd+D duplicates. Click the arrangement ruler to "
-            "seek.\n\nRecording: choose an audio track, input device, then Record. Press Stop to "
-            "finish and place the clip. Monitoring and latency compensation are not provided in "
-            "0.1.");
+            "1. Browse/search instruments and patches; Expand opens the category/instrument/detail "
+            "columns.\n"
+            "2. Keyboard (Cmd+K) opens the real selected-track piano. Enable Musical Typing: A W S "
+            "E D F T G Y H U J K; Z/X octave, C/V velocity, Tab sustain.\n"
+            "3. Arm a MIDI track, choose count-in, press Record and play. Stop creates an editable "
+            "MIDI clip. Arm an Audio track for microphone capture.\n"
+            "4. Double-click a clip to edit notes. Drag to move/resize; Shift-drag selects. "
+            "Right-click opens commands; Delete removes selection.\n"
+            "5. Use Mixer, Save with the media folder, and File → Export Audio.\n"
+            "6. Sound Library Manager installs optional packs with license consent and SHA-256 "
+            "verification. Import SFZ/SF2/SF3 through browser tools.\n\n"
+            "Recording is linear, one armed track at a time. Audio input monitoring and latency "
+            "compensation are not provided.");
     });
     action(help, "About Reverie Ensemble", {}, [this] {
         QMessageBox::about(
-            this, "Reverie Ensemble 0.3.0",
-            "<h2>Reverie Ensemble</h2><p>0.3.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
+            this, "Reverie Ensemble 0.4.0",
+            "<h2>Reverie Ensemble</h2><p>0.4.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
             "contributors.</p><p>A free, offline, open-source digital audio "
-            "workstation.</p><p>Reverie code: Apache License 2.0.<br>Qt Core / Gui / Widgets: "
+            "workstation.</p><p>Reverie code: Apache License 2.0.<br>Qt Core / Gui / Widgets / "
+            "Network / SVG: "
             "dynamically linked under LGPLv3.<br>miniaudio 0.11.23: MIT-0.<br>nlohmann/json "
-            "3.11.3: MIT.</p><p>Third-party components retain their own licenses. Source, "
+            "3.11.3: MIT.<br>sfizz: BSD-2-Clause.<br>FluidSynth: "
+            "LGPL-2.1-or-later.</p><p>Third-party components retain their own licenses. Source, "
             "relinking and distribution instructions are in THIRD_PARTY_LICENSES.md.</p>");
     });
 }
@@ -248,7 +269,7 @@ void Editor::endEdit() {
     transaction_ = false;
     try {
         validate(project);
-        engine.publish(project);
+        publishProject();
         dirty_ = true;
         refresh();
     } catch (const std::exception& ex) {
@@ -301,8 +322,8 @@ void Editor::refresh() {
     bool midi = valid && project.tracks[selectedTrack].kind == TrackKind::Midi;
     for (QWidget* w : std::initializer_list<QWidget*>{volume_, pan_, mute_, solo_})
         w->setEnabled(valid && !recording_);
-    for (QWidget* w : std::initializer_list<QWidget*>{preset_, wave_, attack_, decay_, sustain_,
-                                                      release_, cutoff_})
+    for (QWidget* w :
+         std::initializer_list<QWidget*>{wave_, attack_, decay_, sustain_, release_, cutoff_})
         w->setEnabled(midi && !recording_);
     if (bottomStack_)
         bottomStack_->setCurrentIndex(valid && !midi ? 1 : 0);
@@ -323,14 +344,27 @@ void Editor::refresh() {
     sig->setEnabled(!recording_);
     if (valid) {
         const auto& t = project.tracks[selectedTrack];
+        if (auto* channel = findChild<QComboBox*>("midiChannel")) {
+            QSignalBlocker block(channel);
+            channel->setCurrentIndex(channel->findData(t.midiChannel));
+            channel->setEnabled(!recording_);
+        }
+        if (auto* input = findChild<QComboBox*>("midiInputDevice")) {
+            QSignalBlocker block(input);
+            int device = t.midiInput == "all" ? -1 : QString::fromStdString(t.midiInput).toInt();
+            input->setCurrentIndex(std::max(0, input->findData(device)));
+            input->setEnabled(!recording_);
+        }
         trackTitle_->setText(QString::fromStdString(t.name));
         volume_->setValue(t.volume);
         pan_->setValue(t.pan);
         mute_->setChecked(t.mute);
         solo_->setChecked(t.solo);
         auto& s = t.preset;
-        int idx = preset_->findText(QString::fromStdString(s.name));
-        preset_->setCurrentIndex(idx);
+        bool external = s.kind == InstrumentKind::Sfizz || s.kind == InstrumentKind::SoundFont;
+        if (auto* controls = findChild<QWidget*>("instrumentControls"))
+            controls->setEnabled(!external);
+
         wave_->setCurrentIndex(int(s.wave));
         if (auto* form = qobject_cast<QFormLayout*>(wave_->parentWidget()->layout()))
             form->setRowVisible(wave_, s.kind == InstrumentKind::Synth);
@@ -352,6 +386,8 @@ void Editor::refresh() {
         trackTitle_->setText("No track selected");
         instrumentLabel_->clear();
     }
+    if (auto* arm = findChild<QCheckBox*>("trackArm"))
+        arm->setChecked(valid && project.tracks[selectedTrack].armed);
     if (auto* controls = findChild<QWidget*>("smartControls"))
         static_cast<InstrumentEditor*>(controls)->refresh();
     timeline_->updateExtent();
@@ -359,15 +395,27 @@ void Editor::refresh() {
     if (selectionInspector_)
         selectionInspector_->refresh();
     setWindowTitle(QString::fromStdString(project.name) + (dirty_ ? " *" : "") +
-                   " — Reverie Ensemble 0.3");
+                   " — Reverie Ensemble 0.4");
     refreshing_ = false;
+    refreshPerformance();
+    if (keyboard_)
+        keyboard_->refresh();
 }
 void Editor::select(int track, Id clip) {
+    if (recording_ && track != selectedTrack) {
+        message("Stop the take before changing tracks.");
+        return;
+    }
+    if (track != selectedTrack)
+        releasePerformance();
     if (selectedClip != clip)
         piano_->selection.clear();
     if (auto* tabs = findChild<QTabWidget*>("inspectorTabs"))
         tabs->setCurrentIndex(clip ? 0 : 1);
     selectedTrack = track;
+    if (track >= 0 && track < int(project.tracks.size())) {
+        midiInput_.select(-1);
+    }
     selectedClip = clip;
     refresh();
 }
@@ -424,7 +472,7 @@ void Editor::undo() {
     project = std::move(undo_.back());
     undo_.pop_back();
     dirty_ = true;
-    engine.publish(project);
+    publishProject();
     refresh();
 }
 void Editor::redo() {
@@ -434,7 +482,7 @@ void Editor::redo() {
     project = std::move(redo_.back());
     redo_.pop_back();
     dirty_ = true;
-    engine.publish(project);
+    publishProject();
     refresh();
 }
 void Editor::setTempo(double bpm) {
@@ -455,6 +503,7 @@ void Editor::play() {
 }
 void Editor::stop() {
     engine.releaseAudition();
+    releasePerformance();
     if (recording_)
         finishRecord();
     engine.setPlaying(false);
@@ -474,6 +523,16 @@ void Editor::openPiano(Id clip) {
 }
 void Editor::tick() {
     engine.collect();
+    if (midiRecording()) {
+        auto frame = engine.displayPosition();
+        midiRecorder_.updatePosition(frame);
+        auto start = TempoMap{project.bpm, engine.sampleRate()}.sampleAt(recordingBeat_);
+        recordButton_->setText(frame < start
+                                   ? QString("Count-in %1")
+                                         .arg(int(std::ceil((start - frame) / engine.sampleRate() *
+                                                            project.bpm / 60.)))
+                                   : "Finish MIDI");
+    }
     auto beat = TempoMap{project.bpm, engine.sampleRate()}.beatAt(engine.displayPosition());
     double bar = project.numerator * 4. / project.denominator;
     if (!position_->hasFocus())
@@ -506,7 +565,8 @@ void Editor::tick() {
             x < bar->value() + Timeline::header)
             bar->setValue(std::max(0, x - Timeline::header - 80));
     }
-    if (recording_ && (recorder_.failed() || recorder_.overflowed() || !engine.playing())) {
+    if (recording_ && !midiRecording_ &&
+        (recorder_.failed() || recorder_.overflowed() || !engine.playing())) {
         bool failed = recorder_.failed(), overflow = recorder_.overflowed();
         finishRecord();
         if (failed || overflow)
@@ -527,6 +587,30 @@ template <class F> static auto background(QWidget* owner, const QString& label, 
     while (future.wait_for(std::chrono::milliseconds(5)) != std::future_status::ready)
         QApplication::processEvents();
     return future.get();
+}
+void Editor::publishProject() {
+    bool external = std::any_of(project.tracks.begin(), project.tracks.end(), [](auto& t) {
+        return t.preset.kind == InstrumentKind::Sfizz || t.preset.kind == InstrumentKind::SoundFont;
+    });
+    if (!external) {
+        engine.publish(project);
+        return;
+    }
+    auto snapshot = project;
+    double rate = engine.sampleRate();
+    releasePerformance();
+    preparingInstrument_ = true;
+    try {
+        auto graph =
+            background(this, "Preparing instrument audio…", [snapshot = std::move(snapshot), rate] {
+                return std::make_unique<AudioProcessingGraph>(snapshot, rate);
+            });
+        engine.publishPrepared(std::move(graph));
+        preparingInstrument_ = false;
+    } catch (...) {
+        preparingInstrument_ = false;
+        throw;
+    }
 }
 void Editor::importWav(const QString& supplied, double beat) {
     if (recording_)
@@ -584,6 +668,8 @@ bool Editor::saveProject(const QString& supplied) {
         for (std::size_t i = 0; i < snapshot.tracks.size(); ++i) {
             const auto& before = snapshot.tracks[i];
             const auto& after = collected.tracks[i];
+            if (!before.preset.backendPath.empty())
+                refs[before.preset.backendPath] = after.preset.backendPath;
             auto sampleSource =
                 !before.preset.samplePath.empty()
                     ? before.preset.samplePath
@@ -601,6 +687,8 @@ bool Editor::saveProject(const QString& supplied) {
         }
         auto rebase = [&](Project& state) {
             for (auto& t : state.tracks) {
+                if (refs.contains(t.preset.backendPath))
+                    t.preset.backendPath = refs.at(t.preset.backendPath);
                 auto source = !t.preset.samplePath.empty()
                                   ? t.preset.samplePath
                                   : (t.instrumentSample ? t.instrumentSample->path : "");
@@ -621,10 +709,21 @@ bool Editor::saveProject(const QString& supplied) {
         for (auto& state : redo_)
             rebase(state);
         project = std::move(collected);
+        publishProject();
+        performanceSignature_.clear();
         currentPath_ = path;
         dirty_ = false;
         refresh();
-        message("Project saved with a portable media folder.");
+        bool referenced = false;
+        for (auto& t : project.tracks)
+            if (!t.preset.backendPath.empty() &&
+                t.preset.backendPath.find(
+                    (std::filesystem::path(path.toStdString()).stem().string() + ".media")) ==
+                    std::string::npos)
+                referenced = true;
+        message(referenced ? "Project saved. Keep external SFZ libraries available; some "
+                             "dependencies remain external references."
+                           : "Project saved with a portable media folder.");
         return true;
     } catch (const std::exception& ex) {
         QMessageBox::warning(this, "Save failed", QString::fromUtf8(ex.what()));
@@ -646,7 +745,7 @@ bool Editor::openProject(const QString& path) {
         redo_.clear();
         selectedTrack = 0;
         selectedClip = 0;
-        engine.publish(project);
+        publishProject();
         refresh();
         if (!loaded.warnings.empty()) {
             QString text = "Some media is unavailable. References are preserved and those clips "
@@ -763,8 +862,42 @@ void Editor::toggleRecord() {
         finishRecord();
         return;
     }
-    if (!device_.outputRunning()) {
+    if (audioEnabled_ && !device_.outputRunning()) {
         message("Connect an output device before recording.");
+        return;
+    }
+    int armed = -1;
+    for (int i = 0; i < int(project.tracks.size()); ++i)
+        if (project.tracks[i].armed) {
+            if (armed >= 0) {
+                message("Arm one recording track at a time.");
+                return;
+            }
+            armed = i;
+        }
+    if (armed < 0) {
+        message("Arm a MIDI or Audio track before recording.");
+        return;
+    }
+    select(armed);
+    releasePerformance();
+    if (project.tracks[armed].kind == TrackKind::Midi) {
+        auto tempo = TempoMap{project.bpm, engine.sampleRate()};
+        recordingTrack_ = project.tracks[armed].id;
+        double start = tempo.beatAt(engine.displayPosition());
+        int bars = QSettings().value("record/countInBars", 1).toInt();
+        double bar = project.numerator * 4. / project.denominator;
+        double capture = bars > 0 ? std::ceil(start / bar) * bar + bars * bar : start;
+        recordingBeat_ = capture;
+        midiRecorder_.start(tempo, tempo.sampleAt(capture));
+        midiRecording_ = true;
+        recording_ = true;
+        engine.setCountInEnd(bars > 0 ? tempo.sampleAt(capture) : -1);
+        engine.setFreeRunning(true);
+        engine.setPlaying(true);
+        recordButton_->setText("Finish MIDI");
+        refresh();
+        message("MIDI take armed · Count-in then play · Stop closes every held note");
         return;
     }
     if (currentPath_.isEmpty() && !saveProject())
@@ -776,8 +909,7 @@ void Editor::toggleRecord() {
             "continue composing and exporting without input access.");
         return;
     }
-    if (selectedTrack < 0 || project.tracks[selectedTrack].kind != TrackKind::Audio)
-        addTrack(TrackKind::Audio);
+
     if (selectedTrack < 0 || project.tracks[selectedTrack].kind != TrackKind::Audio)
         return;
     try {
@@ -811,6 +943,28 @@ void Editor::toggleRecord() {
 void Editor::finishRecord() {
     if (!recording_)
         return;
+    if (midiRecording_) {
+        auto frame = engine.displayPosition();
+        releasePerformance();
+        Clip take = midiRecorder_.finish(frame);
+        recording_ = midiRecording_ = false;
+        engine.setPlaying(false);
+        engine.setFreeRunning(false);
+        engine.setCountInEnd(-1);
+        recordButton_->setText("Record");
+        if (!take.notes.empty())
+            edit([&] {
+                if (auto* t = findTrack(project, recordingTrack_)) {
+                    selectedClip = take.id;
+                    t->clips.push_back(take);
+                }
+            });
+        refresh();
+        if (selectedClip)
+            openPiano(selectedClip);
+        message("MIDI take captured · edit notes or change the instrument");
+        return;
+    }
     device_.stopCapture();
     recorder_.stop();
     engine.setPlaying(false);
@@ -868,7 +1022,7 @@ void Editor::newProject() {
     dirty_ = false;
     selectedTrack = -1;
     selectedClip = 0;
-    engine.publish(project);
+    publishProject();
     refresh();
 }
 void Editor::closeEvent(QCloseEvent* e) {
@@ -880,9 +1034,25 @@ void Editor::closeEvent(QCloseEvent* e) {
 void Editor::auditionNote(int key, float velocity, double duration) {
     if (selectedTrack < 0 || selectedTrack >= int(project.tracks.size()) || recording_)
         return;
-    engine.audition(project.tracks[selectedTrack], key, velocity, duration);
+    releaseAuditionNote();
+    auditionToken_ = nextId();
+    auditionKey_ = key;
+    auto token = auditionToken_;
+    engine.performanceEvent({0, token, key, velocity, true});
+    QTimer::singleShot(int(duration * 1000), this, [this, token] {
+        if (auditionToken_ == token)
+            releaseAuditionNote();
+    });
+}
+void Editor::releaseAuditionNote() {
+    if (auditionToken_) {
+        engine.performanceEvent({0, auditionToken_, auditionKey_, 0, false});
+        auditionToken_ = 0;
+    }
 }
 void Editor::applyInstrument(const Preset& preset, bool newTrack) {
+    releasePerformance();
+    performanceSignature_.clear();
     edit([&] {
         if (newTrack || selectedTrack < 0 ||
             project.tracks[selectedTrack].kind != TrackKind::Midi) {
@@ -895,8 +1065,7 @@ void Editor::applyInstrument(const Preset& preset, bool newTrack) {
         auto& t = project.tracks[selectedTrack];
         t.preset = preset;
         t.instrumentSample.reset();
-        if (!preset.zones.empty())
-            t.name = preset.name;
+        t.name = preset.name;
     });
 }
 void Editor::showMixer() {

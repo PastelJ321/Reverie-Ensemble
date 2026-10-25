@@ -14,9 +14,11 @@ static double checkedRate(double rate) {
 static_assert(std::atomic<void*>::is_always_lock_free);
 static_assert(std::atomic<float>::is_always_lock_free);
 static_assert(std::atomic<std::int64_t>::is_always_lock_free);
-PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled)
+PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled, bool offline)
     : id(t.id), sampleOwner(t.instrumentSample), synth(t.preset, rate, sampleOwner.get()),
-      effects(t.effects, rate) {
+      backend(prepareBackend(t.preset, rate, true)), effects(t.effects, rate) {
+    if (backend)
+        backend->setOffline(offline);
     // Stereo balance: center leaves both channels unchanged; hard pan silences the opposite side.
     gainL = enabled ? t.volume * std::sqrt(1.f - std::max(0.f, t.pan)) : 0;
     gainR = enabled ? t.volume * std::sqrt(1.f + std::min(0.f, t.pan)) : 0;
@@ -44,6 +46,13 @@ PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled)
         mix(z.sequenceLength);
         mix(z.sequencePosition);
     }
+    for (unsigned char c : p.backendPath)
+        mix(c);
+    mix(p.soundFontBank);
+    mix(p.soundFontProgram);
+    if (backend)
+        for (const char* c = backend->capabilities().name; *c; ++c)
+            mix(static_cast<unsigned char>(*c));
     mix(int(p.kind));
     mix(int(p.wave));
     mix(p.rootNote);
@@ -53,7 +62,7 @@ PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled)
          {p.attack, p.decay, p.sustain, p.release, p.cutoff, p.gain, p.color, p.calibrationGain})
         mix(std::bit_cast<std::uint32_t>(v));
 }
-AudioProcessingGraph::AudioProcessingGraph(const Project& p, double r)
+AudioProcessingGraph::AudioProcessingGraph(const Project& p, double r, bool offline)
     : rate([&] {
           validate(p);
           return checkedRate(r);
@@ -71,9 +80,30 @@ AudioProcessingGraph::AudioProcessingGraph(const Project& p, double r)
         std::any_of(p.tracks.begin(), p.tracks.end(), [](const Track& t) { return t.solo; });
     tracks.reserve(p.tracks.size());
     for (const auto& t : p.tracks) {
-        tracks.emplace_back(t, r, !t.mute && (!anySolo || t.solo));
+        tracks.emplace_back(t, r, !t.mute && (!anySolo || t.solo), offline);
         auto& rt = tracks.back();
         for (const auto& c : t.clips) {
+            if (c.mute)
+                continue;
+            std::array<bool, 16> pedals{};
+            for (const auto& cc : c.controllers) {
+                if (cc.beat > c.length)
+                    continue;
+                if (cc.controller == 64)
+                    pedals[cc.channel] = true;
+                Event ev{tempo.sampleAt(c.beat + cc.beat), 0, 0, 0, false};
+                ev.channel = cc.channel;
+                ev.controller = cc.controller;
+                ev.value = cc.value;
+                rt.events.push_back(ev);
+            }
+            for (int ch = 0; ch < 16; ++ch)
+                if (pedals[ch]) {
+                    Event off{tempo.sampleAt(c.beat + c.length), 0, 0, 0, false};
+                    off.channel = ch;
+                    off.controller = 64;
+                    rt.events.push_back(off);
+                }
             if (t.kind == TrackKind::Audio) {
                 if (c.sample)
                     rt.audio.push_back({tempo.sampleAt(c.beat), tempo.sampleAt(c.beat + c.length),
@@ -88,13 +118,40 @@ AudioProcessingGraph::AudioProcessingGraph(const Project& p, double r)
                            finish = std::max(
                                begin + 1,
                                tempo.sampleAt(c.beat + std::min(c.length, n.beat + n.duration)));
-                rt.events.push_back({begin, n.id, n.key, n.velocity, true, finish});
-                rt.events.push_back({finish, n.id, n.key, n.velocity, false});
+                rt.events.push_back({begin, n.id, n.key, n.velocity, true, finish, n.channel});
+                rt.events.push_back({finish, n.id, n.key, n.velocity, false, 0, n.channel});
             }
         }
         std::sort(rt.events.begin(), rt.events.end(), [](const Event& a, const Event& b) {
             return a.frame != b.frame ? a.frame < b.frame : int(a.on) < int(b.on);
         });
+        std::array<std::vector<std::pair<std::int64_t, std::int64_t>>, 16> pedalSpans;
+        std::array<std::int64_t, 16> pedalStart;
+        pedalStart.fill(-1);
+        for (const auto& e : rt.events)
+            if (e.controller == 64) {
+                auto& start = pedalStart[e.channel];
+                if (e.value >= 64) {
+                    if (start < 0)
+                        start = e.frame;
+                } else if (start >= 0) {
+                    pedalSpans[e.channel].push_back({start, e.frame});
+                    start = -1;
+                }
+            }
+        for (auto& e : rt.events)
+            if (e.on) {
+                e.releaseFrame = e.endFrame;
+                auto& spans = pedalSpans[e.channel];
+                auto it = std::upper_bound(
+                    spans.begin(), spans.end(), e.endFrame,
+                    [](auto frame, const auto& span) { return frame < span.first; });
+                if (it != spans.begin()) {
+                    --it;
+                    if (e.endFrame < it->second)
+                        e.endFrame = it->second;
+                }
+            }
         rt.buildIndex();
     }
 }
@@ -108,6 +165,9 @@ void PreparedTrack::buildIndex() {
         mix(e.key);
         mix(std::bit_cast<std::uint32_t>(e.velocity));
         mix(e.on);
+        mix(e.channel);
+        mix(e.controller);
+        mix(e.value);
         if (e.on)
             spans.push_back(e);
     }
@@ -129,7 +189,12 @@ void PreparedTrack::restore(std::size_t node, std::size_t a, std::size_t b, std:
         return;
     if (b - a == 1) {
         const auto& e = spans[a];
-        synth.noteOn(e.token, e.key, e.velocity);
+        input(e);
+        if (e.releaseFrame > 0 && e.releaseFrame <= frame) {
+            auto off = e;
+            off.on = false;
+            input(off);
+        }
         ++voices;
         return;
     }
@@ -138,13 +203,30 @@ void PreparedTrack::restore(std::size_t node, std::size_t a, std::size_t b, std:
     restore(node * 2 + 1, mid, b, frame, voices);
 }
 void PreparedTrack::seek(std::int64_t frame, bool clearEffects) noexcept {
-    synth.reset();
+    silence();
     if (clearEffects)
         effects.reset();
     cursor =
         std::size_t(std::lower_bound(events.begin(), events.end(), frame,
                                      [](const Event& e, std::int64_t f) { return e.frame < f; }) -
                     events.begin());
+    std::array<std::array<int, 129>, 16> state;
+    for (auto& channel : state)
+        channel.fill(-1);
+    for (std::size_t i = 0; i < cursor; ++i) {
+        auto& e = events[i];
+        if ((e.controller >= 0 && e.controller < 120) || e.controller == 128)
+            state[e.channel][e.controller] = e.value;
+    }
+    for (int ch = 0; ch < 16; ++ch)
+        for (int cc = 0; cc < 129; ++cc)
+            if (state[ch][cc] >= 0) {
+                Event e{};
+                e.channel = ch;
+                e.controller = cc;
+                e.value = state[ch][cc];
+                input(e);
+            }
     int voices = 0;
     if (!spans.empty())
         restore(1, 0, spans.size(), frame, voices);
@@ -165,6 +247,9 @@ void AudioProcessingGraph::inherit(AudioProcessingGraph* previous, std::int64_t 
                     t.rampRemaining = 128;
                     if (t.soundKey == old.soundKey && t.scheduleKey == old.scheduleKey) {
                         t.synth.copyStateFrom(old.synth);
+                        t.backend.swap(old.backend);
+                        t.held = old.held;
+                        t.sustain = old.sustain;
                         t.cursor = old.cursor;
                     }
                     break;
@@ -181,19 +266,24 @@ void AudioProcessingGraph::render(float* out, std::uint32_t frames, std::int64_t
         for (std::uint32_t offset = 0; offset < frames; offset += blockSize) {
             auto count = std::min(blockSize, frames - offset);
             auto blockStart = start + offset;
-            for (std::uint32_t i = 0; i < count; ++i) {
-                const auto pos = blockStart + i;
-                while (t.cursor < t.events.size() && t.events[t.cursor].frame <= pos) {
-                    const auto& e = t.events[t.cursor++];
-                    if (e.on)
-                        t.synth.noteOn(e.token, e.key, e.velocity);
-                    else
-                        t.synth.noteOff(e.token);
+            if (t.backend) {
+                while (t.cursor < t.events.size() &&
+                       t.events[t.cursor].frame < blockStart + count) {
+                    const auto& ev = t.events[t.cursor++];
+                    t.input(ev, int(std::max(std::int64_t(0), ev.frame - blockStart)));
                 }
-                auto [l, r] = t.synth.next();
-                scratch[i * 2] = l;
-                scratch[i * 2 + 1] = r;
-            }
+                t.backend->render(scratch.data(), count);
+            } else
+                for (std::uint32_t i = 0; i < count; ++i) {
+                    const auto pos = blockStart + i;
+                    while (t.cursor < t.events.size() && t.events[t.cursor].frame <= pos) {
+                        const auto& e = t.events[t.cursor++];
+                        t.input(e);
+                    }
+                    auto [l, r] = t.synth.next();
+                    scratch[i * 2] = l;
+                    scratch[i * 2 + 1] = r;
+                }
             for (const auto& c : t.audio) {
                 const auto first = std::max(blockStart, c.start),
                            last = std::min(blockStart + count, c.end);
@@ -233,6 +323,8 @@ AudioEngine::AudioEngine(double rate, bool tools, bool protect)
     protectOutput_ = protect;
 }
 AudioEngine::~AudioEngine() {
+    delete performancePending_.exchange(nullptr);
+    delete performance_;
     delete pending_.exchange(nullptr);
     delete active_;
     delete previewPending_.exchange(nullptr);
@@ -242,6 +334,12 @@ AudioEngine::~AudioEngine() {
 void AudioEngine::setSampleRateStopped(double rate) {
     auto nextRate = checkedRate(rate);
     playing_.store(false);
+    delete performancePending_.exchange(nullptr);
+    delete performance_;
+    performance_ = nullptr;
+    Event ignored;
+    while (performanceQueue_.pop(ignored)) {
+    }
     wasPlaying_ = false;
     delete pending_.exchange(nullptr);
     delete active_;
@@ -262,7 +360,10 @@ void AudioEngine::collect() {
         delete p;
 }
 void AudioEngine::publish(const Project& p) {
-    auto graph = std::make_unique<AudioProcessingGraph>(p, rate_);
+    auto graph = std::make_unique<AudioProcessingGraph>(p, rate_, !transportTools_);
+    publishPrepared(std::move(graph));
+}
+void AudioEngine::publishPrepared(std::unique_ptr<AudioProcessingGraph> graph) {
     collect();
     delete pending_.exchange(graph.release(), std::memory_order_acq_rel);
 }
@@ -299,13 +400,13 @@ void AudioEngine::process(float* out, std::uint32_t frames) noexcept {
             if (looping)
                 n = std::uint32_t(std::min(std::int64_t(n), active_->loopEnd - pos));
             active_->render(out + offset * 2, n, pos);
-            if (transportTools_ && active_->metronome) {
+            if (transportTools_ && (active_->metronome || pos < countInEnd_.load())) {
                 double beatFrames = 60. * rate_ / active_->tempo.bpm * 4. / active_->denominator;
                 for (std::uint32_t i = 0; i < n; ++i) {
                     double beat = (pos + i) / beatFrames;
                     auto index = std::int64_t(std::floor(beat));
                     double elapsed = (beat - index) * beatFrames / rate_;
-                    if (elapsed < .025) {
+                    if (elapsed < .025 && (active_->metronome || pos + i < countInEnd_.load())) {
                         float click =
                             active_->clickLevel *
                             float(std::sin(6.283185307179586 *
@@ -359,6 +460,39 @@ void AudioEngine::process(float* out, std::uint32_t frames) noexcept {
             previewPosition_ += n;
         }
     }
+    if (!retired_.full())
+        if (auto* next = performancePending_.exchange(nullptr)) {
+            if (performance_)
+                retired_.push(performance_);
+            performance_ = next;
+            performancePosition_ = 0;
+        }
+    if (performancePanic_.exchange(false)) {
+        Event ignored;
+        while (performanceQueue_.pop(ignored)) {
+        }
+        if (performance_)
+            for (auto& t : performance_->tracks)
+                t.silence();
+    }
+    Event input;
+    while (performanceQueue_.pop(input))
+        if (performance_ && !performance_->tracks.empty()) {
+            if (input.controller == 129)
+                performance_->tracks[0].silence();
+            else
+                performance_->tracks[0].input(input);
+        }
+    if (performance_) {
+        std::array<float, 512> scratch{};
+        for (unsigned offset = 0; offset < frames; offset += 256) {
+            auto n = std::min(256u, frames - offset);
+            performance_->render(scratch.data(), n, performancePosition_);
+            for (unsigned i = 0; i < n * 2; ++i)
+                out[offset * 2 + i] += scratch[i] * (active_ ? active_->master : .8f);
+            performancePosition_ += n;
+        }
+    }
     float peak = 0;
     for (std::size_t i = 0; i < std::size_t(frames) * 2; ++i) {
         if (!std::isfinite(out[i]))
@@ -376,6 +510,92 @@ void AudioEngine::process(float* out, std::uint32_t frames) noexcept {
         leftPeaks_[i].store(valid ? active_->tracks[i].peakL : 0);
         rightPeaks_[i].store(valid ? active_->tracks[i].peakR : 0);
     }
+}
+void PreparedTrack::silence() noexcept {
+    synth.reset();
+    if (backend)
+        backend->reset();
+    held.fill({});
+    sustain.fill(false);
+}
+void PreparedTrack::input(const Event& e, int offset) noexcept {
+    if (backend) {
+        if (e.controller == 128)
+            backend->pitchBend(e.channel, e.value, offset);
+        else if (e.controller >= 0)
+            backend->controller(e.channel, e.controller, e.value, offset);
+        else if (e.on)
+            backend->noteOn(e.token, e.key, e.velocity, e.channel, offset);
+        else
+            backend->noteOff(e.token, offset);
+        return;
+    }
+    if (e.controller >= 0) {
+        if (e.controller == 64) {
+            sustain[e.channel] = e.value >= 64;
+            if (!sustain[e.channel])
+                for (auto& h : held)
+                    if (h.token && h.channel == e.channel && h.released) {
+                        synth.noteOff(h.token);
+                        h = {};
+                    }
+        } else if (e.controller == 120 || e.controller == 123)
+            silence();
+        return;
+    }
+    if (e.on) {
+        for (auto& h : held)
+            if (!h.token) {
+                h = {e.token, e.channel, false};
+                synth.noteOn(e.token, e.key, e.velocity);
+                return;
+            }
+        auto target = std::find_if(held.begin(), held.end(), [](auto& h) { return h.released; });
+        if (target == held.end())
+            target = held.begin();
+        synth.noteOff(target->token);
+        *target = {e.token, e.channel, false};
+        synth.noteOn(e.token, e.key, e.velocity);
+    } else
+        for (auto& h : held)
+            if (h.token == e.token) {
+                if (sustain[h.channel])
+                    h.released = true;
+                else {
+                    synth.noteOff(h.token);
+                    h = {};
+                }
+                return;
+            }
+}
+void AudioEngine::preparePerformance(const Track& source) {
+    Track t = source;
+    t.clips.clear();
+    t.mute = t.solo = false;
+    Project p;
+    p.master = 1;
+    p.tracks.push_back(std::move(t));
+    publishPerformance(std::make_unique<AudioProcessingGraph>(p, rate_));
+}
+void AudioEngine::publishPerformance(std::unique_ptr<AudioProcessingGraph> graph) {
+    collect();
+    delete performancePending_.exchange(graph.release());
+}
+bool AudioEngine::performanceEvent(Event e) noexcept {
+    if (e.channel < 0 || e.channel > 15 || e.key < 0 || e.key > 127 || !std::isfinite(e.velocity) ||
+        e.velocity < 0 || e.velocity > 1 || e.controller > 128 || e.controller < -1 ||
+        (e.controller >= 0 && (e.value < 0 || e.value > (e.controller == 128 ? 16383 : 127))))
+        return false;
+    if (!performanceQueue_.push(e)) {
+        panic();
+        return false;
+    }
+    return true;
+}
+void AudioEngine::publishAudition(std::unique_ptr<AudioProcessingGraph> graph) {
+    collect();
+    releasePreview_.store(false);
+    delete previewPending_.exchange(graph.release());
 }
 void AudioEngine::audition(const Track& source, int key, float velocity, double duration) {
     if (key < 0 || key > 127 || !std::isfinite(velocity))
@@ -398,8 +618,6 @@ void AudioEngine::audition(const Track& source, int key, float velocity, double 
     t.clips.push_back(c);
     p.tracks.push_back(t);
     auto graph = std::make_unique<AudioProcessingGraph>(p, rate_);
-    collect();
-    releasePreview_.store(false);
-    delete previewPending_.exchange(graph.release());
+    publishAudition(std::move(graph));
 }
 } // namespace reverie

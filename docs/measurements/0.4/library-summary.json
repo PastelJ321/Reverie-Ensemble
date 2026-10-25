@@ -1,0 +1,39 @@
+{
+  "vsco": {
+    "instruments": 24,
+    "patches": 75,
+    "bytes": 3178497498,
+    "sampleFiles": 3168,
+    "formats": {
+      ".sfz": 75,
+      ".wav": 3168,
+      ".txt": 8,
+      "": 1,
+      ".md": 1
+    },
+    "rawRmsSpreadDb": 37.58136486353945,
+    "calibratedRmsSpreadDb": 23.798918407411207,
+    "calibratedMaxPeak": 0.576136,
+    "upstream": "6dd651d55dde97fd4028699be9d4481f26917891",
+    "version": "6dd651d55dde+ensemble04.1"
+  },
+  "vcsl": {
+    "instruments": 102,
+    "patches": 183,
+    "bytes": 6155672931,
+    "sampleFiles": 4256,
+    "formats": {
+      ".sfz": 183,
+      ".wav": 4232,
+      ".txt": 14,
+      ".mp3": 6,
+      ".ogg": 18,
+      ".md": 1
+    },
+    "rawRmsSpreadDb": 34.082089146340394,
+    "calibratedRmsSpreadDb": 23.440048605019214,
+    "calibratedMaxPeak": 0.6,
+    "upstream": "dfcf4a4918771eee884b96ad4493de82ef84daf6",
+    "version": "dfcf4a491877+ensemble04.1"
+  }
+}

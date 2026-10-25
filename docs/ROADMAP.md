@@ -1,12 +1,10 @@
-# After 0.3: priorities for 0.4
+# After 0.4: priorities for 0.5
 
-0.3 delivers measured new-preset calibration, distinct instrument/patch discovery and original vector artwork, a compact recorded guitar/bass/grand/drum extension, sample round-robin/cubic interpolation, precise ruler/playhead/loop gestures, a configurable WAV export worker and macOS Settings with honest client/backend reporting. It does **not** establish GarageBand parity.
+The instrument → performance → MIDI recording → editor → project → WAV path now works. Prioritize musical reliability and native product refinement over feature-count expansion.
 
-1. **MIDI and recording reliability:** Core MIDI input/recording with CC64, pitch/modulation; real permission/hotplug/long-session tests; monitored input with feedback-safe defaults; count-in, physical latency measurement and compensation. No current external MIDI/monitoring support should be implied.
-2. **Expressive, balanced instruments:** denser grand/guitar/bass layers, electric piano and acoustic guitar, source noise/tuning/listening review, smoother velocity transitions, audition-to-mix comparisons, drum choke/GM coverage and genuine release samples. Preserve original audio and version every calibration change. The current engineering correction still leaves crest-factor/layer differences.
-3. **Optional SoundFont backend:** FluidSynth SF2/SF3 with actual note/render API allocation/locking audit, prepared off-thread banks and destruction, shared offline path, Bank/Program/controllers, missing-file policy and LGPL/transitive dependency documentation. No implementation is shipped in 0.3.
-4. **Sampler/render quality:** band-limited resampling, loop crossfades, pedal/release triggers, bounded disk streaming, complete memory/history budgeting, worst-case graph swap/reset profiling and click-free master/transport transitions. Current cubic interpolation is not an anti-aliasing guarantee.
-5. **Editing and mixing depth:** clip split/fades/crossfades, track duplicate, MIDI clip looping, automation model/lanes, useful drum patterns, compressor/parametric EQ and ordered bypassable effects. Do not add inert plugin slots or a fake automatic drummer.
-6. **Distribution and usability:** publish versioned optional pack archives/catalogs only after publisher review, add safe consent-based download/archive handling, independently test fresh builds and restore/recovery. Complete keyboard/accessibility/musician evaluation, signed/notarized standalone macOS and LGPL replacement validation; then Intel/universal, Windows/Linux and CI.
-
-Retain v1 and v2 mix fixtures and the 0.3 demo. Add migration/output fixtures before every audio or format change. The [GarageBand benchmark](GARAGEBAND_BENCHMARK.md) and [verification record](TESTING.md) distinguish Partial/Missing/Not Yet Verified from implemented behavior.
+1. Physical MIDI keyboard/pedal/hotplug tests, measured end-to-end latency, callback profiling and hours-long sessions. Exercise rapid repeated notes, streaming under disk pressure, source disconnects and sample-rate changes with musicians.
+2. User-instrument/SoundFont registry management and richer controller editing/automation and custom typing layouts. Improve accurate timestamp/latency compensation and audio monitoring/count-in.
+3. Loop overdub/takes/comping and seamless sustained instrument/program changes. Current recording is linear and safely releases monitor notes on preparation changes.
+4. Curate full-library musical quality, release/keyswitch articulation behavior and complete instrument-specific artwork. Add separately validated VCSL Keys/Salamander/Karoryfer packs only with mapping/audio/provenance evidence.
+5. Reproducible signed/notarized standalone macOS distribution, source/relinking/replacement proof for LGPL modules, Intel validation and explicit dependency security updates.
+6. AU/plugin hosting and deeper arrangement editing, then creative tools such as drummer/arpeggiation. Preserve the independent Reverie core and project sound.

@@ -77,7 +77,7 @@ void Timeline::paintEvent(QPaintEvent* event) {
             if (!r.intersects(visible))
                 continue;
             QColor color = QColor::fromRgba(e_.project.tracks[i].color);
-            color.setAlpha(e_.project.tracks[i].mute ? 70 : 150);
+            color.setAlpha((e_.project.tracks[i].mute || c.mute) ? 70 : 150);
             p.setPen(QPen(c.id == e_.selectedClip ? design::ink : color.lighter(125),
                           c.id == e_.selectedClip ? 2
                           : c.id == hover_        ? 1.5
@@ -122,6 +122,21 @@ void Timeline::paintEvent(QPaintEvent* event) {
             }
             p.restore();
         }
+    if (auto* take = e_.recordingPreview()) {
+        auto r = clipRect(e_.selectedTrack, *take);
+        double now =
+            TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(e_.engine.displayPosition());
+        r.setWidth(std::max(12., (std::max(take->beat + .25, now) - take->beat) * ppb));
+        p.setPen(QPen(QColor("#BC655C"), 2));
+        p.setBrush(QColor(188, 101, 92, 60));
+        p.drawRect(r);
+        p.setPen(design::ink);
+        p.drawText(r.adjusted(5, 3, -3, -3), "● MIDI TAKE");
+        for (auto& n : take->notes)
+            p.fillRect(QRectF(r.left() + n.beat * ppb, r.bottom() - 8 - (n.key - 36) * .55,
+                              std::max(3., n.duration * ppb), 3),
+                       QColor("#BC655C"));
+    }
     p.restore();
     p.save();
     p.translate(horizontalOffset(), 0);
@@ -134,14 +149,13 @@ void Timeline::paintEvent(QPaintEvent* event) {
         p.drawLine(0, y + rowHeight(), header, y + rowHeight());
         p.fillRect(QRect(0, y, 4, rowHeight()), QColor::fromRgba(t.color));
         p.setPen(design::ink);
-        p.drawText(QRect(46, y + 10, header - 54, 25), Qt::AlignVCenter,
-                   p.fontMetrics().elidedText(QString::fromStdString(t.name), Qt::ElideRight,
-                                              header - 56));
+        p.drawText(
+            QRect(46, y + 10, header - 54, 25), Qt::AlignVCenter,
+            p.fontMetrics().elidedText(QString::fromStdString(t.name) + (t.armed ? "  ● ARM" : ""),
+                                       Qt::ElideRight, header - 56));
         p.setPen(design::mutedInk);
         p.drawText(14, y + rowHeight() - 20, t.kind == TrackKind::Midi ? "MIDI" : "AUDIO");
-        p.drawPixmap(10, y + 10,
-                     instrumentDrawing(instrumentFamily(t.preset), QSize(30, 24), false,
-                                       devicePixelRatioF()));
+        p.drawPixmap(10, y + 10, instrumentThumbnail(t.preset, QSize(30, 24), devicePixelRatioF()));
         for (int b = 0; b < 2; ++b) {
             QRect r(header - 72 + b * 31, y + rowHeight() - 34, 25, 23);
             p.setBrush((b ? t.solo : t.mute) ? QColor(b ? "#D4A67A" : "#BC655C") : design::grid);
@@ -348,38 +362,176 @@ void Timeline::mouseDoubleClickEvent(QMouseEvent* ev) {
     e_.openPiano(e_.selectedClip);
 }
 void Timeline::contextMenuEvent(QContextMenuEvent* ev) {
-    int t;
+    int t = -1;
     auto id = hit(ev->pos(), t);
-    if (t < 0)
-        return;
-    e_.select(t, id);
-    QMenu menu;
+    QMenu menu(this);
+    if (t >= 0)
+        e_.select(t, id);
     if (id) {
-        menu.addAction("Duplicate clip", [&] { e_.duplicateClip(); });
-        menu.addAction("Delete clip", [&] { e_.deleteSelection(); });
-        menu.addAction("Rename clip", [&] {
+        menu.addAction("Open Editor", [&] { e_.openPiano(id); });
+        menu.addAction("Rename…", [&] {
             auto* c = findClip(e_.project, id);
             if (!c)
                 return;
-            bool ok;
+            bool ok = false;
             auto name = QInputDialog::getText(this, "Rename clip", "Name", QLineEdit::Normal,
                                               QString::fromStdString(c->name), &ok);
             if (ok)
                 e_.edit([&] { findClip(e_.project, id)->name = name.toStdString(); });
         });
-        menu.addSeparator();
+        menu.addAction("Duplicate", [&] { e_.duplicateClip(); });
+        auto* split = menu.addAction("Split at Playhead", [&] {
+            double beat = TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(
+                e_.engine.displayPosition());
+            e_.edit([&] {
+                auto* c = findClip(e_.project, id);
+                if (!c || beat <= c->beat || beat >= c->beat + c->length)
+                    return;
+                double local = beat - c->beat;
+                Clip right = *c;
+                right.id = nextId();
+                right.beat = beat;
+                right.length = c->length - local;
+                if (c->sample)
+                    right.sourceOffset += local * 60. / e_.project.bpm;
+                right.notes.clear();
+                for (auto n : c->notes)
+                    if (n.beat + n.duration > local) {
+                        double end = n.beat + n.duration;
+                        n.id = nextId();
+                        n.beat = std::max(0., n.beat - local);
+                        n.duration = end - local - n.beat;
+                        right.notes.push_back(n);
+                    }
+                std::erase_if(c->notes, [&](const Note& n) { return n.beat >= local; });
+                for (auto& n : c->notes)
+                    n.duration = std::min(n.duration, local - n.beat);
+                right.controllers.clear();
+                for (auto cc : c->controllers)
+                    if (cc.beat >= local) {
+                        cc.beat -= local;
+                        right.controllers.push_back(cc);
+                    }
+                std::erase_if(c->controllers, [&](auto& cc) { return cc.beat >= local; });
+                c->length = local;
+                e_.project.tracks[t].clips.push_back(right);
+            });
+        });
+        if (auto* c = findClip(e_.project, id)) {
+            double beat = TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(
+                e_.engine.displayPosition());
+            split->setEnabled(beat > c->beat && beat < c->beat + c->length);
+        }
+        menu.addAction("Copy", [&] {
+            if (auto* c = findClip(e_.project, id)) {
+                clipboard_ = *c;
+                clipboardValid_ = true;
+            }
+        });
+        menu.addAction("Mute Clip", [&] {
+            e_.edit([&] {
+                auto* c = findClip(e_.project, id);
+                c->mute = !c->mute;
+            });
+        });
+        menu.addAction("Delete", [&] { e_.deleteSelection(); });
+        menu.addAction("Properties", [&] {
+            if (auto* c = findClip(e_.project, id))
+                e_.message(QString("%1 · Beat %2 · Length %3 · %4 MIDI notes")
+                               .arg(QString::fromStdString(c->name))
+                               .arg(c->beat)
+                               .arg(c->length)
+                               .arg(c->notes.size()));
+        });
+    } else if (t >= 0 && ev->pos().x() < header + horizontalOffset()) {
+        menu.addAction("Rename Track…", [&] {
+            bool ok = false;
+            auto text =
+                QInputDialog::getText(this, "Track name", "Name", QLineEdit::Normal,
+                                      QString::fromStdString(e_.project.tracks[t].name), &ok);
+            if (ok)
+                e_.edit([&] { e_.project.tracks[t].name = text.toStdString(); });
+        });
+        menu.addAction("Duplicate Track", [&] {
+            e_.edit([&] {
+                if (e_.project.tracks.size() >= maxTracks)
+                    return;
+                auto track = e_.project.tracks[t];
+                track.id = nextId();
+                track.armed = false;
+                track.name += " Copy";
+                for (auto& c : track.clips) {
+                    c.id = nextId();
+                    for (auto& n : c.notes)
+                        n.id = nextId();
+                }
+                e_.project.tracks.insert(e_.project.tracks.begin() + t + 1, track);
+            });
+        });
+        if (e_.project.tracks[t].kind == TrackKind::Midi)
+            menu.addAction("Change Instrument…", [&] {
+                if (auto* browser = e_.findChild<SoundBrowser*>("soundBrowser"))
+                    browser->setExpanded(true);
+            });
+        menu.addAction("Change Color…", [&] {
+            auto color = QColorDialog::getColor(QColor::fromRgba(e_.project.tracks[t].color), this);
+            if (color.isValid())
+                e_.edit([&] { e_.project.tracks[t].color = color.rgba(); });
+        });
+        auto* arm =
+            menu.addAction("Arm Recording", [&] { e_.armTrack(t, !e_.project.tracks[t].armed); });
+        arm->setCheckable(true);
+        arm->setChecked(e_.project.tracks[t].armed);
+        menu.addAction("Mute", [&] {
+            e_.edit([&] { e_.project.tracks[t].mute = !e_.project.tracks[t].mute; });
+        });
+        menu.addAction("Solo", [&] {
+            e_.edit([&] { e_.project.tracks[t].solo = !e_.project.tracks[t].solo; });
+        });
+        menu.addAction("Move Up", [&] { e_.moveTrack(-1); })->setEnabled(t > 0);
+        menu.addAction("Move Down", [&] { e_.moveTrack(1); })
+            ->setEnabled(t + 1 < int(e_.project.tracks.size()));
+        menu.addAction("Delete Track", [&] {
+            e_.selectedClip = 0;
+            e_.deleteSelection();
+        });
+    } else {
+        menu.addAction("Add MIDI Track", [&] { e_.addTrack(TrackKind::Midi); });
+        menu.addAction("Add Audio Track", [&] { e_.addTrack(TrackKind::Audio); });
+        if (t >= 0 && e_.project.tracks[t].kind == TrackKind::Midi)
+            menu.addAction("Create MIDI Clip", [&] {
+                e_.edit([&] {
+                    Clip c;
+                    c.beat = std::max(0., e_.snapped((ev->pos().x() - header) / e_.pixelsPerBeat));
+                    e_.selectedClip = c.id;
+                    e_.project.tracks[t].clips.push_back(c);
+                });
+            });
+        menu.addAction("Import Audio…", [&] { e_.importWav(); });
+        menu.addAction("Import MIDI…", [&] {
+            for (auto* action : e_.findChildren<QAction*>())
+                if (action->text() == "Import MIDI file…") {
+                    action->trigger();
+                    break;
+                }
+        });
     }
-    menu.addAction("Track color…", [&] {
-        auto color = QColorDialog::getColor(QColor::fromRgba(e_.project.tracks[t].color), this);
-        if (color.isValid())
-            e_.edit([&] { e_.project.tracks[t].color = color.rgba(); });
-    });
-    menu.addAction("Move track up", [&] { e_.moveTrack(-1); });
-    menu.addAction("Move track down", [&] { e_.moveTrack(1); });
-    menu.addAction("Delete track", [&] {
-        e_.selectedClip = 0;
-        e_.deleteSelection();
-    });
+    if (clipboardValid_ && t >= 0)
+        menu.addAction("Paste",
+                       [&] {
+                           e_.edit([&] {
+                               auto c = clipboard_;
+                               c.id = nextId();
+                               c.beat = std::max(
+                                   0., e_.snapped((ev->pos().x() - header) / e_.pixelsPerBeat));
+                               for (auto& n : c.notes)
+                                   n.id = nextId();
+                               e_.selectedClip = c.id;
+                               e_.project.tracks[t].clips.push_back(c);
+                           });
+                       })
+            ->setEnabled((e_.project.tracks[t].kind == TrackKind::Audio) ==
+                         bool(clipboard_.sample));
     menu.exec(ev->globalPos());
 }
 void Timeline::keyPressEvent(QKeyEvent* ev) {

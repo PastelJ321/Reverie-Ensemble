@@ -3,13 +3,16 @@
 
 #pragma once
 #include "core/Engine.h"
+#include "core/MidiRecording.h"
 #include "core/Model.h"
 #include "core/Recorder.h"
 #include "platform/AudioDevice.h"
+#include "platform/MidiInput.h"
 #include <QMainWindow>
 #include <QSet>
 #include <QTimer>
 #include <functional>
+#include <map>
 class QLineEdit;
 class QLabel;
 class QDoubleSpinBox;
@@ -28,6 +31,7 @@ class SoundBrowser;
 class MixerView;
 class Timeline;
 class PianoRoll;
+class PerformanceKeyboard;
 class Editor : public QMainWindow {
     friend class SettingsDialog;
 
@@ -44,11 +48,32 @@ class Editor : public QMainWindow {
     int trackHeight = 82;
     bool followPlayhead = false;
     bool timeDisplaySeconds = false;
+    void injectMidi(MidiMessage m) {
+        midiInput_.inject(m);
+    }
+    void inputNote(int key, bool on, float velocity = .8f, int channel = 0, int source = 1,
+                   std::int64_t frame = -1);
+    void inputController(int controller, int value, int channel = 0, std::int64_t frame = -1,
+                         bool external = false);
+    void releasePerformance();
+    void showKeyboard();
+    void showBrowser();
+    void armTrack(int index, bool armed);
+    void toggleRecord();
+    bool midiRecording() const {
+        return recording_ && midiRecording_;
+    }
+    const Clip* recordingPreview() const {
+        return midiRecording() ? &midiRecorder_.preview() : nullptr;
+    }
+    void releaseAuditionNote();
     void auditionNote(int key, float velocity = .7f, double duration = .3);
     void applyInstrument(const Preset&, bool newTrack = false);
     void showMixer();
     void showSettings();
-    std::string audioDeviceReport() const { return device_.deviceReport(); }
+    std::string audioDeviceReport() const {
+        return device_.deviceReport();
+    }
     void showExport();
     void beginEdit();
     void endEdit();
@@ -87,6 +112,19 @@ class Editor : public QMainWindow {
     void closeEvent(QCloseEvent*) override;
 
   private:
+    MidiInput midiInput_;
+    MidiRecording midiRecorder_;
+    bool midiRecording_ = false;
+    std::map<int, Id> heldInput_;
+    std::map<std::int32_t, int> midiSources_;
+    PerformanceKeyboard* keyboard_ = nullptr;
+    std::string performanceSignature_;
+    Id auditionToken_ = 0;
+    int auditionKey_ = 60;
+    bool preparingInstrument_ = false;
+    void publishProject();
+    void refreshPerformance();
+    void drainMidi();
     QStackedWidget* bottomStack_ = nullptr;
     AudioEditor* audioEditor_ = nullptr;
     InspectorPanel* selectionInspector_ = nullptr;
@@ -118,17 +156,15 @@ class Editor : public QMainWindow {
     QDoubleSpinBox *attack_ = nullptr, *decay_ = nullptr, *sustain_ = nullptr, *release_ = nullptr,
                    *cutoff_ = nullptr;
     QComboBox* wave_ = nullptr;
-    QComboBox* preset_ = nullptr;
     QComboBox* inputs_ = nullptr;
     QCheckBox* mute_ = nullptr;
     QCheckBox* solo_ = nullptr;
     QPushButton* playButton_ = nullptr;
     QPushButton* recordButton_ = nullptr;
-    QTimer timer_;
+    QTimer timer_, midiTimer_;
     void buildUi();
     void buildMenus();
     void tick();
-    void toggleRecord();
     void finishRecord();
     void loadPreset();
     void savePreset();

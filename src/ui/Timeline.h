@@ -32,6 +32,8 @@ class Timeline final : public QWidget {
     int horizontalOffset() const;
     int rowHeight() const;
     Editor& e_;
+    Clip clipboard_;
+    bool clipboardValid_ = false;
     Id hover_ = 0;
     Id drag_ = 0;
     int sourceTrack_ = 0;

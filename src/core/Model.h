@@ -17,7 +17,7 @@ void reserveId(Id id);
 constexpr int maxTracks = 64;
 constexpr double defaultRate = 48000.0;
 enum class Waveform { Sine, Saw, Square, Triangle };
-enum class InstrumentKind { Synth, Drums, Sampler };
+enum class InstrumentKind { Synth, Drums, Sampler, Sfizz, SoundFont };
 struct Sample;
 struct SampleZone {
     std::string path;
@@ -42,6 +42,11 @@ struct Preset {
     float calibrationGain = 1, auditionGain = 1;
     bool cubicInterpolation = false;
     std::vector<SampleZone> zones;
+    std::string backendPath;
+    float renderTailSeconds = 0; // External envelope hint; legacy projects keep their exact tails.
+    int soundFontBank = 0, soundFontProgram = 0;
+    std::string artworkId, artworkUri, thumbnailAsset, artworkLicense, artworkAuthor;
+    float imageAspectRatio = 1.5f;
 };
 std::vector<Preset> factoryPresets();
 struct Sample {
@@ -59,6 +64,11 @@ struct Note {
     double beat = 0., duration = 1.;
     int key = 60;
     float velocity = .8f;
+    int channel = 0;
+};
+struct ControllerEvent {
+    double beat = 0;
+    int channel = 0, controller = 64, value = 0;
 };
 enum class TrackKind { Midi, Audio };
 struct Clip {
@@ -67,6 +77,8 @@ struct Clip {
     double beat = 0., length = 4.,
            sourceOffset = 0.; // Offset is seconds, destructive edits never touch source.
     std::vector<Note> notes;
+    std::vector<ControllerEvent> controllers;
+    bool mute = false;
     std::shared_ptr<const Sample> sample;
     std::string mediaPath;
 };
@@ -79,7 +91,9 @@ struct Track {
     std::string name = "Instrument";
     TrackKind kind = TrackKind::Midi;
     std::uint32_t color = 0xff8d91ed;
-    bool mute = false, solo = false;
+    bool mute = false, solo = false, armed = false;
+    int midiChannel = -1;
+    std::string midiInput = "all";
     float volume = .8f, pan = 0.;
     Preset preset;
     Effects effects;
@@ -87,7 +101,7 @@ struct Track {
     std::vector<Clip> clips;
 };
 struct Project {
-    int formatVersion = 3;
+    int formatVersion = 4;
     std::string name = "Untitled";
     double bpm = 120.;
     int numerator = 4, denominator = 4;

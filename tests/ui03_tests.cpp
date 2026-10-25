@@ -4,6 +4,7 @@
 #include "ui/ExportDialog.h"
 #include "ui/InstrumentArt.h"
 #include "ui/SettingsDialog.h"
+#include "ui/SoundBrowser.h"
 #include "ui/Timeline.h"
 #include <QApplication>
 #include <QComboBox>
@@ -46,7 +47,9 @@ int main(int argc, char** argv) {
         CHECK(e.project.tracks[e.selectedTrack].preset.family == "guitar");
         CHECK(e.project.tracks[e.selectedTrack].preset.calibrationVersion == 1);
         CHECK(e.findChild<QListWidget*>("patchList")->count() == 2);
+        e.findChild<SoundBrowser*>("soundBrowser")->setExpanded(true);
         CHECK(e.findChild<QWidget*>("instrumentArtwork")->isVisible());
+        e.findChild<SoundBrowser*>("soundBrowser")->setExpanded(false);
         CHECK(!list->item(0)->icon().isNull());
         auto* patches = e.findChild<QListWidget*>("patchList");
         auto point = patches->visualItemRect(patches->item(1)).center();

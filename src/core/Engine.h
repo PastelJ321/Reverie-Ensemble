@@ -4,6 +4,7 @@
 #pragma once
 #include "core/Dsp.h"
 #include "core/Effects.h"
+#include "core/InstrumentBackend.h"
 #include <array>
 #include <atomic>
 #include <memory>
@@ -44,6 +45,8 @@ struct Event {
     float velocity;
     bool on;
     std::int64_t endFrame = 0;
+    int channel = 0, controller = -1, value = 0;
+    std::int64_t releaseFrame = 0;
 };
 struct AudioRegion {
     std::int64_t start, end;
@@ -61,11 +64,21 @@ struct PreparedTrack {
     std::uint64_t scheduleKey = 0, soundKey = 0;
     std::shared_ptr<const Sample> sampleOwner;
     Synthesizer synth;
+    std::unique_ptr<InstrumentBackend> backend;
+    std::array<bool, 16> sustain{};
+    struct HeldNote {
+        Id token = 0;
+        int channel = 0;
+        bool released = false;
+    };
+    std::array<HeldNote, 256> held{};
+    void input(const Event&, int offset = 0) noexcept;
+    void silence() noexcept;
     EffectChain effects;
     float peakL = 0, peakR = 0;
     std::size_t cursor = 0;
     float peak = 0;
-    PreparedTrack(const Track&, double, bool);
+    PreparedTrack(const Track&, double, bool, bool offline = false);
     void buildIndex();
     void seek(std::int64_t, bool clearEffects = true) noexcept;
     void restore(std::size_t, std::size_t, std::size_t, std::int64_t, int&) noexcept;
@@ -80,7 +93,7 @@ struct AudioProcessingGraph {
     int numerator = 4, denominator = 4;
     float clickLevel = .12f;
     std::vector<PreparedTrack> tracks;
-    AudioProcessingGraph(const Project&, double);
+    AudioProcessingGraph(const Project&, double, bool offline = false);
     void seek(std::int64_t) noexcept;
     void render(float*, std::uint32_t, std::int64_t) noexcept;
     void inherit(AudioProcessingGraph*, std::int64_t) noexcept;
@@ -89,12 +102,23 @@ class AudioEngine {
   public:
     explicit AudioEngine(double rate = defaultRate, bool transportTools = true,
                          bool protectOutput = true);
+    void publishPerformance(std::unique_ptr<AudioProcessingGraph>);
+    void preparePerformance(const Track&);   // control thread only
+    bool performanceEvent(Event e) noexcept; // single producer: UI input dispatcher
+    void panic() noexcept {
+        Event e{};
+        e.controller = 129;
+        if (!performanceQueue_.push(e))
+            performancePanic_.store(true);
+    }
+    void publishAudition(std::unique_ptr<AudioProcessingGraph>);
     void audition(const Track&, int key, float velocity = .7f, double duration = .45);
     void releaseAudition() {
         releasePreview_.store(true);
     }
     ~AudioEngine(); // Stop the device before destroying the engine.
     AudioEngine(const AudioEngine&) = delete;
+    void publishPrepared(std::unique_ptr<AudioProcessingGraph> graph);
     void publish(const Project&); // Control thread only; prepare/allocation here.
     void collect();
     void setSampleRateStopped(double); // caller must stop/join the device first // Control thread
@@ -102,6 +126,9 @@ class AudioEngine {
     void process(float*, std::uint32_t) noexcept; // Single audio consumer only.
     void setPlaying(bool play) {
         playing_.store(play);
+    }
+    void setCountInEnd(std::int64_t frame) {
+        countInEnd_.store(frame);
     }
     void setFreeRunning(bool value) {
         freeRunning_.store(value);
@@ -142,6 +169,11 @@ class AudioEngine {
     }
 
   private:
+    std::atomic<AudioProcessingGraph*> performancePending_{nullptr};
+    AudioProcessingGraph* performance_ = nullptr;
+    SpscQueue<Event, 4096> performanceQueue_;
+    std::atomic<bool> performancePanic_{false};
+    std::int64_t performancePosition_ = 0;
     double rate_;
     bool transportTools_;
     bool protectOutput_ = true;
@@ -153,6 +185,7 @@ class AudioEngine {
     AudioProcessingGraph* active_ = nullptr;
     SpscQueue<AudioProcessingGraph*, 64> retired_;
     std::atomic<bool> playing_{false}, clipped_{false}, freeRunning_{false};
+    std::atomic<std::int64_t> countInEnd_{-1};
     bool wasPlaying_ = false;
     std::atomic<std::int64_t> position_{0}, seek_{-1};
     std::atomic<float> peak_{0};

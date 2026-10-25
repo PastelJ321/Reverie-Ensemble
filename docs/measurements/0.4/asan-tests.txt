@@ -1,0 +1,13 @@
+Test project /Users/pastelj/Desktop/mac_project/Reverie Ensemble/build-04-asan
+    Start 1: instruments-04
+1/4 Test #1: instruments-04 ...................   Passed    0.67 sec
+    Start 2: features-03
+2/4 Test #2: features-03 ......................   Passed   16.13 sec
+    Start 3: audio-core
+3/4 Test #3: audio-core .......................   Passed    0.84 sec
+    Start 4: features-02
+4/4 Test #4: features-02 ......................   Passed   12.22 sec
+
+100% tests passed out of 4
+
+Total Test time (real) =  29.87 sec

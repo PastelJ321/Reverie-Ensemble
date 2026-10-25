@@ -1,0 +1,76 @@
+instrument,patch,file,samples,peak,rms,unknown_opcodes,prepare_ms,preloaded_bytes
+"Bassoon","Stac","BassoonStac.sfz",46,0.345352,0.0341365,"group_label",28.3208,5242480
+"Bassoon","Sus","BassoonSus.sfz",25,0.247348,0.035,"",4.03562,16165624
+"Bassoon","Vib","BassoonVib.sfz",21,0.216178,0.0350001,"",2.41113,17503752
+"Cello Ensemble","KS","CelloEns-KS.sfz",156,0.286433,0.035,"group_label",84.1022,32640112
+"Cello Ensemble","Pizz","CelloEnsPizz.sfz",52,0.293948,0.035,"group_label",5.66696,11908528
+"Cello Ensemble","Spic","CelloEnsSpic.sfz",52,0.246355,0.0350001,"group_label",7.83133,11575008
+"Cello Ensemble","SusVib-Quiet","CelloEnsSusVib-Quiet.sfz",14,0.134683,0.0172829,"",1.95996,10248944
+"Cello Ensemble","SusVib","CelloEnsSusVib.sfz",27,0.292589,0.035,"",2.76404,23373736
+"Cello Ensemble","Trem","CelloEnsTrem.sfz",25,0.263101,0.035,"",2.78771,13545904
+"Clarinet","KS","Clarinet-KS.sfz",97,0.25155,0.0350001,"group_label",10.165,24285136
+"Clarinet","Stac","ClarinetStac.sfz",64,0.296315,0.0362351,"group_label",7.69825,6946544
+"Clarinet","Sus","ClarinetSus.sfz",33,0.256745,0.0349999,"group_label",3.23946,19717072
+"Contrabass","KS","Contrabass-KS.sfz",152,0.104194,0.0147459,"group_label",74.184,33505448
+"Contrabass","Pizz","ContrabassPizz.sfz",40,0.207694,0.0325602,"group_label",4.04796,9198752
+"Contrabass","Spic","ContrabassSpic.sfz",42,0.162869,0.0288179,"group_label",5.83442,7553752
+"Contrabass","SusNV","ContrabassSusNV.sfz",28,0.104194,0.0147459,"group_label",3.19313,24654824
+"Contrabass","SusVB-Quiet","ContrabassSusVB-Quiet.sfz",13,0.213103,0.0294209,"group_label",1.5565,9361920
+"Contrabass","SusVB","ContrabassSusVB.sfz",26,0.24959,0.035,"group_label",2.553,21336184
+"Contrabass","Trem","ContrabassTrem.sfz",16,0.208971,0.035,"group_label",3.0745,18344384
+"French Horn","Mute","FHornMute.sfz",17,0.22251,0.035,"",8.31958,14545864
+"French Horn","Stac","FHornStac.sfz",54,0.171879,0.0316282,"group_label",25.9988,7535648
+"French Horn","Sus","FHornSus.sfz",29,0.289639,0.035,"",13.5798,18353520
+"Concert Flute","KS","Flute-KS.sfz",94,0.236566,0.035,"group_label",10.1988,23946224
+"Concert Flute","ExpVib","FluteExpVib.sfz",14,0.246269,0.035,"",1.6785,11920016
+"Concert Flute","Stac","FluteStac.sfz",48,0.291058,0.0353793,"group_label",4.82346,6178664
+"Concert Flute","SusNV","FluteSusNV.sfz",19,0.236566,0.035,"",2.09413,18593024
+"Concert Flute","SusVib","FluteSusVib.sfz",13,0.242397,0.035,"",1.60033,8419792
+"GM Percussion","Natural","GM-StylePerc.sfz",184,0.0474909,0.00386272,"group_label",86.6441,18465224
+"Glockenspiel","Natural","Glockenspiel.sfz",6,0.12999,0.0114076,"",3.36642,6938496
+"Concert Harp","Natural","Harp.sfz",23,0.394307,0.0350001,"",10.4784,14576152
+"Marimba","Natural","Marimba.sfz",10,0.242408,0.0296169,"",5.06862,4435488
+"Oboe","Stac","OboeStac.sfz",51,0.205694,0.0345353,"group_label",4.7085,5905968
+"Oboe","SusNV","OboeSusNV.sfz",18,0.134534,0.0259075,"",1.88367,29692216
+"Oboe","SusVib","OboeSusVib.sfz",18,0.187068,0.0271687,"",1.90362,18863752
+"Pipe Organ","Loud","OrganLoud.sfz",21,0.41377,0.0425841,"",10.1589,14934472
+"Pipe Organ","LoudPedal","OrganLoudPedal.sfz",11,0.423333,0.045,"",6.22183,15039608
+"Pipe Organ","Quiet","OrganQuiet.sfz",21,0.178265,0.0272404,"group_label",10.2142,14572464
+"Pipe Organ","QuietPedal","OrganQuietPedal.sfz",11,0.121771,0.0188515,"group_label",5.32463,14036808
+"Piccolo","Stac","PiccoloStac.sfz",5,0.365193,0.035,"",0.886125,1294408
+"Piccolo","Sus","PiccoloSus.sfz",5,0.16671,0.035,"",0.834041,9246672
+"Solo Violin","KS","SViolin-KS.sfz",161,0.237697,0.0350001,"group_label",74.2198,42053560
+"Solo Violin","Pizz","SViolinPizz.sfz",44,0.576136,0.0370018,"group_label",4.8375,9346040
+"Solo Violin","Spic","SViolinSpic.sfz",60,0.518039,0.0350001,"group_label",5.31604,9757720
+"Solo Violin","Trem","SViolinTrem.sfz",27,0.256677,0.035,"group_label",2.65254,14625832
+"Solo Violin","Vib-Quiet","SViolinVib-Quiet.sfz",15,0.318315,0.035,"",1.80092,16672048
+"Solo Violin","Vib","SViolinVib.sfz",30,0.237697,0.0350001,"",4.34671,32703304
+"Timpani","Natural","Timpani.sfz",28,0.299999,0.0304841,"group_label",13.6956,24313256
+"Timpani","Rolls","TimpaniRolls.sfz",10,0.3,0.0308455,"group_label",5.06008,48306312
+"Trombone","Stac","TromboneStac.sfz",55,0.533261,0.0264252,"group_label",25.546,8445848
+"Trombone","Sus","TromboneSus.sfz",31,0.333056,0.0350001,"",14.5827,25326864
+"Trombone","Vib","TromboneVib.sfz",12,0.0553123,0.00755467,"",6.08829,7712576
+"Trumpet","HarmonMuteSus","TrumpetHarmonMuteSus.sfz",16,0.295571,0.0350001,"group_label",8.21908,15647008
+"Trumpet","Stac","TrumpetStac.sfz",66,0.415407,0.0349969,"group_label",37.3533,8167352
+"Trumpet","StraightMuteSus","TrumpetStraightMuteSus.sfz",16,0.334408,0.0349999,"group_label",8.42229,19484592
+"Trumpet","Sus","TrumpetSus.sfz",20,0.229435,0.035,"group_label",9.55171,26188528
+"Trumpet","SusVib","TrumpetSusVib.sfz",22,0.231929,0.0350001,"group_label",10.7125,14678288
+"Tuba","KS","Tuba-KS.sfz",87,0.311961,0.0350001,"group_label",50.4299,16470736
+"Tuba","Stac","TubaStac.sfz",64,0.332389,0.0349999,"group_label",6.54392,7355568
+"Tuba","Sus","TubaSus.sfz",23,0.311961,0.0350001,"group_label",8.753,11902672
+"Tubular Bells","Natural","TubularBells.sfz",4,0.3,0.0369731,"group_label",2.62533,27033200
+"Knight Upright","Natural","UprightPiano.sfz",69,0.300807,0.0449999,"group_label",36.6182,46164344
+"Yamaha Upright","Natural","VSUpright1.sfz",79,0.457686,0.059819,"group_label",38.6223,37270968
+"Viola Ensemble","KS","ViolaEns-KS.sfz",144,0.301883,0.035,"group_label",72.3233,32917160
+"Viola Ensemble","Pizz","ViolaEnsPizz.sfz",46,0.364259,0.0336748,"group_label",4.48796,6925584
+"Viola Ensemble","Spic","ViolaEnsSpic.sfz",48,0.307158,0.035,"group_label",4.92087,8754064
+"Viola Ensemble","SusVib-Quiet","ViolaEnsSusVib-Quiet.sfz",13,0.230949,0.0232641,"",1.62975,10992120
+"Viola Ensemble","SusVib","ViolaEnsSusVib.sfz",26,0.301883,0.035,"",2.67462,24494792
+"Viola Ensemble","Trem","ViolaEnsTrem.sfz",24,0.271162,0.035,"group_label",2.5125,24901680
+"Violin Ensemble","KS","ViolinEns-KS.sfz",131,0.113681,0.0171218,"group_label",62.3492,35149328
+"Violin Ensemble","Pizz","ViolinEnsPizz.sfz",44,0.42611,0.0323017,"group_label",4.14938,7064360
+"Violin Ensemble","Spic","ViolinEnsSpic.sfz",44,0.332098,0.035,"group_label",7.66746,8398032
+"Violin Ensemble","SusVib-Quiet","ViolinEnsSusVib-Quiet.sfz",11,0.0810224,0.0096755,"",1.44887,13922072
+"Violin Ensemble","SusVib","ViolinEnsSusVib.sfz",22,0.113681,0.0171218,"",3.34612,27369344
+"Violin Ensemble","Trem","ViolinEnsTrem.sfz",21,0.308649,0.0350001,"",2.19771,21973712
+"Xylophone","Natural","Xylophone.sfz",8,0.3,0.0241666,"",4.28408,3261432

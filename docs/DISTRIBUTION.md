@@ -2,7 +2,7 @@
 
 The current verified artifact is a development `.app` linked to installed shared Qt frameworks. It runs with the dependencies described in README.md; it is not yet a standalone/notarized download. Do not distribute it as though all bundled code were Apache-2.0.
 
-For a public 0.3 binary release:
+For a public binary release:
 
 1. Build Release with an explicit deployment target and Qt architecture matching the intended Macs. This session tested arm64 only. Intel requires x86_64 Qt and a matching build; universal requires both architectures for **every** runtime dependency. Do not set a deployment target older than the Qt build supports.
 2. Stage a copy of the `.app`; run the selected Qt installation's `macdeployqt` on that staging copy. This preserves development build paths and gathers shared frameworks/Cocoa plugins. Audit with `otool -L` recursively to ensure no unintended Homebrew absolute runtime paths remain. Omit unnecessary plugins/modules and confirm that every included module permits the selected LGPL distribution.
@@ -15,12 +15,20 @@ For a public 0.3 binary release:
 Example staging commands (not executed as release verification):
 
 ```sh
-cmake --build build-03-release -j 4
+cmake --build build-04-release -j 4
 mkdir -p dist
-cp -R build-03-release/ReverieEnsemble.app dist/
+cp -R build-04-release/ReverieEnsemble.app dist/
 "$(brew --prefix qtbase)/bin/macdeployqt" dist/ReverieEnsemble.app
 # Next: inspect dependencies, collect notices and corresponding sources,
 # verify user relinking, then sign/notarize and test on clean machines.
 ```
 
 The presence of code licensed under Apache-2.0 does not impose a QuadraJ logo-display requirement on derivatives. Brand names/logos have their own trademark considerations; third-party licenses remain separate.
+
+## 0.4 dependency and sample distribution
+
+Use `scripts/bootstrap_instruments.sh` for pinned shared sfizz/FluidSynth builds. FluidSynth Readline is disabled intentionally: the local Homebrew binary links GPL Readline, whereas the app's local source build does not. Inspect `otool -L` recursively before packaging any substituted library. Qt Network/SVG and libsndfile's codec dependencies add their own notices. Exact notices and generated-DSP attributions are retained under `third_party/licenses/instruments/` and copied into Legal resources.
+
+The current development bundle still references locally installed frameworks/libraries; it is not a clean-machine distributable. Before publishing a binary: package replaceable shared dependencies and their exact corresponding sources/modifications; preserve relinking/replacement rights; test the result under code signing/runtime policy on a clean machine. No release download or notarization was performed here.
+
+Full optional sounds are fetched individually only after license/size consent. Catalogs pin public source revisions/URLs/file hashes. Do not publish differently licensed SoundFonts simply because the engine is LGPL. Never extract a commercial DAW's assets. Existing CC0 compact sounds and new original illustrations keep their separate notices. Project media collection may include large source dependencies; preserve the user's rights and warn when complex SFZ macros remain external references.
