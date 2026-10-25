@@ -4,6 +4,8 @@
 
 ## 1. Branch and review
 
+Submitted as [Draft PR #3](https://github.com/PastelJ321/Reverie-Ensemble/pull/3). Implementation commit: `8e9bb823f4f0a955901f11f7275129f433f16d23`.
+
 `codex/ensemble-0.4`, based on `feature/ensemble-0.3` at `e9c58f4fa7f0bc3d571e3269a87b69a40f29aa6f`. PRs #1 and #2 were open/unmerged at baseline verification. Existing branches, commits and PRs were preserved. The 0.4 PR is stacked onto `feature/ensemble-0.3`; merge predecessors before retargeting.
 
 ## 2. Main implementation files
