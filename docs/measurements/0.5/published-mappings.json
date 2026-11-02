@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/PastelJ321/Reverie-Ensemble/43dce87a31132aa0ba8b799d8f61ed6abaf88d41/assets/sounds/mappings05/meta-nylon-guitar-ensemble.sfz",
+    "bytes": 22506,
+    "sha256": "bb4e1d83f06996699d3481e33fde8d0233cea64f82806ebe9b0992db16078ea6",
+    "verified": true
+  },
+  {
+    "url": "https://raw.githubusercontent.com/PastelJ321/Reverie-Ensemble/43dce87a31132aa0ba8b799d8f61ed6abaf88d41/assets/sounds/mappings05/meta-steel-guitar-ensemble.sfz",
+    "bytes": 11146,
+    "sha256": "e40e78c169dc6521cfe0a9faf321bd00b788faa0e264f7484a1cde21dbaaf06f",
+    "verified": true
+  }
+]

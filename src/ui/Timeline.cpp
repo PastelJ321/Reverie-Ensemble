@@ -1,11 +1,12 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 
-#include "ui/Timeline.h"
 #include "ui/DesignTokens.h"
 #include "ui/Editor.h"
 #include "ui/InstrumentArt.h"
 #include "ui/SoundBrowser.h"
+#include "ui/Timeline.h"
 #include <QColorDialog>
 #include <QDragEnterEvent>
 #include <QInputDialog>
@@ -108,7 +109,9 @@ void Timeline::paintEvent(QPaintEvent* event) {
                     p.drawLine(QPointF(x, center + lo * 20), QPointF(x, center + hi * 20));
                 }
             } else if (!c.mediaPath.empty()) {
-                p.drawText(r.adjusted(8, 25, -6, 0), "Missing WAV — relink by importing source");
+                p.drawText(r.adjusted(8, 25, -6, 0),
+                           QCoreApplication::translate("Ensemble",
+                                                       "Missing WAV — relink by importing source"));
             } else {
                 p.setPen(Qt::NoPen);
                 p.setBrush(design::control);
@@ -131,7 +134,8 @@ void Timeline::paintEvent(QPaintEvent* event) {
         p.setBrush(QColor(188, 101, 92, 60));
         p.drawRect(r);
         p.setPen(design::ink);
-        p.drawText(r.adjusted(5, 3, -3, -3), "● MIDI TAKE");
+        p.drawText(r.adjusted(5, 3, -3, -3),
+                   QCoreApplication::translate("Ensemble", "● MIDI TAKE"));
         for (auto& n : take->notes)
             p.fillRect(QRectF(r.left() + n.beat * ppb, r.bottom() - 8 - (n.key - 36) * .55,
                               std::max(3., n.duration * ppb), 3),
@@ -154,7 +158,9 @@ void Timeline::paintEvent(QPaintEvent* event) {
             p.fontMetrics().elidedText(QString::fromStdString(t.name) + (t.armed ? "  ● ARM" : ""),
                                        Qt::ElideRight, header - 56));
         p.setPen(design::mutedInk);
-        p.drawText(14, y + rowHeight() - 20, t.kind == TrackKind::Midi ? "MIDI" : "AUDIO");
+        p.drawText(14, y + rowHeight() - 20,
+                   t.kind == TrackKind::Midi ? QCoreApplication::translate("Ensemble", "MIDI")
+                                             : "AUDIO");
         p.drawPixmap(10, y + 10, instrumentThumbnail(t.preset, QSize(30, 24), devicePixelRatioF()));
         for (int b = 0; b < 2; ++b) {
             QRect r(header - 72 + b * 31, y + rowHeight() - 34, 25, 23);
@@ -162,7 +168,7 @@ void Timeline::paintEvent(QPaintEvent* event) {
             p.setPen(Qt::NoPen);
             p.drawRoundedRect(r, 2, 2);
             p.setPen(design::ink);
-            p.drawText(r, Qt::AlignCenter, b ? "S" : "M");
+            p.drawText(r, Qt::AlignCenter, b ? QCoreApplication::translate("Ensemble", "S") : "M");
         }
         float meter = std::min(1.f, e_.engine.trackPeak(i));
         p.fillRect(QRect(14, y + rowHeight() - 6, int((header - 30) * meter), 3), design::signal);
@@ -172,7 +178,7 @@ void Timeline::paintEvent(QPaintEvent* event) {
     p.setPen(design::mutedInk);
     p.fillRect(QRect(horizontalOffset(), 0, header, ruler), design::surface);
     p.setPen(design::text);
-    p.drawText(horizontalOffset() + 14, 22, "ARRANGEMENT");
+    p.drawText(horizontalOffset() + 14, 22, QCoreApplication::translate("Ensemble", "ARRANGEMENT"));
     p.save();
     p.setClipRect(QRect(horizontalOffset() + header, 0, width(), height()));
     for (int b = std::max(0, int(first / bar)); b <= int(last / bar) + 1; ++b) {
@@ -199,7 +205,9 @@ void Timeline::paintEvent(QPaintEvent* event) {
     if (e_.project.tracks.empty()) {
         p.setPen(design::mutedInk);
         p.drawText(QRect(header + 20, 65, 600, 40),
-                   "Add a MIDI track to begin. Double-click a track lane to create a clip.");
+                   QCoreApplication::translate(
+                       "Ensemble",
+                       "Add a MIDI track to begin. Double-click a track lane to create a clip."));
     }
 }
 void Timeline::mousePressEvent(QMouseEvent* ev) {
@@ -337,8 +345,10 @@ void Timeline::mouseDoubleClickEvent(QMouseEvent* ev) {
         return;
     if (ev->position().x() < horizontalOffset() + header) {
         bool ok = false;
-        auto name = QInputDialog::getText(this, "Track name", "Name", QLineEdit::Normal,
-                                          QString::fromStdString(e_.project.tracks[t].name), &ok);
+        auto name = QInputDialog::getText(
+            this, QCoreApplication::translate("Ensemble", "Track name"),
+            QCoreApplication::translate("Ensemble", "Name"), QLineEdit::Normal,
+            QString::fromStdString(e_.project.tracks[t].name), &ok);
         if (ok && !name.isEmpty())
             e_.edit([&] { e_.project.tracks[t].name = name.toStdString(); });
         return;
@@ -368,91 +378,99 @@ void Timeline::contextMenuEvent(QContextMenuEvent* ev) {
     if (t >= 0)
         e_.select(t, id);
     if (id) {
-        menu.addAction("Open Editor", [&] { e_.openPiano(id); });
-        menu.addAction("Rename…", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Open Editor"),
+                       [&] { e_.openPiano(id); });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Rename…"), [&] {
             auto* c = findClip(e_.project, id);
             if (!c)
                 return;
             bool ok = false;
-            auto name = QInputDialog::getText(this, "Rename clip", "Name", QLineEdit::Normal,
-                                              QString::fromStdString(c->name), &ok);
+            auto name =
+                QInputDialog::getText(this, QCoreApplication::translate("Ensemble", "Rename clip"),
+                                      QCoreApplication::translate("Ensemble", "Name"),
+                                      QLineEdit::Normal, QString::fromStdString(c->name), &ok);
             if (ok)
                 e_.edit([&] { findClip(e_.project, id)->name = name.toStdString(); });
         });
-        menu.addAction("Duplicate", [&] { e_.duplicateClip(); });
-        auto* split = menu.addAction("Split at Playhead", [&] {
-            double beat = TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(
-                e_.engine.displayPosition());
-            e_.edit([&] {
-                auto* c = findClip(e_.project, id);
-                if (!c || beat <= c->beat || beat >= c->beat + c->length)
-                    return;
-                double local = beat - c->beat;
-                Clip right = *c;
-                right.id = nextId();
-                right.beat = beat;
-                right.length = c->length - local;
-                if (c->sample)
-                    right.sourceOffset += local * 60. / e_.project.bpm;
-                right.notes.clear();
-                for (auto n : c->notes)
-                    if (n.beat + n.duration > local) {
-                        double end = n.beat + n.duration;
-                        n.id = nextId();
-                        n.beat = std::max(0., n.beat - local);
-                        n.duration = end - local - n.beat;
-                        right.notes.push_back(n);
-                    }
-                std::erase_if(c->notes, [&](const Note& n) { return n.beat >= local; });
-                for (auto& n : c->notes)
-                    n.duration = std::min(n.duration, local - n.beat);
-                right.controllers.clear();
-                for (auto cc : c->controllers)
-                    if (cc.beat >= local) {
-                        cc.beat -= local;
-                        right.controllers.push_back(cc);
-                    }
-                std::erase_if(c->controllers, [&](auto& cc) { return cc.beat >= local; });
-                c->length = local;
-                e_.project.tracks[t].clips.push_back(right);
+        menu.addAction(QCoreApplication::translate("Ensemble", "Duplicate"),
+                       [&] { e_.duplicateClip(); });
+        auto* split =
+            menu.addAction(QCoreApplication::translate("Ensemble", "Split at Playhead"), [&] {
+                double beat = TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(
+                    e_.engine.displayPosition());
+                e_.edit([&] {
+                    auto* c = findClip(e_.project, id);
+                    if (!c || beat <= c->beat || beat >= c->beat + c->length)
+                        return;
+                    double local = beat - c->beat;
+                    Clip right = *c;
+                    right.id = nextId();
+                    right.beat = beat;
+                    right.length = c->length - local;
+                    if (c->sample)
+                        right.sourceOffset += local * 60. / e_.project.bpm;
+                    right.notes.clear();
+                    for (auto n : c->notes)
+                        if (n.beat + n.duration > local) {
+                            double end = n.beat + n.duration;
+                            n.id = nextId();
+                            n.beat = std::max(0., n.beat - local);
+                            n.duration = end - local - n.beat;
+                            right.notes.push_back(n);
+                        }
+                    std::erase_if(c->notes, [&](const Note& n) { return n.beat >= local; });
+                    for (auto& n : c->notes)
+                        n.duration = std::min(n.duration, local - n.beat);
+                    right.controllers.clear();
+                    for (auto cc : c->controllers)
+                        if (cc.beat >= local) {
+                            cc.beat -= local;
+                            right.controllers.push_back(cc);
+                        }
+                    std::erase_if(c->controllers, [&](auto& cc) { return cc.beat >= local; });
+                    c->length = local;
+                    e_.project.tracks[t].clips.push_back(right);
+                });
             });
-        });
         if (auto* c = findClip(e_.project, id)) {
             double beat = TempoMap{e_.project.bpm, e_.engine.sampleRate()}.beatAt(
                 e_.engine.displayPosition());
             split->setEnabled(beat > c->beat && beat < c->beat + c->length);
         }
-        menu.addAction("Copy", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Copy"), [&] {
             if (auto* c = findClip(e_.project, id)) {
                 clipboard_ = *c;
                 clipboardValid_ = true;
             }
         });
-        menu.addAction("Mute Clip", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Mute Clip"), [&] {
             e_.edit([&] {
                 auto* c = findClip(e_.project, id);
                 c->mute = !c->mute;
             });
         });
-        menu.addAction("Delete", [&] { e_.deleteSelection(); });
-        menu.addAction("Properties", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Delete"),
+                       [&] { e_.deleteSelection(); });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Properties"), [&] {
             if (auto* c = findClip(e_.project, id))
-                e_.message(QString("%1 · Beat %2 · Length %3 · %4 MIDI notes")
+                e_.message(QString(QCoreApplication::translate(
+                                       "Ensemble", "%1 · Beat %2 · Length %3 · %4 MIDI notes"))
                                .arg(QString::fromStdString(c->name))
                                .arg(c->beat)
                                .arg(c->length)
                                .arg(c->notes.size()));
         });
     } else if (t >= 0 && ev->pos().x() < header + horizontalOffset()) {
-        menu.addAction("Rename Track…", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Rename Track…"), [&] {
             bool ok = false;
-            auto text =
-                QInputDialog::getText(this, "Track name", "Name", QLineEdit::Normal,
-                                      QString::fromStdString(e_.project.tracks[t].name), &ok);
+            auto text = QInputDialog::getText(
+                this, QCoreApplication::translate("Ensemble", "Track name"),
+                QCoreApplication::translate("Ensemble", "Name"), QLineEdit::Normal,
+                QString::fromStdString(e_.project.tracks[t].name), &ok);
             if (ok)
                 e_.edit([&] { e_.project.tracks[t].name = text.toStdString(); });
         });
-        menu.addAction("Duplicate Track", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Duplicate Track"), [&] {
             e_.edit([&] {
                 if (e_.project.tracks.size() >= maxTracks)
                     return;
@@ -469,37 +487,42 @@ void Timeline::contextMenuEvent(QContextMenuEvent* ev) {
             });
         });
         if (e_.project.tracks[t].kind == TrackKind::Midi)
-            menu.addAction("Change Instrument…", [&] {
+            menu.addAction(QCoreApplication::translate("Ensemble", "Change Instrument…"), [&] {
                 if (auto* browser = e_.findChild<SoundBrowser*>("soundBrowser"))
                     browser->setExpanded(true);
             });
-        menu.addAction("Change Color…", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Change Color…"), [&] {
             auto color = QColorDialog::getColor(QColor::fromRgba(e_.project.tracks[t].color), this);
             if (color.isValid())
                 e_.edit([&] { e_.project.tracks[t].color = color.rgba(); });
         });
-        auto* arm =
-            menu.addAction("Arm Recording", [&] { e_.armTrack(t, !e_.project.tracks[t].armed); });
+        auto* arm = menu.addAction(QCoreApplication::translate("Ensemble", "Arm Recording"),
+                                   [&] { e_.armTrack(t, !e_.project.tracks[t].armed); });
         arm->setCheckable(true);
         arm->setChecked(e_.project.tracks[t].armed);
-        menu.addAction("Mute", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Mute"), [&] {
             e_.edit([&] { e_.project.tracks[t].mute = !e_.project.tracks[t].mute; });
         });
-        menu.addAction("Solo", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Solo"), [&] {
             e_.edit([&] { e_.project.tracks[t].solo = !e_.project.tracks[t].solo; });
         });
-        menu.addAction("Move Up", [&] { e_.moveTrack(-1); })->setEnabled(t > 0);
-        menu.addAction("Move Down", [&] { e_.moveTrack(1); })
+        menu.addAction(QCoreApplication::translate("Ensemble", "Move Up"),
+                       [&] { e_.moveTrack(-1); })
+            ->setEnabled(t > 0);
+        menu.addAction(QCoreApplication::translate("Ensemble", "Move Down"),
+                       [&] { e_.moveTrack(1); })
             ->setEnabled(t + 1 < int(e_.project.tracks.size()));
-        menu.addAction("Delete Track", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Delete Track"), [&] {
             e_.selectedClip = 0;
             e_.deleteSelection();
         });
     } else {
-        menu.addAction("Add MIDI Track", [&] { e_.addTrack(TrackKind::Midi); });
-        menu.addAction("Add Audio Track", [&] { e_.addTrack(TrackKind::Audio); });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Add MIDI Track"),
+                       [&] { e_.addTrack(TrackKind::Midi); });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Add Audio Track"),
+                       [&] { e_.addTrack(TrackKind::Audio); });
         if (t >= 0 && e_.project.tracks[t].kind == TrackKind::Midi)
-            menu.addAction("Create MIDI Clip", [&] {
+            menu.addAction(QCoreApplication::translate("Ensemble", "Create MIDI Clip"), [&] {
                 e_.edit([&] {
                     Clip c;
                     c.beat = std::max(0., e_.snapped((ev->pos().x() - header) / e_.pixelsPerBeat));
@@ -507,8 +530,9 @@ void Timeline::contextMenuEvent(QContextMenuEvent* ev) {
                     e_.project.tracks[t].clips.push_back(c);
                 });
             });
-        menu.addAction("Import Audio…", [&] { e_.importWav(); });
-        menu.addAction("Import MIDI…", [&] {
+        menu.addAction(QCoreApplication::translate("Ensemble", "Import Audio…"),
+                       [&] { e_.importWav(); });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Import MIDI…"), [&] {
             for (auto* action : e_.findChildren<QAction*>())
                 if (action->text() == "Import MIDI file…") {
                     action->trigger();
@@ -517,7 +541,7 @@ void Timeline::contextMenuEvent(QContextMenuEvent* ev) {
         });
     }
     if (clipboardValid_ && t >= 0)
-        menu.addAction("Paste",
+        menu.addAction(QCoreApplication::translate("Ensemble", "Paste"),
                        [&] {
                            e_.edit([&] {
                                auto c = clipboard_;

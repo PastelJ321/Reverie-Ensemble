@@ -24,8 +24,26 @@ void Synthesizer::reset() noexcept {
     for (auto& v : voices_)
         v = Voice{};
     sequence_ = {};
+    monoHeld_ = {};
 }
 void Synthesizer::noteOn(Id token, int key, float velocity) noexcept {
+    if (preset_.modern && preset_.mono) {
+        auto empty =
+            std::find_if(monoHeld_.begin(), monoHeld_.end(), [](auto& p) { return !p.id; });
+        if (empty == monoHeld_.end()) {
+            std::move(monoHeld_.begin() + 1, monoHeld_.end(), monoHeld_.begin());
+            empty = monoHeld_.end() - 1;
+        }
+        *empty = {token, key, velocity};
+        auto& v = voices_[0];
+        if (preset_.legato && v.stage && v.stage < 4) {
+            v.token = token;
+            v.key = key;
+            v.velocity = velocity;
+            v.targetIncrement = std::min(.45, 440. * std::exp2((key - 69) / 12.) / rate_);
+            return;
+        }
+    }
     Voice* target = &voices_[0];
     for (auto& v : voices_) {
         if (!v.stage) {
@@ -35,6 +53,9 @@ void Synthesizer::noteOn(Id token, int key, float velocity) noexcept {
         if (v.env < target->env)
             target = &v;
     }
+    if (preset_.modern && preset_.mono)
+        target = &voices_[0];
+    double prior = target->increment;
     *target = Voice{};
     auto& v = *target;
     v.token = token;
@@ -42,6 +63,9 @@ void Synthesizer::noteOn(Id token, int key, float velocity) noexcept {
     v.stage = 1;
     v.velocity = velocity;
     v.increment = std::min(.45, 440. * std::exp2((key - 69) / 12.) / rate_);
+    v.targetIncrement = v.increment;
+    if (preset_.modern && preset_.mono && prior > 0 && preset_.glide > 0)
+        v.increment = prior;
     v.sampleStep =
         (sample_ ? sample_->sampleRate : rate_) / rate_ * std::exp2((key - preset_.rootNote) / 12.);
     if (preset_.kind == InstrumentKind::Sampler && !preset_.zones.empty()) {
@@ -71,6 +95,23 @@ void Synthesizer::noteOn(Id token, int key, float velocity) noexcept {
     v.noise = std::uint32_t(token * 747796405ULL + 2891336453ULL) | 1u;
 }
 void Synthesizer::noteOff(Id token) noexcept {
+    if (preset_.modern && preset_.mono) {
+        auto released = std::find_if(monoHeld_.begin(), monoHeld_.end(),
+                                     [token](const Press& p) { return p.id == token; });
+        if (released != monoHeld_.end()) {
+            std::move(released + 1, monoHeld_.end(), released);
+            monoHeld_.back() = {};
+        }
+        for (auto it = monoHeld_.rbegin(); it != monoHeld_.rend(); ++it)
+            if (it->id) {
+                auto& v = voices_[0];
+                v.token = it->id;
+                v.key = it->key;
+                v.velocity = it->velocity;
+                v.targetIncrement = std::min(.45, 440. * std::exp2((v.key - 69) / 12.) / rate_);
+                return;
+            }
+    }
     for (auto& v : voices_)
         if (v.stage && v.token == token && v.stage != 4) {
             if (v.zone >= 0 && preset_.zones[v.zone].oneShot)
@@ -102,6 +143,14 @@ float Synthesizer::oscillator(Voice& v) const noexcept {
     case Waveform::Triangle:
         x = float(1. - 4. * std::abs(p - .5));
         break;
+    }
+    if (preset_.modern) {
+        float second = float(2 * v.phase2 - 1) -
+                       blep(v.phase2, v.increment * std::exp2(preset_.detune / 1200.));
+        x = std::lerp(x, second, preset_.oscMix);
+        if (preset_.fm > 0)
+            x = std::lerp(x, float(std::sin(tau * p + preset_.fm * std::sin(tau * v.phase2 * 2))),
+                          .7f);
     }
     if (preset_.color > 0)
         x = x * (1.f - preset_.color * .4f) +
@@ -192,8 +241,21 @@ std::pair<float, float> Synthesizer::next() noexcept {
         } else {
             l = r = oscillator(v);
         }
-        v.filterL += filterAlpha_ * (l - v.filterL);
-        v.filterR += filterAlpha_ * (r - v.filterR);
+        float alpha = filterAlpha_;
+        if (preset_.modern) {
+            auto cutoff = std::min(
+                rate_ * .45, preset_.cutoff * std::exp2(double(v.env * preset_.filterEnvelope)));
+            alpha = float(1 - std::exp(-tau * cutoff / rate_));
+            if (preset_.mono)
+                v.increment += (v.targetIncrement - v.increment) *
+                               (preset_.glide > 0 ? 1 - std::exp(-1 / (preset_.glide * rate_)) : 1);
+            auto step = v.increment *
+                        std::exp2(preset_.vibrato * std::sin(tau * preset_.lfoRate * v.age) / 12.);
+            v.phase2 += step * std::exp2(preset_.detune / 1200.);
+            v.phase2 -= std::floor(v.phase2);
+        }
+        v.filterL += alpha * (l - v.filterL);
+        v.filterR += alpha * (r - v.filterR);
         // Preserve the original multiply/add contraction for uncalibrated legacy projects.
         if (preset_.calibrationGain == 1.f) {
             left += v.filterL * v.env * v.velocity * preset_.gain;
@@ -203,7 +265,10 @@ std::pair<float, float> Synthesizer::next() noexcept {
             right += v.filterR * v.env * v.velocity * preset_.gain * preset_.calibrationGain;
         }
         if (preset_.kind != InstrumentKind::Drums)
-            v.phase += v.increment;
+            v.phase += preset_.modern
+                           ? v.increment * std::exp2(preset_.vibrato *
+                                                     std::sin(tau * preset_.lfoRate * v.age) / 12.)
+                           : v.increment;
         v.phase -= std::floor(v.phase);
         v.age += 1. / rate_;
     }

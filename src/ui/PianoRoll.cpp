@@ -1,10 +1,11 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 
-#include "ui/PianoRoll.h"
 #include "ui/DesignTokens.h"
 #include "ui/Editor.h"
 #include "ui/InspectorPanel.h"
+#include "ui/PianoRoll.h"
 #include <QInputDialog>
 #include <QKeyEvent>
 #include <QMenu>
@@ -97,7 +98,8 @@ void PianoRoll::paintEvent(QPaintEvent* event) {
     }
     p.fillRect(QRect(horizontalOffset(), verticalOffset(), width(), ruler), QColor("#DDD3C4"));
     p.setPen(design::ink);
-    p.drawText(horizontalOffset() + 8, verticalOffset() + 20, "KEYS");
+    p.drawText(horizontalOffset() + 8, verticalOffset() + 20,
+               QCoreApplication::translate("Ensemble", "KEYS"));
     double bar = e_.project.numerator * 4. / e_.project.denominator;
     p.save();
     p.setClipRect(QRect(horizontalOffset() + keys, verticalOffset(), width(), ruler));
@@ -109,7 +111,8 @@ void PianoRoll::paintEvent(QPaintEvent* event) {
         p.fillRect(rect(), QColor(232, 225, 213, 220));
         p.setPen(design::ink);
         p.drawText(QRect(horizontalOffset() + 80, verticalOffset() + ruler + 60, 600, 60),
-                   "Double-click a MIDI clip in the arrangement to edit notes.");
+                   QCoreApplication::translate(
+                       "Ensemble", "Double-click a MIDI clip in the arrangement to edit notes."));
     }
 }
 void PianoRoll::mousePressEvent(QMouseEvent* ev) {
@@ -139,20 +142,27 @@ void PianoRoll::mousePressEvent(QMouseEvent* ev) {
         if (hit) {
             selection = {hit};
             QMenu menu(this);
-            menu.addAction("Delete", this, [this] { erase(); });
-            menu.addAction("Duplicate", this, [this] { duplicate(); });
-            menu.addAction("Quantize", this, [this] { quantize(); });
-            menu.addAction("Set Velocity…", this, [this] {
+            menu.addAction(QCoreApplication::translate("Ensemble", "Delete"), this,
+                           [this] { erase(); });
+            menu.addAction(QCoreApplication::translate("Ensemble", "Duplicate"), this,
+                           [this] { duplicate(); });
+            menu.addAction(QCoreApplication::translate("Ensemble", "Quantize"), this,
+                           [this] { quantize(); });
+            menu.addAction(QCoreApplication::translate("Ensemble", "Set Velocity…"), this, [this] {
                 bool ok = false;
-                double v = QInputDialog::getDouble(this, "Note velocity", "Velocity (1–127)", 100,
-                                                   1, 127, 0, &ok);
+                double v = QInputDialog::getDouble(
+                    this, QCoreApplication::translate("Ensemble", "Note velocity"),
+                    QCoreApplication::translate("Ensemble", "Velocity (1–127)"), 100, 1, 127, 0,
+                    &ok);
                 if (ok)
                     setVelocity(v / 127.);
             });
-            menu.addAction("Set Length…", this, [this] {
+            menu.addAction(QCoreApplication::translate("Ensemble", "Set Length…"), this, [this] {
                 bool ok = false;
-                double v = QInputDialog::getDouble(this, "Note length", "Quarter-note beats", 1,
-                                                   1. / 1024, 10000, 4, &ok);
+                double v = QInputDialog::getDouble(
+                    this, QCoreApplication::translate("Ensemble", "Note length"),
+                    QCoreApplication::translate("Ensemble", "Quarter-note beats"), 1, 1. / 1024,
+                    10000, 4, &ok);
                 if (ok)
                     e_.edit([&] {
                         if (auto* clip = findClip(e_.project, e_.selectedClip))
@@ -161,9 +171,11 @@ void PianoRoll::mousePressEvent(QMouseEvent* ev) {
                                     n.duration = v;
                     });
             });
-            menu.addAction("Transpose…", this, [this] {
+            menu.addAction(QCoreApplication::translate("Ensemble", "Transpose…"), this, [this] {
                 bool ok = false;
-                int v = QInputDialog::getInt(this, "Transpose", "Semitones", 0, -127, 127, 1, &ok);
+                int v = QInputDialog::getInt(
+                    this, QCoreApplication::translate("Ensemble", "Transpose"),
+                    QCoreApplication::translate("Ensemble", "Semitones"), 0, -127, 127, 1, &ok);
                 if (ok)
                     e_.edit([&] {
                         if (auto* clip = findClip(e_.project, e_.selectedClip))
@@ -172,20 +184,22 @@ void PianoRoll::mousePressEvent(QMouseEvent* ev) {
                                     n.key = std::clamp(n.key + v, 0, 127);
                     });
             });
-            menu.addAction("Note Properties…", this, [this] {
-                if (auto* clip = findClip(e_.project, e_.selectedClip))
-                    for (auto& n : clip->notes)
-                        if (selection.contains(n.id)) {
-                            e_.message(
-                                QString("MIDI %1 · Channel %2 · Beat %3 · Length %4 · Velocity %5")
-                                    .arg(n.key)
-                                    .arg(n.channel + 1)
-                                    .arg(n.beat, 0, 'f', 4)
-                                    .arg(n.duration, 0, 'f', 4)
-                                    .arg(std::lround(n.velocity * 127)));
-                            break;
-                        }
-            });
+            menu.addAction(
+                QCoreApplication::translate("Ensemble", "Note Properties…"), this, [this] {
+                    if (auto* clip = findClip(e_.project, e_.selectedClip))
+                        for (auto& n : clip->notes)
+                            if (selection.contains(n.id)) {
+                                e_.message(QString(QCoreApplication::translate(
+                                                       "Ensemble", "MIDI %1 · Channel %2 · Beat %3 "
+                                                                   "· Length %4 · Velocity %5"))
+                                               .arg(n.key)
+                                               .arg(n.channel + 1)
+                                               .arg(n.beat, 0, 'f', 4)
+                                               .arg(n.duration, 0, 'f', 4)
+                                               .arg(std::lround(n.velocity * 127)));
+                                break;
+                            }
+                });
             menu.exec(ev->globalPosition().toPoint());
         }
         return;

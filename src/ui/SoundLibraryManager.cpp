@@ -1,8 +1,9 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
-#include "ui/SoundLibraryManager.h"
 #include "core/Library.h"
 #include "ui/SoundBrowser.h"
+#include "ui/SoundLibraryManager.h"
 #include "ui/Theme.h"
 #include <QApplication>
 #include <QCryptographicHash>
@@ -41,27 +42,37 @@ static QJsonObject manifest(QString path) {
         throw std::runtime_error("Invalid catalog JSON");
     return j.object();
 }
+static bool factoryIncluded(const QString& id) {
+    try {
+        auto j = manifest(factoryPackPath() + "/pack.json");
+        for (auto v : j["instruments"].toArray())
+            if (v.toObject()["id"].toString() == "factory05." + id)
+                return true;
+    } catch (...) {
+    }
+    return false;
+}
 SoundLibraryManager::SoundLibraryManager(SoundBrowser& browser)
     : QDialog(&browser), browser_(browser) {
     setObjectName("soundLibraryManager");
-    setWindowTitle("Sound Library Manager");
+    setWindowTitle(QCoreApplication::translate("Ensemble", "Sound Library Manager"));
     resize(760, 560);
     setMinimumSize(620, 440);
     auto* layout = new QVBoxLayout(this);
-    auto* title = new QLabel("ENSEMBLE SOUND LIBRARY");
+    auto* title = new QLabel(QCoreApplication::translate("Ensemble", "ENSEMBLE SOUND LIBRARY"));
     title->setStyleSheet("font-size:19px;font-weight:600;color:#E8E1D5");
     layout->addWidget(title);
-    layout->addWidget(
-        new QLabel("Verified catalogs · original patch mappings · explicit downloads only"));
+    layout->addWidget(new QLabel(QCoreApplication::translate(
+        "Ensemble", "Verified catalogs · original patch mappings · explicit downloads only")));
     auto* columns = new QHBoxLayout;
     auto* a = new QVBoxLayout;
-    a->addWidget(new QLabel("AVAILABLE PACKS"));
+    a->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "AVAILABLE PACKS")));
     available_ = new QListWidget;
     available_->setObjectName("availableSoundPacks");
     a->addWidget(available_);
     columns->addLayout(a);
     auto* b = new QVBoxLayout;
-    b->addWidget(new QLabel("INSTALLED"));
+    b->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "INSTALLED")));
     installed_ = new QListWidget;
     installed_->setObjectName("installedSoundPacks");
     b->addWidget(installed_);
@@ -77,18 +88,20 @@ SoundLibraryManager::SoundLibraryManager(SoundBrowser& browser)
     progress_->setRange(0, 1000);
     layout->addWidget(progress_);
     auto* controls = new QHBoxLayout;
-    download_ = new QPushButton("Download / Install / Update");
+    download_ =
+        new QPushButton(QCoreApplication::translate("Ensemble", "Download / Install / Update"));
     download_->setObjectName("downloadSoundPack");
     controls->addWidget(download_);
-    auto* local = new QPushButton("Install local folder…");
+    auto* local = new QPushButton(QCoreApplication::translate("Ensemble", "Install local folder…"));
     controls->addWidget(local);
-    auto* remove = new QPushButton("Remove optional pack…");
+    auto* remove =
+        new QPushButton(QCoreApplication::translate("Ensemble", "Remove optional pack…"));
     controls->addWidget(remove);
-    cancel_ = new QPushButton("Cancel download");
+    cancel_ = new QPushButton(QCoreApplication::translate("Ensemble", "Cancel download"));
     cancel_->setEnabled(false);
     controls->addWidget(cancel_);
     layout->addLayout(controls);
-    auto* close = new QPushButton("Close");
+    auto* close = new QPushButton(QCoreApplication::translate("Ensemble", "Close"));
     layout->addWidget(close);
     connect(close, &QPushButton::clicked, this, &SoundLibraryManager::reject);
     connect(cancel_, &QPushButton::clicked, this, [this] { cancelled_ = true; });
@@ -96,15 +109,17 @@ SoundLibraryManager::SoundLibraryManager(SoundBrowser& browser)
     connect(local, &QPushButton::clicked, this, [this] {
         if (busy_)
             return;
-        auto folder =
-            QFileDialog::getExistingDirectory(this, "Install local verified pack (pack.json)");
+        auto folder = QFileDialog::getExistingDirectory(
+            this,
+            QCoreApplication::translate("Ensemble", "Install local verified pack (pack.json)"));
         if (folder.isEmpty())
             return;
         try {
             browser_.installFolder(folder);
             reload();
         } catch (const std::exception& e) {
-            QMessageBox::warning(this, "Install failed", e.what());
+            QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Install failed"),
+                                 e.what());
         }
     });
     connect(remove, &QPushButton::clicked, this, [this] {
@@ -114,26 +129,33 @@ SoundLibraryManager::SoundLibraryManager(SoundBrowser& browser)
         if (path.isEmpty())
             return;
         if (browser_.packInUse(path)) {
-            QMessageBox::information(
-                this, "Pack is in use",
-                "Change or remove this project’s instruments before removing their sample pack.");
+            QMessageBox::information(this,
+                                     QCoreApplication::translate("Ensemble", "Pack is in use"),
+                                     QCoreApplication::translate(
+                                         "Ensemble", "Change or remove this project’s instruments "
+                                                     "before removing their sample pack."));
             return;
         }
-        if (QMessageBox::question(this, "Remove optional sound pack",
-                                  "Remove installed files? Projects referencing this pack will "
-                                  "need it reinstalled. Bundled factory sounds are protected.") !=
+        if (QMessageBox::question(
+                this, QCoreApplication::translate("Ensemble", "Remove optional sound pack"),
+                QCoreApplication::translate(
+                    "Ensemble", "Remove installed files? Projects referencing this pack will "
+                                "need it reinstalled. Bundled factory sounds are protected.")) !=
             QMessageBox::Yes)
             return;
         auto root = std::filesystem::weakly_canonical(packRoot().toStdString());
         auto target = std::filesystem::weakly_canonical(path.toStdString());
         if (target.parent_path() != root) {
-            QMessageBox::warning(this, "Remove failed", "Pack path is outside the managed library");
+            QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Remove failed"),
+                                 QCoreApplication::translate(
+                                     "Ensemble", "Pack path is outside the managed library"));
             return;
         }
         std::error_code ec;
         std::filesystem::remove_all(target, ec);
         if (ec)
-            QMessageBox::warning(this, "Remove failed", QString::fromStdString(ec.message()));
+            QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Remove failed"),
+                                 QString::fromStdString(ec.message()));
         reload();
         browser_.reload();
     });
@@ -142,13 +164,24 @@ SoundLibraryManager::SoundLibraryManager(SoundBrowser& browser)
             return;
         try {
             auto j = manifest(available_->currentItem()->data(Qt::UserRole).toString());
+            bool included = factoryIncluded(j["id"].toString());
+            download_->setText(
+                included ? QCoreApplication::translate("Ensemble", "Install separate copy")
+                         : QCoreApplication::translate("Ensemble", "Download / Update"));
             details_->setText(
                 j["name"].toString() + " · v" + j["version"].toString() + "\n" +
                 j["license"].toString() + " · " + j["author"].toString() +
-                QString("\nDownload / install: %1 MiB · %2 patches · Backend: sfizz\n")
+                QString(
+                    QCoreApplication::translate(
+                        "Ensemble", "\nDownload / install: %1 MiB · %2 patches · Backend: sfizz\n"))
                     .arg(j["installSize"].toDouble() / 1048576., 0, 'f', 1)
                     .arg(j["instruments"].toArray().size()) +
                 j["source"].toString());
+            if (included)
+                details_->setText(QCoreApplication::translate(
+                                      "Ensemble", "Included in Factory Library. A separate install "
+                                                  "uses the same recordings.") +
+                                  "\n" + details_->text());
         } catch (const std::exception& e) {
             details_->setText(e.what());
         }
@@ -163,10 +196,15 @@ void SoundLibraryManager::reload() {
         try {
             auto j = manifest(catalogs.filePath(name));
             auto* item = new QListWidgetItem(
-                j["name"].toString() + QString("\n%1 MiB · %2")
-                                           .arg(j["installSize"].toDouble() / 1048576., 0, 'f', 1)
-                                           .arg(j["license"].toString()),
+                j["name"].toString() +
+                    QString(QCoreApplication::translate("Ensemble", "\n%1 MiB · %2"))
+                        .arg(j["installSize"].toDouble() / 1048576., 0, 'f', 1)
+                        .arg(j["license"].toString()),
                 available_);
+            if (factoryIncluded(j["id"].toString()))
+                item->setText(
+                    item->text() + "\n" +
+                    QCoreApplication::translate("Ensemble", "Included in Factory Library"));
             item->setData(Qt::UserRole, catalogs.filePath(name));
         } catch (...) {
         }
@@ -182,6 +220,8 @@ void SoundLibraryManager::reload() {
         } catch (...) {
         }
     };
+    if (QFileInfo::exists(factoryPackPath() + "/pack.json"))
+        add(factoryPackPath(), true);
     add(assetPath() + "/sounds/factory", true);
     add(assetPath() + "/sounds/essentials03", true);
     QDir root(packRoot());
@@ -191,8 +231,9 @@ void SoundLibraryManager::reload() {
     if (available_->count())
         available_->setCurrentRow(0);
     else
-        details_->setText("Offline: install a verified local sound pack folder. Catalog generation "
-                          "is documented in scripts/.");
+        details_->setText(QCoreApplication::translate(
+            "Ensemble", "Offline: install a verified local sound pack folder. Catalog generation "
+                        "is documented in scripts/."));
 }
 void SoundLibraryManager::reject() {
     if (busy_) {
@@ -239,7 +280,7 @@ void SoundLibraryManager::download() {
         if (space.bytesAvailable() < total * 2 + 64 * 1024 * 1024)
             throw std::runtime_error("Not enough disk space (staging + installed copy required)");
         if (QMessageBox::question(
-                this, "Download sound pack",
+                this, QCoreApplication::translate("Ensemble", "Download sound pack"),
                 details_->text() +
                     "\n\nDownload these files and accept the displayed asset license?") !=
             QMessageBox::Yes)
@@ -296,11 +337,12 @@ void SoundLibraryManager::download() {
                 if (cancelled_)
                     reply->abort();
                 progress_->setValue(int((done + received) * 1000 / total));
-                details_->setText(QString("%1\n%2 / %3 MiB · %4")
-                                      .arg(j["name"].toString())
-                                      .arg((done + received) / 1048576., 0, 'f', 1)
-                                      .arg(total / 1048576., 0, 'f', 1)
-                                      .arg(rel));
+                details_->setText(
+                    QString(QCoreApplication::translate("Ensemble", "%1\n%2 / %3 MiB · %4"))
+                        .arg(j["name"].toString())
+                        .arg((done + received) / 1048576., 0, 'f', 1)
+                        .arg(total / 1048576., 0, 'f', 1)
+                        .arg(rel));
             }
             consume();
             out.close();
@@ -320,7 +362,8 @@ void SoundLibraryManager::download() {
         pack.close();
         auto check = std::async(std::launch::async,
                                 [staging] { return readSoundPack(staging.toStdString(), true); });
-        details_->setText("Verifying inventory and SFZ references…");
+        details_->setText(
+            QCoreApplication::translate("Ensemble", "Verifying inventory and SFZ references…"));
         while (check.wait_for(std::chrono::milliseconds(5)) != std::future_status::ready)
             QApplication::processEvents();
         (void)check.get();
@@ -341,7 +384,8 @@ void SoundLibraryManager::download() {
         if (QDir(backup).exists())
             QDir(backup).removeRecursively();
         progress_->setValue(1000);
-        details_->setText("Installed and verified. Instruments are available immediately.");
+        details_->setText(QCoreApplication::translate(
+            "Ensemble", "Installed and verified. Instruments are available immediately."));
         browser_.reload();
     } catch (const std::exception& e) {
         details_->setText(QString::fromUtf8(e.what()));

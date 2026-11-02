@@ -38,6 +38,20 @@ static json presetJson(const Preset& s) {
               {"auditionGain", s.auditionGain},
               {"cubicInterpolation", s.cubicInterpolation},
               {"zones", json::array()}};
+    j["pluginId"] = s.pluginId;
+    j["pluginVendor"] = s.pluginVendor;
+    j["pluginVersion"] = s.pluginVersion;
+    j["pluginState"] = s.pluginState;
+    j["modern"] = s.modern;
+    j["mono"] = s.mono;
+    j["legato"] = s.legato;
+    j["oscMix"] = s.oscMix;
+    j["detune"] = s.detune;
+    j["glide"] = s.glide;
+    j["filterEnvelope"] = s.filterEnvelope;
+    j["lfoRate"] = s.lfoRate;
+    j["vibrato"] = s.vibrato;
+    j["fm"] = s.fm;
     j["backendPath"] = s.backendPath;
     j["renderTailSeconds"] = s.renderTailSeconds;
     j["soundFontBank"] = s.soundFontBank;
@@ -69,6 +83,20 @@ static json presetJson(const Preset& s) {
 }
 static Preset readPreset(const json& j) {
     Preset s;
+    s.pluginId = j.value("pluginId", "");
+    s.pluginVendor = j.value("pluginVendor", "");
+    s.pluginVersion = j.value("pluginVersion", "");
+    s.pluginState = j.value("pluginState", std::vector<std::uint8_t>{});
+    s.modern = j.value("modern", s.modern);
+    s.mono = j.value("mono", s.mono);
+    s.legato = j.value("legato", s.legato);
+    s.oscMix = j.value("oscMix", s.oscMix);
+    s.detune = j.value("detune", s.detune);
+    s.glide = j.value("glide", s.glide);
+    s.filterEnvelope = j.value("filterEnvelope", s.filterEnvelope);
+    s.lfoRate = j.value("lfoRate", s.lfoRate);
+    s.vibrato = j.value("vibrato", s.vibrato);
+    s.fm = j.value("fm", s.fm);
     s.backendPath = j.value("backendPath", "");
     s.renderTailSeconds = j.value("renderTailSeconds", 0.f);
     s.soundFontBank = j.value("soundFontBank", 0);
@@ -191,7 +219,7 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
         return rel;
     };
     json j = {{"format", "Reverie Ensemble"},
-              {"version", 4},
+              {"version", 5},
               {"loopEnabled", p.loopEnabled},
               {"loopStart", p.loopStart},
               {"loopEnd", p.loopEnd},
@@ -280,6 +308,10 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
             {"id", t.id},       {"name", t.name},        {"kind", int(t.kind)}, {"color", t.color},
             {"mute", t.mute},   {"solo", t.solo},        {"volume", t.volume},  {"pan", t.pan},
             {"preset", preset}, {"clips", json::array()}};
+        jt["inserts"] = json::array();
+        for (const auto& i : t.inserts)
+            jt["inserts"].push_back(
+                {{"plugin", presetJson(i.plugin)}, {"bypass", i.bypass}, {"wet", i.wet}});
         jt["armed"] = t.armed;
         jt["midiChannel"] = t.midiChannel;
         jt["midiInput"] = t.midiInput;
@@ -291,6 +323,19 @@ Project ProjectSerializer::save(const Project& p, const std::filesystem::path& p
                          {"delaySeconds", fx.delaySeconds},
                          {"feedback", fx.feedback},
                          {"reverbMix", fx.reverbMix}};
+        jt["effects"]["compressor"] = fx.compressor;
+        jt["effects"]["peq"] = fx.peq;
+        jt["effects"]["limiter"] = fx.limiter;
+        jt["effects"]["thresholdDb"] = fx.thresholdDb;
+        jt["effects"]["ratio"] = fx.ratio;
+        jt["effects"]["attackMs"] = fx.attackMs;
+        jt["effects"]["releaseMs"] = fx.releaseMs;
+        jt["effects"]["makeupDb"] = fx.makeupDb;
+        jt["effects"]["eqHz"] = fx.eqHz;
+        jt["effects"]["eqDb"] = fx.eqDb;
+        jt["effects"]["eqQ"] = fx.eqQ;
+        jt["effects"]["inputDb"] = fx.inputDb;
+        jt["effects"]["outputDb"] = fx.outputDb;
         for (auto& c : t.clips) {
             json jc = {{"id", c.id},
                        {"name", c.name},
@@ -328,7 +373,7 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
     std::ifstream f(path);
     json j;
     f >> j;
-    if (j.at("format") != "Reverie Ensemble" || (j.at("version") < 1 || j.at("version") > 4))
+    if (j.at("format") != "Reverie Ensemble" || (j.at("version") < 1 || j.at("version") > 5))
         throw std::runtime_error("Unsupported project format/version");
     LoadResult result;
     auto& p = result.project;
@@ -337,7 +382,7 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
     p.numerator = j.at("numerator");
     p.denominator = j.at("denominator");
     p.master = j.at("master");
-    p.formatVersion = 4;
+    p.formatVersion = 5;
     p.loopEnabled = j.value("loopEnabled", false);
     p.loopStart = j.value("loopStart", 0.);
     p.loopEnd = j.value("loopEnd", 16.);
@@ -402,8 +447,24 @@ LoadResult ProjectSerializer::load(const std::filesystem::path& path) {
         t.instrumentSample = resolve(t.preset.samplePath);
         for (auto& z : t.preset.zones)
             z.sample = resolve(z.path);
+        for (const auto& i : jt.value("inserts", json::array()))
+            t.inserts.push_back(
+                {readPreset(i.at("plugin")), i.value("bypass", false), i.value("wet", 1.f)});
         if (jt.contains("effects")) {
             const auto& fx = jt["effects"];
+            t.effects.compressor = fx.value("compressor", t.effects.compressor);
+            t.effects.peq = fx.value("peq", t.effects.peq);
+            t.effects.limiter = fx.value("limiter", t.effects.limiter);
+            t.effects.thresholdDb = fx.value("thresholdDb", t.effects.thresholdDb);
+            t.effects.ratio = fx.value("ratio", t.effects.ratio);
+            t.effects.attackMs = fx.value("attackMs", t.effects.attackMs);
+            t.effects.releaseMs = fx.value("releaseMs", t.effects.releaseMs);
+            t.effects.makeupDb = fx.value("makeupDb", t.effects.makeupDb);
+            t.effects.eqHz = fx.value("eqHz", t.effects.eqHz);
+            t.effects.eqDb = fx.value("eqDb", t.effects.eqDb);
+            t.effects.eqQ = fx.value("eqQ", t.effects.eqQ);
+            t.effects.inputDb = fx.value("inputDb", t.effects.inputDb);
+            t.effects.outputDb = fx.value("outputDb", t.effects.outputDb);
             t.effects.enabled = fx.value("enabled", false);
             t.effects.lowDb = fx.value("lowDb", 0.f);
             t.effects.highDb = fx.value("highDb", 0.f);

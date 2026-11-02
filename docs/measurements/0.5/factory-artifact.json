@@ -1,0 +1,15 @@
+{
+  "artifact": "Ensemble-Factory-1.0.0.tar.gz",
+  "archiveBytes": 957023857,
+  "sha256": "a2c0383af37b2fa5a31e7ea23778e27b4cc9d99f3a36c8e2af87ee2b6f07eb20",
+  "newPayloadBytes": 1377008415,
+  "legacySoundBytes": 99584968,
+  "combinedSoundBytes": 1476593383,
+  "audioFilesNew": 2818,
+  "sourceEntriesNew": 51,
+  "conservativeKindsNew": 49,
+  "patchesNew": 99,
+  "factoryPatchesIncludingLegacyAndSynths": 128,
+  "generatedMappingsRevision": "43dce87a31132aa0ba8b799d8f61ed6abaf88d41",
+  "status": "Local verified component archive, not a public Release or a standalone application installer."
+}

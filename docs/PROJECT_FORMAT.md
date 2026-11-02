@@ -54,3 +54,7 @@ Current writes use version 3; reads accept 1/2/3 and migrate in memory. The olde
 Calibration is never looked up or reapplied when opening a project. An explicit new factory-patch selection adopts its current metadata; old presets remain uncalibrated/linear. This prevents a library update from changing an existing mix. Standalone instrument schema remains version 1 with optional neutral-default fields; an old application may not reproduce new optional DSP behavior, so forward compatibility is not promised.
 
 The original First Light v1 and tests/fixtures/legacy-v2.reverie exercise old synth and recorded-sampler mixes. Native arm64 exports were compared byte-for-byte against the prior executables. New format migration is covered by project/preset round trips; platform-specific floating-point identity is not claimed on untested CPUs.
+
+## Version 5 — 0.5
+
+Reader accepts v1–v5. Kind 5 is CLAP; 0–4 retain their exact meanings. Preset adds plugin ID/vendor/version/path and bounded opaque byte state, plus opt-in extended synth flags/parameters. Track adds an ordered insert array: plugin preset, bypass and wet. Effects add disabled-by-default compressor, peaking EQ, peak limiter and input/output gains. Legacy render paths stay neutral on missing fields. SoundFonts/SFZ collection remains; plugin binaries are never copied into project media. Missing plugin paths/state remain recoverable. Replacing a missing plugin is distinct from choosing another tone; automatic cross-machine plugin-path relinking is not implemented.

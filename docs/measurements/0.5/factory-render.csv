@@ -1,0 +1,100 @@
+instrument,patch,file,samples,peak,rms,unknown_opcodes,prepare_ms,preloaded_bytes
+"Claps","Natural","vcsl/Idiophones/Struck Idiophones/Claps.sfz",10,0.3,0.0124019,"",31.8755,2427528
+"Balafon","Hard Mallet","vcsl/Idiophones/Struck Idiophones/Balafon - Hard Mallet.sfz",18,0.3,0.0237891,"",9.05771,5130376
+"Balafon","Keyswitch","vcsl/Idiophones/Struck Idiophones/Balafon - Keyswitch.sfz",54,0.3,0.0237891,"",20.994,7752432
+"Balafon","Soft Mallet","vcsl/Idiophones/Struck Idiophones/Balafon - Soft Mallet.sfz",18,0.3,0.0310846,"",4.16592,4912080
+"Balafon","Traditional Mallet","vcsl/Idiophones/Struck Idiophones/Balafon - Traditional Mallet.sfz",18,0.299999,0.0211241,"",4.1085,5157384
+"Bass Drum 1","Natural","vcsl/Membranophones/Struck Membranophones/Bass Drum 1.sfz",8,0.3,0.0436101,"",4.48287,8785976
+"Hi-Hat Cymbal","Natural","vcsl/Idiophones/Struck Idiophones/Hi-Hat Cymbal.sfz",15,0.3,0.0248272,"",7.59471,8263232
+"Tuba","KS","vsco/Tuba-KS.sfz",87,0.311961,0.0350001,"group_label",36.3928,16470736
+"Tuba","Stac","vsco/TubaStac.sfz",64,0.332389,0.0349999,"group_label",12.098,7355568
+"Tuba","Sus","vsco/TubaSus.sfz",23,0.311961,0.0350001,"group_label",4.78092,11902672
+"Snare Drum, Modern 1","Natural","vcsl/Membranophones/Struck Membranophones/Snare Drum, Modern 1.sfz",29,0.3,0.0256593,"",17.6173,14083816
+"Violin Ensemble","KS","vsco/ViolinEns-KS.sfz",131,0.113681,0.0171218,"group_label",54.5026,35149328
+"Violin Ensemble","Pizz","vsco/ViolinEnsPizz.sfz",44,0.37182,0.0356767,"group_label",9.13321,7140664
+"Violin Ensemble","Spic","vsco/ViolinEnsSpic.sfz",44,0.332098,0.035,"group_label",8.96083,8398032
+"Violin Ensemble","SusVib-Quiet","vsco/ViolinEnsSusVib-Quiet.sfz",11,0.0810224,0.0096755,"",2.78004,13922072
+"Violin Ensemble","SusVib","vsco/ViolinEnsSusVib.sfz",22,0.113681,0.0171218,"",4.68758,27369344
+"Violin Ensemble","Trem","vsco/ViolinEnsTrem.sfz",21,0.308649,0.0350001,"",4.59904,21973712
+"Oboe","Stac","vsco/OboeStac.sfz",51,0.205694,0.0364761,"group_label",26.6868,5947992
+"Oboe","SusNV","vsco/OboeSusNV.sfz",18,0.134534,0.0259075,"",8.75696,29692216
+"Oboe","SusVib","vsco/OboeSusVib.sfz",18,0.187068,0.0271687,"",8.95829,18863752
+"Clarinet","KS","vsco/Clarinet-KS.sfz",97,0.25155,0.0350001,"group_label",41.3281,24285136
+"Clarinet","Stac","vsco/ClarinetStac.sfz",64,0.296315,0.035425,"group_label",12.3722,6482280
+"Clarinet","Sus","vsco/ClarinetSus.sfz",33,0.256745,0.0349999,"group_label",6.79533,19717072
+"Kalimba, Kenya","Natural","vcsl/Idiophones/Plucked Idiophones/Kalimba, Kenya.sfz",15,0.3,0.0134683,"",9.61487,7854152
+"Bassoon","Stac","vsco/BassoonStac.sfz",46,0.345352,0.0341536,"group_label",19.8575,5476896
+"Bassoon","Sus","vsco/BassoonSus.sfz",25,0.247348,0.035,"",11.531,16165624
+"Bassoon","Vib","vsco/BassoonVib.sfz",21,0.216178,0.0350001,"",9.97542,17503752
+"Concert Flute","KS","vsco/Flute-KS.sfz",94,0.236566,0.035,"group_label",43.819,23946224
+"Concert Flute","ExpVib","vsco/FluteExpVib.sfz",14,0.246269,0.035,"",3.92442,11920016
+"Concert Flute","Stac","vsco/FluteStac.sfz",48,0.294648,0.0361374,"group_label",11.4407,6430312
+"Concert Flute","SusNV","vsco/FluteSusNV.sfz",19,0.236566,0.035,"",5.07879,18593024
+"Concert Flute","SusVib","vsco/FluteSusVib.sfz",13,0.242397,0.035,"",3.67687,8419792
+"Vibraphone","Bowed","vcsl/Idiophones/Struck Idiophones/Vibraphone - Bowed.sfz",6,0.0328922,0.00502358,"",6.68487,15192264
+"Vibraphone","Hard Mallets","vcsl/Idiophones/Struck Idiophones/Vibraphone - Hard Mallets.sfz",22,0.3,0.0466172,"",8.77096,19992488
+"Vibraphone","Keyswitch","vcsl/Idiophones/Struck Idiophones/Vibraphone - Keyswitch.sfz",50,0.0328922,0.00484667,"",10.8019,14130280
+"Vibraphone","Soft Mallets","vcsl/Idiophones/Struck Idiophones/Vibraphone - Soft Mallets.sfz",22,0.299999,0.0720188,"",4.84108,21554824
+"French Horn","Mute","vsco/FHornMute.sfz",17,0.22251,0.035,"",3.82987,14545864
+"French Horn","Stac","vsco/FHornStac.sfz",54,0.171879,0.030381,"group_label",10.6539,6749824
+"French Horn","Sus","vsco/FHornSus.sfz",29,0.289639,0.035,"",5.89775,18353520
+"Trombone","Stac","vsco/TromboneStac.sfz",55,0.533261,0.0262102,"group_label",10.8968,8280904
+"Trombone","Sus","vsco/TromboneSus.sfz",31,0.333056,0.0350001,"",6.40767,25326864
+"Trombone","Vib","vsco/TromboneVib.sfz",12,0.0553123,0.00755467,"",2.96933,7712576
+"Harpsichord, English","Keyswitch","vcsl/Chordophones/Zithers/Harpsichord, English - Keyswitch.sfz",107,0.254496,0.0400511,"",23.6237,18566160
+"Harpsichord, English","Lute","vcsl/Chordophones/Zithers/Harpsichord, English - Lute.sfz",53,0.191765,0.0341267,"",11.7607,9741112
+"Harpsichord, English","Normal","vcsl/Chordophones/Zithers/Harpsichord, English - Normal.sfz",54,0.219345,0.0417609,"",12.0051,14602480
+"TX81Z","Clavisynth","vcsl/Electrophones/TX81Z - Clavisynth.sfz",57,0.272159,0.045,"",13.4356,10391536
+"TX81Z","FM Piano","vcsl/Electrophones/TX81Z - FM Piano.sfz",66,0.25566,0.0450001,"",15.2948,14289524
+"TX81Z","Keyswitch","vcsl/Electrophones/TX81Z - Keyswitch.sfz",189,0.202355,0.045,"",42.6474,13889012
+"TX81Z","Piano 1","vcsl/Electrophones/TX81Z - Piano 1.sfz",66,0.202355,0.045,"",14.9425,9212956
+"Pipe Organ","Loud","vsco/OrganLoud.sfz",21,0.41377,0.0425841,"",4.56438,14934472
+"Pipe Organ","LoudPedal","vsco/OrganLoudPedal.sfz",11,0.423333,0.045,"",2.84063,15039608
+"Pipe Organ","Quiet","vsco/OrganQuiet.sfz",21,0.178265,0.0272404,"group_label",4.61925,14572464
+"Pipe Organ","QuietPedal","vsco/OrganQuietPedal.sfz",11,0.121771,0.0188515,"group_label",2.77921,14036808
+"Shaker","Legacy","vcsl/Idiophones/Struck Idiophones/Shaker - Legacy.sfz",2,0.3,0.00597079,"",1.24638,711640
+"Tambourine 3","Legacy","vcsl/Idiophones/Struck Idiophones/Tambourine 3 - Legacy.sfz",4,0.3,0.0169717,"",1.49742,1366304
+"Ball Whistle","Natural","vcsl/Aerophones/Edge-blown Aerophones/Ball Whistle.sfz",2,0.222964,0.0350001,"",1.07004,1696664
+"Slapstick","Natural","vcsl/Idiophones/Struck Idiophones/Slapstick.sfz",5,0.3,0.0049645,"",1.709,1948312
+"Guiro","Keyswitch","vcsl/Idiophones/Struck Idiophones/Guiro - Keyswitch.sfz",14,0.174974,0.00797429,"",3.43092,1990600
+"Guiro","Legacy","vcsl/Idiophones/Struck Idiophones/Guiro - Legacy.sfz",9,0.0847126,0.00623231,"",2.33575,1684320
+"Guiro","Natural","vcsl/Idiophones/Struck Idiophones/Guiro.sfz",5,0.174974,0.00852227,"",1.61637,2863128
+"Cabasa","Natural","vcsl/Idiophones/Struck Idiophones/Cabasa.sfz",6,0.3,0.0149429,"",1.93037,2913352
+"Claves","Natural","vcsl/Idiophones/Struck Idiophones/Claves.sfz",6,0.3,0.0124261,"",1.89908,3190784
+"Agogo Bells","Natural","vcsl/Idiophones/Struck Idiophones/Agogo Bells.sfz",5,0.299999,0.0204195,"",1.7315,3558672
+"Slit Drum","Natural","vcsl/Idiophones/Struck Idiophones/Slit Drum.sfz",6,0.300001,0.0283444,"",1.87383,3815168
+"Finger Cymbals","Natural","vcsl/Idiophones/Struck Idiophones/Finger Cymbals.sfz",1,0.157332,0.0116332,"",0.901375,2747032
+"Hand Bells, Nepalese","Natural","vcsl/Idiophones/Struck Idiophones/Hand Bells, Nepalese.sfz",3,0.300001,0.0197212,"",1.281,2951512
+"Train Whistle, Toy","Natural","vcsl/Aerophones/Edge-blown Aerophones/Train Whistle, Toy.sfz",6,0.396468,0.0349999,"",1.83262,2592592
+"Woodblock","Natural","vcsl/Idiophones/Struck Idiophones/Woodblock.sfz",10,0.3,0.0137102,"",2.64133,3368896
+"Gong 2","Natural","vcsl/Idiophones/Struck Idiophones/Gong 2.sfz",6,0.299987,0.0330767,"",9.28021,12512120
+"Tubular Bells 3","Legacy","vcsl/Idiophones/Struck Idiophones/Tubular Bells 3 - Legacy.sfz",18,0.3,0.0472247,"",34.3138,11044496
+"Darbuka","Natural","vcsl/Membranophones/Struck Membranophones/Darbuka.sfz",20,0.3,0.0269017,"",4.52862,4314152
+"Legacy Snares","Keyswitch","vcsl/Membranophones/Struck Membranophones/Legacy Snares - Keyswitch.sfz",108,0.3,0.0132573,"",22.4696,9967288
+"Legacy Snares","OldSnare","vcsl/Membranophones/Struck Membranophones/Legacy Snares - OldSnare.sfz",15,0.3,0.016013,"",3.48346,1865344
+"Legacy Snares","drum1","vcsl/Membranophones/Struck Membranophones/Legacy Snares - drum1.sfz",40,0.3,0.0132573,"",8.44683,4813144
+"Legacy Snares","drum2","vcsl/Membranophones/Struck Membranophones/Legacy Snares - drum2.sfz",36,0.3,0.0194186,"",7.7425,4527008
+"Legacy Snares","drum3_marching","vcsl/Membranophones/Struck Membranophones/Legacy Snares - drum3_marching.sfz",17,0.3,0.0129963,"",4.05683,3391560
+"Cowbells","Natural","vcsl/Idiophones/Struck Idiophones/Cowbells.sfz",13,0.300001,0.0207377,"",3.2845,4627512
+"Anvil","Natural","vcsl/Idiophones/Struck Idiophones/Anvil.sfz",9,0.3,0.0246511,"",2.45562,6705096
+"Vibraslap","Natural","vcsl/Idiophones/Struck Idiophones/Vibraslap.sfz",4,0.3,0.0159582,"",1.49992,4832512
+"Bell Tree","Individual","vcsl/Idiophones/Struck Idiophones/Bell Tree - Individual.sfz",6,0.254306,0.0218136,"",1.89467,5548896
+"Bell Tree","Keyswitch","vcsl/Idiophones/Struck Idiophones/Bell Tree - Keyswitch.sfz",16,0.300001,0.0113314,"",3.83075,2887936
+"Bell Tree","Legacy","vcsl/Idiophones/Struck Idiophones/Bell Tree - Legacy.sfz",5,0.300001,0.0180502,"",1.639,4936752
+"Bell Tree","Stroke","vcsl/Idiophones/Struck Idiophones/Bell Tree - Stroke.sfz",5,0.299999,0.0239681,"",1.69388,6496248
+"Cajon","Natural","vcsl/Idiophones/Struck Idiophones/Cajon.sfz",18,0.3,0.0218446,"",4.01871,5931328
+"Xylophone","Natural","vsco/Xylophone.sfz",8,0.3,0.0241666,"",2.28567,3261432
+"Sleigh Bells","Natural","vcsl/Idiophones/Struck Idiophones/Sleigh Bells.sfz",6,0.300001,0.0199169,"",1.88112,5406872
+"Conga","Natural","vcsl/Membranophones/Struck Membranophones/Conga.sfz",34,0.3,0.0281666,"",7.28658,5489312
+"Harmonica-Hohner-Special20-C","Keyswitch","vcsl/Aerophones/Free Aerophones/Harmonica-Hohner-Special20-C - Keyswitch.sfz",58,0.253254,0.035,"",11.5947,5257476
+"Harmonica-Hohner-Special20-C","Normal","vcsl/Aerophones/Free Aerophones/Harmonica-Hohner-Special20-C - Normal.sfz",18,0.253254,0.035,"",3.95929,3737616
+"Harmonica-Hohner-Special20-C","Soft","vcsl/Aerophones/Free Aerophones/Harmonica-Hohner-Special20-C - Soft.sfz",20,0.269372,0.0349999,"",4.29887,3890208
+"Harmonica-Hohner-Special20-C","Vib","vcsl/Aerophones/Free Aerophones/Harmonica-Hohner-Special20-C - Vib.sfz",20,0.233959,0.035,"",4.31279,4535488
+"Siren","Natural","vcsl/Aerophones/Free Aerophones/Siren.sfz",5,0.536676,0.035,"",1.63837,8120256
+"Piccolo","Stac","vsco/PiccoloStac.sfz",5,0.365193,0.035,"",1.67892,1294408
+"Piccolo","Sus","vsco/PiccoloSus.sfz",5,0.16671,0.035,"",1.72221,9246672
+"Tambourine 2","Natural","vcsl/Idiophones/Struck Idiophones/Tambourine 2.sfz",7,0.3,0.0125868,"",2.11683,13496824
+"Glockenspiel","Natural","vsco/Glockenspiel.sfz",6,0.12999,0.0114076,"",1.84987,6938496
+"Meta Nylon Guitar","Original","meta-nylon-guitar/meta-nylon-guitar-ensemble.sfz",132,0.273483,0.0301148,"",238.243,15682968
+"Meta Piano","Original","meta-piano/meta-piano.sfz",352,0.286065,0.0461853,"",262.51,27740644
+"Meta Steel Guitar","Original","meta-steel-guitar/meta-steel-guitar-ensemble.sfz",135,0.244494,0.035,"",194.81,22952128

@@ -1,0 +1,1 @@
+CC0-1.0. Original recordings: Versilian Studios / Sam Gossner and contributors, Meta and contributors. Source revisions and individual original URLs are preserved in pack.json. Original mappings and every dependent sample retained.

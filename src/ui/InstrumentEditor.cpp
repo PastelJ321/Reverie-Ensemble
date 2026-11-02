@@ -1,8 +1,9 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
-#include "ui/InstrumentEditor.h"
 #include "ui/Editor.h"
 #include "ui/InstrumentArt.h"
+#include "ui/InstrumentEditor.h"
 #include <QDoubleSpinBox>
 #include <QFormLayout>
 #include <QLabel>
@@ -16,27 +17,28 @@ InstrumentEditor::InstrumentEditor(Editor& e) : e_(e) {
     tone_->setRange(20, 24000);
     tone_->setDecimals(0);
     tone_->setSingleStep(250);
-    tone_->setSuffix(" Hz");
-    form->addRow("Tone / low-pass", tone_);
+    tone_->setSuffix(QCoreApplication::translate("Ensemble", " Hz"));
+    form->addRow(QCoreApplication::translate("Ensemble", "Tone / low-pass"), tone_);
     time_ = new QDoubleSpinBox;
     time_->setObjectName("smartTime");
     time_->setRange(.001, 10);
     time_->setDecimals(3);
-    time_->setSuffix(" s");
-    timeLabel_ = new QLabel("Release");
+    time_->setSuffix(QCoreApplication::translate("Ensemble", " s"));
+    timeLabel_ = new QLabel(QCoreApplication::translate("Ensemble", "Release"));
     form->addRow(timeLabel_, time_);
     space_ = new QDoubleSpinBox;
     space_->setObjectName("smartRoom");
     space_->setRange(0, 1);
     space_->setSingleStep(.05);
-    form->addRow("Room / reverb", space_);
+    form->addRow(QCoreApplication::translate("Ensemble", "Room / reverb"), space_);
     auto change = [this] {
         if (updating_ || e_.selectedTrack < 0)
             return;
         e_.edit([&] {
             auto& t = e_.project.tracks[e_.selectedTrack];
             bool external = t.preset.kind == InstrumentKind::Sfizz ||
-                            t.preset.kind == InstrumentKind::SoundFont;
+                            t.preset.kind == InstrumentKind::SoundFont ||
+                            t.preset.kind == InstrumentKind::Clap;
             if (!external)
                 t.preset.cutoff = float(tone_->value());
             auto family = instrumentFamily(t.preset);
@@ -60,14 +62,20 @@ void InstrumentEditor::refresh() {
     if (valid) {
         const auto& t = e_.project.tracks[e_.selectedTrack];
         auto family = instrumentFamily(t.preset);
-        bool external =
-            t.preset.kind == InstrumentKind::Sfizz || t.preset.kind == InstrumentKind::SoundFont;
+        bool external = t.preset.kind == InstrumentKind::Sfizz ||
+                        t.preset.kind == InstrumentKind::SoundFont ||
+                        t.preset.kind == InstrumentKind::Clap;
         tone_->setEnabled(!external);
         time_->setEnabled(!external);
-        tone_->setToolTip(external ? "Defined by the source instrument" : "");
-        time_->setToolTip(external ? "Defined by the source instrument" : "");
+        tone_->setToolTip(
+            external ? QCoreApplication::translate("Ensemble", "Defined by the source instrument")
+                     : "");
+        time_->setToolTip(
+            external ? QCoreApplication::translate("Ensemble", "Defined by the source instrument")
+                     : "");
         bool strings = family == "strings" || family == "cello";
-        timeLabel_->setText(strings ? "Bow attack" : "Release");
+        timeLabel_->setText(strings ? QCoreApplication::translate("Ensemble", "Bow attack")
+                                    : QCoreApplication::translate("Ensemble", "Release"));
         time_->setValue(strings ? t.preset.attack : t.preset.release);
         time_->setVisible(family != "drums");
         timeLabel_->setVisible(family != "drums");

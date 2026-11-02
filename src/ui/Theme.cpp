@@ -5,9 +5,12 @@
 #include <QApplication>
 #include <QDir>
 #include <QFontDatabase>
+#include <QLocale>
 #include <QPainter>
 #include <QPainterPath>
+#include <QSettings>
 #include <QStandardPaths>
+#include <QTranslator>
 namespace reverie {
 QString assetPath() {
     auto bundled = QCoreApplication::applicationDirPath() + "/../Resources/assets";
@@ -15,12 +18,32 @@ QString assetPath() {
         return QDir(bundled).absolutePath();
     return QString::fromUtf8(REVERIE_ASSET_DIR);
 }
+QString factoryPackPath() {
+    auto override = qEnvironmentVariable("REVERIE_FACTORY_ROOT");
+    if (!override.isEmpty())
+        return override;
+    auto bundled = QCoreApplication::applicationDirPath() + "/../Resources/FactoryLibrary";
+    return QDir(bundled).exists() ? bundled : QString::fromUtf8(REVERIE_FACTORY_DIR);
+}
 QString soundPackPath() {
     auto override = qEnvironmentVariable("REVERIE_LIBRARY_ROOT");
     return override.isEmpty()
                ? QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) +
                      "/SoundPacks"
                : override;
+}
+void loadUiLanguage() {
+    static QTranslator translator;
+    qApp->removeTranslator(&translator);
+    auto choice = QSettings().value("interface/language", "system").toString();
+    auto locale = choice == "system" ? QLocale::system().name() : choice;
+    if (locale.startsWith("ko")) {
+        auto dir =
+            qEnvironmentVariable("REVERIE_TRANSLATIONS", QCoreApplication::applicationDirPath() +
+                                                             "/../Resources/translations");
+        if (translator.load("ensemble_ko_KR", dir))
+            qApp->installTranslator(&translator);
+    }
 }
 void initializeTheme() {
     static bool initialized = false;

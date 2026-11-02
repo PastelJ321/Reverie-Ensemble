@@ -1,0 +1,30 @@
+[
+  {
+    "name": "v1 First Light",
+    "before": "out/regression04-first.wav",
+    "after": "out/regression05-first.wav",
+    "sha256": "1a34739e4d9c7e377eca90f8a8bc704ad17c5ae73eb746d6d82f901d25543f37",
+    "byteIdentical": true
+  },
+  {
+    "name": "v3 Demo Composition",
+    "before": "out/regression04-v3.wav",
+    "after": "out/regression05-v3.wav",
+    "sha256": "e183f7dddc08e5cafdc45ec6b560e76e6e3951164608dd7982a1d1476db566ca",
+    "byteIdentical": true
+  },
+  {
+    "name": "v4 Typing Study",
+    "before": "examples/Typing Study.wav",
+    "after": "out/regression05-typing.wav",
+    "sha256": "9a33e26231c435e0eb08974feb964e16e50aa4dd094f6732438a52cb595e36f7",
+    "byteIdentical": true
+  },
+  {
+    "name": "v4 collected sfizz Grand",
+    "before": "out/native-performance04/Paper Study.wav",
+    "after": "out/regression05-v4-grand.wav",
+    "sha256": "bd9b8fee09efe32c788df6e35ee3b9a520fa4a161d70be6b517f6497e32e246b",
+    "byteIdentical": true
+  }
+]

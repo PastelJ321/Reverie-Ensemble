@@ -1,3 +1,4 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 
@@ -13,6 +14,7 @@
 #include "ui/MixerView.h"
 #include "ui/PerformanceKeyboard.h"
 #include "ui/PianoRoll.h"
+#include "ui/ProductionControls.h"
 #include "ui/SoundBrowser.h"
 #include "ui/Theme.h"
 #include "ui/Timeline.h"
@@ -88,24 +90,24 @@ void Editor::buildUi() {
     auto* transport = addToolBar("Transport");
     transport->setMovable(false);
     transport->setFixedHeight(design::transportHeight);
-    auto* brand = new QLabel("ensemble.", this);
+    auto* brand = new QLabel(QCoreApplication::translate("Ensemble", "ensemble."), this);
     brand->setStyleSheet("font-size:19px;font-weight:600;color:#EDE5D8;padding-right:8px");
     transport->addWidget(brand);
     projectLabel_ = new QLabel;
     projectLabel_->setMaximumWidth(140);
     projectLabel_->setStyleSheet("color:#BEB2A4;padding-right:8px");
     transport->addWidget(projectLabel_);
-    playButton_ = new QPushButton("Play", this);
+    playButton_ = new QPushButton(QCoreApplication::translate("Ensemble", "Play"), this);
     playButton_->setObjectName("play");
     playButton_->setIcon(toolIcon("play"));
     transport->addWidget(playButton_);
     connect(playButton_, &QPushButton::clicked, this, [this] { play(); });
-    auto* stopButton = new QPushButton("Stop", this);
+    auto* stopButton = new QPushButton(QCoreApplication::translate("Ensemble", "Stop"), this);
     stopButton->setObjectName("stop");
     stopButton->setIcon(toolIcon("stop"));
     transport->addWidget(stopButton);
     connect(stopButton, &QPushButton::clicked, this, [this] { stop(); });
-    recordButton_ = new QPushButton("Record", this);
+    recordButton_ = new QPushButton(QCoreApplication::translate("Ensemble", "Record"), this);
     recordButton_->setObjectName("record");
     recordButton_->setIcon(toolIcon("record"));
     recordButton_->setStyleSheet("color:#BC655C");
@@ -115,8 +117,8 @@ void Editor::buildUi() {
     loop->setObjectName("loop");
     loop->setIcon(toolIcon("loop"));
     loop->setCheckable(true);
-    loop->setToolTip("Loop playback");
-    loop->setAccessibleName("Loop playback");
+    loop->setToolTip(QCoreApplication::translate("Ensemble", "Loop playback"));
+    loop->setAccessibleName(QCoreApplication::translate("Ensemble", "Loop playback"));
     transport->addWidget(loop);
     connect(loop, &QPushButton::toggled, this, [this](bool on) {
         if (!refreshing_)
@@ -126,15 +128,15 @@ void Editor::buildUi() {
     click->setObjectName("metronome");
     click->setIcon(toolIcon("metronome"));
     click->setCheckable(true);
-    click->setToolTip("Metronome (monitor only)");
-    click->setAccessibleName("Metronome");
+    click->setToolTip(QCoreApplication::translate("Ensemble", "Metronome (monitor only)"));
+    click->setAccessibleName(QCoreApplication::translate("Ensemble", "Metronome"));
     transport->addWidget(click);
     connect(click, &QPushButton::toggled, this, [this](bool on) {
         if (!refreshing_)
             edit([&] { project.metronome = on; });
     });
     transport->addSeparator();
-    transport->addWidget(new QLabel("BPM", this));
+    transport->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "BPM"), this));
     bpm_ = number(this, 20, 300, 1, 1);
     bpm_->setObjectName("bpm");
     bpm_->setValue(project.bpm);
@@ -160,8 +162,9 @@ void Editor::buildUi() {
     position_ = new QLineEdit("1 : 1 : 000", this);
     position_->setObjectName("transportPosition");
     position_->setMaximumWidth(150);
-    position_->setToolTip("Bars : Beats : Ticks (960 / notated beat), or minutes:seconds with s "
-                          "suffix. Return to seek.");
+    position_->setToolTip(QCoreApplication::translate(
+        "Ensemble", "Bars : Beats : Ticks (960 / notated beat), or minutes:seconds with s "
+                    "suffix. Return to seek."));
     connect(position_, &QLineEdit::returnPressed, this, [this] {
         auto text = position_->text().trimmed();
         double beat = -1;
@@ -198,7 +201,9 @@ void Editor::buildUi() {
             engine.seek(TempoMap{project.bpm, engine.sampleRate()}.sampleAt(beat));
             position_->clearFocus();
         } else
-            message("Enter bars:beats:ticks, or minutes:seconds with s suffix (e.g. 0:12.5s).");
+            message(QCoreApplication::translate(
+                "Ensemble",
+                "Enter bars:beats:ticks, or minutes:seconds with s suffix (e.g. 0:12.5s)."));
     });
     position_->setMinimumWidth(125);
     position_->setStyleSheet("font-family:IBM Plex Mono;font-size:15px;color:#EDE5D8;padding:8px");
@@ -206,14 +211,16 @@ void Editor::buildUi() {
     connect(position_, &QLineEdit::customContextMenuRequested, this, [this](QPoint point) {
         auto* menu = position_->createStandardContextMenu();
         menu->addSeparator();
-        menu->addAction("Display bars / beats / ticks", [this] {
-            timeDisplaySeconds = false;
-            position_->clearFocus();
-        });
-        menu->addAction("Display minutes / seconds", [this] {
-            timeDisplaySeconds = true;
-            position_->clearFocus();
-        });
+        menu->addAction(QCoreApplication::translate("Ensemble", "Display bars / beats / ticks"),
+                        [this] {
+                            timeDisplaySeconds = false;
+                            position_->clearFocus();
+                        });
+        menu->addAction(QCoreApplication::translate("Ensemble", "Display minutes / seconds"),
+                        [this] {
+                            timeDisplaySeconds = true;
+                            position_->clearFocus();
+                        });
         menu->exec(position_->mapToGlobal(point));
         delete menu;
     });
@@ -222,7 +229,7 @@ void Editor::buildUi() {
     masterMeter->setMinimumWidth(120);
     transport->addWidget(masterMeter);
     connect(&timer_, &QTimer::timeout, masterMeter, qOverload<>(&QWidget::update));
-    auto* deviceStatus = new QLabel("AUDIO");
+    auto* deviceStatus = new QLabel(QCoreApplication::translate("Ensemble", "AUDIO"));
     deviceStatus->setObjectName("transportDeviceStatus");
     deviceStatus->setStyleSheet("font-size:11px;color:#BEB2A4");
     deviceStatus->setMaximumWidth(120);
@@ -254,11 +261,11 @@ void Editor::buildUi() {
     pianoLayout->setContentsMargins(0, 0, 0, 0);
     pianoLayout->setSpacing(0);
     auto* pianoBar = new QToolBar;
-    pianoBar->addWidget(new QLabel("PIANO ROLL  "));
+    pianoBar->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "PIANO ROLL  ")));
     piano_ = new PianoRoll(*this);
-    auto* quant = pianoBar->addAction("Quantize");
+    auto* quant = pianoBar->addAction(QCoreApplication::translate("Ensemble", "Quantize"));
     connect(quant, &QAction::triggered, this, [this] { piano_->quantize(); });
-    pianoBar->addWidget(new QLabel("Velocity "));
+    pianoBar->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "Velocity ")));
     auto* velocity = number(this, .01, 1, .05);
     velocity->setObjectName("velocity");
     velocity->setValue(.8);
@@ -266,7 +273,7 @@ void Editor::buildUi() {
     pianoBar->addWidget(velocity);
     connect(velocity, &QDoubleSpinBox::valueChanged, this,
             [this](double v) { piano_->setVelocity(v); });
-    auto* snapBox = new QCheckBox("Snap");
+    auto* snapBox = new QCheckBox(QCoreApplication::translate("Ensemble", "Snap"));
     snapBox->setChecked(true);
     pianoBar->addWidget(snapBox);
     connect(snapBox, &QCheckBox::toggled, this, [this](bool v) { snap = v; });
@@ -279,7 +286,7 @@ void Editor::buildUi() {
         piano_->update();
         timeline_->update();
     });
-    pianoBar->addWidget(new QLabel(" Zoom "));
+    pianoBar->addWidget(new QLabel(QCoreApplication::translate("Ensemble", " Zoom ")));
     auto* zoom = number(this, 24, 160, 8, 0);
     zoom->setValue(64);
     zoom->setMaximumWidth(75);
@@ -309,26 +316,26 @@ void Editor::buildUi() {
     auto* modes = addToolBar("Workspace");
     modes->setFixedHeight(34);
     modes->setMovable(false);
-    auto* arrange = modes->addAction("Arrange");
-    auto* mix = modes->addAction("Mixer");
+    auto* arrange = modes->addAction(QCoreApplication::translate("Ensemble", "Arrange"));
+    auto* mix = modes->addAction(QCoreApplication::translate("Ensemble", "Mixer"));
     connect(arrange, &QAction::triggered, this, [this] { workspace_->setCurrentIndex(0); });
     connect(mix, &QAction::triggered, this, [this] {
         mixer_->refresh();
         workspace_->setCurrentIndex(1);
     });
-    auto* keysAction = modes->addAction("Keyboard");
+    auto* keysAction = modes->addAction(QCoreApplication::translate("Ensemble", "Keyboard"));
     connect(keysAction, &QAction::triggered, this, [this] { showKeyboard(); });
-    auto* browserAction = modes->addAction("Browse");
+    auto* browserAction = modes->addAction(QCoreApplication::translate("Ensemble", "Browse"));
     connect(browserAction, &QAction::triggered, this, [this] { showBrowser(); });
-    auto* lower = modes->addAction("Piano editor");
+    auto* lower = modes->addAction(QCoreApplication::translate("Ensemble", "Piano editor"));
     lower->setCheckable(true);
     lower->setChecked(true);
     connect(lower, &QAction::toggled, pianoPanel, &QWidget::setVisible);
-    auto* follow = new QCheckBox("Follow");
+    auto* follow = new QCheckBox(QCoreApplication::translate("Ensemble", "Follow"));
     follow->setChecked(followPlayhead);
     modes->addWidget(follow);
     connect(follow, &QCheckBox::toggled, this, [this](bool value) { followPlayhead = value; });
-    modes->addWidget(new QLabel("Track height"));
+    modes->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "Track height")));
     auto* heights = number(this, 62, 130, 4, 0);
     heights->setValue(trackHeight);
     modes->addWidget(heights);
@@ -336,7 +343,7 @@ void Editor::buildUi() {
         trackHeight = int(v);
         timeline_->updateExtent();
     });
-    modes->addWidget(new QLabel("Loop beats"));
+    modes->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "Loop beats")));
     for (bool end : {false, true}) {
         auto* point = number(this, end ? .125 : 0, 100000, .25, 2);
         point->setObjectName(end ? "loopEnd" : "loopStart");
@@ -357,7 +364,7 @@ void Editor::buildUi() {
     level->setObjectName("clickLevel");
     level->setValue(project.clickLevel);
     level->setMaximumWidth(70);
-    modes->addWidget(new QLabel("Click level"));
+    modes->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "Click level")));
     modes->addWidget(level);
     connect(level, &QDoubleSpinBox::valueChanged, this, [this](double v) {
         if (!refreshing_)
@@ -374,15 +381,15 @@ void Editor::buildUi() {
     volume_->setObjectName("trackVolume");
     pan_ = number(this, -1, 1, .05);
     pan_->setObjectName("trackPan");
-    form->addRow("Volume", volume_);
-    form->addRow("Pan", pan_);
+    form->addRow(QCoreApplication::translate("Ensemble", "Volume"), volume_);
+    form->addRow(QCoreApplication::translate("Ensemble", "Pan"), pan_);
     layout->addLayout(form);
     auto* toggles = new QHBoxLayout;
-    mute_ = new QCheckBox("Mute");
-    solo_ = new QCheckBox("Solo");
+    mute_ = new QCheckBox(QCoreApplication::translate("Ensemble", "Mute"));
+    solo_ = new QCheckBox(QCoreApplication::translate("Ensemble", "Solo"));
     toggles->addWidget(mute_);
     toggles->addWidget(solo_);
-    auto* arm = new QCheckBox("Arm");
+    auto* arm = new QCheckBox(QCoreApplication::translate("Ensemble", "Arm"));
     arm->setObjectName("trackArm");
     toggles->addWidget(arm);
     connect(arm, &QCheckBox::toggled, this, [this](bool on) {
@@ -413,7 +420,8 @@ void Editor::buildUi() {
     instrumentLabel_->setStyleSheet("color:#BEB2A4;font-size:11px");
     layout->addWidget(instrumentLabel_);
     layout->addWidget(new InstrumentEditor(*this));
-    auto* instrumentToggle = new QPushButton("Instrument parameters");
+    auto* instrumentToggle =
+        new QPushButton(QCoreApplication::translate("Ensemble", "Instrument parameters"));
     instrumentToggle->setCheckable(true);
     layout->addWidget(instrumentToggle);
     auto* instrumentControls = new QWidget;
@@ -422,19 +430,25 @@ void Editor::buildUi() {
     auto* synthForm = new QFormLayout(instrumentControls);
     connect(instrumentToggle, &QPushButton::toggled, instrumentControls, &QWidget::setVisible);
     wave_ = new QComboBox;
-    wave_->addItems({"Sine", "Saw", "Square", "Triangle"});
-    synthForm->addRow("Oscillator", wave_);
+    wave_->addItems({QCoreApplication::translate("Ensemble", "Sine"),
+                     QCoreApplication::translate("Ensemble", "Saw"),
+                     QCoreApplication::translate("Ensemble", "Square"),
+                     QCoreApplication::translate("Ensemble", "Triangle")});
+    synthForm->addRow(QCoreApplication::translate("Ensemble", "Oscillator"), wave_);
     attack_ = number(this, .0001, 10, .01, 4);
     decay_ = number(this, .0001, 10, .05, 4);
     sustain_ = number(this, 0, 1, .05);
     release_ = number(this, .001, 10, .05, 3);
     cutoff_ = number(this, 20, 24000, 100, 0);
-    synthForm->addRow("Attack (s)", attack_);
-    synthForm->addRow("Decay (s)", decay_);
-    synthForm->addRow("Sustain", sustain_);
-    synthForm->addRow("Release (s)", release_);
-    synthForm->addRow("Low-pass Hz", cutoff_);
+    synthForm->addRow(QCoreApplication::translate("Ensemble", "Attack (s)"), attack_);
+    synthForm->addRow(QCoreApplication::translate("Ensemble", "Decay (s)"), decay_);
+    synthForm->addRow(QCoreApplication::translate("Ensemble", "Sustain"), sustain_);
+    synthForm->addRow(QCoreApplication::translate("Ensemble", "Release (s)"), release_);
+    synthForm->addRow(QCoreApplication::translate("Ensemble", "Low-pass Hz"), cutoff_);
     layout->addWidget(instrumentControls);
+    auto* modernSynth = new QPushButton(QCoreApplication::translate("Ensemble", "Synth controls…"));
+    synthForm->addRow(modernSynth);
+    connect(modernSynth, &QPushButton::clicked, this, [this] { showSynthControls(*this); });
     auto synthChange = [this] {
         if (refreshing_ || selectedTrack < 0 || selectedTrack >= int(project.tracks.size()) ||
             project.tracks[selectedTrack].kind != TrackKind::Midi)
@@ -453,8 +467,8 @@ void Editor::buildUi() {
         connect(spin, &QDoubleSpinBox::valueChanged, this, synthChange);
     connect(wave_, &QComboBox::activated, this, synthChange);
     auto* presetButtons = new QHBoxLayout;
-    auto* load = new QPushButton("Load preset");
-    auto* save = new QPushButton("Save preset");
+    auto* load = new QPushButton(QCoreApplication::translate("Ensemble", "Load preset"));
+    auto* save = new QPushButton(QCoreApplication::translate("Ensemble", "Save preset"));
     presetButtons->addWidget(load);
     presetButtons->addWidget(save);
     layout->addLayout(presetButtons);
@@ -464,29 +478,31 @@ void Editor::buildUi() {
     auto* masterForm = new QFormLayout;
     master_ = number(this, 0, 2, .05);
     master_->setValue(project.master);
-    masterForm->addRow("Master", master_);
+    masterForm->addRow(QCoreApplication::translate("Ensemble", "Master"), master_);
     layout->addLayout(masterForm);
     connect(master_, &QDoubleSpinBox::valueChanged, this, [this](double v) {
         if (!refreshing_)
             edit([&] { project.master = float(v); });
     });
     inputs_ = new QComboBox(this);
-    inputs_->addItem("System default");
+    inputs_->addItem(QCoreApplication::translate("Ensemble", "System default"), "System default");
     inputs_->hide();
     auto* countIn = new QComboBox;
     countIn->setObjectName("countIn");
-    countIn->addItems({"Count-in: None", "Count-in: 1 bar", "Count-in: 2 bars"});
+    countIn->addItems({QCoreApplication::translate("Ensemble", "Count-in: None"),
+                       QCoreApplication::translate("Ensemble", "Count-in: 1 bar"),
+                       QCoreApplication::translate("Ensemble", "Count-in: 2 bars")});
     countIn->setCurrentIndex(QSettings().value("record/countInBars", 1).toInt());
     layout->addWidget(countIn);
     connect(countIn, &QComboBox::currentIndexChanged, this,
             [](int i) { QSettings().setValue("record/countInBars", i); });
-    auto* activity = new QLabel("MIDI input ready");
+    auto* activity = new QLabel(QCoreApplication::translate("Ensemble", "MIDI input ready"));
     activity->setObjectName("midiActivity");
     layout->addWidget(activity);
     auto* midiDevice = new QComboBox;
     midiDevice->setObjectName("midiInputDevice");
-    midiDevice->addItem("All MIDI inputs", -1);
-    midiDevice->addItem("MIDI disabled", 0);
+    midiDevice->addItem(QCoreApplication::translate("Ensemble", "All MIDI inputs"), -1);
+    midiDevice->addItem(QCoreApplication::translate("Ensemble", "MIDI disabled"), 0);
     for (auto& d : midiInput_.devices())
         midiDevice->addItem(QString::fromStdString(d.name), d.id);
     layout->addWidget(midiDevice);
@@ -503,9 +519,10 @@ void Editor::buildUi() {
     });
     auto* channel = new QComboBox;
     channel->setObjectName("midiChannel");
-    channel->addItem("All MIDI channels", -1);
+    channel->addItem(QCoreApplication::translate("Ensemble", "All MIDI channels"), -1);
     for (int i = 0; i < 16; ++i)
-        channel->addItem(QString("Channel %1").arg(i + 1), i);
+        channel->addItem(QString(QCoreApplication::translate("Ensemble", "Channel %1")).arg(i + 1),
+                         i);
     layout->addWidget(channel);
     connect(channel, &QComboBox::currentIndexChanged, this, [this, channel] {
         if (refreshing_)
@@ -516,14 +533,15 @@ void Editor::buildUi() {
                 project.tracks[selectedTrack].midiChannel = channel->currentData().toInt();
             });
     });
-    auto* settings = new QPushButton("Audio Settings…");
+    auto* settings = new QPushButton(QCoreApplication::translate("Ensemble", "Audio Settings…"));
     layout->addWidget(settings);
     connect(settings, &QPushButton::clicked, this, [this] { showSettings(); });
     output_ = new QLabel;
     output_->setWordWrap(true);
     output_->setStyleSheet("color:#BEB2A4;font-size:11px");
     layout->addWidget(output_);
-    auto* retry = new QPushButton("Reconnect audio / clear clip");
+    auto* retry =
+        new QPushButton(QCoreApplication::translate("Ensemble", "Reconnect audio / clear clip"));
     layout->addWidget(retry);
     connect(retry, &QPushButton::clicked, this, [this] {
         if (recording_)
@@ -538,14 +556,17 @@ void Editor::buildUi() {
     auto* inspectorTabs = new QTabWidget;
     inspectorTabs->setObjectName("inspectorTabs");
     selectionInspector_ = new InspectorPanel(*this);
-    inspectorTabs->addTab(selectionInspector_, "Selection");
-    inspectorTabs->addTab(inspectorScroll, "Track / Instrument");
+    inspectorTabs->addTab(selectionInspector_,
+                          QCoreApplication::translate("Ensemble", "Selection"));
+    inspectorTabs->addTab(inspectorScroll,
+                          QCoreApplication::translate("Ensemble", "Track / Instrument"));
     right->setWidget(inspectorTabs);
     right->setMinimumWidth(260);
     right->setMaximumWidth(320);
     addDockWidget(Qt::RightDockWidgetArea, right);
     resizeDocks({left, right}, {250, 280}, Qt::Horizontal);
-    statusBar()->showMessage("Double-click a lane to create a clip · Click to draw notes · "
-                             "Shift-drag to select · Space to play");
+    statusBar()->showMessage(QCoreApplication::translate(
+        "Ensemble", "Double-click a lane to create a clip · Click to draw notes · "
+                    "Shift-drag to select · Space to play"));
 }
 } // namespace reverie

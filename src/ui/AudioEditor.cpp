@@ -1,3 +1,4 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 #include "ui/AudioEditor.h"
@@ -16,15 +17,17 @@ void AudioEditor::paintEvent(QPaintEvent*) {
     p.fillRect(rect(), design::paper);
     auto* c = findClip(e_.project, e_.selectedClip);
     p.setPen(design::ink);
-    p.drawText(12, 22, "AUDIO / NON-DESTRUCTIVE SOURCE");
+    p.drawText(12, 22, QCoreApplication::translate("Ensemble", "AUDIO / NON-DESTRUCTIVE SOURCE"));
     if (!c)
         return;
-    p.drawText(12, 44,
-               QString::fromStdString(c->name) + QString("    Source in %1 s · Length %2 beats")
-                                                     .arg(c->sourceOffset, 0, 'f', 3)
-                                                     .arg(c->length, 0, 'f', 2));
+    p.drawText(
+        12, 44,
+        QString::fromStdString(c->name) +
+            QString(QCoreApplication::translate("Ensemble", "    Source in %1 s · Length %2 beats"))
+                .arg(c->sourceOffset, 0, 'f', 3)
+                .arg(c->length, 0, 'f', 2));
     if (!c->sample) {
-        p.drawText(12, 90, "Source WAV unavailable");
+        p.drawText(12, 90, QCoreApplication::translate("Ensemble", "Source WAV unavailable"));
         return;
     }
     double frames = c->length * 60 / e_.project.bpm * c->sample->sampleRate,

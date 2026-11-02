@@ -20,6 +20,7 @@ class InstrumentBackend {
     virtual void render(float* stereo, unsigned frames) noexcept = 0;
     virtual void reset() noexcept = 0;
     virtual void setOffline(bool) noexcept {}
+    virtual void transport(std::int64_t, double, double, int, int, bool) noexcept {}
     virtual std::uint64_t memoryBytes() const noexcept {
         return 0;
     }

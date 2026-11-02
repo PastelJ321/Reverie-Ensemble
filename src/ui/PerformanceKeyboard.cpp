@@ -1,7 +1,8 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
-#include "ui/PerformanceKeyboard.h"
 #include "ui/Editor.h"
+#include "ui/PerformanceKeyboard.h"
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
@@ -35,20 +36,20 @@ PerformanceKeyboard::PerformanceKeyboard(Editor& e) : editor_(e) {
     auto* controls = new QHBoxLayout;
     target_ = new QLabel;
     controls->addWidget(target_, 1);
-    typing_ = new QCheckBox("Musical Typing");
+    typing_ = new QCheckBox(QCoreApplication::translate("Ensemble", "Musical Typing"));
     typing_->setObjectName("musicalTyping");
     controls->addWidget(typing_);
-    controls->addWidget(new QLabel("Octave"));
+    controls->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "Octave")));
     octave_ = new QSpinBox;
     octave_->setRange(-1, 7);
     octave_->setValue(4);
     controls->addWidget(octave_);
-    controls->addWidget(new QLabel("Velocity"));
+    controls->addWidget(new QLabel(QCoreApplication::translate("Ensemble", "Velocity")));
     velocity_ = new QSpinBox;
     velocity_->setRange(1, 127);
     velocity_->setValue(100);
     controls->addWidget(velocity_);
-    sustain_ = new QCheckBox("Sustain · Tab");
+    sustain_ = new QCheckBox(QCoreApplication::translate("Ensemble", "Sustain · Tab"));
     sustain_->setObjectName("keyboardSustain");
     controls->addWidget(sustain_);
     layout->addLayout(controls);
@@ -57,11 +58,13 @@ PerformanceKeyboard::PerformanceKeyboard(Editor& e) : editor_(e) {
     keys_->setMinimumHeight(110);
     keys_->setMouseTracking(true);
     keys_->setFocusPolicy(Qt::StrongFocus);
-    keys_->setAccessibleName("Virtual piano · MIDI 21 to 108");
+    keys_->setAccessibleName(
+        QCoreApplication::translate("Ensemble", "Virtual piano · MIDI 21 to 108"));
     keys_->installEventFilter(this);
     layout->addWidget(keys_, 1);
-    auto* hint = new QLabel("A W S E D F T G Y H U J K → C D♭ D E♭ E F G♭ G A♭ A B♭ B C  ·  Z/X "
-                            "octave  ·  C/V velocity  ·  MIDI 21–108");
+    auto* hint = new QLabel(QCoreApplication::translate(
+        "Ensemble", "A W S E D F T G Y H U J K → C D♭ D E♭ E F G♭ G A♭ A B♭ B C  ·  Z/X "
+                    "octave  ·  C/V velocity  ·  MIDI 21–108"));
     hint->setStyleSheet("color:#BEB2A4;font-family:IBM Plex Mono;font-size:10px");
     layout->addWidget(hint);
     connect(typing_, &QCheckBox::toggled, this, [this](bool) { releaseAll(); });
@@ -177,7 +180,8 @@ bool PerformanceKeyboard::eventFilter(QObject* obj, QEvent* ev) {
         }
         if (ev->type() == QEvent::MouseMove) {
             auto* m = static_cast<QMouseEvent*>(ev);
-            keys_->setToolTip(QString("MIDI %1").arg(keyAt(m->position())));
+            keys_->setToolTip(QString(QCoreApplication::translate("Ensemble", "MIDI %1"))
+                                  .arg(keyAt(m->position())));
             if (m->buttons() & Qt::LeftButton)
                 mouseNote(keyAt(m->position()));
         }

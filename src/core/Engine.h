@@ -5,6 +5,7 @@
 #include "core/Dsp.h"
 #include "core/Effects.h"
 #include "core/InstrumentBackend.h"
+#include "core/Plugin.h"
 #include <array>
 #include <atomic>
 #include <memory>
@@ -55,6 +56,7 @@ struct AudioRegion {
 };
 struct PreparedTrack {
     Id id;
+    std::string preparationWarning;
     float gainL, gainR, targetL, targetR;
     int rampRemaining = 0;
     std::vector<Event> events;
@@ -75,6 +77,9 @@ struct PreparedTrack {
     void input(const Event&, int offset = 0) noexcept;
     void silence() noexcept;
     EffectChain effects;
+    std::vector<std::unique_ptr<PluginInstance>> inserts;
+    std::vector<float> insertWet;
+    std::vector<bool> insertBypass;
     float peakL = 0, peakR = 0;
     std::size_t cursor = 0;
     float peak = 0;
@@ -89,6 +94,8 @@ struct AudioProcessingGraph {
     float master;
     std::int64_t end;
     bool loop = false, metronome = false;
+    bool transportPlaying = true;
+    std::int64_t transportOverride = -1;
     std::int64_t loopStart = 0, loopEnd = 0;
     int numerator = 4, denominator = 4;
     float clickLevel = .12f;

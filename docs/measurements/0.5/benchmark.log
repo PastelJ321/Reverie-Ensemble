@@ -1,0 +1,3 @@
+16 tracks / 256 held voices / 48 kHz / 256 frames
+CPU callback ms: p50=0.756292 p99=0.821875 max=0.866541; buffer deadline=5.33333 ms
+This is a synthetic CPU test, not a device/glitch or round-trip latency measurement.

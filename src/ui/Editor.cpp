@@ -1,17 +1,21 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 
-#include "ui/Editor.h"
+#include "../../translations/engine_prefixes.h"
 #include "core/Media.h"
 #include "core/MidiFile.h"
+#include "core/Plugin.h"
 #include "core/Serializer.h"
 #include "ui/AudioEditor.h"
+#include "ui/Editor.h"
 #include "ui/ExportDialog.h"
 #include "ui/InspectorPanel.h"
 #include "ui/InstrumentEditor.h"
 #include "ui/MixerView.h"
 #include "ui/PerformanceKeyboard.h"
 #include "ui/PianoRoll.h"
+#include "ui/PluginBrowser.h"
 #include "ui/SettingsDialog.h"
 #include "ui/SoundBrowser.h"
 #include "ui/Theme.h"
@@ -45,6 +49,7 @@
 #include <QStandardPaths>
 #include <QStatusBar>
 #include <QTabWidget>
+#include <QThread>
 #include <QTimer>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -54,6 +59,25 @@
 #include <unordered_map>
 namespace reverie {
 Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabled_(audio) {
+    setPluginMainDispatcher([](std::function<void()> fn) {
+        if (QThread::currentThread() == qApp->thread()) {
+            fn();
+            return;
+        }
+        std::exception_ptr error;
+        QMetaObject::invokeMethod(
+            qApp,
+            [&] {
+                try {
+                    fn();
+                } catch (...) {
+                    error = std::current_exception();
+                }
+            },
+            Qt::BlockingQueuedConnection);
+        if (error)
+            std::rethrow_exception(error);
+    });
     setObjectName("reverieEditor");
     initializeTheme();
     resize(1440, 900);
@@ -64,8 +88,8 @@ Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabl
     buildUi();
     buildMenus();
     try {
-        auto first = browser_->presetAt(0);
-        auto second = browser_->presetAt(2);
+        auto first = browser_->presetById("quadraj.cc0.upright");
+        auto second = browser_->presetById("quadraj.cc0.strings");
         if (first.instrumentId != "quadraj.cc0.upright" ||
             second.instrumentId != "quadraj.cc0.strings")
             throw std::runtime_error("Community Essentials is not installed");
@@ -77,7 +101,9 @@ Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabl
             for (auto& note : clip.notes)
                 note.key += 12;
     } catch (const std::exception& ex) {
-        message(QString("Recorded starter unavailable; using factory synths: ") + ex.what());
+        message(QString(QCoreApplication::translate(
+                    "Ensemble", "Recorded starter unavailable; using factory synths: ")) +
+                ex.what());
     }
     if (audioEnabled_) {
         int rate = prefs.value("audio/rate", 48000).toInt();
@@ -94,10 +120,12 @@ Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabl
             frames = 256;
         device_.configure(output, frames);
         inputs_->clear();
-        inputs_->addItem("System default");
+        inputs_->addItem(QCoreApplication::translate("Ensemble", "System default"),
+                         "System default");
         for (auto& name : device_.inputDevices())
-            inputs_->addItem(QString::fromStdString(name));
-        inputs_->setCurrentText(prefs.value("audio/inputName", "System default").toString());
+            inputs_->addItem(QString::fromStdString(name), QString::fromStdString(name));
+        inputs_->setCurrentIndex(
+            std::max(0, inputs_->findData(prefs.value("audio/inputName", "System default"))));
     }
     publishProject();
     if (audioEnabled_ && !device_.startOutput())
@@ -120,7 +148,7 @@ Editor::~Editor() {
     device_.stopOutput();
 }
 void Editor::buildMenus() {
-    auto* file = menuBar()->addMenu("&File");
+    auto* file = menuBar()->addMenu(QCoreApplication::translate("Ensemble", "&File"));
     auto action = [this](QMenu* menu, const QString& text, const QKeySequence& key,
                          std::function<void()> fn) {
         auto* a = menu->addAction(text);
@@ -129,41 +157,64 @@ void Editor::buildMenus() {
         connect(a, &QAction::triggered, this, std::move(fn));
         return a;
     };
-    action(file, "New", QKeySequence::New, [this] { newProject(); });
-    action(file, "Open…", QKeySequence::Open, [this] {
+    action(file, QCoreApplication::translate("Ensemble", "New"), QKeySequence::New,
+           [this] { newProject(); });
+    action(file, QCoreApplication::translate("Ensemble", "Open…"), QKeySequence::Open, [this] {
         if (!confirmUnsaved())
             return;
-        auto name =
-            QFileDialog::getOpenFileName(this, "Open project", {}, "Reverie project (*.reverie)");
+        auto name = QFileDialog::getOpenFileName(
+            this, QCoreApplication::translate("Ensemble", "Open project"), {},
+            "Reverie project (*.reverie)");
         if (!name.isEmpty())
             openProject(name);
     });
-    action(file, "Save", QKeySequence::Save, [this] { saveProject(); });
-    action(file, "Save As…", QKeySequence::SaveAs, [this] {
-        auto name = QFileDialog::getSaveFileName(this, "Save project as", {},
-                                                 "Reverie project (*.reverie)");
+    action(file, QCoreApplication::translate("Ensemble", "Save"), QKeySequence::Save,
+           [this] { saveProject(); });
+    action(file, QCoreApplication::translate("Ensemble", "Save As…"), QKeySequence::SaveAs, [this] {
+        auto name = QFileDialog::getSaveFileName(
+            this, QCoreApplication::translate("Ensemble", "Save project as"), {},
+            "Reverie project (*.reverie)");
         if (!name.isEmpty())
             saveProject(name);
     });
-    action(file, "Project name…", {}, [this] {
+    action(file, QCoreApplication::translate("Ensemble", "Project name…"), {}, [this] {
         if (recording_)
             return;
         bool ok = false;
-        auto name = QInputDialog::getText(this, "Project name", "Name", QLineEdit::Normal,
-                                          QString::fromStdString(project.name), &ok);
+        auto name =
+            QInputDialog::getText(this, QCoreApplication::translate("Ensemble", "Project name"),
+                                  QCoreApplication::translate("Ensemble", "Name"),
+                                  QLineEdit::Normal, QString::fromStdString(project.name), &ok);
         if (ok && !name.trimmed().isEmpty())
             edit([&] { project.name = name.trimmed().toStdString(); });
     });
     file->addSeparator();
-    action(file, "Import WAV…", QKeySequence("Ctrl+I"), [this] { importWav(); });
-    action(file, "Export Audio…", QKeySequence("Ctrl+Shift+E"), [this] { showExport(); });
-    auto* settingsAction =
-        action(file, "Settings…", QKeySequence::Preferences, [this] { showSettings(); });
+    action(file, QCoreApplication::translate("Ensemble", "Import WAV…"), QKeySequence("Ctrl+I"),
+           [this] { importWav(); });
+    action(file, QCoreApplication::translate("Ensemble", "Export Audio…"),
+           QKeySequence("Ctrl+Shift+E"), [this] { showExport(); });
+    auto* settingsAction = action(file, QCoreApplication::translate("Ensemble", "Settings…"),
+                                  QKeySequence::Preferences, [this] { showSettings(); });
+    action(file, QCoreApplication::translate("Ensemble", "Audio Plugins…"), {},
+           [this] { showPlugins(*this); });
+    action(file, QCoreApplication::translate("Ensemble", "Plugin Parameters…"), {}, [this] {
+        if (selectedTrack < 0)
+            return;
+        auto p = project.tracks[selectedTrack].preset;
+        if (p.kind != InstrumentKind::Clap)
+            return;
+        bool ok;
+        editPluginParameters(*this, p, ok);
+        if (ok)
+            applyInstrument(p);
+    });
     settingsAction->setMenuRole(QAction::PreferencesRole);
-    action(file, "Quit", QKeySequence::Quit, [this] { close(); });
-    action(file, "Import MIDI file…", {}, [this] {
-        auto path = QFileDialog::getOpenFileName(this, "Import Standard MIDI File", {},
-                                                 "MIDI (*.mid *.midi)");
+    action(file, QCoreApplication::translate("Ensemble", "Quit"), QKeySequence::Quit,
+           [this] { close(); });
+    action(file, QCoreApplication::translate("Ensemble", "Import MIDI file…"), {}, [this] {
+        auto path = QFileDialog::getOpenFileName(
+            this, QCoreApplication::translate("Ensemble", "Import Standard MIDI File"), {},
+            "MIDI (*.mid *.midi)");
         if (path.isEmpty())
             return;
         try {
@@ -183,72 +234,100 @@ void Editor::buildMenus() {
             message(ex.what());
         }
     });
-    auto* editMenu = menuBar()->addMenu("&Edit");
-    action(editMenu, "Undo", QKeySequence::Undo, [this] { undo(); });
-    action(editMenu, "Redo", QKeySequence::Redo, [this] { redo(); });
-    action(editMenu, "Duplicate clip", QKeySequence("Ctrl+D"), [this] {
-        if (piano_->hasFocus() && !piano_->selection.empty())
-            piano_->duplicate();
-        else
-            duplicateClip();
-    });
-    action(editMenu, "Quantize notes", {}, [this] { piano_->quantize(); });
-    auto* track = menuBar()->addMenu("&Track");
-    action(track, "Add MIDI track", QKeySequence("Ctrl+Shift+M"),
-           [this] { addTrack(TrackKind::Midi); });
-    action(track, "Add audio track", QKeySequence("Ctrl+Shift+A"),
-           [this] { addTrack(TrackKind::Audio); });
-    action(track, "Delete selected track", {}, [this] {
+    auto* editMenu = menuBar()->addMenu(QCoreApplication::translate("Ensemble", "&Edit"));
+    action(editMenu, QCoreApplication::translate("Ensemble", "Undo"), QKeySequence::Undo,
+           [this] { undo(); });
+    action(editMenu, QCoreApplication::translate("Ensemble", "Redo"), QKeySequence::Redo,
+           [this] { redo(); });
+    action(editMenu, QCoreApplication::translate("Ensemble", "Duplicate clip"),
+           QKeySequence("Ctrl+D"), [this] {
+               if (piano_->hasFocus() && !piano_->selection.empty())
+                   piano_->duplicate();
+               else
+                   duplicateClip();
+           });
+    action(editMenu, QCoreApplication::translate("Ensemble", "Quantize notes"), {},
+           [this] { piano_->quantize(); });
+    auto* track = menuBar()->addMenu(QCoreApplication::translate("Ensemble", "&Track"));
+    action(track, QCoreApplication::translate("Ensemble", "Add MIDI track"),
+           QKeySequence("Ctrl+Shift+M"), [this] { addTrack(TrackKind::Midi); });
+    action(track, QCoreApplication::translate("Ensemble", "Add audio track"),
+           QKeySequence("Ctrl+Shift+A"), [this] { addTrack(TrackKind::Audio); });
+    action(track, QCoreApplication::translate("Ensemble", "Delete selected track"), {}, [this] {
         selectedClip = 0;
         deleteSelection();
     });
-    action(track, "Move up", {}, [this] { moveTrack(-1); });
-    action(track, "Move down", {}, [this] { moveTrack(1); });
-    auto* transport = menuBar()->addMenu("&Transport");
-    action(transport, "Play / pause", QKeySequence(Qt::Key_Space), [this] { play(); });
-    action(transport, "Stop / return to start", QKeySequence(Qt::Key_Home), [this] { stop(); });
-    action(track, "Arm selected track", QKeySequence("Ctrl+Shift+R"), [this] {
-        if (selectedTrack >= 0)
-            armTrack(selectedTrack, !project.tracks[selectedTrack].armed);
-    });
-    action(transport, "Record", QKeySequence(Qt::Key_R), [this] { toggleRecord(); });
-    auto* view = menuBar()->addMenu("&View");
-    action(view, "Virtual Keyboard / Musical Typing", QKeySequence("Ctrl+K"),
-           [this] { showKeyboard(); });
-    action(view, "Expand Instrument Browser", QKeySequence("Ctrl+Shift+B"),
-           [this] { showBrowser(); });
-    auto* help = menuBar()->addMenu("&Help");
-    action(help, "Editing guide", {}, [this] {
+    action(track, QCoreApplication::translate("Ensemble", "Move up"), {},
+           [this] { moveTrack(-1); });
+    action(track, QCoreApplication::translate("Ensemble", "Move down"), {},
+           [this] { moveTrack(1); });
+    auto* transport = menuBar()->addMenu(QCoreApplication::translate("Ensemble", "&Transport"));
+    action(transport, QCoreApplication::translate("Ensemble", "Play / pause"),
+           QKeySequence(Qt::Key_Space), [this] { play(); });
+    action(transport, QCoreApplication::translate("Ensemble", "Stop / return to start"),
+           QKeySequence(Qt::Key_Home), [this] { stop(); });
+    action(track, QCoreApplication::translate("Ensemble", "Arm selected track"),
+           QKeySequence("Ctrl+Shift+R"), [this] {
+               if (selectedTrack >= 0)
+                   armTrack(selectedTrack, !project.tracks[selectedTrack].armed);
+           });
+    action(transport, QCoreApplication::translate("Ensemble", "Record"), QKeySequence(Qt::Key_R),
+           [this] { toggleRecord(); });
+    auto* view = menuBar()->addMenu(QCoreApplication::translate("Ensemble", "&View"));
+    action(view, QCoreApplication::translate("Ensemble", "Virtual Keyboard / Musical Typing"),
+           QKeySequence("Ctrl+K"), [this] { showKeyboard(); });
+    action(view, QCoreApplication::translate("Ensemble", "Expand Instrument Browser"),
+           QKeySequence("Ctrl+Shift+B"), [this] { showBrowser(); });
+    auto* help = menuBar()->addMenu(QCoreApplication::translate("Ensemble", "&Help"));
+    action(help, QCoreApplication::translate("Ensemble", "Editing guide"), {}, [this] {
         QMessageBox::information(
-            this, "Making music in Reverie Ensemble",
-            "1. Browse/search instruments and patches; Expand opens the category/instrument/detail "
-            "columns.\n"
-            "2. Keyboard (Cmd+K) opens the real selected-track piano. Enable Musical Typing: A W S "
-            "E D F T G Y H U J K; Z/X octave, C/V velocity, Tab sustain.\n"
-            "3. Arm a MIDI track, choose count-in, press Record and play. Stop creates an editable "
-            "MIDI clip. Arm an Audio track for microphone capture.\n"
-            "4. Double-click a clip to edit notes. Drag to move/resize; Shift-drag selects. "
-            "Right-click opens commands; Delete removes selection.\n"
-            "5. Use Mixer, Save with the media folder, and File → Export Audio.\n"
-            "6. Sound Library Manager installs optional packs with license consent and SHA-256 "
-            "verification. Import SFZ/SF2/SF3 through browser tools.\n\n"
-            "Recording is linear, one armed track at a time. Audio input monitoring and latency "
-            "compensation are not provided.");
+            this, QCoreApplication::translate("Ensemble", "Making music in Reverie Ensemble"),
+            QCoreApplication::translate(
+                "Ensemble",
+                "1. Browse/search instruments and patches; Expand opens the "
+                "category/instrument/detail "
+                "columns.\n"
+                "2. Keyboard (Cmd+K) opens the real selected-track piano. Enable Musical Typing: A "
+                "W S "
+                "E D F T G Y H U J K; Z/X octave, C/V velocity, Tab sustain.\n"
+                "3. Arm a MIDI track, choose count-in, press Record and play. Stop creates an "
+                "editable "
+                "MIDI clip. Arm an Audio track for microphone capture.\n"
+                "4. Double-click a clip to edit notes. Drag to move/resize; Shift-drag selects. "
+                "Right-click opens commands; Delete removes selection.\n"
+                "5. Use Mixer, Save with the media folder, and File → Export Audio.\n"
+                "6. Sound Library Manager installs optional packs with license consent and SHA-256 "
+                "verification. Import SFZ/SF2/SF3 through browser tools.\n\n"
+                "Recording is linear, one armed track at a time. Audio input monitoring and "
+                "latency "
+                "compensation are not provided."));
     });
-    action(help, "About Reverie Ensemble", {}, [this] {
+    action(help, QCoreApplication::translate("Ensemble", "About Reverie Ensemble"), {}, [this] {
         QMessageBox::about(
-            this, "Reverie Ensemble 0.4.0",
-            "<h2>Reverie Ensemble</h2><p>0.4.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
-            "contributors.</p><p>A free, offline, open-source digital audio "
-            "workstation.</p><p>Reverie code: Apache License 2.0.<br>Qt Core / Gui / Widgets / "
-            "Network / SVG: "
-            "dynamically linked under LGPLv3.<br>miniaudio 0.11.23: MIT-0.<br>nlohmann/json "
-            "3.11.3: MIT.<br>sfizz: BSD-2-Clause.<br>FluidSynth: "
-            "LGPL-2.1-or-later.</p><p>Third-party components retain their own licenses. Source, "
-            "relinking and distribution instructions are in THIRD_PARTY_LICENSES.md.</p>");
+            this, QCoreApplication::translate("Ensemble", "Reverie Ensemble 0.5.0"),
+            QCoreApplication::translate(
+                "Ensemble",
+                "<h2>Reverie Ensemble</h2><p>0.5.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
+                "contributors.</p><p>A free, offline, open-source digital audio "
+                "workstation.</p><p>Reverie code: Apache License 2.0.<br>Qt Core / Gui / Widgets / "
+                "Network / SVG: "
+                "dynamically linked under LGPLv3.<br>miniaudio 0.11.23: MIT-0.<br>nlohmann/json "
+                "3.11.3: MIT.<br>sfizz: BSD-2-Clause.<br>FluidSynth: "
+                "LGPL-2.1-or-later.</p><p>Third-party components retain their own licenses. "
+                "Source, "
+                "relinking and distribution instructions are in THIRD_PARTY_LICENSES.md.</p>"));
     });
 }
-void Editor::message(const QString& msg) {
+void Editor::message(const QString& original) {
+    auto msg = QCoreApplication::translate("Ensemble", original.toUtf8().constData());
+    if (msg == original)
+        for (auto* prefix : engineErrorPrefixes)
+            if (original.startsWith(QString::fromUtf8(prefix))) {
+                auto translated = QCoreApplication::translate("Ensemble", prefix);
+                if (translated != QString::fromUtf8(prefix))
+                    msg = translated + original.mid(QString::fromUtf8(prefix).size());
+                break;
+            }
     statusBar()->showMessage(msg, 12000);
 }
 void Editor::beginEdit() {
@@ -283,7 +362,8 @@ void Editor::endEdit() {
 }
 void Editor::edit(const std::function<void()>& fn) {
     if (recording_) {
-        message("Finish recording before editing the project.");
+        message(QCoreApplication::translate("Ensemble",
+                                            "Finish recording before editing the project."));
         return;
     }
     beginEdit();
@@ -361,7 +441,8 @@ void Editor::refresh() {
         mute_->setChecked(t.mute);
         solo_->setChecked(t.solo);
         auto& s = t.preset;
-        bool external = s.kind == InstrumentKind::Sfizz || s.kind == InstrumentKind::SoundFont;
+        bool external = s.kind == InstrumentKind::Sfizz || s.kind == InstrumentKind::SoundFont ||
+                        s.kind == InstrumentKind::Clap;
         if (auto* controls = findChild<QWidget*>("instrumentControls"))
             controls->setEnabled(!external);
 
@@ -377,13 +458,16 @@ void Editor::refresh() {
             midi ? QString::fromStdString(s.name) +
                        (s.kind == InstrumentKind::Sampler
                             ? (s.zones.empty()
-                                   ? QString("\nRoot: C4 (MIDI 60) · ")
-                                   : QString("\n%1 key/velocity zones · ").arg(s.zones.size())) +
+                                   ? QString(QCoreApplication::translate("Ensemble",
+                                                                         "\nRoot: C4 (MIDI 60) · "))
+                                   : QString(QCoreApplication::translate(
+                                                 "Ensemble", "\n%1 key/velocity zones · "))
+                                         .arg(s.zones.size())) +
                                   QString::fromStdString(s.license)
                             : "")
                  : "Audio track · non-destructive WAV playback");
     } else {
-        trackTitle_->setText("No track selected");
+        trackTitle_->setText(QCoreApplication::translate("Ensemble", "No track selected"));
         instrumentLabel_->clear();
     }
     if (auto* arm = findChild<QCheckBox*>("trackArm"))
@@ -394,8 +478,9 @@ void Editor::refresh() {
     piano_->updateExtent();
     if (selectionInspector_)
         selectionInspector_->refresh();
-    setWindowTitle(QString::fromStdString(project.name) + (dirty_ ? " *" : "") +
-                   " — Reverie Ensemble 0.4");
+    setWindowTitle(QString::fromStdString(project.name) +
+                   (dirty_ ? QCoreApplication::translate("Ensemble", " *") : "") +
+                   " — Reverie Ensemble 0.5");
     refreshing_ = false;
     refreshPerformance();
     if (keyboard_)
@@ -403,7 +488,7 @@ void Editor::refresh() {
 }
 void Editor::select(int track, Id clip) {
     if (recording_ && track != selectedTrack) {
-        message("Stop the take before changing tracks.");
+        message(QCoreApplication::translate("Ensemble", "Stop the take before changing tracks."));
         return;
     }
     if (track != selectedTrack)
@@ -421,7 +506,7 @@ void Editor::select(int track, Id clip) {
 }
 void Editor::addTrack(TrackKind kind) {
     if (project.tracks.size() >= maxTracks) {
-        message("0.1 supports up to 64 tracks.");
+        message(QCoreApplication::translate("Ensemble", "0.1 supports up to 64 tracks."));
         return;
     }
     edit([&] {
@@ -496,7 +581,8 @@ void Editor::play() {
         return;
     }
     if (audioEnabled_ && !device_.outputRunning()) {
-        message("No output device. Use Reconnect audio; offline WAV export is available.");
+        message(QCoreApplication::translate(
+            "Ensemble", "No output device. Use Reconnect audio; offline WAV export is available."));
         return;
     }
     engine.setPlaying(!engine.playing());
@@ -513,11 +599,27 @@ void Editor::openPiano(Id clip) {
     selectedClip = clip;
     refresh();
     if (auto* c = findClip(project, clip)) {
-        int center = 60;
+        double firstBeat = 0;
         if (!c->notes.empty())
-            center = c->notes[0].key;
+            firstBeat =
+                std::min_element(c->notes.begin(), c->notes.end(),
+                                 [](const Note& a, const Note& b) { return a.beat < b.beat; })
+                    ->beat;
+        pianoScroll_->horizontalScrollBar()->setValue(
+            int(std::clamp(firstBeat * pixelsPerBeat - 16., 0.,
+                           double(pianoScroll_->horizontalScrollBar()->maximum()))));
+        double center = 60;
+        if (!c->notes.empty()) {
+            auto bounds =
+                std::minmax_element(c->notes.begin(), c->notes.end(),
+                                    [](const Note& a, const Note& b) { return a.key < b.key; });
+            center = (bounds.first->key + bounds.second->key) * .5;
+        }
+        int available =
+            std::max(PianoRoll::keyHeight, pianoScroll_->viewport()->height() - PianoRoll::ruler);
         pianoScroll_->verticalScrollBar()->setValue(
-            PianoRoll::ruler + (PianoRoll::topKey - center) * PianoRoll::keyHeight - 110);
+            int((PianoRoll::topKey - center) * PianoRoll::keyHeight + PianoRoll::keyHeight * .5 -
+                available * .5));
     }
     piano_->setFocus();
 }
@@ -528,33 +630,40 @@ void Editor::tick() {
         midiRecorder_.updatePosition(frame);
         auto start = TempoMap{project.bpm, engine.sampleRate()}.sampleAt(recordingBeat_);
         recordButton_->setText(frame < start
-                                   ? QString("Count-in %1")
+                                   ? QString(QCoreApplication::translate("Ensemble", "Count-in %1"))
                                          .arg(int(std::ceil((start - frame) / engine.sampleRate() *
                                                             project.bpm / 60.)))
-                                   : "Finish MIDI");
+                                   : QCoreApplication::translate("Ensemble", "Finish MIDI"));
     }
     auto beat = TempoMap{project.bpm, engine.sampleRate()}.beatAt(engine.displayPosition());
     double bar = project.numerator * 4. / project.denominator;
     if (!position_->hasFocus())
-        position_->setText(QString("%1 : %2 : %3")
+        position_->setText(QString(QCoreApplication::translate("Ensemble", "%1 : %2 : %3"))
                                .arg(int(beat / bar) + 1, 3, 10, QChar('0'))
                                .arg(int(std::fmod(beat, bar) / (4. / project.denominator)) + 1)
                                .arg(int(std::fmod(beat / (4. / project.denominator), 1.) * 960), 3,
                                     10, QChar('0')));
     if (!position_->hasFocus() && timeDisplaySeconds) {
         double seconds = double(engine.displayPosition()) / engine.sampleRate();
-        position_->setText(QString("%1:%2s")
+        position_->setText(QString(QCoreApplication::translate("Ensemble", "%1:%2s"))
                                .arg(int(seconds / 60), 2, 10, QChar('0'))
                                .arg(std::fmod(seconds, 60), 6, 'f', 3, QChar('0')));
     }
-    playButton_->setText(engine.playing() ? "Pause" : "Play");
+    playButton_->setText(engine.playing() ? QCoreApplication::translate("Ensemble", "Pause")
+                                          : QCoreApplication::translate("Ensemble", "Play"));
     if (auto* label = findChild<QLabel*>("transportDeviceStatus"))
         label->setText(device_.outputRunning()
-                           ? QString::number(int(engine.sampleRate() / 1000.)) + " kHz · active"
-                           : "Offline audio");
-    output_->setText(QString(device_.outputRunning() ? "Audio active · reported format in Settings"
-                                                     : "Offline audio · export available") +
-                     (engine.clipped() ? "\nCLIPPING — lower track/master levels" : ""));
+                           ? QString::number(int(engine.sampleRate() / 1000.)) +
+                                 QCoreApplication::translate("Ensemble", " kHz · active")
+                           : QCoreApplication::translate("Ensemble", "Offline audio"));
+    output_->setText(
+        QString(device_.outputRunning()
+                    ? QCoreApplication::translate("Ensemble",
+                                                  "Audio active · reported format in Settings")
+                    : QCoreApplication::translate("Ensemble", "Offline audio · export available")) +
+        (engine.clipped()
+             ? QCoreApplication::translate("Ensemble", "\nCLIPPING — lower track/master levels")
+             : QString()));
     timeline_->update();
     playButton_->setIcon(toolIcon(engine.playing() ? "pause" : "play"));
     if (followPlayhead && engine.playing() && !timeline_->interacting() &&
@@ -578,7 +687,8 @@ void Editor::tick() {
 // Long decoding, copying and rendering run off the UI/audio threads. The modal progress dialog
 // keeps transport meters alive while preventing project mutations during an operation.
 template <class F> static auto background(QWidget* owner, const QString& label, F fn) {
-    QProgressDialog progress(label, QString(), 0, 0, owner);
+    QProgressDialog progress(QCoreApplication::translate("Ensemble", label.toUtf8().constData()),
+                             QString(), 0, 0, owner);
     progress.setCancelButton(nullptr);
     progress.setWindowModality(Qt::ApplicationModal);
     progress.setMinimumDuration(0);
@@ -590,7 +700,8 @@ template <class F> static auto background(QWidget* owner, const QString& label, 
 }
 void Editor::publishProject() {
     bool external = std::any_of(project.tracks.begin(), project.tracks.end(), [](auto& t) {
-        return t.preset.kind == InstrumentKind::Sfizz || t.preset.kind == InstrumentKind::SoundFont;
+        return !t.inserts.empty() || t.preset.kind == InstrumentKind::Sfizz ||
+               t.preset.kind == InstrumentKind::SoundFont || t.preset.kind == InstrumentKind::Clap;
     });
     if (!external) {
         engine.publish(project);
@@ -605,6 +716,9 @@ void Editor::publishProject() {
             background(this, "Preparing instrument audio…", [snapshot = std::move(snapshot), rate] {
                 return std::make_unique<AudioProcessingGraph>(snapshot, rate);
             });
+        for (const auto& t : graph->tracks)
+            if (!t.preparationWarning.empty())
+                message(QString::fromStdString(t.preparationWarning));
         engine.publishPrepared(std::move(graph));
         preparingInstrument_ = false;
     } catch (...) {
@@ -617,7 +731,8 @@ void Editor::importWav(const QString& supplied, double beat) {
         return;
     auto path = supplied;
     if (path.isEmpty())
-        path = QFileDialog::getOpenFileName(this, "Import WAV", {}, "WAV (*.wav)");
+        path = QFileDialog::getOpenFileName(
+            this, QCoreApplication::translate("Ensemble", "Import WAV"), {}, "WAV (*.wav)");
     if (path.isEmpty())
         return;
     try {
@@ -642,7 +757,9 @@ void Editor::importWav(const QString& supplied, double beat) {
             selectedClip = c.id;
             project.tracks[selectedTrack].clips.push_back(c);
         });
-        message("WAV imported. Drag the clip to position; its right edge trims non-destructively.");
+        message(QCoreApplication::translate(
+            "Ensemble",
+            "WAV imported. Drag the clip to position; its right edge trims non-destructively."));
     } catch (const std::exception& ex) {
         message(QString::fromUtf8(ex.what()));
     }
@@ -652,8 +769,9 @@ bool Editor::saveProject(const QString& supplied) {
         finishRecord();
     QString path = supplied.isEmpty() ? currentPath_ : supplied;
     if (path.isEmpty())
-        path =
-            QFileDialog::getSaveFileName(this, "Save project", {}, "Reverie project (*.reverie)");
+        path = QFileDialog::getSaveFileName(this,
+                                            QCoreApplication::translate("Ensemble", "Save project"),
+                                            {}, "Reverie project (*.reverie)");
     if (path.isEmpty())
         return false;
     if (!path.endsWith(".reverie", Qt::CaseInsensitive))
@@ -726,7 +844,8 @@ bool Editor::saveProject(const QString& supplied) {
                            : "Project saved with a portable media folder.");
         return true;
     } catch (const std::exception& ex) {
-        QMessageBox::warning(this, "Save failed", QString::fromUtf8(ex.what()));
+        QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Save failed"),
+                             QString::fromUtf8(ex.what()));
         return false;
     }
 }
@@ -752,17 +871,20 @@ bool Editor::openProject(const QString& path) {
                            "play silently.\n\n";
             for (const auto& w : loaded.warnings)
                 text += QString::fromStdString(w) + "\n";
-            QMessageBox::warning(this, "Missing media", text);
+            QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Missing media"),
+                                 text);
         }
         return true;
     } catch (const std::exception& ex) {
-        QMessageBox::warning(this, "Open failed", QString::fromUtf8(ex.what()));
+        QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Open failed"),
+                             QString::fromUtf8(ex.what()));
         return false;
     }
 }
 void Editor::showSettings() {
     if (recording_) {
-        message("Stop recording before opening device settings.");
+        message(QCoreApplication::translate("Ensemble",
+                                            "Stop recording before opening device settings."));
         return;
     }
     SettingsDialog dialog(*this);
@@ -785,20 +907,23 @@ bool Editor::exportProject(const QString& supplied) {
         auto snapshot = project;
         background(this, "Rendering stereo WAV at 48 kHz / 16 bit…",
                    [snapshot, path] { exportWav(snapshot, path.toStdString()); });
-        message("WAV exported with at least two seconds of release tail.");
+        message(QCoreApplication::translate(
+            "Ensemble", "WAV exported with at least two seconds of release tail."));
         return true;
     } catch (const std::exception& ex) {
-        QMessageBox::warning(this, "Export failed", QString::fromUtf8(ex.what()));
+        QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Export failed"),
+                             QString::fromUtf8(ex.what()));
         return false;
     }
 }
 void Editor::loadSampler() {
     if (recording_ || selectedTrack < 0 || project.tracks[selectedTrack].kind != TrackKind::Midi) {
-        message("Select a MIDI track for the sampler.");
+        message(QCoreApplication::translate("Ensemble", "Select a MIDI track for the sampler."));
         return;
     }
-    auto path =
-        QFileDialog::getOpenFileName(this, "Select your licensed sampler WAV", {}, "WAV (*.wav)");
+    auto path = QFileDialog::getOpenFileName(
+        this, QCoreApplication::translate("Ensemble", "Select your licensed sampler WAV"), {},
+        "WAV (*.wav)");
     if (path.isEmpty())
         return;
     try {
@@ -822,8 +947,9 @@ void Editor::loadSampler() {
 void Editor::loadPreset() {
     if (recording_ || selectedTrack < 0 || project.tracks[selectedTrack].kind != TrackKind::Midi)
         return;
-    auto path = QFileDialog::getOpenFileName(this, "Load instrument preset", {},
-                                             "Reverie instrument (*.json)");
+    auto path = QFileDialog::getOpenFileName(
+        this, QCoreApplication::translate("Ensemble", "Load instrument preset"), {},
+        "Reverie instrument (*.json)");
     if (path.isEmpty())
         return;
     try {
@@ -844,15 +970,17 @@ void Editor::loadPreset() {
 void Editor::savePreset() {
     if (selectedTrack < 0 || project.tracks[selectedTrack].kind != TrackKind::Midi)
         return;
-    auto path = QFileDialog::getSaveFileName(this, "Save instrument preset", {},
-                                             "Reverie instrument (*.json)");
+    auto path = QFileDialog::getSaveFileName(
+        this, QCoreApplication::translate("Ensemble", "Save instrument preset"), {},
+        "Reverie instrument (*.json)");
     if (path.isEmpty())
         return;
     if (!path.endsWith(".json"))
         path += ".json";
     try {
         ProjectSerializer::savePreset(project.tracks[selectedTrack].preset, path.toStdString());
-        message("Preset saved. Sampler WAV references remain separate from preset data.");
+        message(QCoreApplication::translate(
+            "Ensemble", "Preset saved. Sampler WAV references remain separate from preset data."));
     } catch (const std::exception& ex) {
         message(QString::fromUtf8(ex.what()));
     }
@@ -863,20 +991,23 @@ void Editor::toggleRecord() {
         return;
     }
     if (audioEnabled_ && !device_.outputRunning()) {
-        message("Connect an output device before recording.");
+        message(
+            QCoreApplication::translate("Ensemble", "Connect an output device before recording."));
         return;
     }
     int armed = -1;
     for (int i = 0; i < int(project.tracks.size()); ++i)
         if (project.tracks[i].armed) {
             if (armed >= 0) {
-                message("Arm one recording track at a time.");
+                message(
+                    QCoreApplication::translate("Ensemble", "Arm one recording track at a time."));
                 return;
             }
             armed = i;
         }
     if (armed < 0) {
-        message("Arm a MIDI or Audio track before recording.");
+        message(
+            QCoreApplication::translate("Ensemble", "Arm a MIDI or Audio track before recording."));
         return;
     }
     select(armed);
@@ -895,18 +1026,21 @@ void Editor::toggleRecord() {
         engine.setCountInEnd(bars > 0 ? tempo.sampleAt(capture) : -1);
         engine.setFreeRunning(true);
         engine.setPlaying(true);
-        recordButton_->setText("Finish MIDI");
+        recordButton_->setText(QCoreApplication::translate("Ensemble", "Finish MIDI"));
         refresh();
-        message("MIDI take armed · Count-in then play · Stop closes every held note");
+        message(QCoreApplication::translate(
+            "Ensemble", "MIDI take armed · Count-in then play · Stop closes every held note"));
         return;
     }
     if (currentPath_.isEmpty() && !saveProject())
         return;
     if (!requestMicrophonePermission()) {
         QMessageBox::warning(
-            this, "Microphone access denied",
-            "Enable Reverie Ensemble in System Settings → Privacy & Security → Microphone. You can "
-            "continue composing and exporting without input access.");
+            this, QCoreApplication::translate("Ensemble", "Microphone access denied"),
+            QCoreApplication::translate("Ensemble",
+                                        "Enable Reverie Ensemble in System Settings → Privacy & "
+                                        "Security → Microphone. You can "
+                                        "continue composing and exporting without input access."));
         return;
     }
 
@@ -931,9 +1065,11 @@ void Editor::toggleRecord() {
         recording_ = true;
         engine.setFreeRunning(true);
         engine.setPlaying(true);
-        recordButton_->setText("Finish take");
+        recordButton_->setText(QCoreApplication::translate("Ensemble", "Finish take"));
         refresh();
-        message("Recording to project media. Press Stop or Finish take to place the clip.");
+        message(QCoreApplication::translate(
+            "Ensemble",
+            "Recording to project media. Press Stop or Finish take to place the clip."));
     } catch (const std::exception& ex) {
         device_.stopCapture();
         recorder_.stop();
@@ -951,7 +1087,7 @@ void Editor::finishRecord() {
         engine.setPlaying(false);
         engine.setFreeRunning(false);
         engine.setCountInEnd(-1);
-        recordButton_->setText("Record");
+        recordButton_->setText(QCoreApplication::translate("Ensemble", "Record"));
         if (!take.notes.empty())
             edit([&] {
                 if (auto* t = findTrack(project, recordingTrack_)) {
@@ -962,7 +1098,8 @@ void Editor::finishRecord() {
         refresh();
         if (selectedClip)
             openPiano(selectedClip);
-        message("MIDI take captured · edit notes or change the instrument");
+        message(QCoreApplication::translate(
+            "Ensemble", "MIDI take captured · edit notes or change the instrument"));
         return;
     }
     device_.stopCapture();
@@ -970,7 +1107,7 @@ void Editor::finishRecord() {
     engine.setPlaying(false);
     engine.setFreeRunning(false);
     recording_ = false;
-    recordButton_->setText("Record");
+    recordButton_->setText(QCoreApplication::translate("Ensemble", "Record"));
     try {
         if (recorder_.framesWritten() > 0) {
             auto sample = background(this, "Finalizing take and waveform…",
@@ -988,10 +1125,13 @@ void Editor::finishRecord() {
                 selectedClip = c.id;
                 t->clips.push_back(c);
             });
-            message("Take placed on the audio track. Save the project to keep its arrangement.");
+            message(QCoreApplication::translate(
+                "Ensemble",
+                "Take placed on the audio track. Save the project to keep its arrangement."));
         }
     } catch (const std::exception& ex) {
-        message("Take retained at " + QString::fromStdString(recordingPath_.string()) + ": " +
+        message(QCoreApplication::translate("Ensemble", "Take retained at ") +
+                QString::fromStdString(recordingPath_.string()) + ": " +
                 QString::fromUtf8(ex.what()));
     }
     refresh();
@@ -1002,7 +1142,8 @@ bool Editor::confirmUnsaved() {
     if (!dirty_)
         return true;
     auto answer = QMessageBox::question(
-        this, "Unsaved project", "Save your project before continuing?",
+        this, QCoreApplication::translate("Ensemble", "Unsaved project"),
+        QCoreApplication::translate("Ensemble", "Save your project before continuing?"),
         QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Save);
     if (answer == QMessageBox::Cancel)
         return false;

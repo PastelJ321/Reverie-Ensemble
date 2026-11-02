@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 #include "core/InstrumentBackend.h"
+#include "core/Plugin.h"
 #include "core/SfzSupport.h"
 #include <stdexcept>
 #ifdef REVERIE_HAS_SFIZZ
@@ -43,6 +44,61 @@ class Unavailable final : public InstrumentBackend {
     }
     BackendCapabilities capabilities() const noexcept override {
         return {"Unavailable instrument", false, false, false, false};
+    }
+};
+class ClapBackend final : public InstrumentBackend {
+    PluginInstance plugin_;
+    std::array<int, 256> keys_{};
+    std::array<Id, 256> ids_{};
+    std::array<int, 256> channels_{};
+    float gain_;
+
+  public:
+    ClapBackend(const Preset& p, double rate)
+        : plugin_(p, rate), gain_(p.gain * p.calibrationGain) {}
+    void noteOn(Id id, int key, float v, int ch, int offset) noexcept override {
+        for (unsigned i = 0; i < ids_.size(); ++i)
+            if (!ids_[i]) {
+                ids_[i] = id;
+                keys_[i] = key;
+                channels_[i] = ch;
+                plugin_.midi(0x90 | ch, key, std::clamp(int(std::lround(v * 127)), 1, 127), offset);
+                return;
+            }
+    }
+    void noteOff(Id id, int offset) noexcept override {
+        for (unsigned i = 0; i < ids_.size(); ++i)
+            if (ids_[i] == id) {
+                plugin_.midi(0x80 | channels_[i], keys_[i], 0, offset);
+                ids_[i] = 0;
+                return;
+            }
+    }
+    void controller(int ch, int cc, int value, int offset) noexcept override {
+        plugin_.midi(0xb0 | ch, cc, value, offset);
+    }
+    void pitchBend(int ch, int value, int offset) noexcept override {
+        plugin_.midi(0xe0 | ch, value & 127, value >> 7, offset);
+    }
+    void render(float* out, unsigned frames) noexcept override {
+        std::fill_n(out, frames * 2, 0.f);
+        plugin_.process(out, frames);
+        for (unsigned i = 0; i < frames * 2; ++i)
+            out[i] *= gain_;
+    }
+    void reset() noexcept override {
+        plugin_.reset();
+        ids_.fill(0);
+    }
+    void transport(std::int64_t frame, double rate, double bpm, int num, int den,
+                   bool playing) noexcept override {
+        plugin_.transport(frame, rate, bpm, num, den, playing);
+    }
+    void setOffline(bool v) noexcept override {
+        plugin_.offline(v);
+    }
+    BackendCapabilities capabilities() const noexcept override {
+        return {"CLAP", true, true, false, false};
     }
 };
 struct Held {
@@ -263,6 +319,15 @@ std::unique_ptr<InstrumentBackend> prepareBackend(const Preset& p, double rate,
          (p.kind == InstrumentKind::SoundFont && !fluidSynthAvailable())))
         return std::make_unique<Unavailable>("Missing external instrument/backend: " +
                                              p.backendPath);
+    if (p.kind == InstrumentKind::Clap) {
+        try {
+            return std::make_unique<ClapBackend>(p, rate);
+        } catch (const std::exception& e) {
+            if (tolerateMissing)
+                return std::make_unique<Unavailable>(e.what());
+            throw;
+        }
+    }
     if (p.kind == InstrumentKind::Sfizz) {
 #ifdef REVERIE_HAS_SFIZZ
         return std::make_unique<Sfizz>(p, rate);

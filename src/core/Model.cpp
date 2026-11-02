@@ -2,6 +2,7 @@
 // Copyright 2026 QuadraJ and contributors.
 
 #include "core/Model.h"
+#include <array>
 #include <atomic>
 #include <stdexcept>
 #include <unordered_set>
@@ -179,6 +180,31 @@ std::vector<Preset> factoryPresets() {
             "",
             "",
             {}};
+    for (int i = 0; i < 6; ++i) {
+        Preset s;
+        s.kind = InstrumentKind::Synth;
+        s.modern = true;
+        s.gain = .15f;
+        s.attack = .015f;
+        s.release = .4f;
+        s.category = "Synthesizers";
+        s.instrumentId = "quadraj.synth05." + std::to_string(i);
+        s.patchId = s.instrumentId;
+        s.family = "synth";
+        s.name =
+            std::array<const char*, 6>{"Detuned Poly Saw", "Legato Mono Lead", "Gliding Synth Bass",
+                                       "FM Electric Keys", "Slow Dual Pad",    "Filtered Pluck"}[i];
+        s.wave = i == 3 ? Waveform::Sine : Waveform::Saw;
+        s.mono = i == 1 || i == 2;
+        s.legato = s.mono;
+        s.fm = i == 3 ? 3.f : 0.f;
+        s.cutoff = i == 2 ? 600 : 3500;
+        s.attack = i == 4 ? .8f : .015f;
+        s.release = i == 4 ? 2.f : .4f;
+        s.sustain = i == 5 ? .1f : .65f;
+        s.filterEnvelope = i == 5 ? 4.f : 1.f;
+        p.push_back(s);
+    }
     return p;
 }
 double Project::endBeat() const {
@@ -206,6 +232,15 @@ double Project::tailSeconds() const {
                 tail = std::max(tail, double(t.effects.delaySeconds) * (repeats + 1));
             }
         }
+    const auto legacyTail = tail;
+    for (const auto& t : tracks) {
+        double chain = 0;
+        for (const auto& i : t.inserts)
+            if (!i.bypass)
+                chain += i.plugin.renderTailSeconds;
+        if (chain > 0)
+            tail = std::max(tail, std::min(120., legacyTail + chain));
+    }
     return tail;
 }
 Track makeTrack(TrackKind kind, int index) {
@@ -222,7 +257,7 @@ static bool in(double x, double lo, double hi) {
     return std::isfinite(x) && x >= lo && x <= hi;
 }
 void validate(const Project& p) {
-    if ((p.formatVersion < 1 || p.formatVersion > 4) || !in(p.bpm, 20, 300) || p.numerator < 1 ||
+    if ((p.formatVersion < 1 || p.formatVersion > 5) || !in(p.bpm, 20, 300) || p.numerator < 1 ||
         p.numerator > 16 ||
         (p.denominator != 2 && p.denominator != 4 && p.denominator != 8 && p.denominator != 16) ||
         !in(p.master, 0, 2) || p.tracks.size() > maxTracks)
@@ -244,12 +279,27 @@ void validate(const Project& p) {
             !in(s.renderTailSeconds, 0, 120) || !in(s.calibrationGain, .01, 32) ||
             !in(s.auditionGain, .01, 8) || s.calibrationVersion < 0 || !in(s.gain, 0, 2) ||
             !in(s.cutoff, 20, 24000) || !in(s.color, 0, 1) || s.rootNote < 0 || s.rootNote > 127 ||
-            int(s.kind) < 0 || int(s.kind) > 4 || int(s.wave) < 0 || int(s.wave) > 3)
+            int(s.kind) < 0 || int(s.kind) > 5 || int(s.wave) < 0 || int(s.wave) > 3)
             throw std::runtime_error("Invalid mixer or instrument settings");
         if (t.midiChannel < -1 || t.midiChannel > 15 || s.soundFontBank < 0 ||
             s.soundFontBank > 16383 || s.soundFontProgram < 0 || s.soundFontProgram > 127)
             throw std::runtime_error("Invalid MIDI bank/channel/program");
+        if (!in(s.oscMix, 0, 1) || !in(s.detune, -100, 100) || !in(s.glide, 0, 4) ||
+            !in(s.filterEnvelope, 0, 8) || !in(s.lfoRate, .01, 30) || !in(s.vibrato, 0, 12) ||
+            !in(s.fm, 0, 10))
+            throw std::runtime_error("Invalid synth modulation");
+        if (s.pluginState.size() > 8 * 1024 * 1024 || t.inserts.size() > 16)
+            throw std::runtime_error("Plugin state/insert limit exceeded");
+        for (const auto& insert : t.inserts)
+            if (insert.plugin.kind != InstrumentKind::Clap || insert.plugin.pluginId.empty() ||
+                !in(insert.wet, 0, 1) || insert.plugin.pluginState.size() > 8 * 1024 * 1024)
+                throw std::runtime_error("Invalid plugin insert");
         const auto& fx = t.effects;
+        if (!in(fx.thresholdDb, -60, 0) || !in(fx.ratio, 1, 40) || !in(fx.attackMs, .1, 200) ||
+            !in(fx.releaseMs, 1, 3000) || !in(fx.makeupDb, -24, 24) || !in(fx.eqHz, 20, 20000) ||
+            !in(fx.eqDb, -24, 24) || !in(fx.eqQ, .1, 20) || !in(fx.inputDb, -24, 24) ||
+            !in(fx.outputDb, -24, 24))
+            throw std::runtime_error("Invalid channel processing");
         if (!in(fx.lowDb, -18, 18) || !in(fx.highDb, -18, 18) || !in(fx.delayMix, 0, 1) ||
             !in(fx.delaySeconds, .0099, 2) || !in(fx.feedback, 0, .8501) || !in(fx.reverbMix, 0, 1))
             throw std::runtime_error("Invalid effect parameters");

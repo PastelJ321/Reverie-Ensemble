@@ -1,0 +1,7 @@
+{
+  "verifiedAt": "2026-11-02 Asia/Seoul",
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83",
+  "architecture": "arm64",
+  "qt": "6.12.0",
+  "scope": "Local developer builds; external binary libraries and plugins are not sanitizer-instrumented. No physical MIDI or human listening certification."
+}

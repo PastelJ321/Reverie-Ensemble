@@ -1,8 +1,11 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
-#include "ui/MixerView.h"
 #include "ui/DesignTokens.h"
 #include "ui/Editor.h"
+#include "ui/MixerView.h"
+#include "ui/PluginBrowser.h"
+#include "ui/ProductionControls.h"
 #include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QHBoxLayout>
@@ -41,7 +44,8 @@ class StereoMeter : public QWidget {
 MixerView::MixerView(Editor& e) : e_(e) {
     setObjectName("mixerView");
     auto* l = new QVBoxLayout(this);
-    auto* heading = new QLabel("MIXER    /    dBFS · stereo output");
+    auto* heading =
+        new QLabel(QCoreApplication::translate("Ensemble", "MIXER    /    dBFS · stereo output"));
     heading->setStyleSheet("font-size:14px;font-weight:600");
     l->addWidget(heading);
     auto* scroll = new QScrollArea;
@@ -66,7 +70,8 @@ void MixerView::refresh() {
         auto* strip = new QWidget;
         strip->setFixedWidth(130);
         strip->setStyleSheet(
-            QString("background:%1;border-right:1px solid #777065;")
+            QString(QCoreApplication::translate("Ensemble",
+                                                "background:%1;border-right:1px solid #777065;"))
                 .arg(!master && e_.selectedTrack == index ? "#4A453E" : "#33312D"));
         auto* column = new QVBoxLayout(strip);
         auto* name = new QPushButton(
@@ -79,9 +84,21 @@ void MixerView::refresh() {
                 e_.select(index);
                 refresh();
             });
+        if (!master) {
+            auto* processing =
+                new QPushButton(QCoreApplication::translate("Ensemble", "Processing…"));
+            column->addWidget(processing);
+            connect(processing, &QPushButton::clicked, this,
+                    [this, index] { showChannelProcessing(e_, index); });
+        }
+        if (!master) {
+            auto* b = new QPushButton(QCoreApplication::translate("Ensemble", "Inserts…"));
+            column->addWidget(b);
+            connect(b, &QPushButton::clicked, this, [this, index] { showInserts(e_, index); });
+        }
         auto* value = new QDoubleSpinBox;
         value->setRange(-60, 6);
-        value->setSuffix(" dB");
+        value->setSuffix(QCoreApplication::translate("Ensemble", " dB"));
         value->setDecimals(1);
         float gain = master ? e_.project.master : e_.project.tracks[index].volume;
         value->setValue(gain > 0 ? 20 * std::log10(gain) : -60);
@@ -114,7 +131,7 @@ void MixerView::refresh() {
             auto* pan = new QDoubleSpinBox;
             pan->setRange(-1, 1);
             pan->setSingleStep(.1);
-            pan->setPrefix("Pan ");
+            pan->setPrefix(QCoreApplication::translate("Ensemble", "Pan "));
             pan->setValue(e_.project.tracks[index].pan);
             column->addWidget(pan);
             connect(pan, &QDoubleSpinBox::valueChanged, this, [this, index](double v) {
@@ -136,7 +153,7 @@ void MixerView::refresh() {
                 });
             }
             column->addLayout(switches);
-            auto* enabled = new QCheckBox("EQ / Space");
+            auto* enabled = new QCheckBox(QCoreApplication::translate("Ensemble", "EQ / Space"));
             enabled->setChecked(e_.project.tracks[index].effects.enabled);
             column->addWidget(enabled);
             connect(enabled, &QCheckBox::toggled, this, [this, index](bool on) {
@@ -147,7 +164,8 @@ void MixerView::refresh() {
                 fx->setRange(param < 2 ? -18 : 0, param < 2 ? 18 : 1);
                 fx->setDecimals(param < 2 ? 1 : 2);
                 fx->setSingleStep(param < 2 ? 1 : .05);
-                fx->setPrefix(QStringList{"Low ", "High ", "Delay ", "Reverb "}[param]);
+                fx->setPrefix(QStringList{QCoreApplication::translate("Ensemble", "Low "), "High ",
+                                          "Delay ", "Reverb "}[param]);
                 const auto& s = e_.project.tracks[index].effects;
                 fx->setValue(param == 0   ? s.lowDb
                              : param == 1 ? s.highDb
