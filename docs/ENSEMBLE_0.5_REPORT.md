@@ -4,7 +4,7 @@ Implementation/verification: 2026-11-02; review handoff: 2026-11-03, Asia/Seoul.
 
 ## 1. Baseline and review
 
-Same existing checkout, `codex/ensemble-0.5`, based on `codex/ensemble-0.4` at `3e3d229572d97dff88a1474d253e3e3a565407b4`. PRs #1/#2/#3 were verified open/unmerged. Baseline 0.4 Release CTest: 8/8. No existing PR was merged, closed, deleted or force-pushed. The 0.5 PR is stacked on 0.4.
+Same existing checkout, `codex/ensemble-0.5`, based on `codex/ensemble-0.4` at `3e3d229572d97dff88a1474d253e3e3a565407b4`. PRs #1/#2/#3 were verified open/unmerged. Baseline 0.4 Release CTest: 8/8. No existing PR was merged, closed, deleted or force-pushed. Draft [PR #4](https://github.com/PastelJ321/Reverie-Ensemble/pull/4) is stacked on 0.4; implementation branch `codex/ensemble-0.5`.
 
 ## 2. Main files and architecture
 
