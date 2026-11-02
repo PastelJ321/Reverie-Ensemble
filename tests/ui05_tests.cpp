@@ -38,6 +38,9 @@ int main(int argc, char** argv) {
                     : "out/ui05/" + QFileInfo(app.applicationDirPath()).fileName().toStdString());
         std::filesystem::create_directories(out);
         Editor e(native);
+        check(e.project.tracks[0].preset.instrumentId == "quadraj.cc0.upright" &&
+                  e.project.tracks[1].preset.instrumentId == "quadraj.cc0.strings",
+              "starter instruments resolve by stable ID after factory expansion");
         e.resize(1280, 800);
         e.show();
         auto* browser = e.findChild<SoundBrowser*>("soundBrowser");

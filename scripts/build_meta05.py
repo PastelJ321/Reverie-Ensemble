@@ -36,7 +36,7 @@ for key in ('meta-piano','meta-nylon-guitar','meta-steel-guitar'):
   derived=re.sub(r'\b(?:lochan|hichan|amp_random)=[^\s]+','',text[:start]+text[start:end if end!=-1 else len(text)])
   mapped=key+'-ensemble.sfz';derived='// Ensemble 0.5: channel-one first-position edition for sfizz.\n// Original full multichannel map remains in '+key+'.sfz; channels 2-7 are not supported by this edition.\n'+derived;b=derived.encode();(folder/mapped).write_bytes(b)
   asset=ROOT/'assets/sounds/mappings05'/mapped;asset.parent.mkdir(parents=True,exist_ok=True);asset.write_bytes(b)
-  files.append(dict(path=mapped,size=len(b),sha256=hashlib.sha256(b).hexdigest(),url='https://raw.githubusercontent.com/PastelJ321/Reverie-Ensemble/codex/ensemble-0.5/assets/sounds/mappings05/'+mapped))
+  files.append(dict(path=mapped,size=len(b),sha256=hashlib.sha256(b).hexdigest(),url='https://raw.githubusercontent.com/PastelJ321/Reverie-Ensemble/43dce87a31132aa0ba8b799d8f61ed6abaf88d41/assets/sounds/mappings05/'+mapped))
  i=dict(id=key,instrumentId=key,patchId=key+'.original',name=key.replace('-',' ').title(),patchName='Original',category='Piano & Keys' if key=='meta-piano' else 'Guitar & Bass',family='grand' if key=='meta-piano' else 'acoustic-guitar',format='sfizz',backend='sfizz',file=mapped,source='https://github.com/facebookincubator/Meta-open-sound/tree/'+rev+'/'+prefix,articulation='Original four velocity layers' if key=='meta-piano' else 'First-position mapping; original velocity layers',sampleCount=sum(f['path'].endswith('.ogg') for f in files),velocityLayers=4 if key=='meta-piano' else 3)
  cal=ROOT/'assets/sounds/meta05-calibration.json'
  if cal.exists():i.update(json.loads(cal.read_text()).get(i['name'],{}))

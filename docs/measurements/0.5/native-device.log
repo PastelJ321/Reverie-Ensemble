@@ -7,7 +7,7 @@ Changing default sample path to ogg/
 Changing default sample path to ogg/
 Changing default sample path to ogg/
 Enabling freewheeling
-PASS native device Surge XT Musical Typing -> 3-note MIDI clip -> parameter/state -> save/reopen -> WAV; also offline Meta Piano MIDI/save/reopen/export; peak=0.0971014 metaPeak=0.0663425
+PASS native device Surge XT Musical Typing -> 3-note MIDI clip -> parameter/state -> save/reopen -> WAV; also offline Meta Piano MIDI/save/reopen/export; peak=0.068137 metaPeak=0.0667728
 Requested client: 48000 Hz / 256 frames / stereo float32
 Client format: 48000 Hz / 2 channels / 32-bit IEEE Floating Point
 Device: WH-1000XM6

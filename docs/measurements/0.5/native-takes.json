@@ -5,9 +5,9 @@
     "channels": 2,
     "frames": 288000,
     "durationSeconds": 6.0,
-    "peak": 0.109161376953125,
-    "rms": 0.009711809728372444,
-    "sha256": "533eca4ab927b70614b70ec2208fd485fccd5501d26cf3c1e51f8c5e84314d99",
+    "peak": 0.114501953125,
+    "rms": 0.01021847982317475,
+    "sha256": "542b3afb10edca701a2891b88f3a3736f7937ba148ce9b4fe814cce5678b3a5c",
     "notes": 3,
     "method": "Real Qt key events, native miniaudio output, MIDI save/reopen/offline WAV. No human listening."
   },
@@ -18,8 +18,8 @@
     "frames": 192000,
     "durationSeconds": 4.0,
     "peak": 0.141265869140625,
-    "rms": 0.012204600304008937,
-    "sha256": "2260cdf31bc7a01442599a7878be38983aa94e4b2d734c5bbf3c9caf3e34109f",
+    "rms": 0.012152921100362611,
+    "sha256": "36cbb103c7842bb0880b9fd077280e975ff7b96ca520de343a1a19c9f586f2c8",
     "notes": 2,
     "method": "Real Qt key events, native miniaudio output, MIDI save/reopen/offline WAV. No human listening."
   }

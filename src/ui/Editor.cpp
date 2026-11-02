@@ -88,8 +88,8 @@ Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabl
     buildUi();
     buildMenus();
     try {
-        auto first = browser_->presetAt(0);
-        auto second = browser_->presetAt(2);
+        auto first = browser_->presetById("quadraj.cc0.upright");
+        auto second = browser_->presetById("quadraj.cc0.strings");
         if (first.instrumentId != "quadraj.cc0.upright" ||
             second.instrumentId != "quadraj.cc0.strings")
             throw std::runtime_error("Community Essentials is not installed");

@@ -31,6 +31,7 @@ class SoundBrowser final : public QWidget {
     void preview();
     void installFolder(const QString&);
     Preset presetAt(int);
+    Preset presetById(const std::string&);
 
   private:
     struct Entry {

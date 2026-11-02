@@ -24,7 +24,7 @@ The unchanged legacy component retains 13 recorded instrument entries. Some reco
 
 New component: **1,377,008,415 payload bytes**, **2,818 audio files**. Preserved compact components: **99,584,968 bytes / 85 WAVs**. Combined sound payload: **1,476,593,383 bytes (~1.48 GB decimal)**, excluding manifests/filesystem overhead, fonts, artwork, application and shared dependencies. This fits the requested practical 500 MB–1.5 GB range without thinning velocity layers or shortening attacks/tails.
 
-The full local `.app` actually contains `Contents/Resources/FactoryLibrary`; first launch requires no sample download. CMake `REVERIE_REQUIRE_FACTORY=ON` fails if its factory source artifact/sfizz is unavailable. A source-only developer build may retain the compact fallback and displays a missing-factory notice. `fetch_factory05.py --download` obtains just the selected payload, not the 9.33 GB full collections. `package_factory05.py` verifies and makes a separate factory tar.gz/SHA-256 in `out/dist`; no large new audio is committed to Git and no public Release was uploaded.
+The full local `.app` actually contains `Contents/Resources/FactoryLibrary`; first launch requires no sample download. CMake `REVERIE_REQUIRE_FACTORY=ON` fails if its factory source artifact/sfizz is unavailable. A source-only developer build may retain the compact fallback and displays a missing-factory notice. `fetch_factory05.py --download` obtains just the selected payload, not the 9.33 GB full collections. `package_factory05.py` verifies and makes a separate factory tar.gz/SHA-256 in `out/dist`; no large new audio is committed to Git and no public Release was uploaded. Final archive: **957,023,857 bytes**, SHA-256 `a2c0383af37b2fa5a31e7ea23778e27b4cc9d99f3a36c8e2af87ee2b6f07eb20`; generated guitar URLs are pinned to implementation commit `43dce87a31132aa0ba8b799d8f61ed6abaf88d41`.
 
 The build remains developer-linked to installed Qt/sfizz/FluidSynth/codec libraries. It is not yet a signed/notarized clean-machine installer. See DISTRIBUTION.md.
 
@@ -86,7 +86,7 @@ Latency/tail are reported and bounded tails are included; **no plugin delay comp
 
 ## 16. Korean technical foundation
 
-Qt `QCoreApplication::translate`, QTranslator, LinguistTools lupdate/lrelease, external TS/QM packaging and saved English/한국어/system selection. Restart requirement is explicit; no project/audio/plugin/recorded data is reset. The source catalog is intentionally unfinished for Argon. A separate three-string Korean QM fixture verifies actual UTF-8 font/rendering and persistence. Runtime retranslation of every current widget and finished Korean wording are not claimed.
+Qt `QCoreApplication::translate`, QTranslator, LinguistTools lupdate/lrelease, external TS/QM packaging and saved English/한국어/system selection. Restart requirement is explicit; no project/audio/plugin/recorded data is reset. The 572-entry source catalog is intentionally unfinished for Argon. A separate three-string Korean QM fixture verifies actual UTF-8 font/rendering and persistence. Runtime retranslation of every current widget and finished Korean wording are not claimed.
 
 ## 17. Argon handoff
 
@@ -102,7 +102,7 @@ Native isolated device outputs were nonzero for Surge and Meta; actual client/ba
 
 ## 20. Actual UI captures
 
-`docs/screenshots/0.5`: full factory browsing, isolated plugin/Meta recording, generic plugin parameters, installed plugin scan, channel processing, library installation and Korean **fixture** layout. Native captures are Cocoa widget/device sessions; offscreen captures are labeled separately. The 0.4 asset system/design remains. Unknown instruments use small family icons and omit misleading large artwork rather than showing a marimba as handclaps. Native review caught/fixed a compact-detail overlap and stale Piano Roll horizontal scroll hiding a new take.
+`docs/screenshots/0.5`: full factory browsing, isolated plugin/Meta recording, generic plugin parameters, installed plugin scan, channel processing, library installation and Korean **fixture** layout. Native captures are Cocoa widget/device sessions; offscreen captures are labeled separately. The 0.4 asset system/design remains. Unknown instruments use small family icons and omit misleading large artwork rather than showing a marimba as handclaps. The Release `.app` was also launched from outside the repository with bundled factory resources. Native review caught/fixed a compact-detail overlap and stale Piano Roll scroll hiding a new take. A Release-bundle first-launch check also caught an index-based starter lookup after factory expansion; it now resolves stable instrument IDs with a regression assertion.
 
 ## 21. Explicit incomplete work
 

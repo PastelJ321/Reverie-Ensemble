@@ -716,6 +716,12 @@ void SoundBrowser::filter() {
             list_->setCurrentRow(i);
     updateDetails();
 }
+Preset SoundBrowser::presetById(const std::string& id) {
+    for (std::size_t i = 0; i < entries_.size(); ++i)
+        if (entries_[i].id == id)
+            return presetAt(int(i));
+    throw std::runtime_error("No instrument selected");
+}
 Preset SoundBrowser::presetAt(int i) {
     if (i < 0 || i >= int(entries_.size()))
         throw std::runtime_error("No instrument selected");

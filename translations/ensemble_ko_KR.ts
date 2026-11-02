@@ -1158,7 +1158,7 @@ Full terms: About and THIRD_PARTY_LICENSES.md</source>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="83"/>
-        <location filename="../src/ui/SoundBrowser.cpp" line="867"/>
+        <location filename="../src/ui/SoundBrowser.cpp" line="873"/>
         <source>Expand ↔</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1180,8 +1180,8 @@ Full terms: About and THIRD_PARTY_LICENSES.md</source>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="109"/>
-        <location filename="../src/ui/SoundBrowser.cpp" line="780"/>
-        <location filename="../src/ui/SoundBrowser.cpp" line="791"/>
+        <location filename="../src/ui/SoundBrowser.cpp" line="786"/>
+        <location filename="../src/ui/SoundBrowser.cpp" line="797"/>
         <source>Installed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1370,22 +1370,22 @@ Install this local pack?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/SoundBrowser.cpp" line="777"/>
+        <location filename="../src/ui/SoundBrowser.cpp" line="783"/>
         <source>Synthesis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/SoundBrowser.cpp" line="781"/>
+        <location filename="../src/ui/SoundBrowser.cpp" line="787"/>
         <source>Download required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/SoundBrowser.cpp" line="786"/>
+        <location filename="../src/ui/SoundBrowser.cpp" line="792"/>
         <source>Ignored SFZ metadata: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/SoundBrowser.cpp" line="866"/>
+        <location filename="../src/ui/SoundBrowser.cpp" line="872"/>
         <source>Compact ↔</source>
         <translation type="unfinished"></translation>
     </message>

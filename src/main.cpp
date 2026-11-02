@@ -30,7 +30,9 @@ int main(int argc, char** argv) {
     }
     editor.show();
     if (args.contains("--expanded"))
-        QTimer::singleShot(100, &editor, [&] { editor.showBrowser(); });
+        QTimer::singleShot(100, &editor, [&] {
+            editor.findChild<reverie::SoundBrowser*>("soundBrowser")->setExpanded(true);
+        });
     if (args.contains("--keyboard"))
         QTimer::singleShot(100, &editor, [&] { editor.showKeyboard(); });
     if (args.contains("--library-manager"))
