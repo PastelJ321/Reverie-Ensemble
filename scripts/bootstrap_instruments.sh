@@ -42,7 +42,7 @@ if [ "$processor" = arm64 ]; then processor=aarch64; fi
 cmake -S out/deps/sfizz -B out/deps/sfizz-build -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_PREFIX="$PWD/out/deps/install" -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 \
   -DPROJECT_SYSTEM_PROCESSOR="$processor" -DSFIZZ_JACK=OFF -DSFIZZ_RENDER=OFF \
-  -DSFIZZ_TESTS=OFF -DENABLE_LTO=OFF
+  -DSFIZZ_TESTS=OFF -DENABLE_LTO=OFF -DSFIZZ_USE_SNDFILE=ON
 cmake --build out/deps/sfizz-build -j 6
 cmake --install out/deps/sfizz-build
 # Install the SF3 decoder dependency first on macOS: brew install libsndfile

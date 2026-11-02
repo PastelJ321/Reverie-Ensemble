@@ -8,6 +8,7 @@
 #include <QPointer>
 #include <QTimer>
 #include <QUrl>
+#include <QVariant>
 #include <future>
 #ifdef REVERIE_HAS_QTSVG
 #include <QSvgRenderer>
@@ -49,7 +50,8 @@ QString instrumentFamily(const Preset& p) {
         return "grand";
     if (s.contains("harp"))
         return "harp";
-    if (s.contains("acoustic guitar"))
+    if (s.contains("acoustic guitar") ||
+        (s.contains("guitar") && (s.contains("nylon") || s.contains("steel"))))
         return "acoustic-guitar";
     if (p.kind == InstrumentKind::Drums || s.contains("percussion") || s.contains("drum"))
         return "drums";
@@ -74,6 +76,22 @@ QString instrumentFamily(const Preset& p) {
     return p.family.empty() ? "synth" : QString::fromStdString(p.family);
 }
 
+static bool specificArtwork(const Preset& p) {
+    if (p.kind == InstrumentKind::Clap)
+        return false;
+    auto name = QString::fromStdString(p.name).toLower();
+    if (name.contains("harpsichord"))
+        return false;
+    if (p.kind == InstrumentKind::Synth || p.kind == InstrumentKind::Drums)
+        return true;
+    for (auto key :
+         {"piano", "guitar",  "bass",       "cello",   "violin",   "viola",   "trumpet", "trombone",
+          "horn",  "tuba",    "flute",      "piccolo", "clarinet", "oboe",    "bassoon", "organ",
+          "harp",  "marimba", "vibraphone", "kalimba", "balafon",  "timpani", "tubular"})
+        if (name.contains(key))
+            return true;
+    return false;
+}
 static const QImage* atlas(bool orchestra = false) {
     static auto job = std::async(
         std::launch::async, [] { return QImage(assetPath() + "/artwork/instrument-atlas.png"); });
@@ -93,6 +111,8 @@ static const QImage* atlas(bool orchestra = false) {
     return decoded.isNull() ? nullptr : &decoded;
 }
 QPixmap instrumentThumbnail(const Preset& preset, QSize size, qreal dpr, bool artwork) {
+    if (artwork && !specificArtwork(preset))
+        return instrumentDrawing(instrumentFamily(preset), size, false, dpr);
     auto uri = QString::fromStdString(preset.thumbnailAsset);
     auto path = uri.startsWith("file:") ? QUrl(uri).toLocalFile() : uri;
     if (path.isEmpty() || path.startsWith("asset:"))
@@ -180,6 +200,9 @@ QPixmap instrumentDrawing(const QString& family, QSize size, bool detail, qreal 
     return result;
 }
 void InstrumentArtwork::setPreset(const Preset& preset) {
+    setProperty("hasArtwork",
+                specificArtwork(preset) ||
+                    (!preset.artworkUri.empty() && !preset.artworkUri.starts_with("asset:")));
     family_ = instrumentFamily(preset);
     auto uri = QString::fromStdString(preset.artworkUri);
     auto path = uri.startsWith("file:") ? QUrl(uri).toLocalFile() : uri;

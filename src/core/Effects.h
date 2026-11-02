@@ -15,6 +15,10 @@ class EffectChain {
   private:
     Effects settings_;
     float alpha_, lowGain_, highGain_;
+    float inputGain_ = 1, outputGain_ = 1, envelope_ = 0, limitEnvelope_ = 0, attack_ = 0,
+          release_ = 0;
+    std::array<double, 5> eq_{};
+    std::array<std::array<double, 2>, 2> eqState_{};
     std::array<float, 2> low_{};
     std::vector<float> delay_;
     std::array<std::vector<float>, 4> comb_;

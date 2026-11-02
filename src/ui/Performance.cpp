@@ -1,3 +1,4 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 #include "ui/Editor.h"
@@ -30,18 +31,41 @@ void Editor::refreshPerformance() {
         << p.calibrationGain << t.volume << t.pan << t.midiChannel << t.effects.enabled
         << t.effects.reverbMix << t.effects.delayMix << t.effects.delaySeconds << t.effects.feedback
         << t.effects.lowDb << t.effects.highDb;
+    key << project.bpm << project.numerator << project.denominator;
+    key << p.pluginId << p.modern << p.mono << p.legato << p.oscMix << p.detune << p.glide
+        << p.filterEnvelope << p.lfoRate << p.vibrato << p.fm;
+    auto stateKey = [&](const Preset& p) {
+        std::uint64_t hash = 1469598103934665603ULL;
+        for (auto b : p.pluginState) {
+            hash ^= b;
+            hash *= 1099511628211ULL;
+        }
+        key << p.pluginId << p.backendPath << hash;
+    };
+    stateKey(p);
+    const auto& fx = t.effects;
+    key << fx.compressor << fx.peq << fx.limiter << fx.thresholdDb << fx.ratio << fx.attackMs
+        << fx.releaseMs << fx.makeupDb << fx.eqHz << fx.eqDb << fx.eqQ << fx.inputDb << fx.outputDb;
+    for (const auto& i : t.inserts) {
+        stateKey(i.plugin);
+        key << i.bypass << i.wet;
+    }
     for (auto& z : p.zones)
         key << z.sample.get();
     if (key.str() == performanceSignature_)
         return;
     releasePerformance();
     try {
-        if (p.kind == InstrumentKind::Sfizz || p.kind == InstrumentKind::SoundFont) {
+        if (p.kind == InstrumentKind::Sfizz || p.kind == InstrumentKind::SoundFont ||
+            p.kind == InstrumentKind::Clap || !t.inserts.empty()) {
             preparingInstrument_ = true;
             auto copy = t;
             copy.clips.clear();
             copy.mute = copy.solo = false;
             Project monitor;
+            monitor.bpm = project.bpm;
+            monitor.numerator = project.numerator;
+            monitor.denominator = project.denominator;
             monitor.master = 1;
             monitor.tracks.push_back(copy);
             double rate = engine.sampleRate();
@@ -95,10 +119,11 @@ void Editor::inputNote(int key, bool on, float velocity, int channel, int source
     if (keyboard_)
         keyboard_->showActivity(key, on);
     if (auto* label = findChild<QLabel*>("midiActivity"))
-        label->setText(QString("MIDI %1 · Ch %2 · %3")
+        label->setText(QString(QCoreApplication::translate("Ensemble", "MIDI %1 · Ch %2 · %3"))
                            .arg(key)
                            .arg(channel + 1)
-                           .arg(on ? "Note On" : "Note Off"));
+                           .arg(on ? QCoreApplication::translate("Ensemble", "Note On")
+                                   : QCoreApplication::translate("Ensemble", "Note Off")));
 }
 void Editor::inputController(int cc, int value, int channel, std::int64_t frame, bool external) {
     if (preparingInstrument_)
@@ -171,13 +196,13 @@ void Editor::showBrowser() {
 void Editor::drainMidi() {
     if (midiInput_.takeDevicesChanged()) {
         releasePerformance();
-        message("MIDI devices changed · notes released");
+        message(QCoreApplication::translate("Ensemble", "MIDI devices changed · notes released"));
         if (auto* combo = findChild<QComboBox*>("midiInputDevice")) {
             auto selected = combo->currentData();
             QSignalBlocker block(combo);
             combo->clear();
-            combo->addItem("All MIDI inputs", -1);
-            combo->addItem("MIDI disabled", 0);
+            combo->addItem(QCoreApplication::translate("Ensemble", "All MIDI inputs"), -1);
+            combo->addItem(QCoreApplication::translate("Ensemble", "MIDI disabled"), 0);
             for (auto& d : midiInput_.devices())
                 combo->addItem(QString::fromStdString(d.name), d.id);
             int i = combo->findData(selected);
@@ -186,7 +211,7 @@ void Editor::drainMidi() {
     }
     if (midiInput_.takeOverflow()) {
         releasePerformance();
-        message("MIDI input overflow · notes released");
+        message(QCoreApplication::translate("Ensemble", "MIDI input overflow · notes released"));
     }
     MidiMessage m;
     while (midiInput_.pop(m)) {

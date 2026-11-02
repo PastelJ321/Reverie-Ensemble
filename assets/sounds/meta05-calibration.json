@@ -1,0 +1,20 @@
+{
+  "Meta Piano": {
+    "calibrationDb": 1.2089715722236052,
+    "calibrationVersion": 1,
+    "auditionDb": 0,
+    "calibrationPolicy": "Fixed gain from three roots and three velocities; +12 dB maximum, -4.44 dBFS strong-note headroom"
+  },
+  "Meta Steel Guitar": {
+    "calibrationDb": 5.947697075651087,
+    "calibrationVersion": 1,
+    "auditionDb": 0,
+    "calibrationPolicy": "Fixed gain from three roots and three velocities; +12 dB maximum, -4.44 dBFS strong-note headroom"
+  },
+  "Meta Nylon Guitar": {
+    "calibrationDb": 12.041199826559248,
+    "calibrationVersion": 1,
+    "auditionDb": 0,
+    "calibrationPolicy": "Fixed gain from three roots and three velocities; +12 dB maximum, -4.44 dBFS strong-note headroom"
+  }
+}

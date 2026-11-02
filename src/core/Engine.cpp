@@ -17,8 +17,23 @@ static_assert(std::atomic<std::int64_t>::is_always_lock_free);
 PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled, bool offline)
     : id(t.id), sampleOwner(t.instrumentSample), synth(t.preset, rate, sampleOwner.get()),
       backend(prepareBackend(t.preset, rate, true)), effects(t.effects, rate) {
-    if (backend)
+    if (backend) {
         backend->setOffline(offline);
+        if (std::string(backend->capabilities().name) == "Unavailable instrument")
+            preparationWarning = backend->diagnostics();
+    }
+    for (const auto& insert : t.inserts) {
+        try {
+            inserts.push_back(std::make_unique<PluginInstance>(insert.plugin, rate));
+            inserts.back()->offline(offline);
+        } catch (const std::exception& ex) {
+            preparationWarning +=
+                "Effect unavailable: " + insert.plugin.name + " · " + ex.what() + "\n";
+            inserts.push_back(nullptr);
+        }
+        insertWet.push_back(insert.wet);
+        insertBypass.push_back(insert.bypass);
+    }
     // Stereo balance: center leaves both channels unchanged; hard pan silences the opposite side.
     gainL = enabled ? t.volume * std::sqrt(1.f - std::max(0.f, t.pan)) : 0;
     gainR = enabled ? t.volume * std::sqrt(1.f + std::min(0.f, t.pan)) : 0;
@@ -28,6 +43,15 @@ PreparedTrack::PreparedTrack(const Track& t, double rate, bool enabled, bool off
         soundKey ^= v + 0x9e3779b97f4a7c15ULL + (soundKey << 6) + (soundKey >> 2);
     };
     const auto& p = t.preset;
+    for (auto v : p.pluginState)
+        mix(v);
+    for (auto v : p.pluginId)
+        mix(v);
+    mix(p.modern);
+    mix(p.mono);
+    mix(p.legato);
+    for (float v : {p.oscMix, p.detune, p.glide, p.filterEnvelope, p.lfoRate, p.vibrato, p.fm})
+        mix(std::bit_cast<std::uint32_t>(v));
     for (const auto& z : p.zones) {
         mix(reinterpret_cast<std::uintptr_t>(z.sample.get()));
         mix(z.lowKey);
@@ -267,6 +291,9 @@ void AudioProcessingGraph::render(float* out, std::uint32_t frames, std::int64_t
             auto count = std::min(blockSize, frames - offset);
             auto blockStart = start + offset;
             if (t.backend) {
+                t.backend->transport(transportOverride >= 0 ? transportOverride + offset
+                                                            : blockStart,
+                                     rate, tempo.bpm, numerator, denominator, transportPlaying);
                 while (t.cursor < t.events.size() &&
                        t.events[t.cursor].frame < blockStart + count) {
                     const auto& ev = t.events[t.cursor++];
@@ -308,7 +335,21 @@ void AudioProcessingGraph::render(float* out, std::uint32_t frames, std::int64_t
                     --t.rampRemaining;
                 }
                 auto processed = t.effects.next(scratch[i * 2], scratch[i * 2 + 1]);
-                float l = processed.first * t.gainL, r = processed.second * t.gainR;
+                scratch[i * 2] = processed.first;
+                scratch[i * 2 + 1] = processed.second;
+            }
+            for (unsigned k = 0; k < t.inserts.size(); ++k)
+                if (t.inserts[k] && !t.insertBypass[k]) {
+                    auto dry = scratch;
+                    t.inserts[k]->transport(
+                        transportOverride >= 0 ? transportOverride + offset : blockStart, rate,
+                        tempo.bpm, numerator, denominator, transportPlaying);
+                    t.inserts[k]->process(scratch.data(), count);
+                    for (unsigned i = 0; i < count * 2; ++i)
+                        scratch[i] = std::lerp(dry[i], scratch[i], t.insertWet[k]);
+                }
+            for (std::uint32_t i = 0; i < count; ++i) {
+                float l = scratch[i * 2] * t.gainL, r = scratch[i * 2 + 1] * t.gainR;
                 t.peakL = std::max(t.peakL, std::abs(l));
                 t.peakR = std::max(t.peakR, std::abs(r));
                 t.peak = std::max(t.peak, std::max(std::abs(l), std::abs(r)));
@@ -487,6 +528,8 @@ void AudioEngine::process(float* out, std::uint32_t frames) noexcept {
         std::array<float, 512> scratch{};
         for (unsigned offset = 0; offset < frames; offset += 256) {
             auto n = std::min(256u, frames - offset);
+            performance_->transportPlaying = playing_.load();
+            performance_->transportOverride = position_.load();
             performance_->render(scratch.data(), n, performancePosition_);
             for (unsigned i = 0; i < n * 2; ++i)
                 out[offset * 2 + i] += scratch[i] * (active_ ? active_->master : .8f);
@@ -512,6 +555,9 @@ void AudioEngine::process(float* out, std::uint32_t frames) noexcept {
     }
 }
 void PreparedTrack::silence() noexcept {
+    for (auto& insert : inserts)
+        if (insert)
+            insert->reset();
     synth.reset();
     if (backend)
         backend->reset();

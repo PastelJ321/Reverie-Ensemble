@@ -1,0 +1,316 @@
+{
+  "instruments": 51,
+  "patches": 99,
+  "bytes": 1377008415,
+  "sampleFiles": 2818,
+  "selection": [
+    {
+      "name": "Claps",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 1239649
+    },
+    {
+      "name": "Balafon",
+      "collection": "vcsl",
+      "patches": 4,
+      "bytes": 9570611
+    },
+    {
+      "name": "Bass Drum 1",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 4608708
+    },
+    {
+      "name": "Hi-Hat Cymbal",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 5819833
+    },
+    {
+      "name": "Tuba",
+      "collection": "vsco",
+      "patches": 3,
+      "bytes": 40596936
+    },
+    {
+      "name": "Snare Drum, Modern 1",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 14348157
+    },
+    {
+      "name": "Violin Ensemble",
+      "collection": "vsco",
+      "patches": 6,
+      "bytes": 99466178
+    },
+    {
+      "name": "Oboe",
+      "collection": "vsco",
+      "patches": 3,
+      "bytes": 65970857
+    },
+    {
+      "name": "Clarinet",
+      "collection": "vsco",
+      "patches": 3,
+      "bytes": 66075322
+    },
+    {
+      "name": "Kalimba, Kenya",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 22305888
+    },
+    {
+      "name": "Bassoon",
+      "collection": "vsco",
+      "patches": 3,
+      "bytes": 69365794
+    },
+    {
+      "name": "Concert Flute",
+      "collection": "vsco",
+      "patches": 5,
+      "bytes": 120499111
+    },
+    {
+      "name": "Vibraphone",
+      "collection": "vcsl",
+      "patches": 4,
+      "bytes": 99504936
+    },
+    {
+      "name": "French Horn",
+      "collection": "vsco",
+      "patches": 3,
+      "bytes": 84117004
+    },
+    {
+      "name": "Trombone",
+      "collection": "vsco",
+      "patches": 3,
+      "bytes": 85307789
+    },
+    {
+      "name": "Harpsichord, English",
+      "collection": "vcsl",
+      "patches": 3,
+      "bytes": 90747440
+    },
+    {
+      "name": "TX81Z",
+      "collection": "vcsl",
+      "patches": 4,
+      "bytes": 134510345
+    },
+    {
+      "name": "Pipe Organ",
+      "collection": "vsco",
+      "patches": 4,
+      "bytes": 138526661
+    },
+    {
+      "name": "Shaker",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 80056
+    },
+    {
+      "name": "Tambourine 3",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 473450
+    },
+    {
+      "name": "Ball Whistle",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 554696
+    },
+    {
+      "name": "Slapstick",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 852726
+    },
+    {
+      "name": "Guiro",
+      "collection": "vcsl",
+      "patches": 3,
+      "bytes": 2903868
+    },
+    {
+      "name": "Cabasa",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 1018158
+    },
+    {
+      "name": "Claves",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 1156077
+    },
+    {
+      "name": "Agogo Bells",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 1376888
+    },
+    {
+      "name": "Slit Drum",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 1472856
+    },
+    {
+      "name": "Finger Cymbals",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 1678570
+    },
+    {
+      "name": "Hand Bells, Nepalese",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 1723265
+    },
+    {
+      "name": "Train Whistle, Toy",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 1966152
+    },
+    {
+      "name": "Woodblock",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 2449992
+    },
+    {
+      "name": "Gong 2",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 2493879
+    },
+    {
+      "name": "Tubular Bells 3",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 2499586
+    },
+    {
+      "name": "Darbuka",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 2515395
+    },
+    {
+      "name": "Legacy Snares",
+      "collection": "vcsl",
+      "patches": 5,
+      "bytes": 13185500
+    },
+    {
+      "name": "Cowbells",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 2739108
+    },
+    {
+      "name": "Anvil",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 2800236
+    },
+    {
+      "name": "Vibraslap",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 3072528
+    },
+    {
+      "name": "Bell Tree",
+      "collection": "vcsl",
+      "patches": 4,
+      "bytes": 14278211
+    },
+    {
+      "name": "Cajon",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 4223044
+    },
+    {
+      "name": "Xylophone",
+      "collection": "vsco",
+      "patches": 1,
+      "bytes": 4540095
+    },
+    {
+      "name": "Sleigh Bells",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 4686831
+    },
+    {
+      "name": "Conga",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 4877916
+    },
+    {
+      "name": "Harmonica-Hohner-Special20-C",
+      "collection": "vcsl",
+      "patches": 4,
+      "bytes": 22352298
+    },
+    {
+      "name": "Siren",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 5924369
+    },
+    {
+      "name": "Piccolo",
+      "collection": "vsco",
+      "patches": 2,
+      "bytes": 12477591
+    },
+    {
+      "name": "Tambourine 2",
+      "collection": "vcsl",
+      "patches": 1,
+      "bytes": 6254410
+    },
+    {
+      "name": "Glockenspiel",
+      "collection": "vsco",
+      "patches": 1,
+      "bytes": 6376974
+    },
+    {
+      "name": "Meta Nylon Guitar",
+      "collection": "Meta Open Sound",
+      "patches": 1,
+      "bytes": 17018560
+    },
+    {
+      "name": "Meta Piano",
+      "collection": "Meta Open Sound",
+      "patches": 1,
+      "bytes": 48300056
+    },
+    {
+      "name": "Meta Steel Guitar",
+      "collection": "Meta Open Sound",
+      "patches": 1,
+      "bytes": 26103623
+    }
+  ],
+  "conservativeKinds": 49,
+  "kindPolicy": "Numbered tambourines and snare collections are grouped as one type each; source FX/percussion remain explicitly named. Legacy compact overlap is not added to this count."
+}

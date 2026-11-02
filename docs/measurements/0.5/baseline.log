@@ -1,0 +1,21 @@
+Test project /Users/pastelj/Desktop/mac_project/Reverie Ensemble/build-04-release
+    Start 1: instruments-04
+1/8 Test #1: instruments-04 ...................   Passed    0.74 sec
+    Start 2: features-03
+2/8 Test #2: features-03 ......................   Passed    1.81 sec
+    Start 3: audio-core
+3/8 Test #3: audio-core .......................   Passed    0.52 sec
+    Start 4: features-02
+4/8 Test #4: features-02 ......................   Passed    1.44 sec
+    Start 5: performance-workflow-04
+5/8 Test #5: performance-workflow-04 ..........   Passed    2.38 sec
+    Start 6: editor-03
+6/8 Test #6: editor-03 ........................   Passed    1.56 sec
+    Start 7: editor-workflow
+7/8 Test #7: editor-workflow ..................   Passed    1.18 sec
+    Start 8: editor-02
+8/8 Test #8: editor-02 ........................   Passed    1.48 sec
+
+100% tests passed out of 8
+
+Total Test time (real) =  11.11 sec

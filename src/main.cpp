@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 
+#include "core/Plugin.h"
 #include "ui/Editor.h"
 #include "ui/SoundBrowser.h"
+#include "ui/Theme.h"
 #include <QApplication>
 #include <QDebug>
 #include <QStyleFactory>
@@ -10,13 +12,15 @@
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
     QApplication::setApplicationName("Reverie Ensemble");
-    QApplication::setApplicationVersion("0.4.0");
+    QApplication::setApplicationVersion("0.5.0");
     QApplication::setOrganizationName("QuadraJ");
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     const auto args = app.arguments();
     int libraryRoot = args.indexOf("--library-root");
     if (libraryRoot >= 0 && libraryRoot + 1 < args.size())
         qputenv("REVERIE_LIBRARY_ROOT", args[libraryRoot + 1].toUtf8());
+    QObject::connect(&app, &QApplication::aboutToQuit, [] { reverie::shutdownPluginModules(); });
+    reverie::loadUiLanguage();
     reverie::Editor editor(!args.contains("--no-audio"));
     int size = args.indexOf("--size");
     if (size >= 0 && size + 1 < args.size()) {

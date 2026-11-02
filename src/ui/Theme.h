@@ -7,6 +7,8 @@ class QWidget;
 namespace reverie {
 QString assetPath();
 QString soundPackPath();
+QString factoryPackPath();
+void loadUiLanguage();
 void initializeTheme();
 QString themeStyle();
 QIcon toolIcon(const QString& name);

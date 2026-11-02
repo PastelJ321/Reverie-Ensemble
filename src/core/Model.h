@@ -17,7 +17,7 @@ void reserveId(Id id);
 constexpr int maxTracks = 64;
 constexpr double defaultRate = 48000.0;
 enum class Waveform { Sine, Saw, Square, Triangle };
-enum class InstrumentKind { Synth, Drums, Sampler, Sfizz, SoundFont };
+enum class InstrumentKind { Synth, Drums, Sampler, Sfizz, SoundFont, Clap };
 struct Sample;
 struct SampleZone {
     std::string path;
@@ -40,8 +40,13 @@ struct Preset {
     std::string family, patchId, articulation;
     int calibrationVersion = 0;
     float calibrationGain = 1, auditionGain = 1;
+    bool modern = false, mono = false, legato = false;
+    float oscMix = .35f, detune = 7, glide = .08f, filterEnvelope = 1, lfoRate = 5, vibrato = .1f,
+          fm = 0;
     bool cubicInterpolation = false;
     std::vector<SampleZone> zones;
+    std::string pluginId, pluginVendor, pluginVersion;
+    std::vector<std::uint8_t> pluginState;
     std::string backendPath;
     float renderTailSeconds = 0; // External envelope hint; legacy projects keep their exact tails.
     int soundFontBank = 0, soundFontProgram = 0;
@@ -83,8 +88,17 @@ struct Clip {
     std::string mediaPath;
 };
 struct Effects {
+    bool compressor = false, peq = false, limiter = false;
+    float thresholdDb = -18, ratio = 4, attackMs = 10, releaseMs = 100, makeupDb = 0;
+    float eqHz = 1000, eqDb = 0, eqQ = .707f, inputDb = 0, outputDb = 0;
+    bool operator==(const Effects&) const = default;
     bool enabled = false;
     float lowDb = 0, highDb = 0, delayMix = 0, delaySeconds = .3f, feedback = .25f, reverbMix = 0;
+};
+struct PluginInsert {
+    Preset plugin;
+    bool bypass = false;
+    float wet = 1;
 };
 struct Track {
     Id id = nextId();
@@ -97,11 +111,12 @@ struct Track {
     float volume = .8f, pan = 0.;
     Preset preset;
     Effects effects;
+    std::vector<PluginInsert> inserts;
     std::shared_ptr<const Sample> instrumentSample;
     std::vector<Clip> clips;
 };
 struct Project {
-    int formatVersion = 4;
+    int formatVersion = 5;
     std::string name = "Untitled";
     double bpm = 120.;
     int numerator = 4, denominator = 4;

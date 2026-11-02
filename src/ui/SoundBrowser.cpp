@@ -1,10 +1,13 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
-#include "ui/SoundBrowser.h"
 #include "core/InstrumentBackend.h"
+#include "core/Plugin.h"
 #include "core/Serializer.h"
 #include "ui/Editor.h"
 #include "ui/InstrumentArt.h"
+#include "ui/PluginBrowser.h"
+#include "ui/SoundBrowser.h"
 #include "ui/SoundLibraryManager.h"
 #include "ui/Theme.h"
 #include <QApplication>
@@ -46,7 +49,8 @@ namespace reverie {
 template <class F> static auto libraryJob(QWidget* parent, const QString& label, F job) {
     if (!parent->isVisible())
         return job();
-    QProgressDialog progress(label, QString(), 0, 0, parent);
+    QProgressDialog progress(QCoreApplication::translate("Ensemble", label.toUtf8().constData()),
+                             QString(), 0, 0, parent);
     progress.setCancelButton(nullptr);
     progress.setWindowModality(Qt::ApplicationModal);
     progress.setMinimumDuration(0);
@@ -76,10 +80,10 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
     layout->setContentsMargins(10, 8, 10, 8);
     layout->setSpacing(6);
     auto* modeBar = new QHBoxLayout;
-    expand_ = new QPushButton("Expand ↔");
+    expand_ = new QPushButton(QCoreApplication::translate("Ensemble", "Expand ↔"));
     expand_->setObjectName("expandBrowser");
     modeBar->addWidget(expand_);
-    pin_ = new QPushButton("Pin");
+    pin_ = new QPushButton(QCoreApplication::translate("Ensemble", "Pin"));
     pin_->setCheckable(true);
     pin_->setChecked(QSettings().value("library/pinned", true).toBool());
     modeBar->addWidget(pin_);
@@ -89,7 +93,8 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
     layout->addLayout(modeBar);
     search_ = new QLineEdit;
     search_->setObjectName("soundSearch");
-    search_->setPlaceholderText("Search instruments / tags");
+    search_->setPlaceholderText(
+        QCoreApplication::translate("Ensemble", "Search instruments / tags"));
     search_->setClearButtonEnabled(true);
     layout->addWidget(search_);
     packs_ = new QComboBox;
@@ -98,10 +103,10 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
     packs_->setMinimumContentsLength(12);
     packs_->setMinimumWidth(0);
     packs_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    packs_->addItem("All packs");
+    packs_->addItem(QCoreApplication::translate("Ensemble", "All packs"));
     auto* filterRow = new QHBoxLayout;
     filterRow->addWidget(packs_, 1);
-    installedOnly_ = new QCheckBox("Installed");
+    installedOnly_ = new QCheckBox(QCoreApplication::translate("Ensemble", "Installed"));
     installedOnly_->setObjectName("installedInstrumentsOnly");
     installedOnly_->setChecked(QSettings().value("library/installedOnly", true).toBool());
     filterRow->addWidget(installedOnly_);
@@ -115,10 +120,17 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
     columns_->setObjectName("browserColumns");
     categories_ = new QListWidget;
     categories_->setObjectName("soundCategory");
-    categories_->addItems({"All instruments", "Favorites", "Recently used", "Piano & Keys",
+    categories_->addItems({"All instruments", "Factory Instruments", "Installed Sound Libraries",
+                           "Audio Plugins", "Favorites", "Recently used", "Piano & Keys",
                            "Guitar & Bass", "Drums & Percussion", "Strings", "Brass", "Woodwinds",
                            "Synthesizers", "Orchestral", "World Instruments",
                            "Sound Effects & Textures", "User Instruments"});
+    for (int row = 0; row < categories_->count(); ++row) {
+        auto* i = categories_->item(row);
+        auto id = i->text();
+        i->setData(Qt::UserRole, id);
+        i->setText(QCoreApplication::translate("Ensemble", id.toUtf8().constData()));
+    }
     categories_->setCurrentRow(0);
     categories_->setMinimumWidth(130);
     categories_->setMaximumWidth(180);
@@ -147,7 +159,7 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
     detailsLayout->addWidget(detailTitle_);
     artwork_ = new InstrumentArtwork;
     detailsLayout->addWidget(artwork_);
-    auto* patchHeading = new QLabel("PATCHES");
+    auto* patchHeading = new QLabel(QCoreApplication::translate("Ensemble", "PATCHES"));
     detailsLayout->addWidget(patchHeading);
     patches_ = new QListWidget;
     patches_->setObjectName("patchList");
@@ -160,24 +172,26 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
     detail_->setMinimumHeight(55);
     detailsLayout->addWidget(detail_);
     auto* actions = new QHBoxLayout;
-    auto* listen = new QPushButton("Listen");
+    auto* listen = new QPushButton(QCoreApplication::translate("Ensemble", "Listen"));
     listen->setObjectName("browserPreview");
     listen->setIcon(toolIcon("play"));
     actions->addWidget(listen);
-    auto* apply = new QPushButton("Apply");
+    auto* apply = new QPushButton(QCoreApplication::translate("Ensemble", "Apply"));
     apply->setObjectName("browserApply");
     actions->addWidget(apply);
-    auto* favorite = new QPushButton("Favorite");
+    auto* favorite = new QPushButton(QCoreApplication::translate("Ensemble", "Favorite"));
     favorite->setObjectName("browserFavorite");
     actions->addWidget(favorite);
     detailsLayout->addLayout(actions);
-    auto* add = new QPushButton("New instrument track");
+    auto* add = new QPushButton(QCoreApplication::translate("Ensemble", "New instrument track"));
     add->setObjectName("browserNewTrack");
     detailsLayout->addWidget(add);
     detailsLayout->addStretch();
-    auto* install = new QPushButton("Install local sound pack…");
+    auto* install =
+        new QPushButton(QCoreApplication::translate("Ensemble", "Install local sound pack…"));
     layout->addWidget(install);
-    auto* sources = new QPushButton("Available collections…");
+    auto* sources =
+        new QPushButton(QCoreApplication::translate("Ensemble", "Available collections…"));
     layout->addWidget(sources);
     connect(sources, &QPushButton::clicked, this, [sources] {
         QMenu menu;
@@ -191,9 +205,14 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
                            [url = pair.second] { QDesktopServices::openUrl(QUrl(url)); });
         menu.exec(sources->mapToGlobal(QPoint(0, sources->height())));
     });
-    auto* import = new QPushButton("Import SFZ / SoundFont…");
+    auto* plugins = new QPushButton(QCoreApplication::translate("Ensemble", "Audio Plugins…"));
+    plugins->setObjectName("browserPlugins");
+    layout->addWidget(plugins);
+    connect(plugins, &QPushButton::clicked, this, [this] { showPlugins(editor_); });
+    auto* import =
+        new QPushButton(QCoreApplication::translate("Ensemble", "Import SFZ / SoundFont…"));
     layout->addWidget(import);
-    auto* wav = new QPushButton("Import audio WAV…");
+    auto* wav = new QPushButton(QCoreApplication::translate("Ensemble", "Import audio WAV…"));
     layout->addWidget(wav);
     status_ = new QLabel;
     status_->setWordWrap(true);
@@ -223,8 +242,9 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
         filter();
     });
     connect(install, &QPushButton::clicked, this, [this] {
-        auto folder =
-            QFileDialog::getExistingDirectory(this, "Select unpacked sound pack (pack.json)");
+        auto folder = QFileDialog::getExistingDirectory(
+            this,
+            QCoreApplication::translate("Ensemble", "Select unpacked sound pack (pack.json)"));
         if (folder.isEmpty())
             return;
         try {
@@ -233,24 +253,29 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
             auto text =
                 QString::fromStdString(p.name + "\n" + p.author + "\nLicense: " + p.license +
                                        "\nSource: " + p.source) +
-                QString("\nInstall size: %1 MiB\nInstall this local pack?")
+                QString(QCoreApplication::translate(
+                            "Ensemble", "\nInstall size: %1 MiB\nInstall this local pack?"))
                     .arg(p.installSize / 1048576., 0, 'f', 1);
-            if (QMessageBox::question(this, "Install sound pack", text) == QMessageBox::Yes)
+            if (QMessageBox::question(this,
+                                      QCoreApplication::translate("Ensemble", "Install sound pack"),
+                                      text) == QMessageBox::Yes)
                 installFolder(folder);
         } catch (const std::exception& ex) {
             editor_.message(ex.what());
         }
     });
     connect(import, &QPushButton::clicked, this, [this] {
-        auto path = QFileDialog::getOpenFileName(this, "Load SFZ or SoundFont", {},
-                                                 "Instruments (*.sfz *.sf2 *.sf3)");
+        auto path = QFileDialog::getOpenFileName(
+            this, QCoreApplication::translate("Ensemble", "Load SFZ or SoundFont"), {},
+            "Instruments (*.sfz *.sf2 *.sf3)");
         if (path.isEmpty())
             return;
         importInstrument(path);
     });
-    auto* tools = new QPushButton("Library tools…");
-    tools->setText("⋯");
-    tools->setToolTip("Import instrument / local pack tools");
+    auto* tools = new QPushButton(QCoreApplication::translate("Ensemble", "Library tools…"));
+    tools->setText(QCoreApplication::translate("Ensemble", "⋯"));
+    tools->setToolTip(
+        QCoreApplication::translate("Ensemble", "Import instrument / local pack tools"));
     tools->setMaximumWidth(30);
     modeBar->addWidget(tools);
     for (auto* b : {install, sources, import, wav}) {
@@ -269,28 +294,40 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
         QMenu menu;
         int selected = currentIndex();
         bool ready = selected >= 0 && entries_[selected].installed;
-        menu.addAction("Preview", this, [this] { preview(); })->setEnabled(ready);
-        menu.addAction("Apply", this, [this] { applyCurrent(); })->setEnabled(ready);
-        menu.addAction("Create New Track", this, [this] { applyCurrent(true); })->setEnabled(ready);
-        menu.addAction("Add / Remove Favorite", favorite, &QPushButton::click);
-        menu.addAction("Show Instrument Details", this, [this] { setExpanded(true); });
-        menu.addAction("Show Source / License", this, [this] {
-            int i = currentIndex();
-            if (i >= 0) {
-                auto& e = entries_[i];
-                QMessageBox::information(
-                    this, "Instrument source and license",
-                    QString::fromStdString(e.name + "\n" + e.id + "\n" + e.pack.author + "\n" +
-                                           e.preset.source + "\nLicense: " + e.preset.license));
-            }
-        });
-        menu.addAction("Reveal Installed Files", this, [this] {
-            int i = currentIndex();
-            if (i >= 0 && !entries_[i].sfz.empty())
-                QDesktopServices::openUrl(QUrl::fromLocalFile(
-                    QString::fromStdString(entries_[i].sfz.parent_path().string())));
-        });
-        menu.addAction("Manage / Remove Optional Packs…", this, [this] { showManager(); });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Preview"), this,
+                       [this] { preview(); })
+            ->setEnabled(ready);
+        menu.addAction(QCoreApplication::translate("Ensemble", "Apply"), this,
+                       [this] { applyCurrent(); })
+            ->setEnabled(ready);
+        menu.addAction(QCoreApplication::translate("Ensemble", "Create New Track"), this,
+                       [this] { applyCurrent(true); })
+            ->setEnabled(ready);
+        menu.addAction(QCoreApplication::translate("Ensemble", "Add / Remove Favorite"), favorite,
+                       &QPushButton::click);
+        menu.addAction(QCoreApplication::translate("Ensemble", "Show Instrument Details"), this,
+                       [this] { setExpanded(true); });
+        menu.addAction(
+            QCoreApplication::translate("Ensemble", "Show Source / License"), this, [this] {
+                int i = currentIndex();
+                if (i >= 0) {
+                    auto& e = entries_[i];
+                    QMessageBox::information(
+                        this,
+                        QCoreApplication::translate("Ensemble", "Instrument source and license"),
+                        QString::fromStdString(e.name + "\n" + e.id + "\n" + e.pack.author + "\n" +
+                                               e.preset.source + "\nLicense: " + e.preset.license));
+                }
+            });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Reveal Installed Files"), this,
+                       [this] {
+                           int i = currentIndex();
+                           if (i >= 0 && !entries_[i].sfz.empty())
+                               QDesktopServices::openUrl(QUrl::fromLocalFile(
+                                   QString::fromStdString(entries_[i].sfz.parent_path().string())));
+                       });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Manage / Remove Optional Packs…"),
+                       this, [this] { showManager(); });
         menu.exec(view->mapToGlobal(pt));
     };
     connect(list_, &QListWidget::customContextMenuRequested, this, [this, context](QPoint pt) {
@@ -303,7 +340,8 @@ SoundBrowser::SoundBrowser(Editor& e) : editor_(e) {
             patches_->setCurrentItem(item);
         context(patches_, pt);
     });
-    auto* manager = new QPushButton("Sound Library Manager…");
+    auto* manager =
+        new QPushButton(QCoreApplication::translate("Ensemble", "Sound Library Manager…"));
     manager->setObjectName("libraryManagerButton");
     layout->addWidget(manager);
     connect(manager, &QPushButton::clicked, this, [this] { showManager(); });
@@ -336,13 +374,14 @@ void SoundBrowser::importInstrument(const QString& path) {
                                        [path] { return soundFontPrograms(path.toStdString()); });
             QStringList options;
             for (auto& v : programs)
-                options << QString("%1:%2 · %3")
+                options << QString(QCoreApplication::translate("Ensemble", "%1:%2 · %3"))
                                .arg(v.bank)
                                .arg(v.program)
                                .arg(QString::fromStdString(v.name));
             bool ok = false;
-            auto chosen = QInputDialog::getItem(this, "SoundFont Instrument Selection",
-                                                "Bank : Program", options, 0, false, &ok);
+            auto chosen = QInputDialog::getItem(
+                this, QCoreApplication::translate("Ensemble", "SoundFont Instrument Selection"),
+                QCoreApplication::translate("Ensemble", "Bank : Program"), options, 0, false, &ok);
             if (!ok)
                 return;
             auto& v = programs[options.indexOf(chosen)];
@@ -407,7 +446,7 @@ void SoundBrowser::reload() {
     entries_.clear();
     QSignalBlocker packBlock(packs_);
     packs_->clear();
-    packs_->addItem("All packs");
+    packs_->addItem(QCoreApplication::translate("Ensemble", "All packs"));
     int n = 0;
     for (auto p :
          calibratedFactoryPresets((assetPath() + "/sounds/synth-calibration.json").toStdString())) {
@@ -417,8 +456,21 @@ void SoundBrowser::reload() {
                                                           : "Synthesizers";
         p.category = category;
         p.instrumentId = "quadraj.synth." + std::to_string(n++);
-        entries_.push_back(
-            {p.name, category, "synth oscillator " + p.name, p, {}, p.instrumentId, false, {}, {}});
+        LibraryInstrument m;
+        m.instrumentId =
+            p.kind == InstrumentKind::Synth ? "quadraj.builtin-synth" : "quadraj.builtin-drums";
+        m.patchId = p.instrumentId;
+        m.patchName = p.name;
+        auto title = p.kind == InstrumentKind::Synth ? "Ensemble Synth" : "Electronic Drum Kit";
+        entries_.push_back({title,
+                            p.kind == InstrumentKind::Synth ? "Synthesizers" : "Drums & Percussion",
+                            "synth oscillator " + p.name,
+                            p,
+                            {},
+                            p.instrumentId,
+                            false,
+                            m,
+                            {}});
     }
     std::uint64_t size = 0;
     int packs = 0;
@@ -442,9 +494,17 @@ void SoundBrowser::reload() {
             size += pack.installSize;
             ++packs;
         } catch (const std::exception& ex) {
-            editor_.message(QString("Library unavailable: ") + ex.what());
+            editor_.message(
+                QString(QCoreApplication::translate("Ensemble", "Library unavailable: ")) +
+                ex.what());
         }
     };
+    auto factoryRoot = factoryPackPath();
+    if (QFileInfo::exists(factoryRoot + "/pack.json"))
+        addPack(factoryRoot.toStdString());
+    for (auto p : registeredPluginInstruments())
+        entries_.push_back(
+            {p.name, "Audio Plugins", p.pluginVendor, p, {}, p.instrumentId, false, {}, {}});
     addPack((assetPath() + "/sounds/factory").toStdString());
     addPack((assetPath() + "/sounds/essentials03").toStdString());
     if (QDir(assetPath() + "/sounds/community04").exists())
@@ -489,7 +549,9 @@ void SoundBrowser::reload() {
             auto name = p.kind == InstrumentKind::SoundFont ? file.stem().string() : p.name;
             userEntries_.push_back({name, "User Instruments", p.tags, p, file, id, false, m, {}});
         } catch (const std::exception& ex) {
-            editor_.message(QString("User instrument unavailable: ") + ex.what());
+            editor_.message(
+                QString(QCoreApplication::translate("Ensemble", "User instrument unavailable: ")) +
+                ex.what());
         }
     }
     entries_.insert(entries_.end(), userEntries_.begin(), userEntries_.end());
@@ -504,6 +566,9 @@ void SoundBrowser::reload() {
             continue;
         auto j = QJsonDocument::fromJson(file.readAll()).object();
         auto packId = j["id"].toString().toStdString();
+        if (std::any_of(entries_.begin(), entries_.end(),
+                        [&](const Entry& e) { return e.id == "factory05." + packId; }))
+            continue;
         if (installedPacks.contains(packId))
             continue;
         SoundPack pack;
@@ -538,7 +603,26 @@ void SoundBrowser::reload() {
         }
     }
     std::stable_sort(entries_.begin(), entries_.end(), [](const Entry& a, const Entry& b) {
-        return !a.sfz.empty() && b.sfz.empty();
+        auto rank = [](const Entry& e) {
+            if (!e.installed)
+                return 9;
+            if (e.sfz.empty())
+                return 8;
+            if (e.name == "Meta Piano")
+                return -1;
+            if (e.category == "Piano & Keys")
+                return 0;
+            if (e.category == "Guitar & Bass")
+                return 1;
+            if (e.category == "Strings")
+                return 2;
+            if (e.category == "Brass")
+                return 3;
+            if (e.category == "Woodwinds")
+                return 4;
+            return 5;
+        };
+        return rank(a) < rank(b);
     });
     QSettings settings;
     auto favorites = settings.value("library/favorites").toStringList();
@@ -550,13 +634,21 @@ void SoundBrowser::reload() {
     for (auto& e : entries_)
         if (e.installed) {
             ++installedPatchCount;
-            instrumentIds.insert(e.sfz.empty() ? e.id : e.metadata.instrumentId);
+            instrumentIds.insert(e.metadata.instrumentId.empty() ? e.id : e.metadata.instrumentId);
         }
-    status_->setText(QString("%1 installed pack(s) · %2 MiB\n%3 instruments / %4 patches")
-                         .arg(packs)
-                         .arg(size / 1048576., 0, 'f', 1)
-                         .arg(instrumentIds.size())
-                         .arg(installedPatchCount));
+    status_->setText(
+        QString(
+            QCoreApplication::translate(
+                "Ensemble", "%1 installed pack(s) · %2 MiB\n%3 instrument entries / %4 patches"))
+            .arg(packs)
+            .arg(size / 1048576., 0, 'f', 1)
+            .arg(instrumentIds.size())
+            .arg(installedPatchCount));
+    if (!QFileInfo::exists(factoryRoot + "/pack.json"))
+        status_->setText(
+            status_->text() + "\n" +
+            QCoreApplication::translate(
+                "Ensemble", "Factory Library is missing. Reinstall the complete application."));
     filter();
 }
 void SoundBrowser::filter() {
@@ -568,8 +660,9 @@ void SoundBrowser::filter() {
     patches_->clear();
     std::set<std::string> shown;
     QString query = search_->text().trimmed().toLower(),
-            category =
-                categories_->currentItem() ? categories_->currentItem()->text() : "All instruments";
+            category = categories_->currentItem()
+                           ? categories_->currentItem()->data(Qt::UserRole).toString()
+                           : "All instruments";
     for (int i = 0; i < int(entries_.size()); ++i) {
         const auto& e = entries_[i];
         if (installedOnly_->isChecked() && !e.installed)
@@ -581,7 +674,16 @@ void SoundBrowser::filter() {
             continue;
         if (category == "Recently used" && !recent_.contains(QString::fromStdString(e.id)))
             continue;
-        if (category != "All instruments" && category != "Favorites" &&
+        if (category == "Factory Instruments" &&
+            !(e.pack.id == "quadraj.factory05" || e.pack.id == "quadraj.community-essentials" ||
+              e.pack.id == "quadraj.ensemble-essentials" ||
+              e.preset.kind == InstrumentKind::Synth || e.preset.kind == InstrumentKind::Drums))
+            continue;
+        if (category == "Installed Sound Libraries" &&
+            (e.pack.id.empty() || !e.installed || e.pack.id == "quadraj.factory05"))
+            continue;
+        if (category != "Factory Instruments" && category != "Installed Sound Libraries" &&
+            category != "All instruments" && category != "Favorites" &&
             category != "Recently used" && QString::fromStdString(e.category) != category)
             continue;
         if (!QString::fromStdString(e.name + " " + e.tags + " " + e.category + " " +
@@ -589,16 +691,18 @@ void SoundBrowser::filter() {
                  .toLower()
                  .contains(query))
             continue;
-        auto instrument = e.sfz.empty() ? e.id : e.metadata.instrumentId;
+        auto instrument = e.metadata.instrumentId.empty() ? e.id : e.metadata.instrumentId;
         if (!shown.insert(instrument).second)
             continue;
         visible_.push_back(i);
-        auto* item = new QListWidgetItem(QString::fromStdString(e.name) + "\n" +
-                                             (!e.installed    ? "DOWNLOAD"
-                                              : e.sfz.empty() ? "SYNTH"
-                                                              : "RECORDED") +
-                                             (e.favorite ? " · Favorite" : ""),
-                                         list_);
+        auto* item = new QListWidgetItem(
+            QString::fromStdString(e.name) + "\n" +
+                (!e.installed ? QCoreApplication::translate("Ensemble", "DOWNLOAD")
+                 : e.preset.kind == InstrumentKind::Clap ? QStringLiteral("CLAP")
+                 : e.sfz.empty() ? QCoreApplication::translate("Ensemble", "SYNTH")
+                                 : QCoreApplication::translate("Ensemble", "RECORDED")) +
+                (e.favorite ? QCoreApplication::translate("Ensemble", " · Favorite") : ""),
+            list_);
         auto glyph = instrumentThumbnail(e.preset, QSize(70, 48), devicePixelRatioF(), true);
         item->setIcon(QIcon(glyph));
         item->setData(Qt::UserRole, i);
@@ -621,6 +725,13 @@ Preset SoundBrowser::presetAt(int i) {
         throw std::runtime_error("This build does not include the required instrument backend");
     if (!e.installed)
         throw std::runtime_error("Install this collection in Sound Library Manager first");
+    if (e.preset.kind == InstrumentKind::Clap)
+        return libraryJob(this, "Preparing plugin…", [&] {
+            auto p = e.preset;
+            PluginInstance instance(p, 48000);
+            p.pluginState = instance.saveState();
+            return p;
+        });
     if (e.sfz.empty() || !e.preset.backendPath.empty())
         return e.preset;
     auto p = libraryJob(this, "Preparing recorded instrument…",
@@ -640,12 +751,12 @@ void SoundBrowser::updateDetails(bool rebuild) {
         const auto& entry = entries_[selected];
         for (int index = 0; index < int(entries_.size()); ++index) {
             const auto& patch = entries_[index];
-            if ((!entry.sfz.empty() &&
+            if ((!entry.metadata.instrumentId.empty() &&
                  patch.metadata.instrumentId == entry.metadata.instrumentId) ||
-                (entry.sfz.empty() && index == selected)) {
+                (entry.metadata.instrumentId.empty() && index == selected)) {
                 auto* item = new QListWidgetItem(
-                    QString::fromStdString(patch.sfz.empty() ? patch.name
-                                                             : patch.metadata.patchName),
+                    QString::fromStdString(
+                        patch.metadata.patchName.empty() ? patch.name : patch.metadata.patchName),
                     patches_);
                 item->setData(Qt::UserRole, index);
                 if (index == selected)
@@ -661,17 +772,26 @@ void SoundBrowser::updateDetails(bool rebuild) {
         findChild<QPushButton*>(name)->setEnabled(e.installed);
     detailTitle_->setText(QString::fromStdString(e.name));
     artwork_->setPreset(e.preset);
-    detail_->setText(
-        QString::fromStdString(e.category + " · " +
-                               (e.sfz.empty() ? "Synthesis" : e.metadata.articulation)) +
-        "\n" + QString::fromStdString(e.preset.license) +
-        (e.installed ? " · Installed\n" : " · Download required\n") +
-        QString::fromStdString(e.pack.name) + "\n" + QString::fromStdString(e.preset.source) +
-        (e.metadata.unsupportedOpcodes.empty()
-             ? ""
-             : "\nIgnored SFZ metadata: " + QString::fromStdString(e.metadata.unsupportedOpcodes)));
+    artwork_->setVisible(expanded_ && artwork_->property("hasArtwork").toBool());
+    detail_->setText(QCoreApplication::translate("Ensemble", e.category.c_str()) + " · " +
+                     (e.sfz.empty() ? QCoreApplication::translate("Ensemble", "Synthesis")
+                                    : QString::fromStdString(e.metadata.articulation)) +
+                     "\n" + QString::fromStdString(e.preset.license) + " · " +
+                     (e.installed ? QCoreApplication::translate("Ensemble", "Installed")
+                                  : QCoreApplication::translate("Ensemble", "Download required")) +
+                     "\n" + QString::fromStdString(e.pack.name) +
+                     (e.metadata.unsupportedOpcodes.empty()
+                          ? ""
+                          : "\n" +
+                                QCoreApplication::translate("Ensemble", "Ignored SFZ metadata: ") +
+                                QString::fromStdString(e.metadata.unsupportedOpcodes)));
+    if (e.preset.kind == InstrumentKind::Clap)
+        detail_->setText(
+            QString::fromStdString(e.preset.pluginVendor + " · " + e.preset.pluginVersion) +
+            "\nCLAP · " + QCoreApplication::translate("Ensemble", "Installed") + "\n" +
+            QString::fromStdString(e.preset.license));
     detail_->setToolTip(
-        QString::fromStdString(e.pack.name + "\n" + e.pack.author + "\n" + e.pack.source +
+        QString::fromStdString(e.pack.name + "\n" + e.pack.author + "\n" + e.preset.source +
                                "\nCalibration v" + std::to_string(e.metadata.calibrationVersion) +
                                ": " + std::to_string(e.metadata.calibrationDb) + " dB"));
 }
@@ -741,25 +861,29 @@ void SoundBrowser::installFolder(const QString& folder) {
 }
 void SoundBrowser::setExpanded(bool value) {
     expanded_ = value;
-    expand_->setText(value ? "Compact ↔" : "Expand ↔");
+    if (auto* b = findChild<QPushButton*>("browserPlugins"))
+        b->setVisible(value);
+    expand_->setText(value ? QCoreApplication::translate("Ensemble", "Compact ↔")
+                           : QCoreApplication::translate("Ensemble", "Expand ↔"));
     categoryColumn_->setVisible(value);
     detailColumn_->setVisible(value);
     detailTitle_->setVisible(value);
     detail_->setVisible(value);
     findChild<QPushButton*>("browserNewTrack")->setVisible(value);
     findChild<QPushButton*>("browserFavorite")->setVisible(value);
-    patches_->setMaximumHeight(value ? 180 : 54);
-    list_->setMinimumHeight(value ? 180 : 130);
+    patches_->setMinimumHeight(value ? 64 : 28);
+    patches_->setMaximumHeight(value ? 180 : 44);
+    list_->setMinimumHeight(value ? 180 : 100);
     if (!value) {
         // Compact keeps patch access through a small detail section below the instrument list.
         columns_->setOrientation(Qt::Vertical);
         detailColumn_->show();
         artwork_->hide();
-        categories_->setMaximumHeight(65);
+        categories_->setMaximumHeight(50);
         categories_->setMaximumWidth(16777215);
         categoryColumn_->show();
-        detailColumn_->setMaximumHeight(125);
-        columns_->setSizes({65, 300, 125});
+        detailColumn_->setMaximumHeight(110);
+        columns_->setSizes({50, 240, 110});
         setMinimumWidth(230);
         setMaximumWidth(900);
     } else {
@@ -767,7 +891,7 @@ void SoundBrowser::setExpanded(bool value) {
         columns_->setOrientation(Qt::Horizontal);
         categories_->setMaximumHeight(16777215);
         categories_->setMaximumWidth(180);
-        artwork_->show();
+        artwork_->setVisible(artwork_->property("hasArtwork").toBool());
         columns_->setSizes({140, 210, 240});
     }
     if (auto* dock = qobject_cast<QDockWidget*>(parentWidget())) {

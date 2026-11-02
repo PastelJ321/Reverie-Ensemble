@@ -1,3 +1,4 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 #include "ui/ExportDialog.h"
@@ -17,7 +18,7 @@
 namespace reverie {
 ExportDialog::ExportDialog(const Project& p, double start, double end, QWidget* parent)
     : QDialog(parent), project_(p), selectionStart_(start), selectionEnd_(end) {
-    setWindowTitle("Export Audio");
+    setWindowTitle(QCoreApplication::translate("Ensemble", "Export Audio"));
     setObjectName("exportDialog");
     resize(590, 470);
     auto* box = new QVBoxLayout(this);
@@ -27,47 +28,54 @@ ExportDialog::ExportDialog(const Project& p, double start, double end, QWidget* 
     path_->setObjectName("exportPath");
     auto* row = new QHBoxLayout;
     row->addWidget(path_);
-    auto* browse = new QPushButton("Choose…");
+    auto* browse = new QPushButton(QCoreApplication::translate("Ensemble", "Choose…"));
     row->addWidget(browse);
-    form->addRow("File / destination", row);
+    form->addRow(QCoreApplication::translate("Ensemble", "File / destination"), row);
     connect(browse, &QPushButton::clicked, this, [this] {
-        auto p = QFileDialog::getSaveFileName(this, "Export WAV", path_->text(), "WAV (*.wav)");
+        auto p = QFileDialog::getSaveFileName(this,
+                                              QCoreApplication::translate("Ensemble", "Export WAV"),
+                                              path_->text(), "WAV (*.wav)");
         if (!p.isEmpty())
             path_->setText(p);
     });
-    form->addRow("Format", new QLabel("WAV — RIFF (maximum 4 GiB)"));
+    form->addRow(QCoreApplication::translate("Ensemble", "Format"),
+                 new QLabel(QCoreApplication::translate("Ensemble", "WAV — RIFF (maximum 4 GiB)")));
     rate_ = new QComboBox;
     rate_->setObjectName("exportRate");
     for (int r : {44100, 48000, 96000})
         rate_->addItem(QString::number(r) + " Hz", r);
     rate_->setCurrentIndex(1);
-    form->addRow("Sample rate", rate_);
+    form->addRow(QCoreApplication::translate("Ensemble", "Sample rate"), rate_);
     depth_ = new QComboBox;
     depth_->setObjectName("exportDepth");
-    depth_->addItem("16-bit PCM", 16);
-    depth_->addItem("24-bit PCM", 24);
-    depth_->addItem("32-bit float", 32);
+    depth_->addItem(QCoreApplication::translate("Ensemble", "16-bit PCM"), 16);
+    depth_->addItem(QCoreApplication::translate("Ensemble", "24-bit PCM"), 24);
+    depth_->addItem(QCoreApplication::translate("Ensemble", "32-bit float"), 32);
     depth_->setCurrentIndex(1);
-    form->addRow("Bit depth", depth_);
+    form->addRow(QCoreApplication::translate("Ensemble", "Bit depth"), depth_);
     channels_ = new QComboBox;
     channels_->setObjectName("exportChannels");
-    channels_->addItem("Stereo", 2);
-    channels_->addItem("Mono (L+R / 2)", 1);
-    form->addRow("Channels", channels_);
+    channels_->addItem(QCoreApplication::translate("Ensemble", "Stereo"), 2);
+    channels_->addItem(QCoreApplication::translate("Ensemble", "Mono (L+R / 2)"), 1);
+    form->addRow(QCoreApplication::translate("Ensemble", "Channels"), channels_);
     range_ = new QComboBox;
     range_->setObjectName("exportRange");
-    range_->addItems({"Entire project", "Loop / cycle range", "Selected clip range"});
+    range_->addItems({QCoreApplication::translate("Ensemble", "Entire project"),
+                      QCoreApplication::translate("Ensemble", "Loop / cycle range"),
+                      QCoreApplication::translate("Ensemble", "Selected clip range")});
     if (end <= start)
         static_cast<QStandardItemModel*>(range_->model())->item(2)->setEnabled(false);
-    form->addRow("Range", range_);
-    tail_ = new QCheckBox("Include instrument release and effect tail");
+    form->addRow(QCoreApplication::translate("Ensemble", "Range"), range_);
+    tail_ = new QCheckBox(
+        QCoreApplication::translate("Ensemble", "Include instrument release and effect tail"));
     tail_->setChecked(true);
     tail_->setObjectName("exportTail");
     box->addWidget(tail_);
-    normalize_ = new QCheckBox("Normalize peak to −1 dBFS (explicit gain, no compression)");
+    normalize_ = new QCheckBox(QCoreApplication::translate(
+        "Ensemble", "Normalize peak to −1 dBFS (explicit gain, no compression)"));
     normalize_->setObjectName("exportNormalize");
     box->addWidget(normalize_);
-    dither_ = new QCheckBox("TPDF dither for integer PCM");
+    dither_ = new QCheckBox(QCoreApplication::translate("Ensemble", "TPDF dither for integer PCM"));
     dither_->setObjectName("exportDither");
     box->addWidget(dither_);
     status_ = new QLabel;
@@ -78,9 +86,9 @@ ExportDialog::ExportDialog(const Project& p, double start, double end, QWidget* 
     box->addWidget(progress_);
     auto* buttons = new QHBoxLayout;
     buttons->addStretch();
-    auto* cancel = new QPushButton("Cancel");
+    auto* cancel = new QPushButton(QCoreApplication::translate("Ensemble", "Cancel"));
     buttons->addWidget(cancel);
-    render_ = new QPushButton("Export");
+    render_ = new QPushButton(QCoreApplication::translate("Ensemble", "Export"));
     render_->setObjectName("exportStart");
     render_->setDefault(true);
     buttons->addWidget(render_);
@@ -120,7 +128,7 @@ ExportDialog::ExportDialog(const Project& p, double start, double end, QWidget* 
                     .arg(20 * std::log10(r.gain), 0, 'f', 1)
                     .arg(r.clippedSamples)
                     .arg(r.clippedSamples ? " — lower levels or enable Normalize" : ""));
-            render_->setText("Close");
+            render_->setText(QCoreApplication::translate("Ensemble", "Close"));
             render_->setEnabled(true);
         } catch (const std::exception& e) {
             status_->setText(e.what());
@@ -172,15 +180,17 @@ void ExportDialog::startRender() {
         return;
     QString path = path_->text().trimmed();
     if (path.isEmpty()) {
-        status_->setText("Choose a destination WAV file.");
+        status_->setText(QCoreApplication::translate("Ensemble", "Choose a destination WAV file."));
         return;
     }
     if (!path.endsWith(".wav", Qt::CaseInsensitive))
         path += ".wav";
     path_->setText(path);
     if (std::filesystem::exists(path.toStdString()) &&
-        QMessageBox::question(this, "Replace WAV?",
-                              "Replace the existing file only after a successful export?") !=
+        QMessageBox::question(
+            this, QCoreApplication::translate("Ensemble", "Replace WAV?"),
+            QCoreApplication::translate(
+                "Ensemble", "Replace the existing file only after a successful export?")) !=
             QMessageBox::Yes)
         return;
     auto o = options();
@@ -194,7 +204,8 @@ void ExportDialog::startRender() {
     for (auto* b : findChildren<QPushButton*>())
         if (b->text() == "Cancel")
             b->setEnabled(true);
-    status_->setText("Rendering… Cancel preserves any existing destination.");
+    status_->setText(QCoreApplication::translate(
+        "Ensemble", "Rendering… Cancel preserves any existing destination."));
     job_ = std::async(std::launch::async, [this, o, path] {
         return renderAudio(project_, path.toStdString(), o, [this](double p) {
             percent_.store(p);
@@ -205,7 +216,7 @@ void ExportDialog::startRender() {
 void ExportDialog::reject() {
     if (running_) {
         cancel_.store(true);
-        status_->setText("Cancelling…");
+        status_->setText(QCoreApplication::translate("Ensemble", "Cancelling…"));
         return;
     }
     if (done_)

@@ -38,6 +38,8 @@ int main(int argc, char** argv) {
         auto* browser = e.findChild<SoundBrowser*>("soundBrowser");
         check(browser, "Browser missing");
         auto* search = e.findChild<QLineEdit*>("soundSearch");
+        auto* packFilter = e.findChild<QComboBox*>("soundPackFilter");
+        packFilter->setCurrentIndex(packFilter->findText("Community Essentials"));
         search->setText("concert flute");
         auto* list = e.findChild<QListWidget*>("soundList");
         check(list->count() == 1, "Sound name/tag filtering failed");

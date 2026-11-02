@@ -26,17 +26,25 @@ class Synthesizer final : public Instrument {
     void copyStateFrom(const Synthesizer& source) noexcept {
         voices_ = source.voices_;
         sequence_ = source.sequence_;
+        monoHeld_ = source.monoHeld_;
     }
 
   private:
     struct Voice {
         Id token = 0;
         int key = 60, stage = 0, zone = -1;
-        double phase = 0, increment = 0, samplePosition = 0, sampleStep = 1, age = 0;
+        double phase2 = 0, targetIncrement = 0, phase = 0, increment = 0, samplePosition = 0,
+               sampleStep = 1, age = 0;
         float env = 0, releaseStep = 0, velocity = 0, filterL = 0, filterR = 0;
         std::uint32_t noise = 12345;
     };
     std::array<Voice, 32> voices_{};
+    struct Press {
+        Id id = 0;
+        int key = 0;
+        float velocity = 0;
+    };
+    std::array<Press, 32> monoHeld_{};
     std::array<std::uint64_t, 128> sequence_{};
     Preset preset_;
     double rate_;

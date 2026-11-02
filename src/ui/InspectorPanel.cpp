@@ -1,7 +1,8 @@
+#include <QCoreApplication>
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
-#include "ui/InspectorPanel.h"
 #include "ui/Editor.h"
+#include "ui/InspectorPanel.h"
 #include "ui/PianoRoll.h"
 #include <QDoubleSpinBox>
 #include <QFormLayout>
@@ -13,13 +14,13 @@ namespace reverie {
 InspectorPanel::InspectorPanel(Editor& e) : e_(e) {
     setObjectName("selectionInspector");
     auto* l = new QVBoxLayout(this);
-    title_ = new QLabel("Selection");
+    title_ = new QLabel(QCoreApplication::translate("Ensemble", "Selection"));
     title_->setStyleSheet("font-size:14px;font-weight:600");
     l->addWidget(title_);
     form_ = new QFormLayout;
     auto* form = form_;
     name_ = new QLineEdit;
-    form->addRow("Name", name_);
+    form->addRow(QCoreApplication::translate("Ensemble", "Name"), name_);
     auto number = [&](QString label, double lo, double hi) {
         auto* spin = new QDoubleSpinBox;
         spin->setRange(lo, hi);
@@ -35,7 +36,7 @@ InspectorPanel::InspectorPanel(Editor& e) : e_(e) {
     offset_ = number("Source offset / s", 0, 100000);
     pitch_ = new QSpinBox;
     pitch_->setRange(0, 127);
-    form->addRow("MIDI key", pitch_);
+    form->addRow(QCoreApplication::translate("Ensemble", "MIDI key"), pitch_);
     l->addLayout(form);
     l->addStretch();
     connect(name_, &QLineEdit::editingFinished, this, [this] {
@@ -100,7 +101,7 @@ void InspectorPanel::refresh() {
             }
     bool audio =
         e_.selectedTrack >= 0 && e_.project.tracks[e_.selectedTrack].kind == TrackKind::Audio;
-    title_->setText(note ? "Note properties"
+    title_->setText(note ? QCoreApplication::translate("Ensemble", "Note properties")
                     : c  ? (audio ? "Audio clip properties" : "MIDI clip properties")
                          : "Select a clip or note");
     form_->setRowVisible(name_, c && !note);
