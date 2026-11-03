@@ -6,22 +6,22 @@
     <message>
         <location filename="../src/ui/AudioEditor.cpp" line="20"/>
         <source>AUDIO / NON-DESTRUCTIVE SOURCE</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 / 비파괴 원본</translation>
     </message>
     <message>
         <location filename="../src/ui/AudioEditor.cpp" line="26"/>
         <source>    Source in %1 s · Length %2 beats</source>
-        <translation type="unfinished"></translation>
+        <translation>    시작 오프셋 %1초 · 길이 %2박</translation>
     </message>
     <message>
         <location filename="../src/ui/AudioEditor.cpp" line="30"/>
         <source>Source WAV unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>원본 WAV 파일을 찾을 수 없음</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="104"/>
         <source>Recorded starter unavailable; using factory synths: </source>
-        <translation type="unfinished"></translation>
+        <translation>기본 샘플 악기를 불러올 수 없어 내장 신시사이저로 대체합니다: </translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="123"/>
@@ -30,169 +30,169 @@
         <location filename="../src/ui/SettingsDialog.cpp" line="113"/>
         <location filename="../src/ui/Workspace.cpp" line="488"/>
         <source>System default</source>
-        <translation type="unfinished"></translation>
+        <translation>시스템 기본값</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="151"/>
         <source>&amp;File</source>
-        <translation type="unfinished"></translation>
+        <translation>파일(&amp;F)</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="160"/>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>새 프로젝트</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="162"/>
         <source>Open…</source>
-        <translation type="unfinished"></translation>
+        <translation>열기…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="166"/>
         <source>Open project</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 열기</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="171"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>저장</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="173"/>
         <source>Save As…</source>
-        <translation type="unfinished"></translation>
+        <translation>다른 이름으로 저장…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="175"/>
         <source>Save project as</source>
-        <translation type="unfinished"></translation>
+        <translation>다른 이름으로 프로젝트 저장</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="180"/>
         <source>Project name…</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 이름 변경…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="185"/>
         <source>Project name</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 이름</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="192"/>
         <source>Import WAV…</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 가져오기…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="194"/>
         <source>Export Audio…</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 내보내기…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="196"/>
         <source>Settings…</source>
-        <translation type="unfinished"></translation>
+        <translation>환경설정…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="198"/>
         <location filename="../src/ui/SoundBrowser.cpp" line="208"/>
         <source>Audio Plugins…</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 플러그인…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="200"/>
         <source>Plugin Parameters…</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 파라미터…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="212"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>종료</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="214"/>
         <source>Import MIDI file…</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 파일 가져오기…</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="216"/>
         <source>Import Standard MIDI File</source>
-        <translation type="unfinished"></translation>
+        <translation>표준 MIDI 파일 가져오기</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="237"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>편집(&amp;E)</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="238"/>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>실행 취소</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="240"/>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>다시 실행</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="242"/>
         <source>Duplicate clip</source>
-        <translation type="unfinished"></translation>
+        <translation>클립 복제</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="249"/>
         <source>Quantize notes</source>
-        <translation type="unfinished"></translation>
+        <translation>노트 퀀타이즈</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="251"/>
         <source>&amp;Track</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙(&amp;T)</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="252"/>
         <source>Add MIDI track</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 트랙 추가</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="254"/>
         <source>Add audio track</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 트랙 추가</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="256"/>
         <source>Delete selected track</source>
-        <translation type="unfinished"></translation>
+        <translation>선택한 트랙 삭제</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="260"/>
         <location filename="../src/ui/PluginBrowser.cpp" line="300"/>
         <source>Move up</source>
-        <translation type="unfinished"></translation>
+        <translation>위로 이동</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="262"/>
         <source>Move down</source>
-        <translation type="unfinished"></translation>
+        <translation>아래로 이동</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="264"/>
         <source>&amp;Transport</source>
-        <translation type="unfinished"></translation>
+        <translation>트랜스포트(&amp;T)</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="265"/>
         <source>Play / pause</source>
-        <translation type="unfinished"></translation>
+        <translation>재생 / 일시정지</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="267"/>
         <source>Stop / return to start</source>
-        <translation type="unfinished"></translation>
+        <translation>정지 / 처음으로 이동</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="269"/>
         <source>Arm selected track</source>
-        <translation type="unfinished"></translation>
+        <translation>선택한 트랙 녹음 준비</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="274"/>
@@ -200,37 +200,37 @@
         <location filename="../src/ui/Editor.cpp" line="1110"/>
         <location filename="../src/ui/Workspace.cpp" line="110"/>
         <source>Record</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="276"/>
         <source>&amp;View</source>
-        <translation type="unfinished"></translation>
+        <translation>보기(&amp;V)</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="277"/>
         <source>Virtual Keyboard / Musical Typing</source>
-        <translation type="unfinished"></translation>
+        <translation>가상 건반 / 컴퓨터 키보드 연주</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="279"/>
         <source>Expand Instrument Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 브라우저 확장</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="281"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>도움말(&amp;H)</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="282"/>
         <source>Editing guide</source>
-        <translation type="unfinished"></translation>
+        <translation>편집 가이드</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="284"/>
         <source>Making music in Reverie Ensemble</source>
-        <translation type="unfinished"></translation>
+        <translation>Reverie Ensemble 사용 안내</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="285"/>
@@ -242,388 +242,398 @@
 6. Sound Library Manager installs optional packs with license consent and SHA-256 verification. Import SFZ/SF2/SF3 through browser tools.
 
 Recording is linear, one armed track at a time. Audio input monitoring and latency compensation are not provided.</source>
-        <translation type="unfinished"></translation>
+        <translation>1. 사운드 라이브러리에서 악기와 패치를 검색하고 선택합니다. 확장을 누르면 카테고리·악기·상세 정보 열이 열립니다.
+2. 건반(Cmd+K)을 누르면 선택한 트랙을 연주할 수 있는 가상 건반이 열립니다. 키보드 연주를 켜면 A W S E D F T G Y H U J K 키로 음을 연주하고, Z/X로 옥타브, C/V로 벨로시티, Tab으로 서스테인을 조절할 수 있습니다.
+3. MIDI 트랙을 녹음 준비한 뒤 녹음 전 카운트를 선택하고 녹음을 눌러 연주하세요. 정지하면 편집 가능한 MIDI 클립이 생성됩니다. 마이크로 녹음하려면 오디오 트랙을 녹음 준비하세요.
+4. 클립을 더블 클릭하면 노트를 편집할 수 있습니다. 드래그하여 이동하거나 길이를 조절하고, Shift-드래그로 여러 항목을 선택합니다. 우클릭으로 명령 메뉴를 열고 Delete로 선택 항목을 삭제합니다.
+5. 믹서에서 레벨과 이펙트를 조절하고, 미디어 폴더와 함께 프로젝트를 저장한 뒤 파일 → 오디오 내보내기로 WAV 파일을 생성하세요.
+6. 사운드 라이브러리 관리자에서 라이선스 동의 및 SHA-256 검증을 거쳐 추가 사운드 팩을 설치할 수 있습니다. 브라우저 도구 메뉴에서 SFZ/SF2/SF3 파일을 가져올 수 있습니다.
+
+녹음은 한 번에 하나의 녹음 준비된 트랙에서만 진행됩니다. 오디오 입력 모니터링과 지연 시간 보정은 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="305"/>
         <source>About Reverie Ensemble</source>
-        <translation type="unfinished"></translation>
+        <translation>Reverie Ensemble 정보</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="307"/>
         <source>Reverie Ensemble 0.5.0</source>
-        <translation type="unfinished"></translation>
+        <translation>Reverie Ensemble 0.5.0</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="308"/>
         <source>&lt;h2&gt;Reverie Ensemble&lt;/h2&gt;&lt;p&gt;0.5.0 · QuadraJ&lt;/p&gt;&lt;p&gt;Copyright 2026 QuadraJ and contributors.&lt;/p&gt;&lt;p&gt;A free, offline, open-source digital audio workstation.&lt;/p&gt;&lt;p&gt;Reverie code: Apache License 2.0.&lt;br&gt;Qt Core / Gui / Widgets / Network / SVG: dynamically linked under LGPLv3.&lt;br&gt;miniaudio 0.11.23: MIT-0.&lt;br&gt;nlohmann/json 3.11.3: MIT.&lt;br&gt;sfizz: BSD-2-Clause.&lt;br&gt;FluidSynth: LGPL-2.1-or-later.&lt;/p&gt;&lt;p&gt;Third-party components retain their own licenses. Source, relinking and distribution instructions are in THIRD_PARTY_LICENSES.md.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h2&gt;Reverie Ensemble&lt;/h2&gt;&lt;p&gt;0.5.0 · QuadraJ&lt;/p&gt;&lt;p&gt;Copyright 2026 QuadraJ and contributors.&lt;/p&gt;&lt;p&gt;무료 오프라인 오픈소스 디지털 오디오 워크스테이션.&lt;/p&gt;&lt;p&gt;Reverie 코드: Apache License 2.0.&lt;br&gt;Qt Core / Gui / Widgets / Network / SVG: LGPLv3 동적 링크.&lt;br&gt;miniaudio 0.11.23: MIT-0.&lt;br&gt;nlohmann/json 3.11.3: MIT.&lt;br&gt;sfizz: BSD-2-Clause.&lt;br&gt;FluidSynth: LGPL-2.1-or-later.&lt;/p&gt;&lt;p&gt;서드파티 구성 요소는 각 원저작자의 라이선스를 따릅니다. 소스 코드, 재링크 및 배포 안내는 THIRD_PARTY_LICENSES.md에서 확인할 수 있습니다.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="365"/>
         <source>Finish recording before editing the project.</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트를 편집하려면 먼저 녹음을 완료하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="461"/>
         <source>
 Root: C4 (MIDI 60) · </source>
-        <translation type="unfinished"></translation>
+        <translation>
+기준음: C4 (MIDI 60) · </translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="463"/>
         <source>
 %1 key/velocity zones · </source>
-        <translation type="unfinished"></translation>
+        <translation>
+키/벨로시티 존 %1개 · </translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="470"/>
         <source>No track selected</source>
-        <translation type="unfinished"></translation>
+        <translation>선택된 트랙 없음</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="482"/>
         <source> *</source>
-        <translation type="unfinished"></translation>
+        <translation> *</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="491"/>
         <source>Stop the take before changing tracks.</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙을 변경하려면 먼저 현재 녹음을 정지하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="509"/>
         <source>0.1 supports up to 64 tracks.</source>
-        <translation type="unfinished"></translation>
+        <translation>최대 64개의 트랙까지 사용할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="584"/>
         <source>No output device. Use Reconnect audio; offline WAV export is available.</source>
-        <translation type="unfinished"></translation>
+        <translation>출력 장치가 연결되지 않았습니다. 오디오 재연결을 실행하세요. 오프라인 WAV 내보내기는 계속 사용할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="633"/>
         <source>Count-in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 전 카운트 %1</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="641"/>
         <source>%1 : %2 : %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 : %2 : %3</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="648"/>
         <source>%1:%2s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1:%2s</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="652"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>일시정지</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="657"/>
         <source> kHz · active</source>
-        <translation type="unfinished"></translation>
+        <translation> kHz · 활성</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="658"/>
         <source>Offline audio</source>
-        <translation type="unfinished"></translation>
+        <translation>오프라인 오디오</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="661"/>
         <source>Audio active · reported format in Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 활성 · 상세 형식은 환경설정에서 확인</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="663"/>
         <source>Offline audio · export available</source>
-        <translation type="unfinished"></translation>
+        <translation>오프라인 오디오 · 내보내기 가능</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="665"/>
         <source>
 CLIPPING — lower track/master levels</source>
-        <translation type="unfinished"></translation>
+        <translation>
+클리핑 발생 — 트랙 또는 마스터 볼륨을 낮추세요</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="735"/>
         <source>Import WAV</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 가져오기</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="760"/>
         <source>WAV imported. Drag the clip to position; its right edge trims non-destructively.</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 파일을 가져왔습니다. 클립을 드래그해 위치를 옮기거나 오른쪽 끝을 드래그해 비파괴 방식으로 길이를 조절하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="773"/>
         <source>Save project</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 저장</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="847"/>
         <source>Save failed</source>
-        <translation type="unfinished"></translation>
+        <translation>저장 실패</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="874"/>
         <source>Missing media</source>
-        <translation type="unfinished"></translation>
+        <translation>누락된 미디어</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="879"/>
         <source>Open failed</source>
-        <translation type="unfinished"></translation>
+        <translation>열기 실패</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="886"/>
         <source>Stop recording before opening device settings.</source>
-        <translation type="unfinished"></translation>
+        <translation>장치 설정을 열려면 먼저 녹음을 정지하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="910"/>
         <source>WAV exported with at least two seconds of release tail.</source>
-        <translation type="unfinished"></translation>
+        <translation>최소 2초의 잔향을 포함하여 WAV 파일로 내보냈습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="914"/>
         <source>Export failed</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 실패</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="921"/>
         <source>Select a MIDI track for the sampler.</source>
-        <translation type="unfinished"></translation>
+        <translation>샘플러를 사용할 MIDI 트랙을 선택하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="925"/>
         <source>Select your licensed sampler WAV</source>
-        <translation type="unfinished"></translation>
+        <translation>샘플러에 사용할 WAV 파일 선택</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="951"/>
         <source>Load instrument preset</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 프리셋 불러오기</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="974"/>
         <source>Save instrument preset</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 프리셋 저장</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="982"/>
         <source>Preset saved. Sampler WAV references remain separate from preset data.</source>
-        <translation type="unfinished"></translation>
+        <translation>프리셋을 저장했습니다. 샘플러 WAV 파일 경로는 프리셋 데이터와 별도로 유지됩니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="995"/>
         <source>Connect an output device before recording.</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음하려면 먼저 출력 장치를 연결하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1003"/>
         <source>Arm one recording track at a time.</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 준비는 한 번에 하나의 트랙만 켜세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1010"/>
         <source>Arm a MIDI or Audio track before recording.</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음하려면 먼저 MIDI 트랙이나 오디오 트랙을 녹음 준비 상태로 설정하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1146"/>
         <source>Save your project before continuing?</source>
-        <translation type="unfinished"></translation>
+        <translation>계속하기 전에 프로젝트를 저장하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="636"/>
         <location filename="../src/ui/Editor.cpp" line="1029"/>
         <source>Finish MIDI</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 녹음 완료</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1031"/>
         <source>MIDI take armed · Count-in then play · Stop closes every held note</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 녹음 준비됨 · 카운트 후 연주하세요 · 정지하면 눌린 노트가 모두 종료됩니다</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1039"/>
         <source>Microphone access denied</source>
-        <translation type="unfinished"></translation>
+        <translation>마이크 접근 권한 거부됨</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1040"/>
         <source>Enable Reverie Ensemble in System Settings → Privacy &amp; Security → Microphone. You can continue composing and exporting without input access.</source>
-        <translation type="unfinished"></translation>
+        <translation>시스템 설정 → 개인정보 보호 및 보안 → 마이크에서 Reverie Ensemble 권한을 허용하세요. 마이크 권한 없이도 작곡과 오디오 내보내기는 계속할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1068"/>
         <source>Finish take</source>
-        <translation type="unfinished"></translation>
+        <translation>테이크 완료</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1070"/>
         <source>Recording to project media. Press Stop or Finish take to place the clip.</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 미디어에 녹음 중입니다. 정지 또는 테이크 완료를 누르면 클립이 배치됩니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1101"/>
         <source>MIDI take captured · edit notes or change the instrument</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 녹음 완료 · 피아노 롤에서 노트를 편집하거나 악기를 변경할 수 있습니다</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1128"/>
         <source>Take placed on the audio track. Save the project to keep its arrangement.</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음한 테이크를 오디오 트랙에 배치했습니다. 편곡 내용을 유지하려면 프로젝트를 저장하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1133"/>
         <source>Take retained at </source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 파일 보관 위치: </translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="1145"/>
         <source>Unsaved project</source>
-        <translation type="unfinished"></translation>
+        <translation>저장되지 않은 프로젝트</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="21"/>
         <source>Export Audio</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 내보내기</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="31"/>
         <source>Choose…</source>
-        <translation type="unfinished"></translation>
+        <translation>선택…</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="33"/>
         <source>File / destination</source>
-        <translation type="unfinished"></translation>
+        <translation>저장 경로</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="36"/>
         <source>Export WAV</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 내보내기</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="41"/>
         <source>Format</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 형식</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="42"/>
         <source>WAV — RIFF (maximum 4 GiB)</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV — RIFF (최대 4 GiB)</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="48"/>
         <source>Sample rate</source>
-        <translation type="unfinished"></translation>
+        <translation>샘플레이트</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="51"/>
         <source>16-bit PCM</source>
-        <translation type="unfinished"></translation>
+        <translation>16-bit PCM</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="52"/>
         <source>24-bit PCM</source>
-        <translation type="unfinished"></translation>
+        <translation>24-bit PCM</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="53"/>
         <source>32-bit float</source>
-        <translation type="unfinished"></translation>
+        <translation>32-bit float</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="55"/>
         <source>Bit depth</source>
-        <translation type="unfinished"></translation>
+        <translation>비트 깊이</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="58"/>
         <source>Stereo</source>
-        <translation type="unfinished"></translation>
+        <translation>스테레오</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="59"/>
         <source>Mono (L+R / 2)</source>
-        <translation type="unfinished"></translation>
+        <translation>모노 (L+R / 2)</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="60"/>
         <source>Channels</source>
-        <translation type="unfinished"></translation>
+        <translation>채널</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="68"/>
         <source>Range</source>
-        <translation type="unfinished"></translation>
+        <translation>출력 구간</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="70"/>
         <source>Include instrument release and effect tail</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 릴리스 및 이펙트 잔향 포함</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="74"/>
         <source>Normalize peak to −1 dBFS (explicit gain, no compression)</source>
-        <translation type="unfinished"></translation>
+        <translation>피크를 −1 dBFS로 노멀라이즈 (단순 게인 조절, 컴프레션 없음)</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="78"/>
         <source>TPDF dither for integer PCM</source>
-        <translation type="unfinished"></translation>
+        <translation>정수형 PCM에 TPDF 디더 적용</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="89"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="91"/>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="131"/>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="104"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="183"/>
         <source>Choose a destination WAV file.</source>
-        <translation type="unfinished"></translation>
+        <translation>저장할 WAV 파일 경로를 선택하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="191"/>
         <source>Replace WAV?</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 파일을 덮어쓰시겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="192"/>
         <source>Replace the existing file only after a successful export?</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기가 정상적으로 완료된 후 기존 파일을 덮어쓰시겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="207"/>
         <source>Rendering… Cancel preserves any existing destination.</source>
-        <translation type="unfinished"></translation>
+        <translation>렌더링 중… 취소해도 기존 파일은 그대로 유지됩니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="219"/>
         <source>Cancelling…</source>
-        <translation type="unfinished"></translation>
+        <translation>취소 중…</translation>
     </message>
     <message>
         <location filename="../src/ui/InspectorPanel.cpp" line="17"/>
         <location filename="../src/ui/Workspace.cpp" line="560"/>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>선택 항목</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="186"/>
@@ -632,2302 +642,2314 @@ CLIPPING — lower track/master levels</source>
         <location filename="../src/ui/Timeline.cpp" line="390"/>
         <location filename="../src/ui/Timeline.cpp" line="468"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>이름</translation>
     </message>
     <message>
         <location filename="../src/ui/InspectorPanel.cpp" line="39"/>
         <source>MIDI key</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 키</translation>
     </message>
     <message>
         <location filename="../src/ui/InspectorPanel.cpp" line="104"/>
         <source>Note properties</source>
-        <translation type="unfinished"></translation>
+        <translation>노트 속성</translation>
     </message>
     <message>
         <location filename="../src/ui/InstrumentEditor.cpp" line="20"/>
         <source> Hz</source>
-        <translation type="unfinished"></translation>
+        <translation> Hz</translation>
     </message>
     <message>
         <location filename="../src/ui/InstrumentEditor.cpp" line="21"/>
         <source>Tone / low-pass</source>
-        <translation type="unfinished"></translation>
+        <translation>톤 / 로우패스</translation>
     </message>
     <message>
         <location filename="../src/ui/InstrumentEditor.cpp" line="26"/>
         <source> s</source>
-        <translation type="unfinished"></translation>
+        <translation> 초</translation>
     </message>
     <message>
         <location filename="../src/ui/InstrumentEditor.cpp" line="27"/>
         <location filename="../src/ui/InstrumentEditor.cpp" line="78"/>
         <source>Release</source>
-        <translation type="unfinished"></translation>
+        <translation>릴리스</translation>
     </message>
     <message>
         <location filename="../src/ui/InstrumentEditor.cpp" line="33"/>
         <source>Room / reverb</source>
-        <translation type="unfinished"></translation>
+        <translation>룸 / 리버브</translation>
     </message>
     <message>
         <location filename="../src/ui/InstrumentEditor.cpp" line="71"/>
         <location filename="../src/ui/InstrumentEditor.cpp" line="74"/>
         <source>Defined by the source instrument</source>
-        <translation type="unfinished"></translation>
+        <translation>원본 악기 설정에 따름</translation>
     </message>
     <message>
         <location filename="../src/ui/InstrumentEditor.cpp" line="77"/>
         <source>Bow attack</source>
-        <translation type="unfinished"></translation>
+        <translation>활 어택</translation>
     </message>
     <message>
         <location filename="../src/ui/MixerView.cpp" line="48"/>
         <source>MIXER    /    dBFS · stereo output</source>
-        <translation type="unfinished"></translation>
+        <translation>믹서    /    dBFS · 스테레오 출력</translation>
     </message>
     <message>
         <location filename="../src/ui/MixerView.cpp" line="73"/>
         <source>background:%1;border-right:1px solid #777065;</source>
-        <translation type="unfinished"></translation>
+        <translation>background:%1;border-right:1px solid #777065;</translation>
     </message>
     <message>
         <location filename="../src/ui/MixerView.cpp" line="89"/>
         <source>Processing…</source>
-        <translation type="unfinished"></translation>
+        <translation>프로세싱…</translation>
     </message>
     <message>
         <location filename="../src/ui/MixerView.cpp" line="95"/>
         <source>Inserts…</source>
-        <translation type="unfinished"></translation>
+        <translation>인서트…</translation>
     </message>
     <message>
         <location filename="../src/ui/MixerView.cpp" line="101"/>
         <source> dB</source>
-        <translation type="unfinished"></translation>
+        <translation> dB</translation>
     </message>
     <message>
         <location filename="../src/ui/MixerView.cpp" line="134"/>
         <source>Pan </source>
-        <translation type="unfinished"></translation>
+        <translation>팬 </translation>
     </message>
     <message>
         <location filename="../src/ui/MixerView.cpp" line="156"/>
         <source>EQ / Space</source>
-        <translation type="unfinished"></translation>
+        <translation>EQ / 공간계</translation>
     </message>
     <message>
         <location filename="../src/ui/MixerView.cpp" line="167"/>
         <source>Low </source>
-        <translation type="unfinished"></translation>
+        <translation>저역 </translation>
     </message>
     <message>
         <location filename="../src/ui/Performance.cpp" line="122"/>
         <source>MIDI %1 · Ch %2 · %3</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI %1 · 채널 %2 · %3</translation>
     </message>
     <message>
         <location filename="../src/ui/Performance.cpp" line="125"/>
         <source>Note On</source>
-        <translation type="unfinished"></translation>
+        <translation>노트 온</translation>
     </message>
     <message>
         <location filename="../src/ui/Performance.cpp" line="126"/>
         <source>Note Off</source>
-        <translation type="unfinished"></translation>
+        <translation>노트 오프</translation>
     </message>
     <message>
         <location filename="../src/ui/Performance.cpp" line="199"/>
         <source>MIDI devices changed · notes released</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 장치 변경됨 · 모든 노트 해제됨</translation>
     </message>
     <message>
         <location filename="../src/ui/Performance.cpp" line="204"/>
         <location filename="../src/ui/Workspace.cpp" line="504"/>
         <source>All MIDI inputs</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 MIDI 입력</translation>
     </message>
     <message>
         <location filename="../src/ui/Performance.cpp" line="205"/>
         <location filename="../src/ui/Workspace.cpp" line="505"/>
         <source>MIDI disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 사용 안 함</translation>
     </message>
     <message>
         <location filename="../src/ui/Performance.cpp" line="214"/>
         <source>MIDI input overflow · notes released</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 입력 버퍼 초과 · 모든 노트 해제됨</translation>
     </message>
     <message>
         <location filename="../src/ui/PerformanceKeyboard.cpp" line="39"/>
         <source>Musical Typing</source>
-        <translation type="unfinished"></translation>
+        <translation>키보드 연주</translation>
     </message>
     <message>
         <location filename="../src/ui/PerformanceKeyboard.cpp" line="42"/>
         <source>Octave</source>
-        <translation type="unfinished"></translation>
+        <translation>옥타브</translation>
     </message>
     <message>
         <location filename="../src/ui/PerformanceKeyboard.cpp" line="47"/>
         <source>Velocity</source>
-        <translation type="unfinished"></translation>
+        <translation>벨로시티</translation>
     </message>
     <message>
         <location filename="../src/ui/PerformanceKeyboard.cpp" line="52"/>
         <source>Sustain · Tab</source>
-        <translation type="unfinished"></translation>
+        <translation>서스테인 · Tab</translation>
     </message>
     <message>
         <location filename="../src/ui/PerformanceKeyboard.cpp" line="62"/>
         <source>Virtual piano · MIDI 21 to 108</source>
-        <translation type="unfinished"></translation>
+        <translation>가상 피아노 · MIDI 21–108</translation>
     </message>
     <message>
         <location filename="../src/ui/PerformanceKeyboard.cpp" line="65"/>
         <source>A W S E D F T G Y H U J K → C D♭ D E♭ E F G♭ G A♭ A B♭ B C  ·  Z/X octave  ·  C/V velocity  ·  MIDI 21–108</source>
-        <translation type="unfinished"></translation>
+        <translation>A W S E D F T G Y H U J K → C D♭ D E♭ E F G♭ G A♭ A B♭ B C  ·  Z/X 옥타브  ·  C/V 벨로시티  ·  MIDI 21–108</translation>
     </message>
     <message>
         <location filename="../src/ui/PerformanceKeyboard.cpp" line="183"/>
         <source>MIDI %1</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI %1</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="102"/>
         <source>KEYS</source>
-        <translation type="unfinished"></translation>
+        <translation>건반</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="114"/>
         <source>Double-click a MIDI clip in the arrangement to edit notes.</source>
-        <translation type="unfinished"></translation>
+        <translation>편곡 영역에서 MIDI 클립을 더블 클릭하면 노트를 편집할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="145"/>
         <location filename="../src/ui/Timeline.cpp" line="452"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>삭제</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="147"/>
         <location filename="../src/ui/Timeline.cpp" line="395"/>
         <source>Duplicate</source>
-        <translation type="unfinished"></translation>
+        <translation>복제</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="149"/>
         <location filename="../src/ui/Workspace.cpp" line="266"/>
         <source>Quantize</source>
-        <translation type="unfinished"></translation>
+        <translation>퀀타이즈</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="151"/>
         <source>Set Velocity…</source>
-        <translation type="unfinished"></translation>
+        <translation>벨로시티 설정…</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="154"/>
         <source>Note velocity</source>
-        <translation type="unfinished"></translation>
+        <translation>노트 벨로시티</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="155"/>
         <source>Velocity (1–127)</source>
-        <translation type="unfinished"></translation>
+        <translation>벨로시티 (1–127)</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="160"/>
         <source>Set Length…</source>
-        <translation type="unfinished"></translation>
+        <translation>길이 설정…</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="163"/>
         <source>Note length</source>
-        <translation type="unfinished"></translation>
+        <translation>노트 길이</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="164"/>
         <source>Quarter-note beats</source>
-        <translation type="unfinished"></translation>
+        <translation>4분음표 기준 박자 수</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="174"/>
         <source>Transpose…</source>
-        <translation type="unfinished"></translation>
+        <translation>조옮김…</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="177"/>
         <source>Transpose</source>
-        <translation type="unfinished"></translation>
+        <translation>조옮김</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="178"/>
         <source>Semitones</source>
-        <translation type="unfinished"></translation>
+        <translation>반음 단위</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="188"/>
         <source>Note Properties…</source>
-        <translation type="unfinished"></translation>
+        <translation>노트 속성…</translation>
     </message>
     <message>
         <location filename="../src/ui/PianoRoll.cpp" line="192"/>
         <source>MIDI %1 · Channel %2 · Beat %3 · Length %4 · Velocity %5</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI %1 · 채널 %2 · 위치 %3박 · 길이 %4박 · 벨로시티 %5</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="55"/>
         <source> · </source>
-        <translation type="unfinished"></translation>
+        <translation> · </translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="56"/>
         <source>Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>파라미터</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="64"/>
         <source>Search parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>파라미터 검색</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="67"/>
         <source>Parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>파라미터</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="68"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>값</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="105"/>
         <source>Effect plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>이펙트 플러그인</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="60"/>
         <source>Latency: %1 samples · Tail: %2 samples</source>
-        <translation type="unfinished"></translation>
+        <translation>지연 시간: %1샘플 · 잔향: %2샘플</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="106"/>
         <source>Instrument plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 플러그인</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="110"/>
         <source>Search plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 검색</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="119"/>
         <source>Rescan</source>
-        <translation type="unfinished"></translation>
+        <translation>다시 검색</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="120"/>
         <source>Add search folder…</source>
-        <translation type="unfinished"></translation>
+        <translation>검색 폴더 추가…</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="121"/>
         <source>Insert</source>
-        <translation type="unfinished"></translation>
+        <translation>인서트 추가</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="122"/>
         <source>Create track</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 만들기</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="141"/>
         <source>CLAP: stereo instruments and effects; parameter editor. Audio Units and VST3 hosting are not available in this build.</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 스테레오 악기·이펙트 및 파라미터 편집기를 지원합니다. 이 빌드에서는 Audio Units와 VST3 호스팅을 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="187"/>
         <source>Could not scan: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인을 검색할 수 없음: %1</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="194"/>
         <source>Plugin search folder</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 검색 폴더</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="230"/>
         <source>Track inserts</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 인서트</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="241"/>
         <source> · Bypassed</source>
-        <translation type="unfinished"></translation>
+        <translation> · 바이패스됨</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="251"/>
         <source>Add…</source>
-        <translation type="unfinished"></translation>
+        <translation>추가…</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="255"/>
         <source>Parameters…</source>
-        <translation type="unfinished"></translation>
+        <translation>파라미터…</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="265"/>
         <source>Bypass</source>
-        <translation type="unfinished"></translation>
+        <translation>바이패스</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="275"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>제거</translation>
     </message>
     <message>
         <location filename="../src/ui/PluginBrowser.cpp" line="288"/>
         <source>Wet </source>
-        <translation type="unfinished"></translation>
+        <translation>믹스 </translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="22"/>
         <source>Ensemble Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>앙상블 설정</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="37"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>언어</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="38"/>
         <source>Language changes apply after restarting Ensemble. Your project stays open.</source>
-        <translation type="unfinished"></translation>
+        <translation>언어 변경 사항은 Ensemble을 다시 시작하면 적용됩니다. 작업 중인 프로젝트는 유지됩니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="151"/>
         <source>Install licensed unpacked packs through Sound Library.
 Missing/damaged libraries are reported there; no automatic downloads.</source>
-        <translation type="unfinished"></translation>
+        <translation>라이선스가 확인된 사운드 팩 폴더는 사운드 라이브러리에서 설치할 수 있습니다.
+누락되거나 손상된 라이브러리는 해당 창에 표시되며 자동 다운로드되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="181"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>일반</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="47"/>
         <source>Audio</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="32"/>
         <source>Follow System Language</source>
-        <translation type="unfinished"></translation>
+        <translation>시스템 언어 따르기</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="70"/>
         <source>Output device</source>
-        <translation type="unfinished"></translation>
+        <translation>출력 장치</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="71"/>
         <source>Input device</source>
-        <translation type="unfinished"></translation>
+        <translation>입력 장치</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="77"/>
         <source>Requested sample rate</source>
-        <translation type="unfinished"></translation>
+        <translation>요청 샘플레이트</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="83"/>
         <source>Requested period / frames</source>
-        <translation type="unfinished"></translation>
+        <translation>버퍼 크기 (프레임)</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="89"/>
         <source>Refresh devices</source>
-        <translation type="unfinished"></translation>
+        <translation>장치 목록 새로고침</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="96"/>
         <source>Apply audio configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 설정 적용</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="102"/>
         <source>Stop recording before changing devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>장치를 변경하려면 먼저 녹음을 정지하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="128"/>
         <source>Test output (quiet A4 tone)</source>
-        <translation type="unfinished"></translation>
+        <translation>출력 테스트 (작은 A4 신호음)</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="137"/>
         <source>Library</source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="138"/>
         <source>Bundled libraries</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 제공 라이브러리</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="139"/>
         <source>Factory Library + Community Essentials
 Offline-ready when included; CC0 sources in pack.json</source>
-        <translation type="unfinished"></translation>
+        <translation>Factory Library + Community Essentials
+포함된 경우 오프라인에서 바로 사용 가능 · CC0 출처는 pack.json 참조</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="184"/>
         <source>Reverie Ensemble 0.5.0 · QuadraJ</source>
-        <translation type="unfinished"></translation>
+        <translation>Reverie Ensemble 0.5.0 · QuadraJ</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="186"/>
         <source>Explicit Save; unsaved-change prompt on close.
 No automatic save/backup or online update checks.</source>
-        <translation type="unfinished"></translation>
+        <translation>수동 저장 방식 · 종료 시 미저장 변경 사항 확인.
+자동 저장·백업 및 온라인 업데이트 확인은 수행하지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="190"/>
         <source>Original code: Apache-2.0
 Qt: LGPLv3; IBM Plex: SIL OFL; recorded audio: CC0
 Full terms: About and THIRD_PARTY_LICENSES.md</source>
-        <translation type="unfinished"></translation>
+        <translation>자체 코드: Apache-2.0
+Qt: LGPLv3 · IBM Plex: SIL OFL · 녹음 샘플: CC0
+전체 라이선스 고지: 정보 창 및 THIRD_PARTY_LICENSES.md</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="193"/>
         <source>SMF import and CoreMIDI input supported.</source>
-        <translation type="unfinished"></translation>
+        <translation>표준 MIDI 파일 가져오기 및 CoreMIDI 입력을 지원합니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="146"/>
         <source>User library location</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 라이브러리 경로</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="148"/>
         <source>Rescan installed sound packs</source>
-        <translation type="unfinished"></translation>
+        <translation>설치된 사운드 팩 다시 검색</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="156"/>
         <source>Interface</source>
-        <translation type="unfinished"></translation>
+        <translation>인터페이스</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="157"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>테마</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="158"/>
         <source>Paper &amp; Graphite · IBM Plex Sans KR / Mono</source>
-        <translation type="unfinished"></translation>
+        <translation>Paper &amp; Graphite · IBM Plex Sans KR / Mono</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="164"/>
         <source>Default track height</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 트랙 높이</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="166"/>
         <source>Follow playback outside visible range</source>
-        <translation type="unfinished"></translation>
+        <translation>화면 밖으로 재생 위치가 이동하면 자동 스크롤</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="183"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>버전</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="185"/>
         <source>Project policy</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 정책</translation>
     </message>
     <message>
         <location filename="../src/ui/SettingsDialog.cpp" line="189"/>
         <source>Licenses</source>
-        <translation type="unfinished"></translation>
+        <translation>라이선스</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="83"/>
         <location filename="../src/ui/SoundBrowser.cpp" line="873"/>
         <source>Expand ↔</source>
-        <translation type="unfinished"></translation>
+        <translation>확장 ↔</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="86"/>
         <source>Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>고정</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="97"/>
         <source>Search instruments / tags</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 또는 태그 검색</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="106"/>
         <location filename="../src/ui/SoundBrowser.cpp" line="449"/>
         <source>All packs</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 팩</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="109"/>
         <location filename="../src/ui/SoundBrowser.cpp" line="786"/>
         <location filename="../src/ui/SoundBrowser.cpp" line="797"/>
         <source>Installed</source>
-        <translation type="unfinished"></translation>
+        <translation>설치됨</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="162"/>
         <source>PATCHES</source>
-        <translation type="unfinished"></translation>
+        <translation>패치</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="175"/>
         <source>Listen</source>
-        <translation type="unfinished"></translation>
+        <translation>미리 듣기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="179"/>
         <location filename="../src/ui/SoundBrowser.cpp" line="300"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>적용</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="182"/>
         <source>Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="186"/>
         <source>New instrument track</source>
-        <translation type="unfinished"></translation>
+        <translation>새 악기 트랙</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="191"/>
         <source>Install local sound pack…</source>
-        <translation type="unfinished"></translation>
+        <translation>로컬 사운드 팩 설치…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="194"/>
         <source>Available collections…</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 라이브러리 관리…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="213"/>
         <source>Import SFZ / SoundFont…</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ / SoundFont 가져오기…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="215"/>
         <source>Import audio WAV…</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 WAV 가져오기…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="247"/>
         <source>Select unpacked sound pack (pack.json)</source>
-        <translation type="unfinished"></translation>
+        <translation>압축 해제된 사운드 팩 선택 (pack.json)</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="256"/>
         <source>
 Install size: %1 MiB
 Install this local pack?</source>
-        <translation type="unfinished"></translation>
+        <translation>
+설치 용량: %1 MiB
+이 로컬 사운드 팩을 설치하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="260"/>
         <source>Install sound pack</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 설치</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="269"/>
         <source>Load SFZ or SoundFont</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 또는 SoundFont 불러오기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="275"/>
         <source>Library tools…</source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리 도구…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="276"/>
         <source>⋯</source>
-        <translation type="unfinished"></translation>
+        <translation>⋯</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="278"/>
         <source>Import instrument / local pack tools</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 가져오기 및 로컬 팩 도구</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="297"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>미리 듣기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="303"/>
         <source>Create New Track</source>
-        <translation type="unfinished"></translation>
+        <translation>새 트랙 만들기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="306"/>
         <source>Add / Remove Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기 추가 / 해제</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="308"/>
         <source>Show Instrument Details</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 상세 정보 보기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="311"/>
         <source>Show Source / License</source>
-        <translation type="unfinished"></translation>
+        <translation>출처 및 라이선스 보기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="317"/>
         <source>Instrument source and license</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 출처 및 라이선스</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="322"/>
         <source>Reveal Installed Files</source>
-        <translation type="unfinished"></translation>
+        <translation>설치된 파일 위치 열기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="329"/>
         <source>Manage / Remove Optional Packs…</source>
-        <translation type="unfinished"></translation>
+        <translation>추가 사운드 팩 관리 / 제거…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="344"/>
         <source>Sound Library Manager…</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 라이브러리 관리자…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="377"/>
         <source>%1:%2 · %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1:%2 · %3</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="383"/>
         <source>SoundFont Instrument Selection</source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont 악기 선택</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="384"/>
         <source>Bank : Program</source>
-        <translation type="unfinished"></translation>
+        <translation>뱅크 : 프로그램</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="498"/>
         <source>Library unavailable: </source>
-        <translation type="unfinished"></translation>
+        <translation>라이브러리를 사용할 수 없음: </translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="553"/>
         <source>User instrument unavailable: </source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 악기를 사용할 수 없음: </translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="641"/>
         <source>%1 installed pack(s) · %2 MiB
 %3 instrument entries / %4 patches</source>
-        <translation type="unfinished"></translation>
+        <translation>설치된 팩 %1개 · %2 MiB
+악기 %3종 / 패치 %4개</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="650"/>
         <source>Factory Library is missing. Reinstall the complete application.</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 라이브러리를 찾을 수 없습니다. 애플리케이션을 다시 설치하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="700"/>
         <source>DOWNLOAD</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="702"/>
         <source>SYNTH</source>
-        <translation type="unfinished"></translation>
+        <translation>신스</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="703"/>
         <source>RECORDED</source>
-        <translation type="unfinished"></translation>
+        <translation>샘플</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="704"/>
         <source> · Favorite</source>
-        <translation type="unfinished"></translation>
+        <translation> · 즐겨찾기</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="783"/>
         <source>Synthesis</source>
-        <translation type="unfinished"></translation>
+        <translation>신시사이저</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="787"/>
         <source>Download required</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드 필요</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="792"/>
         <source>Ignored SFZ metadata: </source>
-        <translation type="unfinished"></translation>
+        <translation>무시된 SFZ 메타데이터: </translation>
     </message>
     <message>
         <location filename="../src/ui/SoundBrowser.cpp" line="872"/>
         <source>Compact ↔</source>
-        <translation type="unfinished"></translation>
+        <translation>축소 ↔</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="58"/>
         <source>Sound Library Manager</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 라이브러리 관리자</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="62"/>
         <source>ENSEMBLE SOUND LIBRARY</source>
-        <translation type="unfinished"></translation>
+        <translation>ENSEMBLE 사운드 라이브러리</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="65"/>
         <source>Verified catalogs · original patch mappings · explicit downloads only</source>
-        <translation type="unfinished"></translation>
+        <translation>검증된 카탈로그 · 원본 패치 매핑 유지 · 사용자 승인 시에만 다운로드</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="69"/>
         <source>AVAILABLE PACKS</source>
-        <translation type="unfinished"></translation>
+        <translation>사용 가능한 팩</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="75"/>
         <source>INSTALLED</source>
-        <translation type="unfinished"></translation>
+        <translation>설치된 팩</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="92"/>
         <source>Download / Install / Update</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드 / 설치 / 업데이트</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="95"/>
         <source>Install local folder…</source>
-        <translation type="unfinished"></translation>
+        <translation>로컬 폴더 설치…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="98"/>
         <source>Remove optional pack…</source>
-        <translation type="unfinished"></translation>
+        <translation>추가 팩 제거…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="100"/>
         <source>Cancel download</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드 취소</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="114"/>
         <source>Install local verified pack (pack.json)</source>
-        <translation type="unfinished"></translation>
+        <translation>검증된 로컬 사운드 팩 설치 (pack.json)</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="121"/>
         <source>Install failed</source>
-        <translation type="unfinished"></translation>
+        <translation>설치 실패</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="133"/>
         <source>Pack is in use</source>
-        <translation type="unfinished"></translation>
+        <translation>사용 중인 사운드 팩</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="134"/>
         <source>Change or remove this project’s instruments before removing their sample pack.</source>
-        <translation type="unfinished"></translation>
+        <translation>이 사운드 팩을 제거하려면 먼저 현재 프로젝트에서 해당 악기를 변경하거나 트랙을 삭제하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="140"/>
         <source>Remove optional sound pack</source>
-        <translation type="unfinished"></translation>
+        <translation>추가 사운드 팩 제거</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="141"/>
         <source>Remove installed files? Projects referencing this pack will need it reinstalled. Bundled factory sounds are protected.</source>
-        <translation type="unfinished"></translation>
+        <translation>설치된 파일을 제거하시겠습니까? 이 팩을 사용하는 프로젝트에서는 팩을 다시 설치해야 소리가 재생됩니다. 기본 제공 사운드는 삭제되지 않습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="149"/>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="157"/>
         <source>Remove failed</source>
-        <translation type="unfinished"></translation>
+        <translation>제거 실패</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="150"/>
         <source>Pack path is outside the managed library</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 경로가 관리 대상 라이브러리 폴더 밖에 있습니다</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="169"/>
         <source>Install separate copy</source>
-        <translation type="unfinished"></translation>
+        <translation>별도 사본 설치</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="170"/>
         <source>Download / Update</source>
-        <translation type="unfinished"></translation>
+        <translation>다운로드 / 업데이트</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="175"/>
         <source>
 Download / install: %1 MiB · %2 patches · Backend: sfizz
 </source>
-        <translation type="unfinished"></translation>
+        <translation>
+다운로드 / 설치 용량: %1 MiB · 패치 %2개 · 엔진: sfizz
+</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="181"/>
         <source>Included in Factory Library. A separate install uses the same recordings.</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 라이브러리에 포함되어 있습니다. 별도로 설치해도 동일한 녹음 샘플을 사용합니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="200"/>
         <source>
 %1 MiB · %2</source>
-        <translation type="unfinished"></translation>
+        <translation>
+%1 MiB · %2</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="207"/>
         <source>Included in Factory Library</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 라이브러리에 포함됨</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="234"/>
         <source>Offline: install a verified local sound pack folder. Catalog generation is documented in scripts/.</source>
-        <translation type="unfinished"></translation>
+        <translation>오프라인 안내: 검증된 로컬 사운드 팩 폴더를 직접 설치할 수 있습니다. 카탈로그 생성 방법은 scripts/ 문서를 참고하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="283"/>
         <source>Download sound pack</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 다운로드</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="341"/>
         <source>%1
 %2 / %3 MiB · %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1
+%2 / %3 MiB · %4</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="366"/>
         <source>Verifying inventory and SFZ references…</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 목록 및 SFZ 참조 무결성 검증 중…</translation>
     </message>
     <message>
         <location filename="../src/ui/SoundLibraryManager.cpp" line="387"/>
         <source>Installed and verified. Instruments are available immediately.</source>
-        <translation type="unfinished"></translation>
+        <translation>설치 및 검증이 완료되었습니다. 지금 바로 악기를 사용할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="113"/>
         <source>Missing WAV — relink by importing source</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 파일 누락 — 원본 파일을 다시 가져와 연결하세요</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="138"/>
         <source>● MIDI TAKE</source>
-        <translation type="unfinished"></translation>
+        <translation>● MIDI 녹음 중</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="162"/>
         <source>MIDI</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="171"/>
         <source>S</source>
-        <translation type="unfinished"></translation>
+        <translation>S</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="181"/>
         <source>ARRANGEMENT</source>
-        <translation type="unfinished"></translation>
+        <translation>편곡</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="208"/>
         <source>Add a MIDI track to begin. Double-click a track lane to create a clip.</source>
-        <translation type="unfinished"></translation>
+        <translation>시작하려면 MIDI 트랙을 추가하세요. 트랙 레인을 더블 클릭하면 클립이 생성됩니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="349"/>
         <location filename="../src/ui/Timeline.cpp" line="467"/>
         <source>Track name</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 이름</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="381"/>
         <source>Open Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>편집기 열기</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="383"/>
         <source>Rename…</source>
-        <translation type="unfinished"></translation>
+        <translation>이름 변경…</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="389"/>
         <source>Rename clip</source>
-        <translation type="unfinished"></translation>
+        <translation>클립 이름 변경</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="398"/>
         <source>Split at Playhead</source>
-        <translation type="unfinished"></translation>
+        <translation>재생 헤드 위치에서 분할</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="440"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>복사</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="446"/>
         <source>Mute Clip</source>
-        <translation type="unfinished"></translation>
+        <translation>클립 음소거</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="454"/>
         <source>Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>속성</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="456"/>
         <source>%1 · Beat %2 · Length %3 · %4 MIDI notes</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 · 위치 %2박 · 길이 %3박 · MIDI 노트 %4개</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="464"/>
         <source>Rename Track…</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 이름 변경…</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="473"/>
         <source>Duplicate Track</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 복제</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="490"/>
         <source>Change Instrument…</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 변경…</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="494"/>
         <source>Change Color…</source>
-        <translation type="unfinished"></translation>
+        <translation>색상 변경…</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="499"/>
         <source>Arm Recording</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 준비</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="503"/>
         <location filename="../src/ui/Workspace.cpp" line="388"/>
         <source>Mute</source>
-        <translation type="unfinished"></translation>
+        <translation>음소거</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="506"/>
         <location filename="../src/ui/Workspace.cpp" line="389"/>
         <source>Solo</source>
-        <translation type="unfinished"></translation>
+        <translation>솔로</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="509"/>
         <source>Move Up</source>
-        <translation type="unfinished"></translation>
+        <translation>위로 이동</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="512"/>
         <source>Move Down</source>
-        <translation type="unfinished"></translation>
+        <translation>아래로 이동</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="515"/>
         <source>Delete Track</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 삭제</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="520"/>
         <source>Add MIDI Track</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 트랙 추가</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="522"/>
         <source>Add Audio Track</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 트랙 추가</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="525"/>
         <source>Create MIDI Clip</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 클립 만들기</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="533"/>
         <source>Import Audio…</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 가져오기…</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="535"/>
         <source>Import MIDI…</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 가져오기…</translation>
     </message>
     <message>
         <location filename="../src/ui/Timeline.cpp" line="544"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>붙여넣기</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="93"/>
         <source>ensemble.</source>
-        <translation type="unfinished"></translation>
+        <translation>ensemble.</translation>
     </message>
     <message>
         <location filename="../src/ui/Editor.cpp" line="653"/>
         <location filename="../src/ui/Workspace.cpp" line="100"/>
         <source>Play</source>
-        <translation type="unfinished"></translation>
+        <translation>재생</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="105"/>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
+        <translation>정지</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="120"/>
         <location filename="../src/ui/Workspace.cpp" line="121"/>
         <source>Loop playback</source>
-        <translation type="unfinished"></translation>
+        <translation>반복 재생</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="131"/>
         <source>Metronome (monitor only)</source>
-        <translation type="unfinished"></translation>
+        <translation>메트로놈 (모니터링 전용)</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="132"/>
         <source>Metronome</source>
-        <translation type="unfinished"></translation>
+        <translation>메트로놈</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="139"/>
         <source>BPM</source>
-        <translation type="unfinished"></translation>
+        <translation>BPM</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="165"/>
         <source>Bars : Beats : Ticks (960 / notated beat), or minutes:seconds with s suffix. Return to seek.</source>
-        <translation type="unfinished"></translation>
+        <translation>마디 : 박 : 틱(박당 960틱) 또는 분:초s 형식으로 입력하고 Return을 눌러 이동합니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="204"/>
         <source>Enter bars:beats:ticks, or minutes:seconds with s suffix (e.g. 0:12.5s).</source>
-        <translation type="unfinished"></translation>
+        <translation>마디:박:틱 또는 초 끝에 s를 붙인 분:초 형식(예: 0:12.5s)으로 입력하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="214"/>
         <source>Display bars / beats / ticks</source>
-        <translation type="unfinished"></translation>
+        <translation>마디 / 박 / 틱 표시</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="219"/>
         <source>Display minutes / seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>분 / 초 표시</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="232"/>
         <source>AUDIO</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="264"/>
         <source>PIANO ROLL  </source>
-        <translation type="unfinished"></translation>
+        <translation>피아노 롤  </translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="268"/>
         <source>Velocity </source>
-        <translation type="unfinished"></translation>
+        <translation>벨로시티 </translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="276"/>
         <source>Snap</source>
-        <translation type="unfinished"></translation>
+        <translation>스냅</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="289"/>
         <source> Zoom </source>
-        <translation type="unfinished"></translation>
+        <translation> 줌 </translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="319"/>
         <source>Arrange</source>
-        <translation type="unfinished"></translation>
+        <translation>편곡</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="320"/>
         <source>Mixer</source>
-        <translation type="unfinished"></translation>
+        <translation>믹서</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="326"/>
         <source>Keyboard</source>
-        <translation type="unfinished"></translation>
+        <translation>건반</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="328"/>
         <source>Browse</source>
-        <translation type="unfinished"></translation>
+        <translation>브라우저</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="330"/>
         <source>Piano editor</source>
-        <translation type="unfinished"></translation>
+        <translation>피아노 롤</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="334"/>
         <source>Follow</source>
-        <translation type="unfinished"></translation>
+        <translation>자동 스크롤</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="338"/>
         <source>Track height</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 높이</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="346"/>
         <source>Loop beats</source>
-        <translation type="unfinished"></translation>
+        <translation>반복 구간(박)</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="367"/>
         <source>Click level</source>
-        <translation type="unfinished"></translation>
+        <translation>메트로놈 볼륨</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="384"/>
         <source>Volume</source>
-        <translation type="unfinished"></translation>
+        <translation>볼륨</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="385"/>
         <source>Pan</source>
-        <translation type="unfinished"></translation>
+        <translation>팬</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="392"/>
         <source>Arm</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 준비</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="424"/>
         <source>Instrument parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 파라미터</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="437"/>
         <source>Oscillator</source>
-        <translation type="unfinished"></translation>
+        <translation>오실레이터</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="443"/>
         <source>Attack (s)</source>
-        <translation type="unfinished"></translation>
+        <translation>어택 (초)</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="444"/>
         <source>Decay (s)</source>
-        <translation type="unfinished"></translation>
+        <translation>디케이 (초)</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="445"/>
         <source>Sustain</source>
-        <translation type="unfinished"></translation>
+        <translation>서스테인</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="446"/>
         <source>Release (s)</source>
-        <translation type="unfinished"></translation>
+        <translation>릴리스 (초)</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="447"/>
         <source>Low-pass Hz</source>
-        <translation type="unfinished"></translation>
+        <translation>로우패스 (Hz)</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="449"/>
         <source>Synth controls…</source>
-        <translation type="unfinished"></translation>
+        <translation>신스 컨트롤…</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="470"/>
         <source>Load preset</source>
-        <translation type="unfinished"></translation>
+        <translation>프리셋 불러오기</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="471"/>
         <source>Save preset</source>
-        <translation type="unfinished"></translation>
+        <translation>프리셋 저장</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="481"/>
         <source>Master</source>
-        <translation type="unfinished"></translation>
+        <translation>마스터</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="499"/>
         <source>MIDI input ready</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 입력 준비됨</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="522"/>
         <source>All MIDI channels</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 MIDI 채널</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="524"/>
         <source>Channel %1</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 %1</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="536"/>
         <source>Audio Settings…</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 설정…</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="544"/>
         <source>Reconnect audio / clear clip</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 재연결 / 클리핑 표시 지우기</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="562"/>
         <source>Track / Instrument</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 / 악기</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="568"/>
         <source>Double-click a lane to create a clip · Click to draw notes · Shift-drag to select · Space to play</source>
-        <translation type="unfinished"></translation>
+        <translation>레인을 더블 클릭해 클립 생성 · 클릭하여 노트 입력 · Shift-드래그로 선택 · Space로 재생</translation>
     </message>
     <message>
         <location filename="../src/ui/ProductionControls.cpp" line="29"/>
         <source>Synth controls</source>
-        <translation type="unfinished"></translation>
+        <translation>신스 컨트롤</translation>
     </message>
     <message>
         <location filename="../src/ui/ProductionControls.cpp" line="66"/>
         <source>Channel processing</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 프로세싱</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="12"/>
         <source>All instruments</source>
-        <translation type="unfinished"></translation>
+        <translation>모든 악기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="13"/>
         <source>Attack (ms)</source>
-        <translation type="unfinished"></translation>
+        <translation>어택 (ms)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="14"/>
         <source>Audio Plugins</source>
-        <translation type="unfinished"></translation>
+        <translation>오디오 플러그인</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="15"/>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation>금관악기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="16"/>
         <source>CLAP activation failed</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인을 활성화할 수 없습니다. 플러그인 설치 상태를 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="17"/>
         <source>CLAP bundle has no executable</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 번들에서 실행 파일을 찾을 수 없습니다. 플러그인 설치 상태를 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="18"/>
         <source>CLAP cannot restore state</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인 상태를 복원할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="19"/>
         <source>CLAP factory missing</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인 팩토리를 찾을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="21"/>
         <source>CLAP init failed</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인을 초기화할 수 없습니다. 설치 경로를 확인하거나 다시 검색하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="24"/>
         <source>CLAP output must be stereo</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인 출력은 스테레오여야 합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="4"/>
         <source>1/16</source>
-        <translation type="unfinished"></translation>
+        <translation>1/16</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="5"/>
         <source>1/32</source>
-        <translation type="unfinished"></translation>
+        <translation>1/32</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="6"/>
         <source>1/4</source>
-        <translation type="unfinished"></translation>
+        <translation>1/4</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="7"/>
         <source>1/8</source>
-        <translation type="unfinished"></translation>
+        <translation>1/8</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="8"/>
         <source>3/4</source>
-        <translation type="unfinished"></translation>
+        <translation>3/4</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="9"/>
         <source>4/4</source>
-        <translation type="unfinished"></translation>
+        <translation>4/4</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="10"/>
         <source>6/8</source>
-        <translation type="unfinished"></translation>
+        <translation>6/8</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="11"/>
         <source>7/8</source>
-        <translation type="unfinished"></translation>
+        <translation>7/8</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="20"/>
         <source>CLAP has too many audio inputs</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인의 오디오 입력 포트 수가 지원 범위를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="22"/>
         <source>CLAP input must be stereo</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인 입력은 스테레오여야 합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="23"/>
         <source>CLAP instrument requires MIDI input dialect</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 악기 플러그인에 필요한 MIDI 입력 규격이 지원되지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="25"/>
         <source>CLAP requires a stereo main output</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인에는 스테레오 메인 출력이 필요합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="26"/>
         <source>CLAP state restore failed</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인 상태를 복원하지 못했습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="27"/>
         <source>Cannot create export file</source>
-        <translation type="unfinished"></translation>
+        <translation>내보낼 파일을 생성할 수 없습니다. 폴더 권한과 경로를 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="28"/>
         <source>Cannot create export staging file</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기용 임시 파일을 생성할 수 없습니다. 디스크 여유 공간과 권한을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="29"/>
         <source>Cannot create sfizz</source>
-        <translation type="unfinished"></translation>
+        <translation>sfizz 샘플 엔진을 초기화할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="30"/>
         <source>Cannot decode WAV: </source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 파일을 디코딩할 수 없습니다(파일 형식과 경로를 확인하세요): </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="31"/>
         <source>Cannot hash file</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 해시를 계산할 수 없습니다. 파일 읽기 권한을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="32"/>
         <source>Cannot load SoundFont: </source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont 파일을 불러올 수 없습니다(파일 형식과 경로를 확인하세요): </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="33"/>
         <source>Cannot open export staging file</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기용 임시 파일을 열 수 없습니다. 디스크 상태를 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="34"/>
         <source>Cannot open recording destination</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 저장 경로를 열 수 없습니다. 폴더 권한과 여유 공간을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="35"/>
         <source>Cannot read media for collection: </source>
-        <translation type="unfinished"></translation>
+        <translation>미디어 폴더로 수집할 원본 파일을 읽을 수 없습니다: </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="36"/>
         <source>Cannot write WAV</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 파일을 기록할 수 없습니다. 디스크 여유 공간과 쓰기 권한을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="37"/>
         <source>Cataloging SoundFont programs…</source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont 프로그램 목록 구성 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="38"/>
         <source>Checking instrument backend…</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 엔진 확인 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="39"/>
         <source>Compressor</source>
-        <translation type="unfinished"></translation>
+        <translation>컴프레서</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="493"/>
         <location filename="catalog_keys.cpp" line="40"/>
         <source>Count-in: 1 bar</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 전 카운트: 1마디</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="494"/>
         <location filename="catalog_keys.cpp" line="41"/>
         <source>Count-in: 2 bars</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 전 카운트: 2마디</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="492"/>
         <location filename="catalog_keys.cpp" line="42"/>
         <source>Count-in: None</source>
-        <translation type="unfinished"></translation>
+        <translation>녹음 전 카운트: 없음</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="44"/>
         <source>Detune (cents)</source>
-        <translation type="unfinished"></translation>
+        <translation>디튠 (센트)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="45"/>
         <source>Drums &amp; Percussion</source>
-        <translation type="unfinished"></translation>
+        <translation>드럼 및 타악기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="46"/>
         <source>Duplicate/invalid object identifier</source>
-        <translation type="unfinished"></translation>
+        <translation>중복되었거나 유효하지 않은 객체 식별자입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="47"/>
         <source>Empty SFZ key</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 키 값이 비어 있습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="48"/>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>사용</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="63"/>
         <location filename="catalog_keys.cpp" line="50"/>
         <source>Entire project</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 전체</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="43"/>
         <source>Decoding WAV and caching waveform…</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 디코딩 및 파형 캐시 생성 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="49"/>
         <source>Ensemble</source>
-        <translation type="unfinished"></translation>
+        <translation>Ensemble</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="51"/>
         <source>Export cancelled</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기가 취소되었습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="52"/>
         <source>Export close failed</source>
-        <translation type="unfinished"></translation>
+        <translation>내보낸 파일을 닫지 못했습니다. 디스크 여유 공간을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="53"/>
         <source>Export disk write failed</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 중 디스크 기록에 실패했습니다. 여유 공간을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="54"/>
         <source>Export exceeds RIFF WAV 4 GiB limit</source>
-        <translation type="unfinished"></translation>
+        <translation>내보낼 파일 크기가 RIFF WAV 최대 한도(4 GiB)를 초과합니다. 구간을 나누거나 비트 깊이를 낮추세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="55"/>
         <source>Export range is empty or too long</source>
-        <translation type="unfinished"></translation>
+        <translation>내보낼 구간이 비어 있거나 지원 길이를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="56"/>
         <source>Export staging close failed</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 임시 파일을 완료하지 못했습니다. 디스크 여유 공간을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="57"/>
         <source>Export staging read failed</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 임시 파일을 읽지 못했습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="58"/>
         <source>Export staging write failed (check free space)</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 임시 파일 기록에 실패했습니다. 디스크 여유 공간을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="59"/>
         <source>Export write failed (check free space)</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 내보내기에 실패했습니다. 디스크 여유 공간을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="60"/>
         <source>Extended synthesis</source>
-        <translation type="unfinished"></translation>
+        <translation>확장 신시사이저</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="61"/>
         <source>FM index</source>
-        <translation type="unfinished"></translation>
+        <translation>FM 인덱스</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="62"/>
         <source>Factory Instruments</source>
-        <translation type="unfinished"></translation>
+        <translation>기본 악기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="63"/>
         <source>Favorites</source>
-        <translation type="unfinished"></translation>
+        <translation>즐겨찾기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="64"/>
         <source>Filter envelope (octaves)</source>
-        <translation type="unfinished"></translation>
+        <translation>필터 엔벨로프 (옥타브)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="65"/>
         <source>Finalizing take and waveform…</source>
-        <translation type="unfinished"></translation>
+        <translation>테이크 및 파형 정리 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="66"/>
         <source>FluidSynth is unavailable in this build</source>
-        <translation type="unfinished"></translation>
+        <translation>이 빌드에서는 FluidSynth 엔진을 사용할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="67"/>
         <source>Frequency (Hz)</source>
-        <translation type="unfinished"></translation>
+        <translation>주파수 (Hz)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="68"/>
         <source>Gain (dB)</source>
-        <translation type="unfinished"></translation>
+        <translation>게인 (dB)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="69"/>
         <source>Guitar &amp; Bass</source>
-        <translation type="unfinished"></translation>
+        <translation>기타 및 베이스</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="70"/>
         <source>Hash read failed</source>
-        <translation type="unfinished"></translation>
+        <translation>무결성 검증용 해시를 읽지 못했습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="71"/>
         <source>Input gain (dB)</source>
-        <translation type="unfinished"></translation>
+        <translation>입력 게인 (dB)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="72"/>
         <source>Installed Sound Libraries</source>
-        <translation type="unfinished"></translation>
+        <translation>설치된 사운드 라이브러리</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="73"/>
         <source>Installing verified sound pack…</source>
-        <translation type="unfinished"></translation>
+        <translation>검증된 사운드 팩 설치 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="74"/>
         <source>Instrument mapping absent from pack inventory</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 파일 목록에 악기 매핑 파일이 없습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="75"/>
         <source>Insufficient disk space for sound pack</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩을 설치할 디스크 여유 공간이 부족합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="76"/>
         <source>Invalid CLAP entry/version</source>
-        <translation type="unfinished"></translation>
+        <translation>유효하지 않거나 지원하지 않는 CLAP 버전입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="77"/>
         <source>Invalid MIDI VLQ</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 가변 길이 수치(VLQ) 형식이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="78"/>
         <source>Invalid MIDI bank/channel/program</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 뱅크, 채널 또는 프로그램 번호가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="79"/>
         <source>Invalid MIDI channel data</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 채널 데이터가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="80"/>
         <source>Invalid MIDI chunk</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 청크 구조가 손상되었거나 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="81"/>
         <source>Invalid MIDI controller event</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 컨트롤러 이벤트 데이터가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="82"/>
         <source>Invalid MIDI header</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 파일 헤더를 읽을 수 없습니다. 파일 형식을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="83"/>
         <source>Invalid MIDI note</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 노트 데이터가 유효 범위를 벗어났습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="84"/>
         <source>Invalid MIDI tempo</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 템포 값이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="85"/>
         <source>Invalid SFZ key</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 키 정의가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="86"/>
         <source>Invalid calibration metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 보정 메타데이터가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="87"/>
         <source>Invalid channel processing</source>
-        <translation type="unfinished"></translation>
+        <translation>채널 프로세싱 설정값이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="88"/>
         <source>Invalid clip range</source>
-        <translation type="unfinished"></translation>
+        <translation>클립 구간이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="89"/>
         <source>Invalid effect parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>이펙트 파라미터 값이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="90"/>
         <source>Invalid export options</source>
-        <translation type="unfinished"></translation>
+        <translation>내보내기 옵션이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="91"/>
         <source>Invalid loop/metronome range</source>
-        <translation type="unfinished"></translation>
+        <translation>반복 구간 또는 메트로놈 설정이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="92"/>
         <source>Invalid mixer or instrument settings</source>
-        <translation type="unfinished"></translation>
+        <translation>믹서 또는 악기 설정값이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="93"/>
         <source>Invalid or unsupported SoundFont</source>
-        <translation type="unfinished"></translation>
+        <translation>손상되었거나 지원하지 않는 SoundFont 파일입니다. SF2/SF3 형식을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="94"/>
         <source>Invalid plugin insert</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 인서트 구성이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="95"/>
         <source>Invalid running status</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 러닝 스테이터스 데이터가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="96"/>
         <source>Invalid sample mapping</source>
-        <translation type="unfinished"></translation>
+        <translation>샘플 매핑 정보가 올바르지 않습니다. 파일 경로와 형식을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="97"/>
         <source>Invalid sound pack metadata</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 메타데이터(pack.json)가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="98"/>
         <source>Invalid synth calibration</source>
-        <translation type="unfinished"></translation>
+        <translation>신시사이저 보정 값이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="99"/>
         <source>Invalid synth modulation</source>
-        <translation type="unfinished"></translation>
+        <translation>신시사이저 모듈레이션 설정이 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="100"/>
         <source>Invalid track kind</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 트랙 유형입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="101"/>
         <source>LFO (Hz)</source>
-        <translation type="unfinished"></translation>
+        <translation>LFO (Hz)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="102"/>
         <source>Legato</source>
-        <translation type="unfinished"></translation>
+        <translation>레가토</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="103"/>
         <source>Loading pitched sampler…</source>
-        <translation type="unfinished"></translation>
+        <translation>피치 샘플러 불러오는 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="104"/>
         <source>Loading preset sample…</source>
-        <translation type="unfinished"></translation>
+        <translation>프리셋 샘플 불러오는 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="105"/>
         <source>Loading user SFZ…</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 SFZ 불러오는 중…</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="64"/>
         <location filename="catalog_keys.cpp" line="106"/>
         <source>Loop / cycle range</source>
-        <translation type="unfinished"></translation>
+        <translation>반복 구간</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="107"/>
         <source>MIDI exceeds 16 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 파일 크기가 최대 한도(16 MiB)를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="108"/>
         <source>MIDI exceeds track limit</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 파일의 트랙 수가 최대 한도를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="109"/>
         <source>MIDI tempo automation is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 템포 오토메이션은 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="110"/>
         <source>MIDI timeline too long</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 타임라인 길이가 지원 범위를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="111"/>
         <source>Makeup (dB)</source>
-        <translation type="unfinished"></translation>
+        <translation>메이크업 게인 (dB)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="112"/>
         <source>Missing or damaged pack file: </source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 파일이 누락되었거나 손상되었습니다: </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="113"/>
         <source>Monophonic</source>
-        <translation type="unfinished"></translation>
+        <translation>모노포닉</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="114"/>
         <source>No CLAP plugin factory</source>
-        <translation type="unfinished"></translation>
+        <translation>CLAP 플러그인 팩토리를 찾을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="115"/>
         <source>No supported SFZ regions</source>
-        <translation type="unfinished"></translation>
+        <translation>지원되는 SFZ 리전이 없습니다. 샘플 경로와 문법을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="116"/>
         <source>Only RIFF WAV files are supported: </source>
-        <translation type="unfinished"></translation>
+        <translation>RIFF WAV 형식의 파일만 지원합니다: </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="117"/>
         <source>Only SMF type 0/1 with PPQ timing is supported</source>
-        <translation type="unfinished"></translation>
+        <translation>PPQ 타이밍 기반의 표준 MIDI 파일(SMF Type 0/1)만 지원합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="118"/>
         <source>Opening project and media…</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 및 미디어 파일 여는 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="119"/>
         <source>Orchestral</source>
-        <translation type="unfinished"></translation>
+        <translation>오케스트라</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="120"/>
         <source>Oscillator blend</source>
-        <translation type="unfinished"></translation>
+        <translation>오실레이터 블렌드</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="121"/>
         <source>Output gain (dB)</source>
-        <translation type="unfinished"></translation>
+        <translation>출력 게인 (dB)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="122"/>
         <source>Pack already installed</source>
-        <translation type="unfinished"></translation>
+        <translation>이미 설치된 사운드 팩입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="123"/>
         <source>Pack install size does not match file inventory</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 설치 용량이 파일 목록 정보와 일치하지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="124"/>
         <source>Pack manifest too large</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 매니페스트(pack.json) 파일이 너무 큽니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="125"/>
         <source>Pack path must be relative</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 내부 경로는 상대 경로여야 합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="126"/>
         <source>Pack path traversal rejected</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩의 상위 폴더 접근 경로가 차단되었습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="127"/>
         <source>Pack payload exceeds 32 GiB</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 전체 용량이 최대 한도(32 GiB)를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="128"/>
         <source>Pack symlink escape rejected</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩의 외부 심볼릭 링크 참조가 차단되었습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="129"/>
         <source>Parametric EQ</source>
-        <translation type="unfinished"></translation>
+        <translation>파라메트릭 EQ</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="130"/>
         <source>Peak limiter</source>
-        <translation type="unfinished"></translation>
+        <translation>피크 리미터</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="131"/>
         <source>Piano &amp; Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>피아노 및 건반</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="132"/>
         <source>Plugin ID missing: </source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 ID 없음: </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="133"/>
         <source>Plugin has no state extension</source>
-        <translation type="unfinished"></translation>
+        <translation>이 플러그인은 상태 저장 확장을 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="134"/>
         <source>Plugin state save failed</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 상태를 저장하지 못했습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="135"/>
         <source>Plugin state/insert limit exceeded</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 인서트 또는 상태 데이터 한도를 초과했습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="136"/>
         <source>Portamento (s)</source>
-        <translation type="unfinished"></translation>
+        <translation>포르타멘토 (초)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="137"/>
         <source>Preparing instrument audio…</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 오디오 준비 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="138"/>
         <source>Preparing instrument audition…</source>
-        <translation type="unfinished"></translation>
+        <translation>악기 미리 듣기 준비 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="139"/>
         <source>Preparing plugin…</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 준비 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="140"/>
         <source>Preparing recorded instrument…</source>
-        <translation type="unfinished"></translation>
+        <translation>샘플 악기 준비 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="141"/>
         <source>Preset too large</source>
-        <translation type="unfinished"></translation>
+        <translation>프리셋 파일이 지원 크기를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="142"/>
         <source>Project exceeds 0.1 editing limits</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트가 편집 한도(트랙·클립·노트 수)를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="143"/>
         <source>Project exceeds 64 MiB limit</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 파일 크기가 64 MiB 한도를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="144"/>
         <source>Project media exceeds 512 MiB decoded cache budget</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 미디어가 디코딩 캐시 한도(512 MiB)를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="145"/>
         <source>Q</source>
-        <translation type="unfinished"></translation>
+        <translation>Q</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="146"/>
         <source>Ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>비율</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="147"/>
         <source>Reading SoundFont bank / programs…</source>
-        <translation type="unfinished"></translation>
+        <translation>SoundFont 뱅크 및 프로그램 읽는 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="148"/>
         <source>Reading user instrument registry…</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 악기 목록 읽는 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="149"/>
         <source>Recently used</source>
-        <translation type="unfinished"></translation>
+        <translation>최근 사용</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="150"/>
         <source>Region-specific SFZ envelope is unsupported</source>
-        <translation type="unfinished"></translation>
+        <translation>리전별 개별 SFZ 엔벨로프는 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="151"/>
         <source>Release (ms)</source>
-        <translation type="unfinished"></translation>
+        <translation>릴리스 (ms)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="152"/>
         <source>Rendering stereo WAV at 48 kHz / 16 bit…</source>
-        <translation type="unfinished"></translation>
+        <translation>48 kHz / 16-bit 스테레오 WAV 렌더링 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="153"/>
         <source>Restart Ensemble before loading more plugin modules</source>
-        <translation type="unfinished"></translation>
+        <translation>추가 플러그인 모듈을 불러오려면 Ensemble을 다시 시작하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="154"/>
         <source>SFZ dependency absent from inventory: </source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 목록에 없는 SFZ 참조 파일: </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="155"/>
         <source>SFZ dependency limit</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 참조 샘플 수가 지원 한도를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="156"/>
         <source>SFZ exceeds 2 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 파일 크기가 2 MiB 한도를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="157"/>
         <source>SFZ includes are unsupported</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ #include 구문은 지원하지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="158"/>
         <source>SFZ macro paths require an audited mapping</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 매크로 경로를 사용하려면 검증된 매핑이 필요합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="159"/>
         <source>SFZ missing or unsafe dependency: </source>
-        <translation type="unfinished"></translation>
+        <translation>누락되었거나 허용되지 않는 SFZ 참조 파일: </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="160"/>
         <source>SFZ refers outside pack inventory</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 파일이 사운드 팩 외부 경로를 참조하고 있습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="161"/>
         <source>SFZ region has no sample</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 리전에 지정된 샘플 파일이 없습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="162"/>
         <source>SFZ region limit</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 리전 수가 지원 한도를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="163"/>
         <source>SFZ sample bounds invalid</source>
-        <translation type="unfinished"></translation>
+        <translation>SFZ 샘플 시작/종료 범위가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="164"/>
         <source>Sample cache exceeds 512 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>샘플 캐시 사용량이 512 MiB 한도를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="165"/>
         <source>Saving project and collecting media…</source>
-        <translation type="unfinished"></translation>
+        <translation>프로젝트 저장 및 미디어 파일 수집 중…</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="434"/>
         <location filename="catalog_keys.cpp" line="166"/>
         <source>Saw</source>
-        <translation type="unfinished"></translation>
+        <translation>톱니파</translation>
     </message>
     <message>
         <location filename="../src/ui/ExportDialog.cpp" line="65"/>
         <location filename="catalog_keys.cpp" line="167"/>
         <source>Selected clip range</source>
-        <translation type="unfinished"></translation>
+        <translation>선택한 클립 구간</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="433"/>
         <location filename="catalog_keys.cpp" line="168"/>
         <source>Sine</source>
-        <translation type="unfinished"></translation>
+        <translation>사인파</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="169"/>
         <source>Sound Effects &amp; Textures</source>
-        <translation type="unfinished"></translation>
+        <translation>효과음 및 텍스처</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="170"/>
         <source>Sound pack staging already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 설치용 임시 폴더가 이미 존재합니다. 이전 설치 작업이 끝났는지 확인하세요.</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="435"/>
         <location filename="catalog_keys.cpp" line="171"/>
         <source>Square</source>
-        <translation type="unfinished"></translation>
+        <translation>사각파</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="172"/>
         <source>Stop processing before editing plugin state</source>
-        <translation type="unfinished"></translation>
+        <translation>플러그인 상태를 변경하려면 먼저 오디오 처리를 정지하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="173"/>
         <source>Strings</source>
-        <translation type="unfinished"></translation>
+        <translation>현악기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="174"/>
         <source>Synthesizers</source>
-        <translation type="unfinished"></translation>
+        <translation>신시사이저</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="175"/>
         <source>Threshold (dB)</source>
-        <translation type="unfinished"></translation>
+        <translation>스레숄드 (dB)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="176"/>
         <source>Too many sampler zones</source>
-        <translation type="unfinished"></translation>
+        <translation>샘플러 존 수가 지원 한도를 초과합니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="177"/>
         <source>Too many tracks</source>
-        <translation type="unfinished"></translation>
+        <translation>트랙 수가 최대 한도(64개)를 초과합니다.</translation>
     </message>
     <message>
         <location filename="../src/ui/Workspace.cpp" line="436"/>
         <location filename="catalog_keys.cpp" line="178"/>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation>삼각파</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="179"/>
         <source>Truncated MIDI data</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 파일 데이터가 중간에 잘려 있습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="180"/>
         <source>Truncated MIDI meta event</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 메타 이벤트 데이터가 손상되었습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="181"/>
         <source>Truncated MIDI track</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI 트랙 데이터가 중간에 잘려 있습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="182"/>
         <source>Truncated SysEx</source>
-        <translation type="unfinished"></translation>
+        <translation>MIDI SysEx 데이터가 중간에 잘려 있습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="183"/>
         <source>Unknown preset format</source>
-        <translation type="unfinished"></translation>
+        <translation>알 수 없는 프리셋 파일 형식입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="184"/>
         <source>Unsupported MIDI system event</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 MIDI 시스템 이벤트가 포함되어 있습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="185"/>
         <source>Unsupported SFZ loop mode</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 SFZ 루프 모드입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="186"/>
         <source>Unsupported SFZ opcode: </source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 SFZ 옵코드: </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="187"/>
         <source>Unsupported pack format</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 사운드 팩 형식입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="188"/>
         <source>Unsupported project format/version</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 프로젝트 파일 형식이거나 버전입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="189"/>
         <source>Unsupported project version or invalid transport/track count</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 프로젝트 버전이거나 트랜스포트·트랙 정보가 올바르지 않습니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="190"/>
         <source>Unsupported sample rate</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 샘플레이트입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="191"/>
         <source>Unsupported time signature</source>
-        <translation type="unfinished"></translation>
+        <translation>지원하지 않는 박자표입니다.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="192"/>
         <source>User Instruments</source>
-        <translation type="unfinished"></translation>
+        <translation>사용자 악기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="193"/>
         <source>Validating pack integrity and mappings…</source>
-        <translation type="unfinished"></translation>
+        <translation>사운드 팩 무결성 및 매핑 검증 중…</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="194"/>
         <source>Vibrato (semitones)</source>
-        <translation type="unfinished"></translation>
+        <translation>비브라토 (반음)</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="195"/>
         <source>WAV read failed</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 파일을 읽을 수 없습니다. 파일 경로와 형식을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="196"/>
         <source>WAV write failed</source>
-        <translation type="unfinished"></translation>
+        <translation>WAV 파일을 저장할 수 없습니다. 디스크 여유 공간과 권한을 확인하세요.</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="197"/>
         <source>Woodwinds</source>
-        <translation type="unfinished"></translation>
+        <translation>목관악기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="198"/>
         <source>World Instruments</source>
-        <translation type="unfinished"></translation>
+        <translation>세계 민속악기</translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="199"/>
         <source>sfizz could not load: </source>
-        <translation type="unfinished"></translation>
+        <translation>sfizz에서 불러올 수 없음: </translation>
     </message>
     <message>
         <location filename="catalog_keys.cpp" line="200"/>
         <source>sfizz is unavailable in this build</source>
-        <translation type="unfinished"></translation>
+        <translation>이 빌드에서는 sfizz 엔진을 사용할 수 없습니다.</translation>
     </message>
 </context>
 </TS>
