@@ -7,7 +7,7 @@ A free, open-source native DAW by QuadraJ. C++20, Qt 6 Widgets, Reverie Audio Co
 - **Factory:** 51 new recorded source instrument entries / 99 patches. The preserved 13-entry compact library and 14 synth patches plus one synthetic kit bring the selectable factory total to **128 patches**. Source entries can overlap; they are not all distinct physical instruments. Sound payload is about **1.48 GB**.
 - **Plugins:** CLAP, validated with real Surge XT 1.3.4 and Surge XT Effects. Generic parameter editor, state/project restoration and offline WAV. AU/VST3 and native plugin GUIs are not implemented; see [capabilities](docs/PLUGIN_CAPABILITIES.md).
 - **Production:** dual oscillators, mono/legato/portamento, filter envelope/LFO/FM; compressor, one parametric EQ band, peak safety limiter; ordered plugin inserts with bypass/wet/dry. Legacy DSP remains the default for old presets.
-- **Localization:** English source, Korean TS/QM build and saved system/English/Korean preference. Korean wording is unfinished for Argon; restart applies language changes.
+- **Localization:** English source, Korean TS/QM build (`translations/ensemble_ko_KR.ts`, 572/572 entries translated) and saved system/English/Korean preference (`Settings → General → Language`). Restart applies language changes.
 
 ## Build the full app
 
@@ -33,4 +33,4 @@ Expand the Sound Browser with **⌘⇧B**, choose a factory instrument and Apply
 
 Audio Plugins opens the CLAP scanner/registry. Use standard CLAP folders or Add search folder, then Rescan. Plugin instruments also appear in the shared browser; Mixer → Inserts handles effects, and Parameters edits saved state. Plugins are separately installed software, not factory sounds. Source/license/installation state is shown; Meta standalone packs are identified when their recordings are already in Factory.
 
-[Implementation report](docs/ENSEMBLE_0.5_REPORT.md) · [tests/screenshots](docs/TESTING.md) · [localization handoff](docs/LOCALIZATION_GUIDE.md) · [licenses](THIRD_PARTY_LICENSES.md) · [0.4 archive](docs/archive/README-0.4.md)
+[User guide (EN)](docs/USER_GUIDE.md) · [사용자 가이드 (KO)](docs/USER_GUIDE.ko.md) · [terminology](docs/TERMINOLOGY.md) · [localization review](docs/TRANSLATION_REVIEW.md) · [localization guide](docs/LOCALIZATION_GUIDE.md) · [implementation report](docs/ENSEMBLE_0.5_REPORT.md) · [tests/screenshots](docs/TESTING.md) · [licenses](THIRD_PARTY_LICENSES.md) · [0.4 archive](docs/archive/README-0.4.md)
