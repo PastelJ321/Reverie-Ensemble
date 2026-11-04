@@ -36,7 +36,8 @@ SettingsDialog::SettingsDialog(Editor& e) : QDialog(&e) {
         std::max(0, language->findData(QSettings().value("interface/language", "system"))));
     generalForm->addRow(QCoreApplication::translate("Ensemble", "Language"), language);
     auto* restart = new QLabel(QCoreApplication::translate(
-        "Ensemble", "Language changes apply after restarting Ensemble. Your project stays open."));
+        "Ensemble",
+        "Language changes apply after restarting Ensemble. Save your project before restarting."));
     restart->setWordWrap(true);
     generalForm->addRow(restart);
     connect(language, &QComboBox::currentIndexChanged, this,
@@ -181,7 +182,7 @@ SettingsDialog::SettingsDialog(Editor& e) : QDialog(&e) {
     tabs->addTab(general, QCoreApplication::translate("Ensemble", "General"));
     gf->addRow(
         QCoreApplication::translate("Ensemble", "Version"),
-        new QLabel(QCoreApplication::translate("Ensemble", "Reverie Ensemble 0.5.0 · QuadraJ")));
+        new QLabel(QCoreApplication::translate("Ensemble", "Reverie Ensemble 0.5.1 · QuadraJ")));
     gf->addRow(QCoreApplication::translate("Ensemble", "Project policy"),
                new QLabel(QCoreApplication::translate(
                    "Ensemble", "Explicit Save; unsaved-change prompt on close.\nNo "

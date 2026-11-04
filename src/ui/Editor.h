@@ -91,6 +91,7 @@ class Editor : public QMainWindow {
     void setTempo(double);
     void openPiano(Id);
     void importWav(const QString& path = {}, double beat = -1);
+    void importMidi(const QString& path = {});
     bool saveProject(const QString& path = {});
     bool openProject(const QString&);
     bool exportProject(const QString&);

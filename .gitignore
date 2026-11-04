@@ -1,4 +1,6 @@
 /build*/
 /out/
+/dist/
+/tmp_*/
 .DS_Store
 *.user

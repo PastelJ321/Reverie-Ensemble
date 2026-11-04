@@ -151,7 +151,7 @@ struct PluginInstance::Impl {
                         "Reverie Ensemble",
                         "QuadraJ",
                         "https://github.com/PastelJ321/Reverie-Ensemble",
-                        "0.5.0",
+                        "0.5.1",
                         ext,
                         [](const clap_host_t* h) { self(h).restart = true; },
                         [](const clap_host_t*) {},

@@ -12,7 +12,7 @@
 int main(int argc, char** argv) {
     QApplication app(argc, argv);
     QApplication::setApplicationName("Reverie Ensemble");
-    QApplication::setApplicationVersion("0.5.0");
+    QApplication::setApplicationVersion("0.5.1");
     QApplication::setOrganizationName("QuadraJ");
     QApplication::setStyle(QStyleFactory::create("Fusion"));
     const auto args = app.arguments();

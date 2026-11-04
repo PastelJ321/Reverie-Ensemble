@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 #include "ui/Theme.h"
+#include "../../translations/engine_prefixes.h"
 #include "ui/DesignTokens.h"
 #include <QApplication>
 #include <QDir>
@@ -44,6 +45,18 @@ void loadUiLanguage() {
         if (translator.load("ensemble_ko_KR", dir))
             qApp->installTranslator(&translator);
     }
+}
+QString translateEngineMessage(const QString& original) {
+    auto msg = QCoreApplication::translate("Ensemble", original.toUtf8().constData());
+    if (msg == original)
+        for (auto* prefix : engineErrorPrefixes)
+            if (original.startsWith(QString::fromUtf8(prefix))) {
+                auto translated = QCoreApplication::translate("Ensemble", prefix);
+                if (translated != QString::fromUtf8(prefix))
+                    msg = translated + original.mid(QString::fromUtf8(prefix).size());
+                break;
+            }
+    return msg;
 }
 void initializeTheme() {
     static bool initialized = false;

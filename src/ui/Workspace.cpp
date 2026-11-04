@@ -234,7 +234,7 @@ void Editor::buildUi() {
     deviceStatus->setStyleSheet("font-size:11px;color:#BEB2A4");
     deviceStatus->setMaximumWidth(120);
     transport->addWidget(deviceStatus);
-    auto* left = new QDockWidget("SOUND LIBRARY", this);
+    auto* left = new QDockWidget(QCoreApplication::translate("Ensemble", "SOUND LIBRARY"), this);
     left->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
     browser_ = new SoundBrowser(*this);
     left->setWidget(browser_);
@@ -242,7 +242,8 @@ void Editor::buildUi() {
     left->setMaximumWidth(900);
     left->setObjectName("browserDock");
     addDockWidget(Qt::LeftDockWidgetArea, left);
-    auto* keyboardDock = new QDockWidget("VIRTUAL KEYBOARD · ⌘K", this);
+    auto* keyboardDock =
+        new QDockWidget(QCoreApplication::translate("Ensemble", "VIRTUAL KEYBOARD · ⌘K"), this);
     keyboardDock->setObjectName("keyboardDock");
     keyboard_ = new PerformanceKeyboard(*this);
     keyboardDock->setWidget(keyboard_);
@@ -370,7 +371,7 @@ void Editor::buildUi() {
         if (!refreshing_)
             edit([&] { project.clickLevel = float(v); });
     });
-    auto* right = new QDockWidget("INSPECTOR", this);
+    auto* right = new QDockWidget(QCoreApplication::translate("Ensemble", "INSPECTOR"), this);
     auto* inspector = new QWidget;
     auto* layout = new QVBoxLayout(inspector);
     trackTitle_ = new QLabel;

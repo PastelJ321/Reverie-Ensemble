@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(ReverieEnsemble VERSION 0.5.0 LANGUAGES C CXX)
+project(ReverieEnsemble VERSION 0.5.1 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -154,12 +154,22 @@ install(FILES LICENSE NOTICE THIRD_PARTY_LICENSES.md DESTINATION share/reverie-e
 install(DIRECTORY third_party/licenses DESTINATION share/reverie-ensemble)
 install(FILES third_party/miniaudio/LICENSE DESTINATION share/reverie-ensemble/licenses RENAME miniaudio.txt)
 
+option(REVERIE_BUNDLE_FACTORY_COPY "Copy FactoryLibrary into the app bundle instead of symlinking out/factory05" OFF)
 # Large factory payload is a verified build artifact, never committed to Git.
-if(APPLE AND REVERIE_BUILD_GUI AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/out/factory05/pack.json")
- add_custom_command(TARGET ReverieEnsemble POST_BUILD
- COMMAND ${CMAKE_COMMAND} -E remove_directory "$<TARGET_BUNDLE_DIR:ReverieEnsemble>/Contents/Resources/FactoryLibrary"
- COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/out/factory05" "$<TARGET_BUNDLE_DIR:ReverieEnsemble>/Contents/Resources/FactoryLibrary"
- COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:reverie-plugin-scan>" "$<TARGET_BUNDLE_DIR:ReverieEnsemble>/Contents/MacOS/reverie-plugin-scan")
+if(APPLE AND REVERIE_BUILD_GUI)
+  add_custom_command(TARGET ReverieEnsemble POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:reverie-plugin-scan>" "$<TARGET_BUNDLE_DIR:ReverieEnsemble>/Contents/MacOS/reverie-plugin-scan")
+  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/out/factory05/pack.json")
+    if(REVERIE_BUNDLE_FACTORY_COPY)
+      add_custom_command(TARGET ReverieEnsemble POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E rm -rf "$<TARGET_BUNDLE_DIR:ReverieEnsemble>/Contents/Resources/FactoryLibrary"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/out/factory05" "$<TARGET_BUNDLE_DIR:ReverieEnsemble>/Contents/Resources/FactoryLibrary")
+    else()
+      add_custom_command(TARGET ReverieEnsemble POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E rm -rf "$<TARGET_BUNDLE_DIR:ReverieEnsemble>/Contents/Resources/FactoryLibrary"
+        COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_SOURCE_DIR}/out/factory05" "$<TARGET_BUNDLE_DIR:ReverieEnsemble>/Contents/Resources/FactoryLibrary")
+    endif()
+  endif()
 endif()
 
 if(BUILD_TESTING)
@@ -195,8 +205,8 @@ if(REVERIE_BUILD_GUI)
  qt_add_lrelease(TS_FILES tests/fixtures/localization05.ts QM_FILES_OUTPUT_VARIABLE REVERIE_TEST_QM)
  add_custom_target(reverie_test_qm DEPENDS ${REVERIE_TEST_QM})
  add_executable(reverie-ui05-tests tests/ui05_tests.cpp)
- add_dependencies(reverie-ui05-tests reverie_test_qm)
- target_compile_definitions(reverie-ui05-tests PRIVATE REVERIE_TEST_QM="${REVERIE_TEST_QM}")
+ add_dependencies(reverie-ui05-tests reverie_test_qm reverie_translations)
+ target_compile_definitions(reverie-ui05-tests PRIVATE REVERIE_TEST_QM="${REVERIE_TEST_QM}" REVERIE_KO_QM="${REVERIE_QM}")
  target_link_libraries(reverie-ui05-tests PRIVATE reverie_ui Qt6::Test)
  target_compile_definitions(reverie-ui05-tests PRIVATE REVERIE_TEST_ROOT="${CMAKE_CURRENT_SOURCE_DIR}")
  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/out/surge05/Surge XT.clap")

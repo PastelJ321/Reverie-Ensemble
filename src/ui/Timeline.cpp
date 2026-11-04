@@ -155,12 +155,14 @@ void Timeline::paintEvent(QPaintEvent* event) {
         p.setPen(design::ink);
         p.drawText(
             QRect(46, y + 10, header - 54, 25), Qt::AlignVCenter,
-            p.fontMetrics().elidedText(QString::fromStdString(t.name) + (t.armed ? "  ● ARM" : ""),
-                                       Qt::ElideRight, header - 56));
+            p.fontMetrics().elidedText(
+                QString::fromStdString(t.name) +
+                    (t.armed ? QCoreApplication::translate("Ensemble", "  ● ARM") : QString()),
+                Qt::ElideRight, header - 56));
         p.setPen(design::mutedInk);
         p.drawText(14, y + rowHeight() - 20,
                    t.kind == TrackKind::Midi ? QCoreApplication::translate("Ensemble", "MIDI")
-                                             : "AUDIO");
+                                             : QCoreApplication::translate("Ensemble", "AUDIO"));
         p.drawPixmap(10, y + 10, instrumentThumbnail(t.preset, QSize(30, 24), devicePixelRatioF()));
         for (int b = 0; b < 2; ++b) {
             QRect r(header - 72 + b * 31, y + rowHeight() - 34, 25, 23);
@@ -532,13 +534,8 @@ void Timeline::contextMenuEvent(QContextMenuEvent* ev) {
             });
         menu.addAction(QCoreApplication::translate("Ensemble", "Import Audio…"),
                        [&] { e_.importWav(); });
-        menu.addAction(QCoreApplication::translate("Ensemble", "Import MIDI…"), [&] {
-            for (auto* action : e_.findChildren<QAction*>())
-                if (action->text() == "Import MIDI file…") {
-                    action->trigger();
-                    break;
-                }
-        });
+        menu.addAction(QCoreApplication::translate("Ensemble", "Import MIDI…"),
+                       [&] { e_.importMidi(); });
     }
     if (clipboardValid_ && t >= 0)
         menu.addAction(QCoreApplication::translate("Ensemble", "Paste"),

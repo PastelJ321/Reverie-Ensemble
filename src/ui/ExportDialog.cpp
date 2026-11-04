@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 #include "ui/ExportDialog.h"
+#include "ui/Theme.h"
 #include <QCheckBox>
 #include <QComboBox>
 #include <QFileDialog>
@@ -87,6 +88,7 @@ ExportDialog::ExportDialog(const Project& p, double start, double end, QWidget* 
     auto* buttons = new QHBoxLayout;
     buttons->addStretch();
     auto* cancel = new QPushButton(QCoreApplication::translate("Ensemble", "Cancel"));
+    cancel->setObjectName("exportCancel");
     buttons->addWidget(cancel);
     render_ = new QPushButton(QCoreApplication::translate("Ensemble", "Export"));
     render_->setObjectName("exportStart");
@@ -120,18 +122,23 @@ ExportDialog::ExportDialog(const Project& p, double start, double end, QWidget* 
             auto r = job_.get();
             done_ = true;
             status_->setText(
-                QString("Finished · %1 frames · peak %2 dBFS · RMS %3 dBFS\nApplied gain %4 dB · "
-                        "%5 over-range samples%6")
+                QString(QCoreApplication::translate(
+                            "Ensemble",
+                            "Finished · %1 frames · peak %2 dBFS · RMS %3 dBFS\nApplied gain %4 dB · "
+                            "%5 over-range samples%6"))
                     .arg(r.frames)
                     .arg(20 * std::log10(std::max(1e-9, r.peak)), 0, 'f', 1)
                     .arg(20 * std::log10(std::max(1e-9, r.rms)), 0, 'f', 1)
                     .arg(20 * std::log10(r.gain), 0, 'f', 1)
                     .arg(r.clippedSamples)
-                    .arg(r.clippedSamples ? " — lower levels or enable Normalize" : ""));
+                    .arg(r.clippedSamples
+                             ? QCoreApplication::translate(
+                                   "Ensemble", " — lower levels or enable Normalize")
+                             : QString()));
             render_->setText(QCoreApplication::translate("Ensemble", "Close"));
             render_->setEnabled(true);
         } catch (const std::exception& e) {
-            status_->setText(e.what());
+            status_->setText(translateEngineMessage(QString::fromUtf8(e.what())));
             render_->setEnabled(true);
             for (auto* w : findChildren<QWidget*>())
                 if (w != progress_)
@@ -170,8 +177,10 @@ void ExportDialog::updateEstimate() {
     double beats = (o.endBeat < 0 ? project_.endBeat() : o.endBeat) - o.startBeat;
     double sec = beats * 60 / project_.bpm + (o.includeTail ? project_.tailSeconds() : 0);
     status_->setText(
-        QString("Approx. %1 seconds · %2 MiB\nFloat output preserves headroom above 0 dBFS. "
-                "Integer PCM saturates safely.")
+        QString(QCoreApplication::translate(
+                    "Ensemble",
+                    "Approx. %1 seconds · %2 MiB\nFloat output preserves headroom above 0 dBFS. "
+                    "Integer PCM saturates safely."))
             .arg(sec, 0, 'f', 2)
             .arg(sec * o.sampleRate * o.channels * int(o.depth) / 8 / 1048576., 0, 'f', 1));
 }
@@ -201,9 +210,8 @@ void ExportDialog::startRender() {
         if (w != progress_ && !qobject_cast<QLabel*>(w))
             w->setEnabled(false);
     // Keep the actual Cancel button responsive while all editable options are frozen.
-    for (auto* b : findChildren<QPushButton*>())
-        if (b->text() == "Cancel")
-            b->setEnabled(true);
+    if (auto* cancel = findChild<QPushButton*>("exportCancel"))
+        cancel->setEnabled(true);
     status_->setText(QCoreApplication::translate(
         "Ensemble", "Rendering… Cancel preserves any existing destination."));
     job_ = std::async(std::launch::async, [this, o, path] {
