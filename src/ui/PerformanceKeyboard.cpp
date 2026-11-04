@@ -115,16 +115,18 @@ void PerformanceKeyboard::setTyping(bool on) {
     typing_->setChecked(on);
 }
 void PerformanceKeyboard::refresh() {
-    QString name = "Select a MIDI track";
+    QString name = QCoreApplication::translate("Ensemble", "Select a MIDI track");
     if (editor_.selectedTrack >= 0 && editor_.selectedTrack < int(editor_.project.tracks.size())) {
         auto& t = editor_.project.tracks[editor_.selectedTrack];
-        name = QString::fromStdString(t.preset.name) + (t.armed ? " · ARMED" : "");
+        name = QString::fromStdString(t.preset.name) +
+               (t.armed ? QCoreApplication::translate("Ensemble", " · ARMED") : QString());
         auto identity = std::to_string(t.id) + t.preset.instrumentId + t.preset.patchId;
         auto instrumentName = QString::fromStdString(t.preset.name).toLower();
         bool drums = t.preset.kind == InstrumentKind::Drums || instrumentName.contains("kit") ||
                      instrumentName.contains("gm percussion");
         if (drums)
-            name += " · GM 36 Kick / 38 Snare / 42 Hat / 46 Open hat";
+            name += QCoreApplication::translate(
+                "Ensemble", " · GM 36 Kick / 38 Snare / 42 Hat / 46 Open hat");
         if (identity != targetIdentity_) {
             targetIdentity_ = identity;
             if (drums)

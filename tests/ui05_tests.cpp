@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: Apache-2.0
 #include "core/Plugin.h"
 #include "ui/Editor.h"
+#include "ui/ExportDialog.h"
+#include "ui/MixerView.h"
 #include "ui/PerformanceKeyboard.h"
 #include "ui/PluginBrowser.h"
 #include "ui/ProductionControls.h"
 #include "ui/SettingsDialog.h"
 #include "ui/SoundBrowser.h"
+#include "ui/Theme.h"
 #include <QTest>
 #include <QTranslator>
 #include <QtWidgets>
+#include <fstream>
 #include <iostream>
 using namespace reverie;
 void check(bool b, const char* m) {
@@ -216,6 +220,121 @@ int main(int argc, char** argv) {
         check(!e.findChild<QWidget*>("instrumentArtwork")->isVisible(),
               "compact browser must not reveal detail artwork");
         e.grab().save(QString::fromStdString((out / "meta-piano-recording.png").string()));
+
+        // === 0.5.1 Stabilization & Korean Localization Regression Suite ===
+        auto midiFixture = out / "import-fixture.mid";
+        const unsigned char midiBytes[] = {'M',  'T',  'h', 'd',  0,    0,    0,    6,    0,
+                                           0,    0,    1,   1,    0xe0, 'M',  'T',  'r',  'k',
+                                           0,    0,    0,   13,   0,    0x90, 60,   100,  0x83,
+                                           0x60, 0x80, 60,  0,    0,    0xff, 0x2f, 0};
+        {
+            std::ofstream mf(midiFixture, std::ios::binary);
+            mf.write(reinterpret_cast<const char*>(midiBytes), sizeof midiBytes);
+        }
+
+        // Verify English compact SoundBrowser category list height at 1280x800 and 1440x900
+        for (auto sz : {QSize(1280, 800), QSize(1440, 900)}) {
+            e.resize(sz);
+            QApplication::processEvents();
+            auto* catList = browser->findChild<QListWidget*>("soundCategory");
+            check(catList != nullptr && catList->count() >= 2, "English soundCategory exists");
+            check(catList->height() >= 62 &&
+                      catList->visualItemRect(catList->item(1)).bottom() <=
+                          catList->viewport()->height(),
+                  "English compact category row 2 is not clipped");
+        }
+
+        // Verify English MIDI import via Editor::importMidi
+        auto tracksBeforeEn = e.project.tracks.size();
+        e.importMidi(QString::fromStdString(midiFixture.string()));
+        check(e.project.tracks.size() == tracksBeforeEn + 1 &&
+                  !e.project.tracks.back().clips.empty() &&
+                  e.project.tracks.back().clips[0].notes.size() == 1,
+              "English MIDI import adds track and clip");
+
+        // Load production Korean QM via loadUiLanguage()
+        qputenv("REVERIE_TRANSLATIONS",
+                QFileInfo(QString::fromUtf8(REVERIE_KO_QM)).absolutePath().toUtf8());
+        QSettings().setValue("interface/language", "ko_KR");
+        loadUiLanguage();
+        check(QCoreApplication::translate("Ensemble", "Export Audio") ==
+                  QString::fromUtf8("오디오 내보내기"),
+              "production Korean QM loaded via loadUiLanguage");
+        check(QCoreApplication::translate("Ensemble", "Projects support up to 64 tracks.") ==
+                  QString::fromUtf8("프로젝트당 최대 64개의 트랙을 사용할 수 있습니다."),
+              "updated 0.5.1 track limit string translated");
+        check(translateEngineMessage("Cannot decode WAV: /tmp/bad.wav") ==
+                      QString::fromUtf8("WAV 파일을 디코딩할 수 없습니다(파일 형식과 경로를 확인하세요): /tmp/bad.wav") &&
+                  translateEngineMessage("Cannot create export file") ==
+                      QString::fromUtf8("내보낼 파일을 생성할 수 없습니다. 폴더 권한과 경로를 확인하세요."),
+              "translateEngineMessage translates engine error prefix and exact message");
+
+        {
+            Editor koEditor(false);
+            for (auto sz : {QSize(1280, 800), QSize(1440, 900)}) {
+                koEditor.resize(sz);
+                koEditor.show();
+                QApplication::processEvents();
+                auto* koBrowser = koEditor.findChild<SoundBrowser*>("soundBrowser");
+                auto* koCatList = koBrowser->findChild<QListWidget*>("soundCategory");
+                check(koCatList != nullptr && koCatList->count() >= 2,
+                      "Korean soundCategory exists");
+                check(koCatList->height() >= 62 &&
+                          koCatList->visualItemRect(koCatList->item(1)).bottom() <=
+                              koCatList->viewport()->height(),
+                      "Korean compact category row 2 is not clipped");
+            }
+
+            // Bug B: Korean MIDI import via actionImportMidi / importMidi
+            auto* importAct = koEditor.findChild<QAction*>("actionImportMidi");
+            check(importAct != nullptr &&
+                      importAct->text() == QString::fromUtf8("MIDI 파일 가져오기…"),
+                  "Korean actionImportMidi objectName and label");
+            auto tracksBeforeKo = koEditor.project.tracks.size();
+            koEditor.importMidi(QString::fromStdString(midiFixture.string()));
+            check(koEditor.project.tracks.size() == tracksBeforeKo + 1 &&
+                      !koEditor.project.tracks.back().clips.empty(),
+                  "Korean MIDI import works without English text comparison");
+
+            // Bug C: MixerView CSS stylesheet not corrupted by Korean translation
+            MixerView koMixer(koEditor);
+            koMixer.refresh();
+            bool foundStripCss = false;
+            for (auto* w : koMixer.findChildren<QWidget*>()) {
+                if (w->styleSheet().contains("border-right:1px solid #777065;"))
+                    foundStripCss = true;
+            }
+            check(foundStripCss, "MixerView CSS stylesheet preserved in Korean UI");
+
+            // Bug A: ExportDialog cancel button identified by objectName("exportCancel") in Korean
+            ExportDialog koExport(koEditor.project, 0, 4, &koEditor);
+            check(koExport.windowTitle() == QString::fromUtf8("오디오 내보내기"),
+                  "Korean ExportDialog title");
+            auto* cancelBtn = koExport.findChild<QPushButton*>("exportCancel");
+            check(cancelBtn != nullptr && cancelBtn->text() == QString::fromUtf8("취소") &&
+                      cancelBtn->isEnabled(),
+                  "Korean ExportDialog cancel button has objectName exportCancel");
+
+            // Bug E & F: SettingsDialog version 0.5.1 and truthful restart notice
+            SettingsDialog koSettings(koEditor);
+            bool foundVersion051 = false;
+            bool foundRestartNote = false;
+            for (auto* lbl : koSettings.findChildren<QLabel*>()) {
+                if (lbl->text().contains("0.5.1"))
+                    foundVersion051 = true;
+                if (lbl->text().contains(QString::fromUtf8("다시 시작하기 전에 프로젝트를 저장하세요")))
+                    foundRestartNote = true;
+            }
+            check(foundVersion051 && foundRestartNote,
+                  "Korean SettingsDialog shows 0.5.1 and truthful restart notice");
+        }
+
+        // Verify fallback to English when interface/language is set to "en"
+        QSettings().setValue("interface/language", "en");
+        loadUiLanguage();
+        check(QCoreApplication::translate("Ensemble", "Export Audio") == "Export Audio",
+              "English fallback restores source strings");
+
         shutdownPluginModules();
         std::cout << "PASS " << (native ? "native device" : "offscreen")
                   << " Surge XT Musical Typing -> 3-note MIDI clip -> parameter/state -> "

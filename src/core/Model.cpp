@@ -336,7 +336,7 @@ void validate(const Project& p) {
         }
     }
     if (totalNotes > 200000 || totalClips > 20000 || totalControllers > 200000)
-        throw std::runtime_error("Project exceeds 0.1 editing limits");
+        throw std::runtime_error("Project exceeds editing limits");
 }
 Project demoProject() {
     Project p;

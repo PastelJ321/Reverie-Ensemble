@@ -496,7 +496,7 @@ void SoundBrowser::reload() {
         } catch (const std::exception& ex) {
             editor_.message(
                 QString(QCoreApplication::translate("Ensemble", "Library unavailable: ")) +
-                ex.what());
+                translateEngineMessage(QString::fromUtf8(ex.what())));
         }
     };
     auto factoryRoot = factoryPackPath();
@@ -551,7 +551,7 @@ void SoundBrowser::reload() {
         } catch (const std::exception& ex) {
             editor_.message(
                 QString(QCoreApplication::translate("Ensemble", "User instrument unavailable: ")) +
-                ex.what());
+                translateEngineMessage(QString::fromUtf8(ex.what())));
         }
     }
     entries_.insert(entries_.end(), userEntries_.begin(), userEntries_.end());
@@ -885,16 +885,20 @@ void SoundBrowser::setExpanded(bool value) {
         columns_->setOrientation(Qt::Vertical);
         detailColumn_->show();
         artwork_->hide();
-        categories_->setMaximumHeight(50);
+        const int rowH = std::max(32, categories_->sizeHintForRow(0));
+        const int compactCatH = rowH * 2 + 4;
+        categories_->setMinimumHeight(compactCatH);
+        categories_->setMaximumHeight(compactCatH);
         categories_->setMaximumWidth(16777215);
         categoryColumn_->show();
         detailColumn_->setMaximumHeight(110);
-        columns_->setSizes({50, 240, 110});
+        columns_->setSizes({compactCatH, 232, 110});
         setMinimumWidth(230);
         setMaximumWidth(900);
     } else {
         detailColumn_->setMaximumHeight(16777215);
         columns_->setOrientation(Qt::Horizontal);
+        categories_->setMinimumHeight(0);
         categories_->setMaximumHeight(16777215);
         categories_->setMaximumWidth(180);
         artwork_->setVisible(artwork_->property("hasArtwork").toBool());

@@ -9,6 +9,7 @@ QString assetPath();
 QString soundPackPath();
 QString factoryPackPath();
 void loadUiLanguage();
+QString translateEngineMessage(const QString& original);
 void initializeTheme();
 QString themeStyle();
 QIcon toolIcon(const QString& name);

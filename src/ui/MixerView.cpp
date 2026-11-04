@@ -70,12 +70,11 @@ void MixerView::refresh() {
         auto* strip = new QWidget;
         strip->setFixedWidth(130);
         strip->setStyleSheet(
-            QString(QCoreApplication::translate("Ensemble",
-                                                "background:%1;border-right:1px solid #777065;"))
+            QString("background:%1;border-right:1px solid #777065;")
                 .arg(!master && e_.selectedTrack == index ? "#4A453E" : "#33312D"));
         auto* column = new QVBoxLayout(strip);
-        auto* name = new QPushButton(
-            master ? "MASTER" : QString::fromStdString(e_.project.tracks[index].name));
+        auto* name = new QPushButton(master ? QCoreApplication::translate("Ensemble", "MASTER")
+                                            : QString::fromStdString(e_.project.tracks[index].name));
         name->setToolTip(name->text());
         name->setText(name->fontMetrics().elidedText(name->text(), Qt::ElideRight, 96));
         column->addWidget(name);
@@ -164,8 +163,10 @@ void MixerView::refresh() {
                 fx->setRange(param < 2 ? -18 : 0, param < 2 ? 18 : 1);
                 fx->setDecimals(param < 2 ? 1 : 2);
                 fx->setSingleStep(param < 2 ? 1 : .05);
-                fx->setPrefix(QStringList{QCoreApplication::translate("Ensemble", "Low "), "High ",
-                                          "Delay ", "Reverb "}[param]);
+                fx->setPrefix(QStringList{QCoreApplication::translate("Ensemble", "Low "),
+                                          QCoreApplication::translate("Ensemble", "High "),
+                                          QCoreApplication::translate("Ensemble", "Delay "),
+                                          QCoreApplication::translate("Ensemble", "Reverb ")}[param]);
                 const auto& s = e_.project.tracks[index].effects;
                 fx->setValue(param == 0   ? s.lowDb
                              : param == 1 ? s.highDb

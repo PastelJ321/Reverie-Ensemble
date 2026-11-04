@@ -21,13 +21,13 @@ InspectorPanel::InspectorPanel(Editor& e) : e_(e) {
     auto* form = form_;
     name_ = new QLineEdit;
     form->addRow(QCoreApplication::translate("Ensemble", "Name"), name_);
-    auto number = [&](QString label, double lo, double hi) {
+    auto number = [&](const char* label, double lo, double hi) {
         auto* spin = new QDoubleSpinBox;
         spin->setRange(lo, hi);
         spin->setDecimals(3);
         spin->setSingleStep(.25);
         spin->setKeyboardTracking(false);
-        form->addRow(label, spin);
+        form->addRow(QCoreApplication::translate("Ensemble", label), spin);
         return spin;
     };
     beat_ = number("Start / beats", 0, 100000);
@@ -101,9 +101,11 @@ void InspectorPanel::refresh() {
             }
     bool audio =
         e_.selectedTrack >= 0 && e_.project.tracks[e_.selectedTrack].kind == TrackKind::Audio;
-    title_->setText(note ? QCoreApplication::translate("Ensemble", "Note properties")
-                    : c  ? (audio ? "Audio clip properties" : "MIDI clip properties")
-                         : "Select a clip or note");
+    title_->setText(
+        note ? QCoreApplication::translate("Ensemble", "Note properties")
+        : c  ? (audio ? QCoreApplication::translate("Ensemble", "Audio clip properties")
+                      : QCoreApplication::translate("Ensemble", "MIDI clip properties"))
+             : QCoreApplication::translate("Ensemble", "Select a clip or note"));
     form_->setRowVisible(name_, c && !note);
     form_->setRowVisible(beat_, c != nullptr);
     form_->setRowVisible(length_, c != nullptr);

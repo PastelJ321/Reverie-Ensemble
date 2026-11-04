@@ -1,13 +1,13 @@
-# Reverie Ensemble 0.5
+# Reverie Ensemble 0.5.1
 
 A free, open-source native DAW by QuadraJ. C++20, Qt 6 Widgets, Reverie Audio Core, miniaudio, sfizz, FluidSynth and CoreMIDI. Original application code is Apache-2.0; third-party code and sound assets retain their own licenses.
 
-0.5 adds a full offline factory component, Meta piano/guitars, real CLAP instrument/effect hosting, ordered inserts, extended synthesis, channel dynamics/EQ and the Qt localization foundation. Existing projects, Musical Typing, MIDI/audio recording, SoundFonts, mixer and WAV export remain.
+0.5.1 stabilizes the 0.5 milestone with complete Korean UI integration, localization bug fixes, reusable build profiles, and standalone bundle staging. It preserves all 0.5 offline factory instruments, Meta piano/guitars, real CLAP instrument/effect hosting, ordered inserts, extended synthesis, channel dynamics/EQ, Musical Typing, MIDI/audio recording, SoundFonts, mixer, WAV export, and v1–v5 project compatibility.
 
 - **Factory:** 51 new recorded source instrument entries / 99 patches. The preserved 13-entry compact library and 14 synth patches plus one synthetic kit bring the selectable factory total to **128 patches**. Source entries can overlap; they are not all distinct physical instruments. Sound payload is about **1.48 GB**.
 - **Plugins:** CLAP, validated with real Surge XT 1.3.4 and Surge XT Effects. Generic parameter editor, state/project restoration and offline WAV. AU/VST3 and native plugin GUIs are not implemented; see [capabilities](docs/PLUGIN_CAPABILITIES.md).
 - **Production:** dual oscillators, mono/legato/portamento, filter envelope/LFO/FM; compressor, one parametric EQ band, peak safety limiter; ordered plugin inserts with bypass/wet/dry. Legacy DSP remains the default for old presets.
-- **Localization:** English source, Korean TS/QM build (`translations/ensemble_ko_KR.ts`, 572/572 entries translated) and saved system/English/Korean preference (`Settings → General → Language`). Restart applies language changes.
+- **Localization:** English source, complete Korean TS/QM build (`translations/ensemble_ko_KR.ts`, 636/636 entries translated including runtime engine error translation), and saved system/English/Korean preference (`Settings → General → Language`). Restart applies language changes without modifying project state; save your project before restarting.
 
 ## Build the full app
 
@@ -18,14 +18,18 @@ brew install cmake qtbase qtsvg qttools libsndfile pkgconf
 sh scripts/bootstrap_instruments.sh
 # Explicit download of the selected factory payload, not the 9.33 GB full source collections:
 python3 scripts/fetch_factory05.py --download
-cmake -S . -B build-05-release -DCMAKE_BUILD_TYPE=Release -DREVERIE_REQUIRE_FACTORY=ON
-cmake --build build-05-release -j 5
-open build-05-release/ReverieEnsemble.app
+
+# Standard reusable build profiles (build-dev, build-release, build-core, build-sanitize):
+./scripts/build.sh release
+
+# Stage a self-contained app bundle in dist/current/ReverieEnsemble.app:
+./scripts/build.sh dist
+open dist/current/ReverieEnsemble.app
 ```
 
-The full build copies factory data into the `.app`, so normal first launch needs no sample download. A source-only build without that component keeps the old compact sounds and shows a missing-factory notice. New large samples stay in ignored build artifacts; they are not committed to this repository. `scripts/package_factory05.py` verifies/packages the factory component separately.
+Development builds (`build-dev/`, `build-release/`) symlink `out/factory05` into `Contents/Resources/FactoryLibrary` by default (`-DREVERIE_BUNDLE_FACTORY_COPY=OFF`) so the 1.48 GB sample payload is not duplicated across every build directory. Staging `./scripts/build.sh dist` copies `FactoryLibrary`, `translations`, and bundled `libsfizz`/`libfluidsynth` dynamic libraries into `dist/current/ReverieEnsemble.app` so the staged bundle runs without depending on build-tree paths. Use `python3 scripts/clean_builds.py` (Dry Run by default) to inspect or reclaim legacy versioned build directories (`--apply`).
 
-This local developer bundle still uses installed shared dependencies. Signed, notarized, clean-machine distribution and corresponding LGPL source/replacement packaging remain release work; see [distribution](docs/DISTRIBUTION.md).
+Signed, notarized, clean-machine distribution and corresponding LGPL source/replacement packaging remain release work; see [distribution](docs/DISTRIBUTION.md).
 
 ## Play and record
 

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copyright 2026 QuadraJ and contributors.
 
-#include "../../translations/engine_prefixes.h"
 #include "core/Media.h"
 #include "core/MidiFile.h"
 #include "core/Plugin.h"
@@ -103,7 +102,7 @@ Editor::Editor(bool audio) : project(demoProject()), device_(engine), audioEnabl
     } catch (const std::exception& ex) {
         message(QString(QCoreApplication::translate(
                     "Ensemble", "Recorded starter unavailable; using factory synths: ")) +
-                ex.what());
+                translateEngineMessage(QString::fromUtf8(ex.what())));
     }
     if (audioEnabled_) {
         int rate = prefs.value("audio/rate", 48000).toInt();
@@ -211,29 +210,10 @@ void Editor::buildMenus() {
     settingsAction->setMenuRole(QAction::PreferencesRole);
     action(file, QCoreApplication::translate("Ensemble", "Quit"), QKeySequence::Quit,
            [this] { close(); });
-    action(file, QCoreApplication::translate("Ensemble", "Import MIDI file…"), {}, [this] {
-        auto path = QFileDialog::getOpenFileName(
-            this, QCoreApplication::translate("Ensemble", "Import Standard MIDI File"), {},
-            "MIDI (*.mid *.midi)");
-        if (path.isEmpty())
-            return;
-        try {
-            auto imported = importMidiFile(path.toStdString());
-            edit([&] {
-                if (project.tracks.size() + imported.tracks.size() > maxTracks)
-                    throw std::runtime_error("Track limit exceeded");
-                if (project.tracks.empty()) {
-                    project.bpm = imported.bpm;
-                    project.numerator = imported.numerator;
-                    project.denominator = imported.denominator;
-                }
-                for (auto& t : imported.tracks)
-                    project.tracks.push_back(std::move(t));
-            });
-        } catch (const std::exception& ex) {
-            message(ex.what());
-        }
-    });
+    auto* importMidiAction =
+        action(file, QCoreApplication::translate("Ensemble", "Import MIDI file…"), {},
+               [this] { importMidi(); });
+    importMidiAction->setObjectName("actionImportMidi");
     auto* editMenu = menuBar()->addMenu(QCoreApplication::translate("Ensemble", "&Edit"));
     action(editMenu, QCoreApplication::translate("Ensemble", "Undo"), QKeySequence::Undo,
            [this] { undo(); });
@@ -304,10 +284,10 @@ void Editor::buildMenus() {
     });
     action(help, QCoreApplication::translate("Ensemble", "About Reverie Ensemble"), {}, [this] {
         QMessageBox::about(
-            this, QCoreApplication::translate("Ensemble", "Reverie Ensemble 0.5.0"),
+            this, QCoreApplication::translate("Ensemble", "Reverie Ensemble 0.5.1"),
             QCoreApplication::translate(
                 "Ensemble",
-                "<h2>Reverie Ensemble</h2><p>0.5.0 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
+                "<h2>Reverie Ensemble</h2><p>0.5.1 · QuadraJ</p><p>Copyright 2026 QuadraJ and "
                 "contributors.</p><p>A free, offline, open-source digital audio "
                 "workstation.</p><p>Reverie code: Apache License 2.0.<br>Qt Core / Gui / Widgets / "
                 "Network / SVG: "
@@ -319,16 +299,7 @@ void Editor::buildMenus() {
     });
 }
 void Editor::message(const QString& original) {
-    auto msg = QCoreApplication::translate("Ensemble", original.toUtf8().constData());
-    if (msg == original)
-        for (auto* prefix : engineErrorPrefixes)
-            if (original.startsWith(QString::fromUtf8(prefix))) {
-                auto translated = QCoreApplication::translate("Ensemble", prefix);
-                if (translated != QString::fromUtf8(prefix))
-                    msg = translated + original.mid(QString::fromUtf8(prefix).size());
-                break;
-            }
-    statusBar()->showMessage(msg, 12000);
+    statusBar()->showMessage(translateEngineMessage(original), 12000);
 }
 void Editor::beginEdit() {
     if (recording_) {
@@ -465,7 +436,8 @@ void Editor::refresh() {
                                          .arg(s.zones.size())) +
                                   QString::fromStdString(s.license)
                             : "")
-                 : "Audio track · non-destructive WAV playback");
+                 : QCoreApplication::translate("Ensemble",
+                                               "Audio track · non-destructive WAV playback"));
     } else {
         trackTitle_->setText(QCoreApplication::translate("Ensemble", "No track selected"));
         instrumentLabel_->clear();
@@ -480,7 +452,7 @@ void Editor::refresh() {
         selectionInspector_->refresh();
     setWindowTitle(QString::fromStdString(project.name) +
                    (dirty_ ? QCoreApplication::translate("Ensemble", " *") : "") +
-                   " — Reverie Ensemble 0.5");
+                   " — Reverie Ensemble 0.5.1");
     refreshing_ = false;
     refreshPerformance();
     if (keyboard_)
@@ -506,7 +478,7 @@ void Editor::select(int track, Id clip) {
 }
 void Editor::addTrack(TrackKind kind) {
     if (project.tracks.size() >= maxTracks) {
-        message(QCoreApplication::translate("Ensemble", "0.1 supports up to 64 tracks."));
+        message(QCoreApplication::translate("Ensemble", "Projects support up to 64 tracks."));
         return;
     }
     edit([&] {
@@ -679,9 +651,12 @@ void Editor::tick() {
         bool failed = recorder_.failed(), overflow = recorder_.overflowed();
         finishRecord();
         if (failed || overflow)
-            message(failed
-                        ? "Recording disk write failed; partial WAV retained."
-                        : "Recording buffer overflow; partial WAV retained. Reduce system load.");
+            message(failed ? QCoreApplication::translate(
+                                 "Ensemble", "Recording disk write failed; partial WAV retained.")
+                           : QCoreApplication::translate(
+                                 "Ensemble",
+                                 "Recording buffer overflow; partial WAV retained. Reduce system "
+                                 "load."));
     }
 }
 // Long decoding, copying and rendering run off the UI/audio threads. The modal progress dialog
@@ -764,6 +739,33 @@ void Editor::importWav(const QString& supplied, double beat) {
         message(QString::fromUtf8(ex.what()));
     }
 }
+void Editor::importMidi(const QString& supplied) {
+    if (recording_)
+        return;
+    auto path = supplied;
+    if (path.isEmpty())
+        path = QFileDialog::getOpenFileName(
+            this, QCoreApplication::translate("Ensemble", "Import Standard MIDI File"), {},
+            "MIDI (*.mid *.midi)");
+    if (path.isEmpty())
+        return;
+    try {
+        auto imported = importMidiFile(path.toStdString());
+        edit([&] {
+            if (project.tracks.size() + imported.tracks.size() > maxTracks)
+                throw std::runtime_error("Track limit exceeded");
+            if (project.tracks.empty()) {
+                project.bpm = imported.bpm;
+                project.numerator = imported.numerator;
+                project.denominator = imported.denominator;
+            }
+            for (auto& t : imported.tracks)
+                project.tracks.push_back(std::move(t));
+        });
+    } catch (const std::exception& ex) {
+        message(QString::fromUtf8(ex.what()));
+    }
+}
 bool Editor::saveProject(const QString& supplied) {
     if (recording_)
         finishRecord();
@@ -839,13 +841,16 @@ bool Editor::saveProject(const QString& supplied) {
                     (std::filesystem::path(path.toStdString()).stem().string() + ".media")) ==
                     std::string::npos)
                 referenced = true;
-        message(referenced ? "Project saved. Keep external SFZ libraries available; some "
-                             "dependencies remain external references."
-                           : "Project saved with a portable media folder.");
+        message(referenced
+                    ? QCoreApplication::translate(
+                          "Ensemble", "Project saved. Keep external SFZ libraries available; some "
+                                      "dependencies remain external references.")
+                    : QCoreApplication::translate("Ensemble",
+                                                  "Project saved with a portable media folder."));
         return true;
     } catch (const std::exception& ex) {
         QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Save failed"),
-                             QString::fromUtf8(ex.what()));
+                             translateEngineMessage(QString::fromUtf8(ex.what())));
         return false;
     }
 }
@@ -867,17 +872,18 @@ bool Editor::openProject(const QString& path) {
         publishProject();
         refresh();
         if (!loaded.warnings.empty()) {
-            QString text = "Some media is unavailable. References are preserved and those clips "
-                           "play silently.\n\n";
+            QString text = QCoreApplication::translate(
+                "Ensemble", "Some media is unavailable. References are preserved and those clips "
+                            "play silently.\n\n");
             for (const auto& w : loaded.warnings)
-                text += QString::fromStdString(w) + "\n";
+                text += translateEngineMessage(QString::fromStdString(w)) + "\n";
             QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Missing media"),
                                  text);
         }
         return true;
     } catch (const std::exception& ex) {
         QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Open failed"),
-                             QString::fromUtf8(ex.what()));
+                             translateEngineMessage(QString::fromUtf8(ex.what())));
         return false;
     }
 }
@@ -912,7 +918,7 @@ bool Editor::exportProject(const QString& supplied) {
         return true;
     } catch (const std::exception& ex) {
         QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Export failed"),
-                             QString::fromUtf8(ex.what()));
+                             translateEngineMessage(QString::fromUtf8(ex.what())));
         return false;
     }
 }
@@ -1132,7 +1138,7 @@ void Editor::finishRecord() {
     } catch (const std::exception& ex) {
         message(QCoreApplication::translate("Ensemble", "Take retained at ") +
                 QString::fromStdString(recordingPath_.string()) + ": " +
-                QString::fromUtf8(ex.what()));
+                translateEngineMessage(QString::fromUtf8(ex.what())));
     }
     refresh();
 }

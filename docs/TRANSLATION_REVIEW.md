@@ -1,25 +1,24 @@
-# Reverie Ensemble 0.5 Localization & Editorial Review Report
+# Reverie Ensemble 0.5.1 Localization & Stabilization Review Report
 
-- **Target Release**: Reverie Ensemble `0.5.0`
-- **Branch**: `content/ensemble-ko-0.5` (based on `codex/ensemble-0.5` @ `5f23387`)
-- **Author / Role**: Gemini Argon — UX Writer, Music Software Translator, Korean Technical Writer, English UI Editor
-- **Engineering Counterpart**: Codex — Audio Engine, UI Components, Localization Infrastructure
+- **Target Release**: Reverie Ensemble `0.5.1`
+- **Branch**: `release/ensemble-0.5.1` (stacked on `content/ensemble-ko-0.5` @ `1e0c15d`)
+- **Scope**: Complete Korean UI C++ integration, localization bug fixes, build directory consolidation, and regression verification
 
 ---
 
 ## 1. Executive Summary
 
 1. **Complete Qt Translation Catalog (`translations/ensemble_ko_KR.ts`)**:
-   - Translated all **572** `<message>` entries in the `"Ensemble"` context (`572 finished and 0 unfinished`).
-   - Verified 100% preservation of positional placeholders (`%1`–`%5`), unit/label spacing (`" Hz"`, `" s"`, `" dB"`, `"Pan "`, `"Low "`, `"Wet "`, `"Velocity "`, `" Zoom "`, `"PIANO ROLL  "`, `" · "`, `" *"`), prefix colons (`": "` in `translations/engine_prefixes.h`), and menu mnemonics (`파일(&F)`, `편집(&E)`, `트랙(&T)`, `트랜스포트(&T)`, `보기(&V)`, `도움말(&H)`).
-   - Preserved the non-translatable Qt stylesheet string `background:%1;border-right:1px solid #777065;` (`src/ui/MixerView.cpp:73`) verbatim so mixer channel strips render properly in Korean.
-2. **Build & Test Verification**:
-   - Compiled `ensemble_ko_KR.qm` via `cmake --build build-05-release --target reverie_translations reverie_bundle_translations`.
-   - Verified `12/12` CTest suites pass (`100% tests passed`).
-3. **Runtime Korean UI QA**:
-   - Verified Korean UI rendering at both `1440×900` and `1280×800` across all 13 functional views using `IBM Plex Sans KR` and the Paper & Graphite theme.
-4. **Scope Separation**:
-   - No C++ source files (`src/core/*`, `src/ui/*`, `src/platform/*`), DSP/audio callbacks, sample mappings, or test fixtures (`tests/fixtures/localization05.ts`) were modified on this branch. All source-level string fixes and localization hooks are documented below for Codex.
+   - Wrapped all remaining unextracted UI labels, dock headers, status messages, and exception strings across `src/ui/` and `src/core/`, expanding the catalog from 572 to **636** `<message>` entries (`636 finished and 0 unfinished, 0 obsolete`).
+   - Added `translateEngineMessage()` (`src/ui/Theme.h` / `src/ui/Theme.cpp`) using `engineErrorPrefixes` so runtime `std::exception` and project load warnings from the Qt-free audio/serializer core are translated into Korean while preserving verbatim file paths and technical identifiers.
+   - Verified 100% preservation of positional placeholders (`%1`–`%6`), unit/label spacing (`" Hz"`, `" s"`, `" dB"`, `"Pan "`, `"Low "`, `"High "`, `"Delay "`, `"Reverb "`, `"Wet "`, `"Velocity "`, `" Zoom "`, `"PIANO ROLL  "`, `" · "`, `" *"`), prefix colons (`": "` in `translations/engine_prefixes.h`), and menu mnemonics (`파일(&F)`, `편집(&E)`, `트랙(&T)`, `트랜스포트(&T)`, `보기(&V)`, `도움말(&H)`).
+2. **Resolved 0.5.1 C++ Localization & UI Bugs**:
+   - **Bug A (`src/ui/ExportDialog.cpp`)**: Assigned `cancel->setObjectName("exportCancel")` and replaced `if (b->text() == "Cancel")` with `findChild<QPushButton*>("exportCancel")` so cancelling an audio export works in both Korean and English.
+   - **Bug B (`src/ui/Timeline.cpp`, `src/ui/Editor.h`, `src/ui/Editor.cpp`)**: Added `Editor::importMidi(const QString& path = {})` and `actionImportMidi`, removing the hardcoded `"Import MIDI file…"` text comparison in `Timeline.cpp`.
+   - **Bug C (`src/ui/MixerView.cpp`)**: Removed `QCoreApplication::translate` from the CSS stylesheet `"background:%1;border-right:1px solid #777065;"`.
+   - **Bug D (`src/ui/SoundBrowser.cpp`)**: Increased compact category list height from `50px` to `64px` (`columns_->setSizes({64, 236, 110})`) so the second category row is never vertically clipped at `1280×800` or `1440×900`.
+   - **Bug E (`src/ui/Editor.cpp`, `src/core/Model.cpp`, `src/ui/SettingsDialog.cpp`, `src/main.cpp`, `src/render_main.cpp`)**: Replaced stale `0.1` version limit strings (`"Projects support up to 64 tracks."`, `"Project exceeds editing limits"`) and updated version display to `0.5.1`.
+   - **Bug F (`src/ui/SettingsDialog.cpp`)**: Updated the language restart notice to `"Language changes apply after restarting Ensemble. Save your project before restarting."` (`"언어 변경 사항은 Ensemble을 다시 시작한 뒤 적용됩니다. 다시 시작하기 전에 프로젝트를 저장하세요."`) so users are clearly reminded to save before restarting, while preserving live project state when changing the setting.
 
 ---
 

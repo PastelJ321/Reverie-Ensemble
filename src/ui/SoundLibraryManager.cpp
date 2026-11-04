@@ -119,7 +119,7 @@ SoundLibraryManager::SoundLibraryManager(SoundBrowser& browser)
             reload();
         } catch (const std::exception& e) {
             QMessageBox::warning(this, QCoreApplication::translate("Ensemble", "Install failed"),
-                                 e.what());
+                                 translateEngineMessage(QString::fromUtf8(e.what())));
         }
     });
     connect(remove, &QPushButton::clicked, this, [this] {
@@ -183,7 +183,7 @@ SoundLibraryManager::SoundLibraryManager(SoundBrowser& browser)
                                                   "uses the same recordings.") +
                                   "\n" + details_->text());
         } catch (const std::exception& e) {
-            details_->setText(e.what());
+            details_->setText(translateEngineMessage(QString::fromUtf8(e.what())));
         }
     });
     reload();
@@ -212,9 +212,10 @@ void SoundLibraryManager::reload() {
     auto add = [this](QString path, bool bundled) {
         try {
             auto p = readSoundPack(path.toStdString(), false);
-            auto* item = new QListWidgetItem(QString::fromStdString(p.name + " · " + p.version) +
-                                                 (bundled ? " · Bundled" : ""),
-                                             installed_);
+            auto* item = new QListWidgetItem(
+                QString::fromStdString(p.name + " · " + p.version) +
+                    (bundled ? QCoreApplication::translate("Ensemble", " · Bundled") : QString()),
+                installed_);
             if (!bundled)
                 item->setData(Qt::UserRole, path);
         } catch (...) {
@@ -282,7 +283,9 @@ void SoundLibraryManager::download() {
         if (QMessageBox::question(
                 this, QCoreApplication::translate("Ensemble", "Download sound pack"),
                 details_->text() +
-                    "\n\nDownload these files and accept the displayed asset license?") !=
+                    QCoreApplication::translate(
+                        "Ensemble",
+                        "\n\nDownload these files and accept the displayed asset license?")) !=
             QMessageBox::Yes)
             return;
         busy_ = true;
@@ -388,7 +391,7 @@ void SoundLibraryManager::download() {
             "Ensemble", "Installed and verified. Instruments are available immediately."));
         browser_.reload();
     } catch (const std::exception& e) {
-        details_->setText(QString::fromUtf8(e.what()));
+        details_->setText(translateEngineMessage(QString::fromUtf8(e.what())));
     }
     outcome = details_->text();
     if (!staging.isEmpty())
